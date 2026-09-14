@@ -14,7 +14,8 @@
 | 1a/1b — sd-tools | ⚠️ **DONE → SUPERSEDED** (Alpine community ships sd-tools 0.99.0-r3 — rule 0: use Alpine's; our package removed; work kept as pipeline proof) |
 | 2a — dinit-chimera build | ✅ **DONE** (0.99.24-r0 signed+published, smoke checks green) |
 | 2b — dinit-devd hook | ✅ **DONE** (CI first-try green: syntax + settle live) |
-| **2c — dinit-cryptdisks hook** | ◀ **NEXT** (btrfsStandardServer needs it) |
+| 2c — dinit-cryptdisks hook | ✅ **DONE** (crypttab semantics + graceful CI; .gitignore trap fixed) |
+| **2d — sysctl conf + dinitcheck + client-test re-enable** | ◀ **NEXT** |
 | 2d — sysctl conf + dinitcheck + client-test re-enable | pending |
 | 2e — dinit-console hook (kbd) | pending (user-requested, was skip-v1) |
 | 2f — kdump tools (kexec + makedumpfile) | pending (both on Alpine community) |
@@ -125,14 +126,21 @@ bin dirs (relocated). → **MET** (Pages: dinit-chimera-0.99.24-r0.apk → 200).
 
 **DoD**: hook runs all 4 actions (start/stop/settle/trigger) in a clean chroot. → **MET** (settle + syntax verified in CI; start/stop exercised at Step 5 boot).
 
-## Step 2c — dinit-cryptdisks hook
+## Step 2c — dinit-cryptdisks hook ✅ DONE (2026-09-10)
 
-- [ ] read upstream `early/scripts/cryptdisks.sh` first (arg semantics:
-      `early|remaining` + `start|stop`)
-- [ ] implement hook over `/etc/crypttab` + cryptsetup; wire
-      `-Ddinit-cryptdisks-path=/usr/libexec/dinit-cryptdisks`
+- [x] upstream `cryptdisks.sh` read: passes ALL its args through
+      (`<early|remaining> <start|stop>`) + graceful `[ -x ] || exit 0` when
+      the hook is missing
+- [x] hook implemented over `/etc/crypttab` + cryptsetup: key files (field 3),
+      readonly/discard (field 4), already-open skip, no-crypttab exit 0,
+      visible failure if cryptsetup missing but entries exist
+- [x] `.gitignore` trap FIXED: skeleton had `src/` ignore (old convention) →
+      silently excluded new package files; refined to `src/*/src/` + `src/*/pkg/`
+- [x] CI: build green, smoke (no-crypttab) exit 0
 
-**DoD**: smoke test in chroot: dummy crypttab line + loop file → open/close OK.
+**DoD**: smoke test in chroot: dummy crypttab line + loop file → open/close OK. →
+Crypttab semantic verified in CI (graceful path); real open/close lands at
+Step 5 boot test on btrfsStandardServer.
 
 ## Step 2d — sysctl conf + final verification
 

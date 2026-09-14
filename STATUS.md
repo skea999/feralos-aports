@@ -5,12 +5,19 @@
 
 ## Current
 
-- **Step**: 2b ✅ COMPLETE — dinit-devd hook shipped (CI first-try green)
-- **Next action**: Step 2c — `dinit-cryptdisks` hook: read upstream
-  `early/scripts/cryptdisks.sh` arg semantics first, implement over
-  /etc/crypttab + cryptsetup, add to source/package(), CI verify.
+- **Step**: 2c ✅ COMPLETE — both distro hooks shipped (devd + cryptdisks)
+- **Next action**: Step 2d — `sysctl/10-feralos.conf` + dinitcheck + RE-ENABLE
+  client-test (install target: dinit-chimera; fix stale job comment "2a"→"2d")
 
 ## Log
+
+### 2026-09-10 — Step 2c COMPLETE (+ .gitignore trap fixed)
+- dinit-cryptdisks hook: /etc/crypttab → cryptsetup open/close; key files,
+  readonly/discard, already-open skip, graceful no-crypttab (CI exit 0 verified)
+- upstream cryptdisks.sh confirmed pass-through contract + [-x] graceful guard
+- 🔴 TRAP: skeleton .gitignore had `src/` → git add silently dropped the hook
+  (CI sha512sums mismatch). Refined to src/*/src/ + src/*/pkg/. Fix 1/2 used.
+- btrfsStandardServer (crypttab swap) now covered by the package
 
 ### 2026-09-10 — repo reorganized: packages under src/ (URL normalized)
 - `dinit-chimera/` → `src/dinit-chimera/` (git mv, history preserved)

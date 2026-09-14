@@ -143,6 +143,35 @@ package() {
 /usr/lib/sysctl.d/                 # upstream defaults
 ```
 
+### Divergence from upstream v0.99.24 (exact)
+
+Source = upstream tarball, **zero patches**, nothing removed. All content identical
+(52+1 services, 35+1 scripts, 12 helpers, shutdown-hook, tmpfiles.d, man page).
+
+**Deliberate divergences** (3 — forced by Alpine ≠ Chimera paths):
+
+| # | Item | Upstream | Ours | Reason |
+|---|------|----------|------|--------|
+| 1 | init wrapper | `/usr/sbin/init` (replaces system init) | `/usr/libexec/dinit/init` | OpenRC coexistence; switch via cmdline `init=` |
+| 2 | `@DINIT_PATH@` | `/usr/sbin/dinit` (hardcoded `sbindir`) | `/usr/bin/dinit` (`-Dsbindir=bin`) | Alpine ships dinit in `/usr/bin` |
+| 3 | sulogin (recovery) | `/usr/sbin/sulogin` (shadow) | `/sbin/sulogin` (busybox) | different provider on Alpine |
+
+Same as Chimera's own build: `-Ddefault-path-env=/usr/bin`.
+
+**Gaps vs upstream** (missing, planned/documented):
+
+| # | What | State | Impact |
+|---|------|-------|--------|
+| 1 | **`dinit-devd` hook** — MANDATORY upstream contract | ❌ Step 2b (next) | without it: no udevd → devices dead at boot. THE blocking gap |
+| 2 | `dinit-cryptdisks` hook (non-root crypttab) | ❌ Step 2c | LUKS non-root only (e.g. raid0 swap) |
+| 3 | `dinit-console` hook (keymap/font) | ⏭️ skipped v1 (documented) | console keymap via kbd; non-blocking |
+| 4 | `systemd-bless-boot` binary | ❌ absent on Alpine | early-bless-boot degraded (A/B boot counting); backlog |
+| 5 | kdump subpackage (kexec + makedumpfile) | ⏭️ not shipped | upstream-optional; no kexec installed |
+| 6 | real udev device monitor | dummy `-none` = **upstream default** | `device@` deps unused in the boot chain — backlog |
+
+Absent optional tool deps (lvm2, mdadm, zfs, dmraid, procps) behave exactly like
+a minimal Chimera install: upstream oneshots exit 0 when tools are missing.
+
 ### Compiled helpers (early/helpers/meson.build — one executable per .cc)
 
 | Binary | What it does (source-verified) | Notes |

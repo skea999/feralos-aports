@@ -14,13 +14,17 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/dinit-chimera/
 options="!check"  # upstream ships no test suite
 
 build() {
+	# plain meson setup (NOT abuild-meson: it auto-passes --sbindir which
+	# conflicts with our -Dsbindir=bin)
 	# -Dsbindir=bin: upstream hardcodes dinit_path=$prefix/sbindir/dinit while
 	# Alpine installs dinit to /usr/bin/dinit — bin keeps the @DINIT_PATH@
 	# substitution correct; the only other sbin file (init wrapper) is
 	# relocated in package() anyway
 	# -Ddinit-sulogin-path: busybox sulogin on Alpine (upstream default is
 	# /usr/sbin/sulogin)
-	abuild-meson \
+	meson setup \
+		--prefix=/usr \
+		--buildtype=plain \
 		-Ddefault-path-env=/usr/bin \
 		-Dsbindir=bin \
 		-Ddinit-sulogin-path=/sbin/sulogin \

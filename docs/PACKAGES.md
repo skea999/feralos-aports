@@ -55,7 +55,9 @@ feralos-aports/
 |---------|-----------|---------------------|--------|
 | `dinit-chimera` | 0.99.24 | v0.99.24 (2026-03-02) | ✅ on latest |
 | `sd-tools` | 0.99.0 | v0.99.0 (only tag) | removed — Alpine ships it |
-| `turnstile` | 0.1.11 | v0.1.11 | planned (Phase 4; Alpine edge/testing pins the same) |
+| `turnstile` | 0.1.11 | v0.1.11 (2025-10-12) | ✅ on latest — planned (Phase 4; Alpine edge/testing pins the same) |
+| `polkit` | 127 | Alpine aports pins polkit-org **127** release | planned (Phase 4: Alpine APKBUILD + turnstile.patch) |
+| `getty-dinit`, `*-dinit` | ours | no upstream (service files) | policy n/a — reviewed in PR |
 
 ## sd-tools APKBUILD — ⚠️ SUPERSEDED (rule 0: use Alpine's)
 

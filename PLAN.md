@@ -37,7 +37,10 @@
 2. Every step has a **DoD** (definition of done) — no step is done until DoD is met.
 3. If blocked >2 attempts on the same error: stop, write blocker in `STATUS.md`,
    push, report back. Do not improvise architecture changes.
-4. Sources point to upstream tarballs — we patch only what's broken, never redesign.
+4. **Sources = upstream release TAG tarballs** — never branches/master/HEAD.
+   `pkgver` MUST equal the upstream tag; `sha512sums` mandatory (no SKIP).
+   Bumps happen only on new upstream tags. We patch only what's broken, never
+   redesign. See "Source & stability policy" in `docs/PACKAGES.md`.
 5. **Optional PACKAGES: ALL of them, mandatory.** Every optional dependency
    goes into `makedepends` unconditionally and gets compiled in.
 6. **Optional FEATURES: enabled best-effort.** Try them all; a feature may be

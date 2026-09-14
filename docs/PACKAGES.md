@@ -32,6 +32,31 @@ feralos-aports/
 | `tzdata` | main | tzdb |
 | `meson`, `kmod-dev`, `linux-headers` | main | makedepends |
 
+## Source & stability policy (ALL packages)
+
+1. **Tags only.** Source = upstream **release tag tarball**
+   (`.../archive/refs/tags/v<pkgver>.tar.gz`). `pkgver` MUST equal the upstream
+   tag. **Never** master/main/HEAD/commit snapshots.
+2. **Why**: tags are immutable, checksummable, upstream-tested snapshots. These
+   repos have NO "stable" branches — `master` moves daily; the tag series IS
+   the stable channel (Chimera itself pins tags in its own distro the same way).
+3. **Checksum mandatory** — `sha512sums` verified by abuild + CI; missing or
+   `SKIP` hash = build failure. Integrity is pinned per package.
+4. **Bump procedure**: check the upstream tags page → new tag exists → bump
+   `pkgver` (reset `pkgrel=0`) → recompute sha512 → CI green → push.
+5. **Rule 0 first**: if Alpine already packages it, use Alpine's — their pinned
+   source is maintained for us (happened to sd-tools).
+6. **No-tag upstreams**: if a project ships no tags, the package is BLOCKED —
+   register it in `STATUS.md`; do not invent versions from commits.
+
+### Current pins (latest upstream tags verified 2026-09-10)
+
+| Package | Our pkgver | Upstream latest tag | Status |
+|---------|-----------|---------------------|--------|
+| `dinit-chimera` | 0.99.24 | v0.99.24 (2026-03-02) | ✅ on latest |
+| `sd-tools` | 0.99.0 | v0.99.0 (only tag) | removed — Alpine ships it |
+| `turnstile` | 0.1.11 | v0.1.11 | planned (Phase 4; Alpine edge/testing pins the same) |
+
 ## sd-tools APKBUILD — ⚠️ SUPERSEDED (rule 0: use Alpine's)
 
 > **Do not build.** Alpine community ships `sd-tools 0.99.0-r3` (v3.24 + edge,

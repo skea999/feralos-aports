@@ -102,6 +102,10 @@ jobs:
           test -x /usr/libexec/dinit-devd || { echo "missing dinit-devd hook"; exit 1; }
           sh -n /usr/libexec/dinit-devd || { echo "dinit-devd syntax error"; exit 1; }
           /usr/libexec/dinit-devd settle || { echo "dinit-devd settle failed"; exit 1; }
+          # 2c: cryptdisks hook — exists, syntax-clean, graceful with no crypttab
+          test -x /usr/libexec/dinit-cryptdisks || { echo "missing dinit-cryptdisks hook"; exit 1; }
+          sh -n /usr/libexec/dinit-cryptdisks || { echo "dinit-cryptdisks syntax error"; exit 1; }
+          /usr/libexec/dinit-cryptdisks early start || { echo "dinit-cryptdisks (no crypttab) must exit 0"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories

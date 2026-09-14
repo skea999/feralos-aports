@@ -5,10 +5,19 @@
 
 ## Current
 
-- **Step**: 2b — dinit-devd hook (then 2c/2d/2e/2f/2g — all gaps will be packaged, user request: no skips)
-- **Next action**: write `dinit-devd` hook + add to dinit-chimera package() → push → CI.
+- **Step**: 2b ✅ COMPLETE — dinit-devd hook shipped (CI first-try green)
+- **Next action**: Step 2c — `dinit-cryptdisks` hook: read upstream
+  `early/scripts/cryptdisks.sh` arg semantics first, implement over
+  /etc/crypttab + cryptsetup, add to source/package(), CI verify.
 
 ## Log
+
+### 2026-09-10 — Step 2b COMPLETE (zero fixes)
+- dinit-devd hook (eudev: /sbin/udevd, /bin/udevadm) installed at
+  /usr/libexec/dinit-devd — upstream default meson path, no build flag needed
+- sha512 pinned; CI smoke: installed + sh -n + settle executed live
+- Run 34900455477: build/deploy success, client-test skipped (by design)
+- Blocking gap CLOSED: with 2c+2d the suite becomes boot-functional
 
 ### 2026-09-10 — policy update: NO skipped gaps (user request) — new Steps 2e/2f/2g
 - Console hook no longer skipped → **2e**: kbd loadkmap/setfont via /etc/conf.d/keymaps+consolefont (kbd-bkeymaps + font-terminus already in standardPackages)

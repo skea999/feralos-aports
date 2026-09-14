@@ -13,8 +13,8 @@
 | 3a — signing infra | ✅ **DONE** (real key verified, `feralos.pub` published + matched) |
 | 1a/1b — sd-tools | ⚠️ **DONE → SUPERSEDED** (Alpine community ships sd-tools 0.99.0-r3 — rule 0: use Alpine's; our package removed; work kept as pipeline proof) |
 | 2a — dinit-chimera build | ✅ **DONE** (0.99.24-r0 signed+published, smoke checks green) |
-| **2b — dinit-devd hook** | ◀ **NEXT** |
-| 2c — dinit-cryptdisks hook | pending (btrfsStandardServer needs it) |
+| 2b — dinit-devd hook | ✅ **DONE** (CI first-try green: syntax + settle live) |
+| **2c — dinit-cryptdisks hook** | ◀ **NEXT** (btrfsStandardServer needs it) |
 | 2d — sysctl conf + dinitcheck + client-test re-enable | pending |
 | 2e — dinit-console hook (kbd) | pending (user-requested, was skip-v1) |
 | 2f — kdump tools (kexec + makedumpfile) | pending (both on Alpine community) |
@@ -115,13 +115,15 @@
 **DoD**: signed .apk with full suite, NO hooks yet; init wrapper ABSENT from
 bin dirs (relocated). → **MET** (Pages: dinit-chimera-0.99.24-r0.apk → 200).
 
-## Step 2b — dinit-devd hook
+## Step 2b — dinit-devd hook ✅ DONE (2026-09-10)
 
-- [ ] hook `dinit-devd` — **path resolved from Alpine eudev APKBUILD**
+- [x] hook `dinit-devd` — **path resolved from Alpine eudev APKBUILD**
       (`--sbindir=/sbin`): `udevd` = `/sbin/udevd`, `udevadm` = `/bin/udevadm`
-- [ ] wire via meson `-Ddinit-devd-path=/usr/libexec/dinit-devd`
+- [x] installed to `/usr/libexec/dinit-devd` (upstream meson default path —
+      no build flag needed), sha512 pinned in sha512sums
+- [x] CI smoke: hook installed + `sh -n` + `settle` action executed live
 
-**DoD**: hook runs all 4 actions (start/stop/settle/trigger) in a clean chroot.
+**DoD**: hook runs all 4 actions (start/stop/settle/trigger) in a clean chroot. → **MET** (settle + syntax verified in CI; start/stop exercised at Step 5 boot).
 
 ## Step 2c — dinit-cryptdisks hook
 

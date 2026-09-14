@@ -12,13 +12,16 @@
 
 ## Log
 
-### 2026-09-10 — repo reorganized: packages under src/
+### 2026-09-10 — repo reorganized: packages under src/ (URL normalized)
 - `dinit-chimera/` → `src/dinit-chimera/` (git mv, history preserved)
 - NEW RULE: `src/` contains ONLY package dirs — one dir per package, all its
   assets inside (hooks, sysctl, service files); root stays clean
 - workflow glob `src/*/APKBUILD`; docs synced (PACKAGES/REPOSITORY/CI/README/PLAN)
 - terminology fixed: "stable contract (mandatory)" (was "upstream contract")
-- Pages URL expected unchanged (REPODEST = topdir name, not package location)
+- **Pages URL: REPODEST follows the package parent dir → src/ changed it**;
+  FIXED via Collect-step normalization (site/src → site/feralos-aports):
+  documented URL `.../feralos-aports/x86_64/` is stable against future layout
+  changes; client-test hardcode still matches (re-enable at 2d)
 
 ### 2026-09-10 — Step 2b COMPLETE (zero fixes)
 - dinit-devd hook (eudev: /sbin/udevd, /bin/udevadm) installed at

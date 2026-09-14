@@ -125,6 +125,12 @@ jobs:
           if [ -d ~/packages ]; then
             cp -r ~/packages/. site/ 2>/dev/null || true
           fi
+          # normalize published layout: abuild REPODEST subdir follows the
+          # package parent dir (src/) — publish under the STABLE documented
+          # repo name instead, so client URLs never follow internal layout
+          if [ -d site/src ] && [ ! -d site/feralos-aports ]; then
+            mv site/src site/feralos-aports
+          fi
           # keep artifact non-empty while repo has no built packages
           [ -n "$(ls -A site 2>/dev/null)" ] || echo "skeleton — no packages yet" > site/README.txt
 

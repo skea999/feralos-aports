@@ -2,7 +2,8 @@
 sources/
 packages/
 pkg/
-src/
+src/*/src/
+src/*/pkg/
 *.apk
 *.tar.gz
 !docs/**/*.md

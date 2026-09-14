@@ -1,0 +1,62 @@
+#!/bin/sh
+# FeralOS: dmcrypt backend for the dinit-chimera cryptdisks contract.
+# Called by early/scripts/cryptdisks.sh with ALL its args:
+#   $1 = early|remaining     $2 = start|stop
+# Handles /etc/crypttab entries with cryptsetup.
+# NOTE: root LUKS is unlocked in the initramfs (booster/mkinitfs) — this hook
+# is for ADDITIONAL volumes only (e.g. LUKS swap on btrfsStandardServer).
+
+TAB=/etc/crypttab
+
+command -v cryptsetup >/dev/null 2>&1 || {
+	# no cryptsetup: fine unless a crypttab actually exists
+	[ -r "$TAB" ] && grep -qvE '^\s*(#|$)' "$TAB" 2>/dev/null && {
+		echo "cryptdisks: cryptsetup missing but $TAB has entries" >&2
+		exit 1
+	}
+	exit 0
+}
+
+is_open() {
+	cryptsetup status "$1" >/dev/null 2>&1
+}
+
+do_start() {
+	ret=0
+	while read -r name dev key opts _; do
+		case "$name" in ''|'#'*) continue ;; esac
+		is_open "$name" && continue
+
+		# crypttab field 3: '-'/'none' = interactive, otherwise key file path
+		set --
+		if [ -n "$key" ] && [ "$key" != "-" ] && [ "$key" != "none" ] && [ -e "$key" ]; then
+			set -- "$@" --key-file "$key"
+		fi
+		# field 4: readonly + discard handled; other options ignored
+		case ",${opts:-}," in
+			*,readonly,*) set -- "$@" --read-only ;;
+		esac
+		case ",${opts:-}," in
+			*,discard,*) set -- "$@" --allow-discards ;;
+		esac
+
+		if ! cryptsetup open "$@" "$dev" "$name"; then
+			echo "cryptdisks: failed to open $name ($dev)" >&2
+			ret=1
+		fi
+	done < "$TAB"
+	return $ret
+}
+
+do_stop() {
+	while read -r name dev key opts _; do
+		case "$name" in ''|'#'*) continue ;; esac
+		is_open "$name" && cryptsetup close "$name" || true
+	done < "$TAB"
+}
+
+case "$2" in
+	start) do_start ;;
+	stop)  do_stop ;;
+	*)     echo "usage: $0 <early|remaining> <start|stop>" >&2; exit 1 ;;
+esac

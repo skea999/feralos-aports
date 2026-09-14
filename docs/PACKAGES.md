@@ -91,10 +91,20 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/dinit-chimera/
 options="!check"                    # upstream has no test suite
 
 build() {
-	abuild-meson \
+	# plain meson setup (NOT abuild-meson: it auto-passes --sbindir which
+	# conflicts with our -Dsbindir=bin)
+	# -Dsbindir=bin: upstream hardcodes dinit_path=$prefix/sbindir/dinit while
+	# Alpine installs dinit to /usr/bin/dinit — bin keeps the @DINIT_PATH@
+	# substitution correct; the only other sbin file (init wrapper) is
+	# relocated in package() anyway
+	# -Ddinit-sulogin-path: busybox sulogin on Alpine (upstream default is
+	# /usr/sbin/sulogin)
+	meson setup \
+		--prefix=/usr \
+		--buildtype=plain \
 		-Ddefault-path-env=/usr/bin \
-		-Ddinit-devd-path=/usr/libexec/dinit-devd \
-		-Ddinit-cryptdisks-path=/usr/libexec/dinit-cryptdisks \
+		-Dsbindir=bin \
+		-Ddinit-sulogin-path=/sbin/sulogin \
 		. output
 	meson compile -C output
 }
@@ -102,12 +112,11 @@ build() {
 package() {
 	DESTDIR="$pkgdir" meson install --no-rebuild -C output
 
-	# init wrapper: meson installs it to /usr/sbin/init (VERIFIED:
-	# early/scripts/meson.build configure_file, @DINIT_PATH@ etc. substituted).
-	# Relocate to avoid conflict with openrc/busybox /sbin|/usr/sbin/init
-	# (OpenRC coexistence). Kernel cmdline: init=/usr/libexec/dinit/init
+	# init wrapper: meson installs it to /usr/bin/init (sbindir=bin) —
+	# relocate for OpenRC coexistence; kernel cmdline uses
+	# init=/usr/libexec/dinit/init
 	mkdir -p "$pkgdir/usr/libexec/dinit"
-	mv "$pkgdir/usr/sbin/init" "$pkgdir/usr/libexec/dinit/init"
+	mv "$pkgdir/usr/bin/init" "$pkgdir/usr/libexec/dinit/init"
 
 	install -Dm755 "$srcdir/dinit-devd"      "$pkgdir/usr/libexec/dinit-devd"
 	install -Dm755 "$srcdir/dinit-cryptdisks" "$pkgdir/usr/libexec/dinit-cryptdisks"

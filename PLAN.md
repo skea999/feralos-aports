@@ -12,8 +12,8 @@
 | 0 — skeleton | ✅ **DONE** (CI green, Pages live) |
 | 3a — signing infra | ✅ **DONE** (real key verified, `feralos.pub` published + matched) |
 | 1a/1b — sd-tools | ⚠️ **DONE → SUPERSEDED** (Alpine community ships sd-tools 0.99.0-r3 — rule 0: use Alpine's; our package removed; work kept as pipeline proof) |
-| **2a — dinit-chimera build** | ◀ **NEXT** (NOT in Alpine — ours is required) |
-| 2b–2d — dinit-chimera (devd / cryptdisks / sysctl) | pending |
+| 2a — dinit-chimera build | ✅ **DONE** (0.99.24-r0 signed+published, smoke checks green) |
+| **2b — dinit-devd hook** | ◀ **NEXT** |
 | 4 — getty-dinit | pending (NOT in Alpine) |
 | 5 — boot test QEMU (booster) | pending |
 | 6 — system services | pending (not in Alpine as -dinit variants) |
@@ -87,23 +87,25 @@
 > repo + our-key signing) — clients MUST pin `=0.99.0-r0` or our repo must be
 > preferred, else apk resolves the newer Alpine build and bypasses our signature.
 
-## Step 2a — dinit-chimera package (build)
+## Step 2a — dinit-chimera package (build) ✅ DONE (2026-09-10)
 
-- [ ] `dinit-chimera/APKBUILD` — **facts verified upstream**:
+- [x] `dinit-chimera/APKBUILD` — facts verified upstream:
       `pkgver=0.99.24` (v0.99.x tags), meson C++17,
-      `makedepends="meson kmod-dev linux-headers"` (NO scdoc — manpage is
-      pre-rendered `.8`), `-Ddefault-path-env=/usr/bin`
-- [ ] **relocate init wrapper in `package()`**: meson installs it to
-      `/usr/sbin/init` (verified: `early/scripts/meson.build` configure_file
-      with `@DINIT_PATH@`/`@DINIT_DEVD_PATH@`/etc. substitutions) — move to
-      `/usr/libexec/dinit/init` to avoid conflict with openrc/busybox init
-      (coexistence rule); cmdline stays `init=/usr/libexec/dinit/init`
-- [ ] `shutdown-hook` lands in `/usr/lib/dinit/` (upstream, automatic)
-- [ ] CI: build green + content check (52 services, `early/scripts/` 35+1,
-      `early/helpers/` 12 binaries + `mnt-service` symlink, init wrapper)
+      `makedepends="meson pkgconf kmod-dev linux-headers"` (NO scdoc — manpage
+      is pre-rendered `.8`), `-Ddefault-path-env=/usr/bin`
+- [x] **relocate init wrapper in `package()`**: meson installs it to
+      `/usr/bin/init` (`-Dsbindir=bin` — verified: upstream hardcodes
+      `dinit_path=$prefix/sbindir/dinit` while Alpine ships `/usr/bin/dinit`;
+      `early/scripts/meson.build` substitutions confirmed) — moved to
+      `/usr/libexec/dinit/init` (OpenRC coexistence); cmdline stays
+      `init=/usr/libexec/dinit/init`
+- [x] `shutdown-hook` lands in `/usr/lib/dinit/` (upstream, automatic)
+- [x] CI: build green + smoke-install checks (boot service, `mnt` helper,
+      wrapper targets `/usr/bin/dinit`, no bin-dir init leak); 1 fix used:
+      plain `meson setup` instead of `abuild-meson` (auto `--sbindir` conflict)
 
-**DoD**: signed .apk with full suite, NO hooks yet; `/usr/sbin/init` ABSENT from
-the package (relocated).
+**DoD**: signed .apk with full suite, NO hooks yet; init wrapper ABSENT from
+bin dirs (relocated). → **MET** (Pages: dinit-chimera-0.99.24-r0.apk → 200).
 
 ## Step 2b — dinit-devd hook
 

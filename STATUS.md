@@ -5,11 +5,22 @@
 
 ## Current
 
-- **Step**: 2a — dinit-chimera APKBUILD (sd-tools DROPPED per rule 0 — Alpine provides it)
-- **Next action**: write `dinit-chimera/APKBUILD` + relocate init wrapper →
-  push → CI build + content check. Re-enable `client-test` job at Step 2d.
+- **Step**: 2a ✅ COMPLETE — dinit-chimera-0.99.24-r0 built, signed, on Pages
+- **Next action**: Step 2b — `dinit-devd` hook (eudev paths resolved:
+  /sbin/udevd, /bin/udevadm) + wire into package(); re-enable client-test at 2d
 
 ## Log
+
+### 2026-09-10 — Step 2a COMPLETE
+- dinit-chimera-0.99.24-r0.apk: CI build green (meson direct — abuild-meson
+  conflicts with -Dsbindir), smoke-install checks passed (boot service, mnt
+  helper, init wrapper at /usr/libexec/dinit/init targeting /usr/bin/dinit,
+  no bin-dir init leak)
+- KEY FIX: -Dsbindir=bin — upstream hardcodes dinit_path=$prefix/sbindir/dinit,
+  Alpine ships /usr/bin/dinit; wrapper relocation moved /usr/bin/init (sbindir=bin)
+  instead of /usr/sbin/init
+- Pages: feralos-aports/feralos-aports/x86_64/{dinit-chimera-0.99.24-r0.apk, APKINDEX.tar.gz} → 200
+- Fix budget: 1/2 used
 
 ### 2026-09-10 — RULE 0 added + sd-tools dropped
 - New rule 0: USE Alpine packages whenever they exist (checked on target branch

@@ -106,8 +106,8 @@ jobs:
           test -x /usr/libexec/dinit-cryptdisks || { echo "missing dinit-cryptdisks hook"; exit 1; }
           sh -n /usr/libexec/dinit-cryptdisks || { echo "dinit-cryptdisks syntax error"; exit 1; }
           /usr/libexec/dinit-cryptdisks early start || { echo "dinit-cryptdisks (no crypttab) must exit 0"; exit 1; }
-          # 2d: suite syntax validation (edge dinit ships dinit-check, hyphen)
-          dinit-check /usr/lib/dinit.d/boot || { echo "dinit-check boot FAILED"; exit 1; }
+          # 2d: suite syntax validation (dinit-check takes NAME + -d, not path)
+          dinit-check -d /usr/lib/dinit.d boot || { echo "dinit-check boot FAILED"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories
@@ -183,8 +183,8 @@ jobs:
       - name: Validate suite (dinit-check)
         run: |
           set -e
-          dinit-check /usr/lib/dinit.d/boot
-          dinit-check /usr/lib/dinit.d/system
+          dinit-check -d /usr/lib/dinit.d boot
+          dinit-check -d /usr/lib/dinit.d system
       - name: Sanity files and binaries
         run: |
           set -e

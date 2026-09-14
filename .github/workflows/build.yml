@@ -87,10 +87,17 @@ jobs:
           for apkfile in ~/packages/*/x86_64/*.apk; do
             # empty glob stays literal when nothing was built
             [ -f "$apkfile" ] || continue
+            # deps (dinit, eudev, sd-tools, ...) resolve from Alpine CDN
             apk add --allow-untrusted "$apkfile"
           done
-          # package-specific binary checks belong in client-test when the
-          # first package lands (rule 0: no hardcoded Alpine-provided bins)
+          # expected artifacts from built packages (update as packages land)
+          # dinit-chimera:
+          test -f /usr/lib/dinit.d/boot || { echo "missing boot service"; exit 1; }
+          test -x /usr/lib/dinit.d/early/helpers/mnt || { echo "missing mnt helper"; exit 1; }
+          test -f /usr/libexec/dinit/init || { echo "missing init wrapper"; exit 1; }
+          grep -q '/usr/bin/dinit' /usr/libexec/dinit/init || { echo "init wrapper does not target /usr/bin/dinit"; exit 1; }
+          # init wrapper must NOT be at sbin location (OpenRC coexistence)
+          ! apk info -L dinit-chimera | grep -qE '(^| )usr/(s)?bin/init$' || { echo "init wrapper leaked into bin dir"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories

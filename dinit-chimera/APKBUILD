@@ -1,0 +1,41 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=dinit-chimera
+pkgver=0.99.24
+pkgrel=0
+pkgdesc="Dinit core service suite (Chimera upstream) for FeralOS"
+url="https://github.com/chimera-linux/dinit-chimera"
+arch="all"
+license="BSD-2-Clause"
+depends="dinit sd-tools snooze eudev tzdata util-linux-misc"
+makedepends="meson pkgconf kmod-dev linux-headers"
+subpackages="$pkgname-doc"
+source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/dinit-chimera/archive/refs/tags/v$pkgver.tar.gz"
+options="!check"  # upstream ships no test suite
+
+build() {
+	# -Dsbindir=bin: upstream hardcodes dinit_path=$prefix/sbindir/dinit while
+	# Alpine installs dinit to /usr/bin/dinit — bin keeps the @DINIT_PATH@
+	# substitution correct; the only other sbin file (init wrapper) is
+	# relocated in package() anyway
+	# -Ddinit-sulogin-path: busybox sulogin on Alpine (upstream default is
+	# /usr/sbin/sulogin)
+	abuild-meson \
+		-Ddefault-path-env=/usr/bin \
+		-Dsbindir=bin \
+		-Ddinit-sulogin-path=/sbin/sulogin \
+		. output
+	meson compile -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+
+	# init wrapper: meson installs it to /usr/bin/init (sbindir=bin) —
+	# relocate for OpenRC coexistence; kernel cmdline uses
+	# init=/usr/libexec/dinit/init
+	mkdir -p "$pkgdir/usr/libexec/dinit"
+	mv "$pkgdir/usr/bin/init" "$pkgdir/usr/libexec/dinit/init"
+}
+
+sha512sums="cb743ee5d802818df6c232e90bbd0c3a84ce211403b27453900d866311118e4df30cda9eb6eca68d7e09f66f822bd7e4446256b8b24679bc5bb364b57e5d0565  $pkgname-$pkgver.tar.gz"

@@ -169,11 +169,15 @@ tool-backed.
       (meson: `-Dbless-boot=enabled`, everything else disabled) — heavy build,
       attempt; NOT on Alpine (404 main+community verified)
 - [ ] wire `-Dbless-boot-path=/usr/bin/bless-boot` + `depends="bless-boot"`
-- [ ] **honest limitation documented**: bless-boot counts boot success for
-      systemd-boot A/B entries — our stack is UKI direct boot (no
-      systemd-boot), so the feature ships INERT; it becomes useful only if A/B
-      boot lands later. If standalone build proves infeasible (>2 attempts):
-      register in `docs/DROPPED-FEATURES.md` per rule 6
+- [ ] **SAFE on our stack (verified upstream sources)**: `bless-boot.sh` is
+      doubly defensive — `[ -x ] || exit 0` guard + `case` fallback to
+      "probably not used" + trailing `exit 0`; on our UKI stack
+      `bless status` fails reading `LoaderBootConfig` (absent without
+      systemd-boot) → falls to `*)` → clean exit. Service is `type=scripted`,
+      only `depends-on: pre-local.target`, nothing depends on it → even a
+      failure cannot block boot. Becomes FUNCTIONAL for anyone using
+      systemd-boot A/B entries. If standalone build proves infeasible (>2
+      attempts): register in `docs/DROPPED-FEATURES.md` per rule 6
 
 **DoD**: bless-boot binary packaged + wired, OR registry entry with blocker.
 

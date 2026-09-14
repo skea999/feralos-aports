@@ -165,7 +165,7 @@ Same as Chimera's own build: `-Ddefault-path-env=/usr/bin`.
 | 1 | **`dinit-devd` hook** — MANDATORY upstream contract | ❌ Step 2b (next) | without it: no udevd → devices dead at boot. THE blocking gap |
 | 2 | `dinit-cryptdisks` hook (non-root crypttab) | ❌ Step 2c | LUKS non-root only (e.g. raid0 swap) — needed by btrfsStandardServer |
 | 3 | `dinit-console` hook (keymap/font) | 📦 Step 2e (user-requested; kbd loadkmap/setfont) | console keymap/font on TTY |
-| 4 | `systemd-bless-boot` binary | 📦 Step 2g (package from systemd; absent on Alpine) | INERT on our UKI stack (no systemd-boot A/B) — ships ready for future A/B |
+| 4 | `systemd-bless-boot` binary | 📦 Step 2g (package from systemd; absent on Alpine) | **SAFE no-op on our UKI stack** (script double-guard verified: `-x` check + case fallback → exit 0; nothing depends on the service) — functional for future systemd-boot A/B users |
 | 5 | kdump tools (kexec-tools + makedumpfile) | 📦 Step 2f (both on Alpine community) | enables upstream kdump services |
 | 6 | real udev device monitor | dummy `-none` = **upstream default** | `device@` deps unused in the boot chain — backlog |
 

@@ -106,6 +106,8 @@ jobs:
           test -x /usr/libexec/dinit-cryptdisks || { echo "missing dinit-cryptdisks hook"; exit 1; }
           sh -n /usr/libexec/dinit-cryptdisks || { echo "dinit-cryptdisks syntax error"; exit 1; }
           /usr/libexec/dinit-cryptdisks early start || { echo "dinit-cryptdisks (no crypttab) must exit 0"; exit 1; }
+          # 2d: suite syntax validation (Alpine dinit ships dinitcheck)
+          dinitcheck /usr/lib/dinit.d/boot || { echo "dinitcheck boot FAILED"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories
@@ -156,17 +158,16 @@ jobs:
         uses: actions/deploy-pages@v4
 
   client-test:
-    # Step 1b-style client verification: fresh Alpine trusts ONLY feralos.pub,
-    # installs OUR packages WITHOUT --allow-untrusted.
-    # DISABLED while our repo has zero packages (sd-tools dropped — rule 0:
-    # Alpine community provides it). Re-enable at Step 2a when dinit-chimera
-    # lands; install target list must be updated then.
-    if: false
+    # Step 2d: fresh Alpine client trusts ONLY feralos.pub, installs OUR
+    # dinit-chimera from Pages WITHOUT --allow-untrusted (bad/missing
+    # signature → apk refuses → job fails), then validates the suite with
+    # dinitcheck. Alpine CDN stays available for transitive deps.
+    if: github.ref == 'refs/heads/main'
     needs: [build, deploy]
     runs-on: ubuntu-latest
     container: alpine:latest
     steps:
-      - name: Install sd-tools from Pages (signature-verified)
+      - name: Install dinit-chimera from Pages (signature-verified)
         run: |
           set -e
           BASE=https://skea999.github.io/feralos-aports
@@ -176,11 +177,26 @@ jobs:
           # repo ROOT (apk appends /x86_64/APKINDEX.tar.gz); CDN stays for deps
           echo "$BASE/feralos-aports" >> /etc/apk/repositories
           apk update
-          # pin OUR pkgrel (r0 < CDN r3) so install comes from our signed repo;
-          # bad/missing signature → apk refuses → job fails
-          apk add sd-tools=0.99.0-r0
+          apk add dinit-chimera
           # provenance: installed version must resolve to our repo
-          apk policy sd-tools | grep -A2 '0.99.0-r0' | grep 'skea999.github.io/feralos-aports'
-          command -v sd-tmpfiles >/dev/null
-          command -v sd-sysusers >/dev/null
-          echo "client signature verification OK"
+          apk policy dinit-chimera | grep 'skea999.github.io/feralos-aports'
+      - name: Validate suite (dinitcheck)
+        run: |
+          set -e
+          dinitcheck /usr/lib/dinit.d/boot
+          dinitcheck /usr/lib/dinit.d/system
+      - name: Sanity files and binaries
+        run: |
+          set -e
+          for f in /usr/lib/dinit.d/early/helpers/mnt \
+                   /usr/libexec/dinit/init \
+                   /usr/libexec/dinit-devd \
+                   /usr/libexec/dinit-cryptdisks; do
+            test -e "$f" || { echo "missing: $f"; exit 1; }
+          done
+          grep -q '/usr/bin/dinit' /usr/libexec/dinit/init || {
+            echo "init wrapper does not target /usr/bin/dinit"; exit 1; }
+          for bin in dinitctl dinitcheck sd-tmpfiles udevadm; do
+            command -v "$bin" >/dev/null || { echo "missing $bin"; exit 1; }
+          done
+          echo "client verification OK"

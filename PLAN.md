@@ -97,7 +97,7 @@
 
 ## Step 2a — dinit-chimera package (build) ✅ DONE (2026-09-10)
 
-- [x] `dinit-chimera/APKBUILD` — facts verified upstream:
+- [x] `src/dinit-chimera/APKBUILD` — facts verified upstream:
       `pkgver=0.99.24` (v0.99.x tags), meson C++17,
       `makedepends="meson pkgconf kmod-dev linux-headers"` (NO scdoc — manpage
       is pre-rendered `.8`), `-Ddefault-path-env=/usr/bin`

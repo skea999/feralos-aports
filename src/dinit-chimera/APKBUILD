@@ -42,7 +42,7 @@ package() {
 	mkdir -p "$pkgdir/usr/libexec/dinit"
 	mv "$pkgdir/usr/bin/init" "$pkgdir/usr/libexec/dinit/init"
 
-	# MANDATORY upstream contract: device-manager backend (eudev on Alpine)
+	# MANDATORY stable contract: device-manager backend (eudev on Alpine)
 	# — early-devd calls it with start|stop|settle|trigger
 	install -Dm755 "$srcdir/dinit-devd" "$pkgdir/usr/libexec/dinit-devd"
 }

@@ -12,6 +12,14 @@
 
 ## Log
 
+### 2026-09-10 — repo reorganized: packages under src/
+- `dinit-chimera/` → `src/dinit-chimera/` (git mv, history preserved)
+- NEW RULE: `src/` contains ONLY package dirs — one dir per package, all its
+  assets inside (hooks, sysctl, service files); root stays clean
+- workflow glob `src/*/APKBUILD`; docs synced (PACKAGES/REPOSITORY/CI/README/PLAN)
+- terminology fixed: "stable contract (mandatory)" (was "upstream contract")
+- Pages URL expected unchanged (REPODEST = topdir name, not package location)
+
 ### 2026-09-10 — Step 2b COMPLETE (zero fixes)
 - dinit-devd hook (eudev: /sbin/udevd, /bin/udevadm) installed at
   /usr/libexec/dinit-devd — upstream default meson path, no build flag needed

@@ -36,7 +36,7 @@ Toolchain: **GCC** (Alpine default) — decision record: `docs/TOOLCHAIN.md`.
 ```sh
 apk add alpine-sdk git
 abuild-keygen -a -n          # once
-cd dinit-chimera && abuild -Fr
+cd src/dinit-chimera && abuild -Fr
 apk add --repository ~/packages/dinit-chimera/x86_64/ --allow-untrusted dinit-chimera
 ```
 

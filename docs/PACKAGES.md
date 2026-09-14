@@ -7,16 +7,18 @@
 
 ```
 feralos-aports/
-├── abuild.conf                     # PACKAGER_PRIVKEY path
-├── feralos.pub                     # public key (repo signing)
-├── sd-tools/
-│   └── APKBUILD
-├── dinit-chimera/
-│   ├── APKBUILD
-│   ├── dinit-devd                  # [FeralOS] eudev hook (mandatory)
-│   ├── dinit-cryptdisks            # [FeralOS] crypttab hook
-│   └── sysctl/10-feralos.conf      # hardening sysctls (port from hardening feature)
-└── .gitea/workflows/build.yml      # CI: build → index → pages
+├── src/                               # ALL packages — one dir per package
+│   ├── dinit-chimera/
+│   │   ├── APKBUILD
+│   │   ├── dinit-devd                 # [FeralOS] eudev hook (stable contract, mandatory)
+│   │   ├── dinit-cryptdisks           # [FeralOS] crypttab hook
+│   │   └── sysctl/10-feralos.conf     # hardening sysctls (port from hardening feature)
+│   ├── getty-dinit/                   # Step 4
+│   ├── turnstile/ · polkit/           # Step 7
+│   └── *-dinit/                       # Step 6 (dbus, sshd, …)
+├── feralos.pub                        # public key (repo signing)
+├── .github/workflows/build.yml        # CI: build src/*/APKBUILD → index → pages
+└── docs/                              # this documentation
 ```
 
 ## Alpine Packages Used As-Is (rule 0 — prefer Alpine, always)
@@ -189,7 +191,7 @@ Same as Chimera's own build: `-Ddefault-path-env=/usr/bin`.
 
 | # | What | State | Impact |
 |---|------|-------|--------|
-| 1 | **`dinit-devd` hook** — MANDATORY upstream contract | ❌ Step 2b (next) | without it: no udevd → devices dead at boot. THE blocking gap |
+| 1 | **`dinit-devd` hook** — MANDATORY stable contract | ❌ Step 2b (next) | without it: no udevd → devices dead at boot. THE blocking gap |
 | 2 | `dinit-cryptdisks` hook (non-root crypttab) | ❌ Step 2c | LUKS non-root only (e.g. raid0 swap) — needed by btrfsStandardServer |
 | 3 | `dinit-console` hook (keymap/font) | 📦 Step 2e (user-requested; kbd loadkmap/setfont) | console keymap/font on TTY |
 | 4 | `systemd-bless-boot` binary | 📦 Step 2g (package from systemd; absent on Alpine) | **SAFE no-op on our UKI stack** (script double-guard verified: `-x` check + case fallback → exit 0; nothing depends on the service) — functional for future systemd-boot A/B users |

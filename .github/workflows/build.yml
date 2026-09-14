@@ -68,7 +68,7 @@ jobs:
           # run `apk update` itself — populate the index cache first
           apk update
           found=0
-          for d in */APKBUILD; do
+          for d in src/*/APKBUILD; do
             # empty glob stays literal when no packages exist yet (Step 0)
             [ -e "$d" ] || continue
             found=1

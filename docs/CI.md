@@ -14,7 +14,7 @@ push / PR / manual (workflow_dispatch) on main
 │ 2. Checkout               repo content (APKBUILDs, feralos.pub, docs)        │
 │ 3. Key setup              real key from secrets, or ephemeral fallback       │
 │ 4. Signing smoke test     abuild-sign must modify a test file                │
-│ 5. Build all packages     one abuild -F per */APKBUILD dir                   │
+│ 5. Build all packages     one abuild -F per src/*/APKBUILD dir             │
 │ 6. Index repositories     apk index + abuild-sign → APKINDEX.tar.gz          │
 │ 7. Collect site           feralos.pub + ~/packages tree → site/              │
 │ 8. Upload artifact        site/ → GitHub Pages artifact                      │

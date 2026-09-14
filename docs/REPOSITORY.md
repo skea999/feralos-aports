@@ -26,10 +26,13 @@ Per-branch dirs mirror Alpine convention (`v3.24`, `edge`) so clients pin stabil
 ```
 skeaAlpineInstaller/
 └── feralos-aports/            # own .git, own tags/releases
-    ├── sd-tools/APKBUILD
-    ├── dinit-chimera/{APKBUILD,dinit-devd,dinit-cryptdisks,10-feralos.conf}
-    ├── sshd-dinit/APKBUILD    # Phase 3…
-    └── .gitea/workflows/build.yml
+    ├── src/                   # ALL packages — one dir per package
+    │   ├── dinit-chimera/{APKBUILD,dinit-devd,dinit-cryptdisks,sysctl/10-feralos.conf}
+    │   ├── sshd-dinit/APKBUILD    # Phase 3…
+    │   └── …
+    ├── docs/
+    ├── feralos.pub
+    └── .github/workflows/build.yml
 ```
 
 Outer `.gitignore` entry (add once):
@@ -55,8 +58,8 @@ jobs:
         run: echo "${{ secrets.ABUILD_PRIVKEY }}" > ~/.abuild/${{ secrets.ABUILD_KEYNAME }}.rsa
       - name: build all
         run: |
-          for d in */APKBUILD; do
-            cd "$(dirname "$d")" && abuild -F && cd "$OLDPWD"
+          for d in src/*/APKBUILD; do
+            cd "$d" && abuild -F && cd "$OLDPWD"
           done
       - name: index
         run: |

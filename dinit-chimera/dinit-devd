@@ -1,0 +1,25 @@
+#!/bin/sh
+# FeralOS: eudev backend for the dinit-chimera device management contract.
+# Actions (upstream contract): start | stop | settle | trigger
+# Paths verified from the Alpine eudev APKBUILD: it builds with
+#   --sbindir=/sbin --bindir=/bin
+# so udevd = /sbin/udevd, udevadm = /bin/udevadm (Alpine is not usr-merged).
+
+case "$1" in
+    start)
+        exec /sbin/udevd --daemon
+        ;;
+    stop)
+        /bin/udevadm control -e
+        exit 0
+        ;;
+    settle)
+        exec /bin/udevadm settle
+        ;;
+    trigger)
+        exec /bin/udevadm trigger --action=add
+        ;;
+esac
+
+echo "unknown action: $1" >&2
+exit 1

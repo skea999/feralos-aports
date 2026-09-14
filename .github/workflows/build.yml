@@ -98,6 +98,10 @@ jobs:
           grep -q '/usr/bin/dinit' /usr/libexec/dinit/init || { echo "init wrapper does not target /usr/bin/dinit"; exit 1; }
           # init wrapper must NOT be at sbin location (OpenRC coexistence)
           ! apk info -L dinit-chimera | grep -qE '(^| )usr/(s)?bin/init$' || { echo "init wrapper leaked into bin dir"; exit 1; }
+          # 2b: device-manager hook — exists, syntax-clean, settle action runs
+          test -x /usr/libexec/dinit-devd || { echo "missing dinit-devd hook"; exit 1; }
+          sh -n /usr/libexec/dinit-devd || { echo "dinit-devd syntax error"; exit 1; }
+          /usr/libexec/dinit-devd settle || { echo "dinit-devd settle failed"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories

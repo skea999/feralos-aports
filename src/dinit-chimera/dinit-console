@@ -1,0 +1,48 @@
+#!/bin/sh
+# FeralOS: console setup for the dinit-chimera console contract.
+# Alpine equivalent of console-setup's setupcon: busybox loadkmap (keymaps
+# from kbd-bkeymaps) + setfont (fonts from font-terminus), both already in
+# the FeralOS base install.
+# Config: /etc/conf.d/keymaps (keymap=) · /etc/conf.d/consolefont (consolefont=)
+# Contract: arg "keyboard" = keymap only; anything else = full (keymap+font).
+# NEVER fails the boot: always exits 0.
+
+KEYMAPS_CONF=/etc/conf.d/keymaps
+FONT_CONF=/etc/conf.d/consolefont
+
+apply_keymap() {
+	[ -r "$KEYMAPS_CONF" ] && . "$KEYMAPS_CONF"
+	[ -n "${keymap:-}" ] || return 0
+	command -v loadkmap >/dev/null 2>&1 || return 0
+	for km in \
+		"/usr/share/keymaps/${keymap}.bmap" \
+		"/usr/share/keymaps/${keymap}.map" \
+		"/usr/share/keymaps/i386/qwerty/${keymap}.bmap" \
+		"/usr/share/keymaps/i386/qwertz/${keymap}.bmap"; do
+		[ -r "$km" ] && loadkmap "$km" && return 0
+	done
+	echo "dinit-console: keymap '${keymap}' not found" >&2
+	return 0
+}
+
+apply_font() {
+	[ -r "$FONT_CONF" ] && . "$FONT_CONF"
+	[ -n "${consolefont:-}" ] || return 0
+	command -v setfont >/dev/null 2>&1 || return 0
+	for f in \
+		"/usr/share/consolefonts/${consolefont}.psfu.gz" \
+		"/usr/share/consolefonts/${consolefont}.psfu" \
+		"/usr/share/consolefonts/${consolefont}.psf.gz" \
+		"/usr/share/consolefonts/${consolefont}"; do
+		[ -r "$f" ] && setfont "$f" && return 0
+	done
+	echo "dinit-console: font '${consolefont}' not found" >&2
+	return 0
+}
+
+case "$1" in
+	keyboard) apply_keymap ;;
+	*)        apply_keymap; apply_font ;;
+esac
+
+exit 0

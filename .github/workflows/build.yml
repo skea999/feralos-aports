@@ -106,8 +106,12 @@ jobs:
           test -x /usr/libexec/dinit-cryptdisks || { echo "missing dinit-cryptdisks hook"; exit 1; }
           sh -n /usr/libexec/dinit-cryptdisks || { echo "dinit-cryptdisks syntax error"; exit 1; }
           /usr/libexec/dinit-cryptdisks early start || { echo "dinit-cryptdisks (no crypttab) must exit 0"; exit 1; }
-          # 2d: suite syntax validation (dinit-check takes NAME + -d, not path)
-          dinit-check -d /usr/lib/dinit.d boot || { echo "dinit-check boot FAILED"; exit 1; }
+          # 2e: console hook — exists, syntax-clean, graceful without config
+          test -x /usr/libexec/dinit-console || { echo "missing dinit-console hook"; exit 1; }
+          sh -n /usr/libexec/dinit-console || { echo "dinit-console syntax error"; exit 1; }
+          /usr/libexec/dinit-console keyboard || { echo "dinit-console keyboard must exit 0"; exit 1; }
+          # 2d: suite syntax validation (Alpine dinit ships dinit-check)
+          dinit-check /usr/lib/dinit.d/boot || { echo "dinit-check boot FAILED"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories

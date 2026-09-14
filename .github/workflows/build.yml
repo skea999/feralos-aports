@@ -106,8 +106,8 @@ jobs:
           test -x /usr/libexec/dinit-cryptdisks || { echo "missing dinit-cryptdisks hook"; exit 1; }
           sh -n /usr/libexec/dinit-cryptdisks || { echo "dinit-cryptdisks syntax error"; exit 1; }
           /usr/libexec/dinit-cryptdisks early start || { echo "dinit-cryptdisks (no crypttab) must exit 0"; exit 1; }
-          # 2d: suite syntax validation (Alpine dinit ships dinitcheck)
-          dinitcheck /usr/lib/dinit.d/boot || { echo "dinitcheck boot FAILED"; exit 1; }
+          # 2d: suite syntax validation (edge dinit ships dinit-check, hyphen)
+          dinit-check /usr/lib/dinit.d/boot || { echo "dinit-check boot FAILED"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories
@@ -161,7 +161,7 @@ jobs:
     # Step 2d: fresh Alpine client trusts ONLY feralos.pub, installs OUR
     # dinit-chimera from Pages WITHOUT --allow-untrusted (bad/missing
     # signature → apk refuses → job fails), then validates the suite with
-    # dinitcheck. Alpine CDN stays available for transitive deps.
+    # dinit-check. Alpine CDN stays available for transitive deps.
     if: github.ref == 'refs/heads/main'
     needs: [build, deploy]
     runs-on: ubuntu-latest
@@ -180,11 +180,11 @@ jobs:
           apk add dinit-chimera
           # provenance: installed version must resolve to our repo
           apk policy dinit-chimera | grep 'skea999.github.io/feralos-aports'
-      - name: Validate suite (dinitcheck)
+      - name: Validate suite (dinit-check)
         run: |
           set -e
-          dinitcheck /usr/lib/dinit.d/boot
-          dinitcheck /usr/lib/dinit.d/system
+          dinit-check /usr/lib/dinit.d/boot
+          dinit-check /usr/lib/dinit.d/system
       - name: Sanity files and binaries
         run: |
           set -e
@@ -196,7 +196,7 @@ jobs:
           done
           grep -q '/usr/bin/dinit' /usr/libexec/dinit/init || {
             echo "init wrapper does not target /usr/bin/dinit"; exit 1; }
-          for bin in dinitctl dinitcheck sd-tmpfiles udevadm; do
+          for bin in dinitctl dinit-check sd-tmpfiles udevadm; do
             command -v "$bin" >/dev/null || { echo "missing $bin"; exit 1; }
           done
           echo "client verification OK"

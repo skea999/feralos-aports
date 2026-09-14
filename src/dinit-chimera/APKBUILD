@@ -50,6 +50,10 @@ package() {
 	# cryptdisks backend: /etc/crypttab volumes NOT unlocked by the initramfs
 	# (e.g. LUKS swap on btrfsStandardServer) — early|remaining + start|stop
 	install -Dm755 "$srcdir/dinit-cryptdisks" "$pkgdir/usr/libexec/dinit-cryptdisks"
+
+	# drop-in dirs: packages (and admins) symlink enabled services here;
+	# dinit-check + dinit require them to exist
+	install -d "$pkgdir/usr/lib/dinit.d/boot.d" "$pkgdir/etc/dinit.d/boot.d"
 }
 
 sha512sums="cb743ee5d802818df6c232e90bbd0c3a84ce211403b27453900d866311118e4df30cda9eb6eca68d7e09f66f822bd7e4446256b8b24679bc5bb364b57e5d0565  $pkgname-$pkgver.tar.gz

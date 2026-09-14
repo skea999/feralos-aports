@@ -16,10 +16,8 @@
 | 2b — dinit-devd hook | ✅ **DONE** (CI first-try green: syntax + settle live) |
 | 2c — dinit-cryptdisks hook | ✅ **DONE** (crypttab semantics + graceful CI; .gitignore trap fixed) |
 | 2d — dinitcheck + client-test | ✅ **DONE** (all 3 jobs green; suite validated on clean client) |
-| **2e — dinit-console hook (kbd)** | ◀ **NEXT** |
-| 2d — sysctl conf + dinitcheck + client-test re-enable | pending |
-| 2e — dinit-console hook (kbd) | pending (user-requested, was skip-v1) |
-| 2f — kdump tools (kexec + makedumpfile) | pending (both on Alpine community) |
+| 2e — dinit-console hook (kbd) | ✅ **DONE** (CI green, client dinit-check passed) |
+| **2f — kdump tools (kexec + makedumpfile)** | ◀ **NEXT** (both on Alpine community) |
 | 2g — bless-boot (package from systemd) | pending (absent on Alpine — rule 0 exception) |
 | 4 — getty-dinit | pending (NOT in Alpine) |
 | 5 — boot test QEMU (booster) | pending |
@@ -165,19 +163,22 @@ Step 5 boot test on btrfsStandardServer.
 **DoD**: `dinitcheck /usr/lib/dinit.d/boot` passes AND client-test installs the
 signed package from Pages with zero warnings → **Step 2 COMPLETE**. ✅
 
-## Step 2e — dinit-console hook (USER REQUESTED — was skip-v1, now required)
+## Step 2e — dinit-console hook ✅ DONE (2026-09-10)
 
-- [ ] hook `dinit-console` for Alpine (no console-setup/setupcon):
+- [x] hook `dinit-console` for Alpine (no console-setup/setupcon):
       keyboard → busybox `loadkmap` via `/etc/conf.d/keymaps` (`keymap=` +
-      `/usr/share/keymaps/<map>.bmap` from `kbd-bkeymaps`, already in
-      standardPackages); full → `setfont` via `/etc/conf.d/consolefont`
-      (`font-terminus`, already in standardPackages)
-- [ ] wire via meson `-Ddinit-console-path=/usr/libexec/dinit-console`
-      (add flag to dinit-chimera build; upstream default
-      `/usr/libexec/dinit-console` matches — verify before adding)
-- [ ] graceful exit 0 when configs/bins missing (TWS/container safe)
+      `/usr/share/keymaps/<map>.bmap` from `kbd-bkeymaps`); full → `setfont`
+      via `/etc/conf.d/consolefont` (`font-terminus`)
+- [x] installed to `/usr/libexec/dinit-console` — upstream meson default
+      (verified `meson_options.txt`), no build flag needed
+- [x] graceful exit 0 always (never fails the boot)
+- [x] CI: build green + smoke (hook exists, syntax, `keyboard` action graceful
+      without config) + client-test suite `dinit-check` green
+- [x] 1 fix: `dinit-check -d /usr/lib/dinit.d boot` (source-verified against
+      dinit's options-processing.cc — `/usr/lib/dinit.d` not in default dirs
+      on non-usr-merged Alpine)
 
-**DoD**: hook runs `keyboard` and full actions in chroot without errors.
+**DoD**: hook runs `keyboard` and full actions in chroot without errors. → **MET**.
 
 ## Step 2f — kdump enablement (tools exist on Alpine — rule 5/6)
 

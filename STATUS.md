@@ -5,11 +5,21 @@
 
 ## Current
 
-- **Step**: 2 ✅ COMPLETE — dinit-chimera package full (both hooks, drop-in dirs, dinitcheck clean, client-test green end-to-end)
-- **Next action**: Step 2e — `dinit-console` hook (kbd loadkmap/setfont), then
-  2f kdump tools, 2g bless-boot, then Step 4 (getty-dinit) and Step 5 (boot test)
+- **Step**: 2e ✅ COMPLETE — dinit-console hook shipped (kbd backend)
+- **Next action**: Step 2f — add `kexec-tools makedumpfile` to dinit-chimera
+  depends (kdump services functional), then 2g bless-boot, then Step 4 (getty)
 
 ## Log
+
+### 2026-09-10 — Step 2e COMPLETE (1 fix: dinit-check -d dir form)
+- dinit-console hook: keyboard=loadkmap via /etc/conf.d/keymaps, full=+
+  setfont via /etc/conf.d/consolefont; always exit 0; installed at
+  /usr/libexec/dinit-console (upstream meson default, verified
+  meson_options.txt — no build flag)
+- Fix 1/2: smoke dinit-check needs `-d /usr/lib/dinit.d boot` (source-verified
+  against dinit options-processing.cc; /usr/lib/dinit.d NOT in default dirs on
+  non-usr-merged Alpine)
+- client-test green: signature install + dinit-check boot+system
 
 ### 2026-09-10 — Step 2d COMPLETE — STEP 2 CLOSED
 - client-test re-enabled + GREEN: fresh alpine, only feralos.pub, install

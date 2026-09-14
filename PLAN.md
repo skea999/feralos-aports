@@ -14,6 +14,11 @@
 | 1a/1b — sd-tools | ⚠️ **DONE → SUPERSEDED** (Alpine community ships sd-tools 0.99.0-r3 — rule 0: use Alpine's; our package removed; work kept as pipeline proof) |
 | 2a — dinit-chimera build | ✅ **DONE** (0.99.24-r0 signed+published, smoke checks green) |
 | **2b — dinit-devd hook** | ◀ **NEXT** |
+| 2c — dinit-cryptdisks hook | pending (btrfsStandardServer needs it) |
+| 2d — sysctl conf + dinitcheck + client-test re-enable | pending |
+| 2e — dinit-console hook (kbd) | pending (user-requested, was skip-v1) |
+| 2f — kdump tools (kexec + makedumpfile) | pending (both on Alpine community) |
+| 2g — bless-boot (package from systemd) | pending (absent on Alpine — rule 0 exception) |
 | 4 — getty-dinit | pending (NOT in Alpine) |
 | 5 — boot test QEMU (booster) | pending |
 | 6 — system services | pending (not in Alpine as -dinit variants) |
@@ -131,6 +136,46 @@ bin dirs (relocated). → **MET** (Pages: dinit-chimera-0.99.24-r0.apk → 200).
 
 **DoD**: full suite installable + syntax-clean; package complete without
 workarounds beyond the 2 hooks + init relocation.
+
+## Step 2e — dinit-console hook (USER REQUESTED — was skip-v1, now required)
+
+- [ ] hook `dinit-console` for Alpine (no console-setup/setupcon):
+      keyboard → busybox `loadkmap` via `/etc/conf.d/keymaps` (`keymap=` +
+      `/usr/share/keymaps/<map>.bmap` from `kbd-bkeymaps`, already in
+      standardPackages); full → `setfont` via `/etc/conf.d/consolefont`
+      (`font-terminus`, already in standardPackages)
+- [ ] wire via meson `-Ddinit-console-path=/usr/libexec/dinit-console`
+      (add flag to dinit-chimera build; upstream default
+      `/usr/libexec/dinit-console` matches — verify before adding)
+- [ ] graceful exit 0 when configs/bins missing (TWS/container safe)
+
+**DoD**: hook runs `keyboard` and full actions in chroot without errors.
+
+## Step 2f — kdump enablement (tools exist on Alpine — rule 5/6)
+
+- [ ] verified: `kexec-tools` 2.0.32 (cmd:kexec, cmd:vmcore-dmesg) and
+      `makedumpfile` 1.7.9 (depends kexec-tools) both in Alpine community
+- [ ] add `kexec-tools makedumpfile` to dinit-chimera `depends` (rule 5:
+      optional packages all mandatory) → upstream `early-kdump`/`try-kdump`
+      services become functional
+- [ ] rebuild + CI green
+
+**DoD**: package installs kdump tools; upstream kdump services present and
+tool-backed.
+
+## Step 2g — bless-boot (NOT on Alpine → package it, rule 0 exception)
+
+- [ ] research/build: `systemd-bless-boot` standalone from systemd source
+      (meson: `-Dbless-boot=enabled`, everything else disabled) — heavy build,
+      attempt; NOT on Alpine (404 main+community verified)
+- [ ] wire `-Dbless-boot-path=/usr/bin/bless-boot` + `depends="bless-boot"`
+- [ ] **honest limitation documented**: bless-boot counts boot success for
+      systemd-boot A/B entries — our stack is UKI direct boot (no
+      systemd-boot), so the feature ships INERT; it becomes useful only if A/B
+      boot lands later. If standalone build proves infeasible (>2 attempts):
+      register in `docs/DROPPED-FEATURES.md` per rule 6
+
+**DoD**: bless-boot binary packaged + wired, OR registry entry with blocker.
 
 ## Step 3a — Signing + publish infra ✅ DONE (2026-09-10)
 

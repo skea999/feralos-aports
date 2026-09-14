@@ -5,11 +5,17 @@
 
 ## Current
 
-- **Step**: 2a ✅ COMPLETE — dinit-chimera-0.99.24-r0 built, signed, on Pages
-- **Next action**: Step 2b — `dinit-devd` hook (eudev paths resolved:
-  /sbin/udevd, /bin/udevadm) + wire into package(); re-enable client-test at 2d
+- **Step**: 2b — dinit-devd hook (then 2c/2d/2e/2f/2g — all gaps will be packaged, user request: no skips)
+- **Next action**: write `dinit-devd` hook + add to dinit-chimera package() → push → CI.
 
 ## Log
+
+### 2026-09-10 — policy update: NO skipped gaps (user request) — new Steps 2e/2f/2g
+- Console hook no longer skipped → **2e**: kbd loadkmap/setfont via /etc/conf.d/keymaps+consolefont (kbd-bkeymaps + font-terminus already in standardPackages)
+- kdump → **2f**: kexec-tools 2.0.32 + makedumpfile 1.7.9 VERIFIED on Alpine community → add to dinit-chimera depends (early-kdump/try-kdump become functional)
+- bless-boot → **2g**: NOT on Alpine (404 main+community) → package systemd-bless-boot standalone from systemd source; INERT on our UKI stack (no systemd-boot A/B) — ships ready for future; fallback DROPPED-FEATURES if build infeasible
+- Device monitor: dummy stays (upstream default), real monitor = backlog
+- PACKAGES.md divergence table updated; BOOT.md console row updated
 
 ### 2026-09-10 — Step 2a COMPLETE
 - dinit-chimera-0.99.24-r0.apk: CI build green (meson direct — abuild-meson

@@ -5,11 +5,23 @@
 
 ## Current
 
-- **Step**: 2c ✅ COMPLETE — both distro hooks shipped (devd + cryptdisks)
-- **Next action**: Step 2d — `sysctl/10-feralos.conf` + dinitcheck + RE-ENABLE
-  client-test (install target: dinit-chimera; fix stale job comment "2a"→"2d")
+- **Step**: 2 ✅ COMPLETE — dinit-chimera package full (both hooks, drop-in dirs, dinitcheck clean, client-test green end-to-end)
+- **Next action**: Step 2e — `dinit-console` hook (kbd loadkmap/setfont), then
+  2f kdump tools, 2g bless-boot, then Step 4 (getty-dinit) and Step 5 (boot test)
 
 ## Log
+
+### 2026-09-10 — Step 2d COMPLETE — STEP 2 CLOSED
+- client-test re-enabled + GREEN: fresh alpine, only feralos.pub, install
+  dinit-chimera without --allow-untrusted, apk policy provenance, dinit-check
+  boot+system PASS, sanity files/binaries OK
+- dinit-check learnings: Alpine 0.21 renames it dinit-check (usr-merge);
+  takes service NAME; drop-in dirs must exist → package now ships
+  usr/lib/dinit.d/boot.d + etc/dinit.d/boot.d (needed by Step 6 *-dinit too)
+- sysctl conf dropped from package: hardening sysctls are installer-owned
+  (enableHardening toggle) — packaging would bypass the toggle
+- Fixes: 2 distinct (dinit-check rename; service-name syntax) + 1 product fix
+  (boot.d dirs) — all justified, zero rabbit holes
 
 ### 2026-09-10 — Step 2c COMPLETE (+ .gitignore trap fixed)
 - dinit-cryptdisks hook: /etc/crypttab → cryptsetup open/close; key files,

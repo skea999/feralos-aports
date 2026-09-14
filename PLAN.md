@@ -15,7 +15,8 @@
 | 2a — dinit-chimera build | ✅ **DONE** (0.99.24-r0 signed+published, smoke checks green) |
 | 2b — dinit-devd hook | ✅ **DONE** (CI first-try green: syntax + settle live) |
 | 2c — dinit-cryptdisks hook | ✅ **DONE** (crypttab semantics + graceful CI; .gitignore trap fixed) |
-| **2d — sysctl conf + dinitcheck + client-test re-enable** | ◀ **NEXT** |
+| 2d — dinitcheck + client-test | ✅ **DONE** (all 3 jobs green; suite validated on clean client) |
+| **2e — dinit-console hook (kbd)** | ◀ **NEXT** |
 | 2d — sysctl conf + dinitcheck + client-test re-enable | pending |
 | 2e — dinit-console hook (kbd) | pending (user-requested, was skip-v1) |
 | 2f — kdump tools (kexec + makedumpfile) | pending (both on Alpine community) |
@@ -142,13 +143,27 @@ bin dirs (relocated). → **MET** (Pages: dinit-chimera-0.99.24-r0.apk → 200).
 Crypttab semantic verified in CI (graceful path); real open/close lands at
 Step 5 boot test on btrfsStandardServer.
 
-## Step 2d — sysctl conf + final verification
+## Step 2d — final verification + client-test re-enable ✅ DONE (2026-09-10)
 
-- [ ] `sysctl/10-feralos.conf` (port from installer hardening feature)
-- [ ] final: clean chroot → install → `dinitcheck /usr/lib/dinit.d/boot` passes
+- [x] ~~`sysctl/10-feralos.conf`~~ **NOT needed in the package**: hardening
+      sysctls are installer-owned and toggle-gated (`enableHardening` writes
+      94–99*.conf in chroot) — packaging them would bypass the toggle.
+      dinit-chimera ships only the upstream sysctl defaults (meson, already
+      included)
+- [x] `dinit-check` on the suite (build smoke + clean client container) —
+      learnings: Alpine dinit 0.21 renamed it `dinit-check` (usr-merge), it
+      takes service NAME not path, and needs the drop-in dirs shipped
+- [x] **`client-test` re-enabled**: fresh Alpine trusts ONLY `feralos.pub` →
+      `apk add dinit-chimera` without `--allow-untrusted` (provenance via
+      `apk policy`) → **GREEN**
+- [x] sanity: boot service, `mnt` helper, init wrapper + target, hooks,
+      `dinitctl`/`dinitcheck`/`sd-tmpfiles`/`udevadm` present
+- [x] fix: ship empty `boot.d` drop-in dirs (`usr/lib/dinit.d/boot.d` +
+      `etc/dinit.d/boot.d`) — required by dinit-check now and by our future
+      `*-dinit` packages at Step 6
 
-**DoD**: full suite installable + syntax-clean; package complete without
-workarounds beyond the 2 hooks + init relocation.
+**DoD**: `dinitcheck /usr/lib/dinit.d/boot` passes AND client-test installs the
+signed package from Pages with zero warnings → **Step 2 COMPLETE**. ✅
 
 ## Step 2e — dinit-console hook (USER REQUESTED — was skip-v1, now required)
 

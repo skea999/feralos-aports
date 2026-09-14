@@ -1,0 +1,165 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    # runner = GitHub Ubuntu VM; steps run INSIDE the Alpine container below.
+    # alpine:latest = latest STABLE (matches installer's branch: latest-stable)
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: Install toolchain
+        run: apk add --no-cache alpine-sdk git
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Import or generate signing key
+        env:
+          ABUILD_PRIVKEY: ${{ secrets.ABUILD_PRIVKEY }}
+          ABUILD_KEYNAME: ${{ secrets.ABUILD_KEYNAME }}
+        run: |
+          set -e
+          mkdir -p ~/.abuild
+          if [ -n "$ABUILD_PRIVKEY" ] && [ -n "$ABUILD_KEYNAME" ]; then
+            printf '%s\n' "$ABUILD_PRIVKEY" > ~/.abuild/"$ABUILD_KEYNAME".rsa
+            chmod 600 ~/.abuild/"$ABUILD_KEYNAME".rsa
+            # abuild-sign -e (called by abuild -F) requires the .pub to exist;
+            # derive it from the private key instead of needing a 3rd secret
+            openssl rsa -pubout -in ~/.abuild/"$ABUILD_KEYNAME".rsa \
+              > ~/.abuild/"$ABUILD_KEYNAME".rsa.pub
+            # abuild needs the packager identity to match the key
+            printf 'PACKAGER="FeralOS <dev@feralos.org>"\nPACKAGER_PRIVKEY="$HOME/.abuild/%s.rsa"\n' \
+              "$ABUILD_KEYNAME" > ~/.abuild/abuild.conf
+            # trust the key locally so apk can verify installed packages
+            cp ~/.abuild/"$ABUILD_KEYNAME".rsa.pub /etc/apk/keys/
+          else
+            # no secrets yet (Step 0): ephemeral key so abuild can sign;
+            # real key + feralos.pub land in Step 3
+            abuild-keygen -a -n
+          fi
+
+      - name: Verify signing (smoke)
+        run: |
+          set -e
+          # abuild-sign embeds the signature into the file itself (apk v2
+          # format) and removes its temp — so verify the file CHANGED
+          echo "smoke" > /tmp/sign-test
+          cp /tmp/sign-test /tmp/sign-test.orig
+          abuild-sign /tmp/sign-test
+          cmp -s /tmp/sign-test /tmp/sign-test.orig && {
+            echo "signing did not modify file — key setup broken"; exit 1; }
+          echo "signing OK"
+
+      - name: Build all packages
+        run: |
+          set -e
+          # apk-tools 3 resolves deps from cache only; abuild -r does not
+          # run `apk update` itself — populate the index cache first
+          apk update
+          found=0
+          for d in */APKBUILD; do
+            # empty glob stays literal when no packages exist yet (Step 0)
+            [ -e "$d" ] || continue
+            found=1
+            pkgdir=$(dirname "$d")
+            echo "::group::build $pkgdir"
+            ( cd "$pkgdir" && abuild -Fr )
+            echo "::endgroup::"
+          done
+          if [ "$found" -eq 0 ]; then
+            echo "No APKBUILDs yet — build step skipped (skeleton repo)"
+          fi
+
+      - name: Smoke-install built packages
+        run: |
+          set -e
+          for apkfile in ~/packages/*/x86_64/*.apk; do
+            # empty glob stays literal when nothing was built
+            [ -f "$apkfile" ] || continue
+            apk add --allow-untrusted "$apkfile"
+          done
+          # package-specific binary checks belong in client-test when the
+          # first package lands (rule 0: no hardcoded Alpine-provided bins)
+          echo "smoke-install OK"
+
+      - name: Index repositories
+        run: |
+          set -e
+          for arch_dir in ~/packages/*/x86_64; do
+            [ -d "$arch_dir" ] || continue
+            repo=$(basename "$(dirname "$arch_dir")")
+            ( cd "$arch_dir" && apk index \
+                --description "FeralOS $repo" \
+                --rewrite-arch x86_64 \
+                -o APKINDEX.tar.gz *.apk \
+              && abuild-sign APKINDEX.tar.gz )
+          done
+
+      - name: Collect site
+        run: |
+          set -e
+          mkdir -p site
+          cp feralos.pub site/ 2>/dev/null || true
+          if [ -d ~/packages ]; then
+            cp -r ~/packages/. site/ 2>/dev/null || true
+          fi
+          # keep artifact non-empty while repo has no built packages
+          [ -n "$(ls -A site 2>/dev/null)" ] || echo "skeleton — no packages yet" > site/README.txt
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  client-test:
+    # Step 1b-style client verification: fresh Alpine trusts ONLY feralos.pub,
+    # installs OUR packages WITHOUT --allow-untrusted.
+    # DISABLED while our repo has zero packages (sd-tools dropped — rule 0:
+    # Alpine community provides it). Re-enable at Step 2a when dinit-chimera
+    # lands; install target list must be updated then.
+    if: false
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: Install sd-tools from Pages (signature-verified)
+        run: |
+          set -e
+          BASE=https://skea999.github.io/feralos-aports
+          # trust ONLY our key for OUR packages
+          # busybox wget — alpine:latest has no curl
+          wget -q "$BASE/feralos.pub" -O /etc/apk/keys/feralos.rsa.pub
+          # repo ROOT (apk appends /x86_64/APKINDEX.tar.gz); CDN stays for deps
+          echo "$BASE/feralos-aports" >> /etc/apk/repositories
+          apk update
+          # pin OUR pkgrel (r0 < CDN r3) so install comes from our signed repo;
+          # bad/missing signature → apk refuses → job fails
+          apk add sd-tools=0.99.0-r0
+          # provenance: installed version must resolve to our repo
+          apk policy sd-tools | grep -A2 '0.99.0-r0' | grep 'skea999.github.io/feralos-aports'
+          command -v sd-tmpfiles >/dev/null
+          command -v sd-sysusers >/dev/null
+          echo "client signature verification OK"

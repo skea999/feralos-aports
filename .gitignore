@@ -1,0 +1,16 @@
+# abuild outputs
+sources/
+packages/
+pkg/
+src/
+*.apk
+*.tar.gz
+!docs/**/*.md
+
+# signing keys — NEVER commit
+*.rsa
+*.rsa.pub
+!feralos.pub
+
+# local testing
+*.log

@@ -1,0 +1,5 @@
+# dinit service: nftables-dinit (converted from openrc nftables)
+type = process
+command = nft -f /etc/nftables.conf
+restart = true
+depends-on = local.target

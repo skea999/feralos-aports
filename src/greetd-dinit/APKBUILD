@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=greetd-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for greetd"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit greetd"
+makedepends=""
+source="greetd-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/greetd-dinit" "$pkgdir/usr/lib/dinit.d/greetd-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"greetd-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/greetd-dinit"
+}
+
+sha512sums="316c54bd39bdc24f6f40882974c7f5bdf58f24a04f9a492cf033eb2790eb7440b99f65d2f5d460e807188db4982e8305e75a993b1b6081724f8206df1b68af75  greetd-dinit"

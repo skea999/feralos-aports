@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=lxc-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for lxc"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit lxc"
+makedepends=""
+source="lxc-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/lxc-dinit" "$pkgdir/usr/lib/dinit.d/lxc-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"lxc-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/lxc-dinit"
+}
+
+sha512sums="f4c2ab39e372c75e6f6bf19764b9c07eeb1d1ac5ac7ed42a3c7ef214650b641fae61333f992d6941a3fb144d338071f6bbb1525def34a8d79bf4fd01f8afc479  lxc-dinit"

@@ -16,6 +16,7 @@ src/*/pkg/
 
 # alpine aports cache for openrc extraction (see docs/CONVERSION.md)
 references/
+!references/.gitkeep
 cache/
 
 # local testing

@@ -1,0 +1,5 @@
+# dinit service: wireplumber-dinit (converted from openrc wireplumber)
+type = process
+command = wireplumber
+restart = true
+depends-on = local.target

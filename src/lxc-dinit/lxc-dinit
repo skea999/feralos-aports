@@ -1,0 +1,5 @@
+# dinit service: lxc-dinit (converted from openrc lxc)
+type = process
+command = lxc-start --name systemd --daemon
+restart = true
+depends-on = local.target

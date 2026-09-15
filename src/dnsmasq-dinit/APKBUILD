@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=dnsmasq-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for dnsmasq"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit dnsmasq"
+makedepends=""
+source="dnsmasq-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/dnsmasq-dinit" "$pkgdir/usr/lib/dinit.d/dnsmasq-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"dnsmasq-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/dnsmasq-dinit"
+}
+
+sha512sums="2b0033f77dc774d4e075510d2ba8da600cf3016a54006ab10c5847a40b9a00d6669375edbe3d3dd3a9583068ae45ae9b62f169f96b5faab433db613b0cf78629  dnsmasq-dinit"

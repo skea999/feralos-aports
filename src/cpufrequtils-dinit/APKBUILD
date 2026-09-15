@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=cpufrequtils-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for cpufrequtils"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit cpufrequtils"
+makedepends=""
+source="cpufrequtils-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/cpufrequtils-dinit" "$pkgdir/usr/lib/dinit.d/cpufrequtils-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"cpufrequtils-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/cpufrequtils-dinit"
+}
+
+sha512sums="87e6c3238a49e858f9fc0f616af106c9eea920752a72b9d7950204d1dc17b215e09cd5249001dbfec4bcd55f91addc1f8de7c04452ba601465d74f4cf035eaf7  cpufrequtils-dinit"

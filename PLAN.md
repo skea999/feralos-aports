@@ -224,6 +224,11 @@ tool-backed. → **MET**.
 
 ## Step 5 — Boot test QEMU, booster (with installer repo)
 
+> **PREREQUISITE: Steps 6 + 7 MUST be complete before this boot test.**
+> The package repository must contain every `*-dinit` service listed in
+> `tests/artifacts/.../apk-packages-openrc.txt` (46 `-openrc` packages in a
+> `niri full` run). See Step 6 full service list in the Backlog.
+
 - [ ] clean Alpine chroot: install our repo packages + `init=/usr/libexec/dinit/init`
       in `/etc/kernel/cmdline` (regenerate UKI)
 - [ ] boot test: serial console reaches getty login prompt

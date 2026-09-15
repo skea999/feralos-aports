@@ -1,0 +1,5 @@
+# dinit service: xdg-desktop-portal-wlr-dinit (converted from openrc xdg-desktop-portal-wlr)
+type = process
+command = xdg-desktop-portal-wlr
+restart = true
+depends-on = local.target

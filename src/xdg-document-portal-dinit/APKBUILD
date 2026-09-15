@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=xdg-document-portal-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for xdg-document-portal"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit xdg-document-portal"
+makedepends=""
+source="xdg-document-portal-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/xdg-document-portal-dinit" "$pkgdir/usr/lib/dinit.d/xdg-document-portal-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"xdg-document-portal-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-document-portal-dinit"
+}
+
+sha512sums="9e34d9d77dac402f69a0bf709e0f5effcfec934e57c963686908639e5d6f81feb95e1f5ab23884a7d9358b5785d5618c4f195871837b1bf3bbe25b047f5da411  xdg-document-portal-dinit"

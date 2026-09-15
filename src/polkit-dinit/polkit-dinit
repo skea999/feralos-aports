@@ -1,0 +1,5 @@
+# dinit service: polkit-dinit (converted from openrc polkit)
+type = process
+command = polkitd
+restart = true
+depends-on = local.target

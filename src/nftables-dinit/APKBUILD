@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=nftables-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for nftables"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit nftables"
+makedepends=""
+source="nftables-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/nftables-dinit" "$pkgdir/usr/lib/dinit.d/nftables-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"nftables-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/nftables-dinit"
+}
+
+sha512sums="ae30dd1e210a3014ed439c4d3da351fbd505656c8c26dea6a42898b39dc613529072d95a16658e9312c26d2799b5be2bb324b66f34af547429118135e63b07c1  nftables-dinit"

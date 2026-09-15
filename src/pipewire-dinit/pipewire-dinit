@@ -1,0 +1,5 @@
+# dinit service: pipewire-dinit (converted from openrc pipewire)
+type = process
+command = pipewire
+restart = true
+depends-on = local.target

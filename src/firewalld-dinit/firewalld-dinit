@@ -1,0 +1,5 @@
+# dinit service: firewalld-dinit (converted from openrc firewalld)
+type = process
+command = firewalld
+restart = true
+depends-on = local.target

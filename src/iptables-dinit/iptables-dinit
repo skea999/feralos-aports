@@ -1,0 +1,5 @@
+# dinit service: iptables-dinit (converted from openrc iptables)
+type = process
+command = iptables-restore
+restart = true
+depends-on = local.target

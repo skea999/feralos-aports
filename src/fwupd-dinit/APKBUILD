@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=fwupd-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="fwupd service for dinit"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit fwupd"
+makedepends=""
+source="fwupd"
+
+build() {
+	# nothing to build
+	return 0
+}
+
+check() {
+	# nothing to test
+	return 0
+}
+
+package() {
+	install -Dm644 "$srcdir/fwupd" "$pkgdir/usr/lib/dinit.d/fwupd"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf ../fwupd "$pkgdir/usr/lib/dinit.d/boot.d/fwupd"
+}
+
+sha512sums="2b018494be784fcc37631aed11c379c5e9c65d1205df064cccbed2e99f0f3985a0d5cfb73e08c7d8c23d0eed5904bc0435d2ba9b88081f5c35f8eaf6985a9194  fwupd"

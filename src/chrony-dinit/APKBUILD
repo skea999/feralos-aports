@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=chrony-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="chrony service for dinit"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit chrony"
+makedepends=""
+source="chronyd"
+
+build() {
+	# nothing to build
+	return 0
+}
+
+check() {
+	# nothing to test
+	return 0
+}
+
+package() {
+	install -Dm644 "$srcdir/chronyd" "$pkgdir/usr/lib/dinit.d/chronyd"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf ../chronyd "$pkgdir/usr/lib/dinit.d/boot.d/chronyd"
+}
+
+sha512sums="f5da125a48f9a5e6d97012fe2c6c613f45d8b018dad00012ca9d469a7e98ea5a5bb975ea91eb49e2539a3fbf93587af0af599b390235caa102f70161170efce3  chronyd"

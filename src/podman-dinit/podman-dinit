@@ -1,0 +1,5 @@
+# dinit service: podman-dinit (converted from openrc podman)
+type = process
+command = podman system service -f
+restart = true
+depends-on = local.target

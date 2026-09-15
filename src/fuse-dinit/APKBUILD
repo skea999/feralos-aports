@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=fuse-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for fuse"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit fuse"
+makedepends=""
+source="fuse-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/fuse-dinit" "$pkgdir/usr/lib/dinit.d/fuse-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"fuse-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/fuse-dinit"
+}
+
+sha512sums="6196e89a16c6a6a9893b112a506baec89f7b6165af1b1d30e03b5877a6fb6dd1e3272d2450adc1fa9befc0773184112ec481ede7fc32870155c354e0299147b4  fuse-dinit"

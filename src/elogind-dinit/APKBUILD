@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=elogind-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for elogind"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit elogind"
+makedepends=""
+source="elogind-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/elogind-dinit" "$pkgdir/usr/lib/dinit.d/elogind-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"elogind-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/elogind-dinit"
+}
+
+sha512sums="56c52a8f8c38ab5f8419e3f50d37af2d3633699768bd1dc16bfc8f23c84385ef9a1c9392ab38222bf2246feebec481775b2a0a39951144ec366151f1b0f64357  elogind-dinit"

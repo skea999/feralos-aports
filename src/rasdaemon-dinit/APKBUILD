@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=rasdaemon-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for rasdaemon"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit rasdaemon"
+makedepends=""
+source="rasdaemon-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/rasdaemon-dinit" "$pkgdir/usr/lib/dinit.d/rasdaemon-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"rasdaemon-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/rasdaemon-dinit"
+}
+
+sha512sums="f4826175bc3f21eec73f5ef187b5b610e536209aa5ed9177a0a87c619f2ff142756c6f61da8921a19e8ea2e5c21144fb53f82b0bd5ed9cd31d523f7f284b904a  rasdaemon-dinit"

@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=smartmontools-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for smartmontools"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit smartmontools"
+makedepends=""
+source="smartmontools-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/smartmontools-dinit" "$pkgdir/usr/lib/dinit.d/smartmontools-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"smartmontools-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/smartmontools-dinit"
+}
+
+sha512sums="1fdadff0543ce0bd7970aaac259827df30d314f71f6d6fdd7a2d467d58a400e8a13d513777366d107b7cc912dc5833cd98e2295f14a1ae8ff32a3cfc3133f726  smartmontools-dinit"

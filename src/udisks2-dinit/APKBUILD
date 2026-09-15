@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=udisks2-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for udisks2"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit udisks2"
+makedepends=""
+source="udisks2-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/udisks2-dinit" "$pkgdir/usr/lib/dinit.d/udisks2-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"udisks2-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/udisks2-dinit"
+}
+
+sha512sums="ff50611dff57b0b59744a6212613657cbe5319251c86de4a6edac460cc923aecff93f87cf988ee6c711d8079c3311fc6792dc7b05c388fea7223fa7e9e40d700  udisks2-dinit"

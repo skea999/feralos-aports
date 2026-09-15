@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=iptables-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for iptables"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit iptables"
+makedepends=""
+source="iptables-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/iptables-dinit" "$pkgdir/usr/lib/dinit.d/iptables-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"iptables-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/iptables-dinit"
+}
+
+sha512sums="8f3f37f51ae794576a7fba43ccfb754ee9dd9ccc4831ac070d6a3b6e3d8d0df55887fe4c8bcd27744233c9d6e8b3b718d0e1d8875b7e93f9fba6774b0193a38f  iptables-dinit"

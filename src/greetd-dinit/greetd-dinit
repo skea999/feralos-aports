@@ -1,0 +1,5 @@
+# dinit service: greetd-dinit (converted from openrc greetd)
+type = process
+command = greetd
+restart = true
+depends-on = local.target

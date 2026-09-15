@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=btrfs-progs-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for btrfs-progs"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit btrfs-progs"
+makedepends=""
+source="btrfs-progs-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/btrfs-progs-dinit" "$pkgdir/usr/lib/dinit.d/btrfs-progs-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"btrfs-progs-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/btrfs-progs-dinit"
+}
+
+sha512sums="973cba5a62cc32367011f3c74a7b1993a96891e4c85ce18f1cb3e50c9b20412288747fb8a23df11e4781a75a29426916e523ace276b8a2d1953fc78403d34142  btrfs-progs-dinit"

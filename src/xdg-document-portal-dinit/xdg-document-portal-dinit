@@ -1,0 +1,5 @@
+# dinit service: xdg-document-portal-dinit (converted from openrc xdg-document-portal)
+type = process
+command = xdg-document-portal
+restart = true
+depends-on = local.target

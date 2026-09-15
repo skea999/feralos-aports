@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=xdg-desktop-portal-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for xdg-desktop-portal"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit xdg-desktop-portal"
+makedepends=""
+source="xdg-desktop-portal-dinit"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+    install -Dm644 "$srcdir/xdg-desktop-portal-dinit" "$pkgdir/usr/lib/dinit.d/xdg-desktop-portal-dinit"
+    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+    ln -sf ../"xdg-desktop-portal-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-desktop-portal-dinit"
+}
+
+sha512sums="2d3520ea2ed0c6112d0f096db4b7ca1c5ef1e06a29aee9b3c9f9ecdd47993c8235fd74cf0faab7c49749cf46afb4347ea0d97c0b4e9967618e987a32633fe0c9  xdg-desktop-portal-dinit"

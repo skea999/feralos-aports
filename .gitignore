@@ -8,10 +8,11 @@ src/*/pkg/
 *.tar.gz
 !docs/**/*.md
 
-# signing keys — NEVER commit
+# signing keys — NEVER commit private keys
 *.rsa
 *.rsa.pub
 !feralos.pub
+!src/feralos-keyring/feralos.rsa.pub
 
 # local testing
 *.log

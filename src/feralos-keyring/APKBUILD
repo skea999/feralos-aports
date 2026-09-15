@@ -1,0 +1,20 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=feralos-keyring
+pkgver=1
+pkgrel=0
+pkgdesc="FeralOS repository key and repo definition"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="MIT"
+depends=""
+source="feralos.rsa.pub
+	feralos.list"
+
+package() {
+	install -Dm644 "$srcdir/feralos.rsa.pub" "$pkgdir/etc/apk/keys/feralos.rsa.pub"
+	install -Dm644 "$srcdir/feralos.list" "$pkgdir/etc/apk/repositories.d/feralos.list"
+}
+
+sha512sums="4816dca2c1842054d745586133ff712c7a8c61e0f20b6745e9b49f24676ee38c10e6e1d260ea44a7813a8e7b3b304b4105645eb8ccbe1fa3761883113bf48ef2  feralos.rsa.pub
+3a9f37c3840a2a4fb4906bf5096250cbe50c988fbb0eaee2bd058b4ccbffe73b04e4e76d635433c44117432b6e36cc136e30cc31e7190a36a5be81c6d0908d1b  feralos.list"

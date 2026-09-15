@@ -3,8 +3,11 @@
 # per convertirli in servizi dinit
 #
 # Uso:
-#   ./scripts/fetch-alpine-openrc.sh                 # clone/update aports in references/alpine-aports
+#   ./scripts/fetch-alpine-openrc.sh                 # clone/update aports (3.24-stable) in references/alpine-aports
+#   ./scripts/fetch-alpine-openrc.sh --edge          # usa edge (master)
+#   ./scripts/fetch-alpine-openrc.sh --branch 3.23-stable dbus  # ramo specifico
 #   ./scripts/fetch-alpine-openrc.sh dbus chrony     # estrae solo servizi specifici
+#   APORTS_BRANCH=edge ./scripts/fetch-alpine-openrc.sh  # via env var
 #
 # I file finiscono in references/alpine-openrc/<pkg>/ (gitignored)
 # Vedi docs/CONVERSION.md per la guida di conversione
@@ -13,15 +16,26 @@ set -eu
 REPO_URL="https://gitlab.alpinelinux.org/alpine/aports.git"
 CACHE_DIR="references/alpine-aports"
 OUT_DIR="references/alpine-openrc"
+# ramo stabile di Alpine da cui estrarre (coerente con FeralOS branch: latest-stable)
+BRANCH="${APORTS_BRANCH:-3.24-stable}"
+
+# flag CLI per ramo alternativo
+if [ "${1:-}" = "--edge" ]; then
+	BRANCH="master"
+	shift
+elif [ "${1:-}" = "--branch" ]; then
+	BRANCH="${2:?missing branch name}"
+	shift 2
+fi
 
 if [ ! -d "$CACHE_DIR/.git" ]; then
-	echo "Cloning Alpine aports (shallow)..."
+	echo "Cloning Alpine aports ($BRANCH, shallow)..."
 	mkdir -p "$(dirname "$CACHE_DIR")"
-	git clone --depth 1 --filter=blob:none "$REPO_URL" "$CACHE_DIR"
+	git clone --depth 1 --filter=blob:none --branch "$BRANCH" "$REPO_URL" "$CACHE_DIR"
 else
-	echo "Updating Alpine aports..."
-	git -C "$CACHE_DIR" fetch --depth 1 origin master
-	git -C "$CACHE_DIR" reset --hard origin/master
+	echo "Updating Alpine aports ($BRANCH)..."
+	git -C "$CACHE_DIR" fetch --depth 1 origin "$BRANCH"
+	git -C "$CACHE_DIR" reset --hard "origin/$BRANCH"
 fi
 
 mkdir -p "$OUT_DIR"

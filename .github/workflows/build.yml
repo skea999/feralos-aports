@@ -68,11 +68,14 @@ jobs:
           # run `apk update` itself — populate the index cache first
           apk update
           found=0
-          for d in src/*/APKBUILD; do
-            # empty glob stays literal when no packages exist yet (Step 0)
+          built=" "
+          # feralos-keyring first (provides key+repo for other packages), then alphabetical
+          for d in src/feralos-keyring/APKBUILD src/*/APKBUILD; do
             [ -e "$d" ] || continue
-            found=1
             pkgdir=$(dirname "$d")
+            case "$built" in *" $pkgdir "*) continue;; esac
+            built="$built$pkgdir "
+            found=1
             echo "::group::build $pkgdir"
             ( cd "$pkgdir" && abuild -Fr )
             echo "::endgroup::"
@@ -166,28 +169,32 @@ jobs:
         uses: actions/deploy-pages@v4
 
   client-test:
-    # Step 2d: fresh Alpine client trusts ONLY feralos.pub, installs OUR
-    # dinit-chimera from Pages WITHOUT --allow-untrusted (bad/missing
-    # signature → apk refuses → job fails), then validates the suite with
-    # dinit-check. Alpine CDN stays available for transitive deps.
+    # Real PC flow: keyring first (adds key+repo), then all our packages
+    # WITHOUT --allow-untrusted → signature must verify. Alpine CDN stays
+    # available for transitive deps.
     if: github.ref == 'refs/heads/main'
     needs: [build, deploy]
     runs-on: ubuntu-latest
     container: alpine:latest
     steps:
-      - name: Install dinit-chimera from Pages (signature-verified)
+      - name: Checkout (package list)
+        uses: actions/checkout@v4
+      - name: Install all our packages from Pages (keyring first, real flow)
         run: |
           set -e
           BASE=https://skea999.github.io/feralos-aports
-          # trust ONLY our key for OUR packages
-          # busybox wget — alpine:latest has no curl
-          wget -q "$BASE/feralos.pub" -O /etc/apk/keys/feralos.rsa.pub
-          # repo ROOT (apk appends /x86_64/APKINDEX.tar.gz); CDN stays for deps
-          echo "$BASE/feralos-aports" >> /etc/apk/repositories
+          # keyring bootstrap: adds key + repo, like on a real PC
+          apk add --allow-untrusted "$BASE/feralos-aports/x86_64/feralos-keyring-1-r0.apk"
           apk update
-          apk add dinit-chimera
-          # provenance: installed version must resolve to our repo
-          apk policy dinit-chimera | grep 'skea999.github.io/feralos-aports'
+          # install every package we publish (keyring already installed)
+          for d in src/*/APKBUILD; do
+            pkg=$(basename "$(dirname "$d")")
+            [ "$pkg" = feralos-keyring ] && continue
+            [ -e "$d" ] || continue
+            echo "Installing $pkg..."
+            apk add "$pkg"
+            apk policy "$pkg" | grep 'skea999.github.io/feralos-aports'
+          done
       - name: Validate suite (dinit-check)
         run: |
           set -e

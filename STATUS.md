@@ -5,11 +5,16 @@
 
 ## Current
 
-- **Step**: 2e ✅ COMPLETE — dinit-console hook shipped (kbd backend)
-- **Next action**: Step 2f — add `kexec-tools makedumpfile` to dinit-chimera
-  depends (kdump services functional), then 2g bless-boot, then Step 4 (getty)
+- **Step**: 2f 🔄 IN PROGRESS — kdump tools added to depends (pkgrel 0→1), CI pending
+- **Next action**: push → CI green → 2f done. Then Step 4 (getty-dinit); 2g bless-boot DEFERRED to last (user decision).
 
 ## Log
+
+### 2026-09-10 — Step 2f in progress + 2g DEFERRED to last
+- depends += kexec-tools makedumpfile (verified on Alpine community);
+  early-kdump/try-kdump upstream services become functional; pkgrel 0→1
+- 2g bless-boot DEFERRED to LAST (user: not needed on our UKI stack, packaged
+  for others) — section moved after Step 8 in PLAN.md
 
 ### 2026-09-10 — Step 2e COMPLETE (1 fix: dinit-check -d dir form)
 - dinit-console hook: keyboard=loadkmap via /etc/conf.d/keymaps, full=+

@@ -2,12 +2,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dinit-chimera
 pkgver=0.99.24
-pkgrel=0
+pkgrel=1
 pkgdesc="Dinit core service suite (Chimera upstream) for FeralOS"
 url="https://github.com/chimera-linux/dinit-chimera"
 arch="all"
 license="BSD-2-Clause"
-depends="dinit sd-tools snooze eudev tzdata util-linux-misc"
+depends="dinit sd-tools snooze eudev tzdata util-linux-misc kexec-tools makedumpfile"
 makedepends="meson pkgconf kmod-dev linux-headers"
 subpackages="$pkgname-doc"
 source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/dinit-chimera/archive/refs/tags/v$pkgver.tar.gz

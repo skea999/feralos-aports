@@ -17,8 +17,8 @@
 | 2c — dinit-cryptdisks hook | ✅ **DONE** (crypttab semantics + graceful CI; .gitignore trap fixed) |
 | 2d — dinitcheck + client-test | ✅ **DONE** (all 3 jobs green; suite validated on clean client) |
 | 2e — dinit-console hook (kbd) | ✅ **DONE** (CI green, client dinit-check passed) |
-| **2f — kdump tools (kexec + makedumpfile)** | ◀ **NEXT** (both on Alpine community) |
-| 2g — bless-boot (package from systemd) | pending (absent on Alpine — rule 0 exception) |
+| **2f — kdump tools (kexec + makedumpfile)** | ◀ **IN PROGRESS** (both on Alpine community — depends bump only) |
+| 2g — bless-boot | ⏳ **DEFERRED — execute LAST** (after Step 8; user decision: not needed on our UKI stack, packaged for others) |
 | 4 — getty-dinit | pending (NOT in Alpine) |
 | 5 — boot test QEMU (booster) | pending |
 | 6 — system services | pending (not in Alpine as -dinit variants) |
@@ -180,37 +180,19 @@ signed package from Pages with zero warnings → **Step 2 COMPLETE**. ✅
 
 **DoD**: hook runs `keyboard` and full actions in chroot without errors. → **MET**.
 
-## Step 2f — kdump enablement (tools exist on Alpine — rule 5/6)
+## Step 2f — kdump enablement (tools exist on Alpine — rule 5/6) 🔄 IN PROGRESS
 
-- [ ] verified: `kexec-tools` 2.0.32 (cmd:kexec, cmd:vmcore-dmesg) and
+- [x] verified: `kexec-tools` 2.0.32 (cmd:kexec, cmd:vmcore-dmesg) and
       `makedumpfile` 1.7.9 (depends kexec-tools) both in Alpine community
-- [ ] add `kexec-tools makedumpfile` to dinit-chimera `depends` (rule 5:
+- [x] add `kexec-tools makedumpfile` to dinit-chimera `depends` (rule 5:
       optional packages all mandatory) → upstream `early-kdump`/`try-kdump`
       services become functional
-- [ ] rebuild + CI green
+- [ ] rebuild (pkgrel 0→1) + CI green + client-test
 
 **DoD**: package installs kdump tools; upstream kdump services present and
 tool-backed.
 
-## Step 2g — bless-boot (NOT on Alpine → package it, rule 0 exception)
-
-- [ ] research/build: `systemd-bless-boot` standalone from systemd source
-      (meson: `-Dbless-boot=enabled`, everything else disabled) — heavy build,
-      attempt; NOT on Alpine (404 main+community verified)
-- [ ] wire `-Dbless-boot-path=/usr/bin/bless-boot` + `depends="bless-boot"`
-- [ ] **SAFE on our stack (verified upstream sources)**: `bless-boot.sh` is
-      doubly defensive — `[ -x ] || exit 0` guard + `case` fallback to
-      "probably not used" + trailing `exit 0`; on our UKI stack
-      `bless status` fails reading `LoaderBootConfig` (absent without
-      systemd-boot) → falls to `*)` → clean exit. Service is `type=scripted`,
-      only `depends-on: pre-local.target`, nothing depends on it → even a
-      failure cannot block boot. Becomes FUNCTIONAL for anyone using
-      systemd-boot A/B entries. If standalone build proves infeasible (>2
-      attempts): register in `docs/DROPPED-FEATURES.md` per rule 6
-
-**DoD**: bless-boot binary packaged + wired, OR registry entry with blocker.
-
-## Step 3a — Signing + publish infra ✅ DONE (2026-09-10)
+> Step 2g (bless-boot) is DEFERRED to LAST — see its section near the end of this plan.
 
 - [x] key pair generated locally: `~/.abuild/feralos.rsa` + `.rsa.pub` (openssl)
 - [x] `feralos.pub` committed at repo root
@@ -293,6 +275,27 @@ installer `internal_rules.yaml` `services:` map).
 
 - [ ] tag `v0.1.0` → CI publishes indexed tree under `v3.24/main`
 - [ ] notify installer repo (STATUS.md cross-ref) → installer Phase 5 begins
+
+## Step 2g — bless-boot ⏳ DEFERRED — EXECUTE LAST (after Step 8)
+
+> User decision: not needed on our UKI stack (no systemd-boot A/B), but kept in
+> the plan and PACKAGED for anyone who needs it. Do this AFTER Step 8.
+
+- [ ] build `systemd-bless-boot` standalone from systemd source
+      (meson: `-Dbless-boot=enabled`, everything else disabled) — heavy build,
+      attempt; NOT on Alpine (404 main+community verified)
+- [ ] wire `-Dbless-boot-path=/usr/bin/bless-boot` + `depends="bless-boot"`
+- [ ] **SAFE on our stack (verified upstream sources)**: `bless-boot.sh` is
+      doubly defensive — `[ -x ] || exit 0` guard + `case` fallback to
+      "probably not used" + trailing `exit 0`; on our UKI stack
+      `bless status` fails reading `LoaderBootConfig` (absent without
+      systemd-boot) → falls to `*)` → clean exit. Service is `type=scripted`,
+      only `depends-on: pre-local.target`, nothing depends on it → even a
+      failure cannot block boot. Becomes FUNCTIONAL for anyone using
+      systemd-boot A/B entries. If standalone build proves infeasible (>2
+      attempts): register in `docs/DROPPED-FEATURES.md` per rule 6
+
+**DoD**: bless-boot binary packaged + wired, OR registry entry with blocker.
 
 ---
 

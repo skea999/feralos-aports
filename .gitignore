@@ -14,5 +14,9 @@ src/*/pkg/
 !feralos.pub
 !src/feralos-keyring/feralos.rsa.pub
 
+# alpine aports cache for openrc extraction (see docs/CONVERSION.md)
+references/
+cache/
+
 # local testing
 *.log

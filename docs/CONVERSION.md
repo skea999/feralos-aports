@@ -3,6 +3,42 @@
 > Scope: system/desktop services only. **Early boot is not converted — it ships ready
 > in `dinit-chimera`.** Verified against upstream docs (DINIT-AS-INIT, dinit-chimera README).
 
+## Extracting OpenRC sources from Alpine aports
+
+Before converting a service, extract its original files:
+
+```sh
+# first time: clones aports + extracts ALL openrc services
+./scripts/fetch-alpine-openrc.sh
+
+# or specific services only
+./scripts/fetch-alpine-openrc.sh dbus chrony sddm
+```
+
+Files land in `references/alpine-openrc/<pkg>/` (APKBUILD + `*.initd` + `*.confd`):
+
+```
+references/alpine-openrc/dbus/
+  APKBUILD
+  dbus.initd          # <- OpenRC init script to convert
+  dbus.confd          #    optional config
+```
+
+The `references/` folder is **gitignored** (see `.gitignore: references/`): it is a local cache,
+must not be committed. Regenerate it when needed with the script above.
+
+What to look for in the `*.initd`:
+
+| OpenRC | What to look for | Dinit |
+|--------|--------------|-------|
+| `command=` | binario + path | `command =` |
+| `command_args` | arguments | append to `command` |
+| `command_background=true` + `pidfile=` | supervision | `type = process` (dinit supervises) |
+| `depend()` { `need` / `after` / `before` } | dependencies | `depends-on:` to targets (see table below) |
+| `start()` / `stop()` custom | special logic | `type = scripted` script if needed |
+
+After extraction, create the `-dinit` package in `src/<name>-dinit/` following the templates below.
+
 ## Rules
 
 1. One package per service: `<name>-dinit`, depends on `dinit-chimera` + daemon pkg.

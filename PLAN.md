@@ -20,9 +20,9 @@
 | 2f — kdump tools (kexec + makedumpfile) | ✅ **DONE** (r1 published, depends verified) |
 | 2g — bless-boot | ⏳ **DEFERRED — execute LAST** (after Step 8) |
 | 4 — getty-dinit | ✅ **DONE** (0.1.0-r0 signed, smoke + client-test green) |
+| 6 — system services (36 packages) | ✅ **DONE** (CI verde, all 42 openrc covered) |
 | **5 — boot test QEMU (booster)** | ◀ **NEXT** |
-| 6 — system services | pending (not in Alpine as -dinit variants) |
-| 7 — desktop | pending (turnstile: only edge/testing → ours) |
+| 7 — desktop (turnstile + polkit) | pending (after boot test) |
 | 8 — release v0.1.0 | pending |
 
 ## Rules

@@ -9,7 +9,6 @@ arch="all"
 license="ISC"
 depends="dinit util-linux"
 makedepends=""
-subpackages="$pkgname-doc"
 source="getty@.service"
 
 build() {

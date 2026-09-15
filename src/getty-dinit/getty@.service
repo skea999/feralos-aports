@@ -1,4 +1,4 @@
 type = process
-command = /sbin/agetty %I
+command = /sbin/agetty $1
 restart = true
 depends-on = local.target

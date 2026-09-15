@@ -27,7 +27,21 @@ Layout served by Pages:
 
 ## Setup (client)
 
-Run as root on any Alpine system with network access:
+Run as root on any Alpine system with network access.
+
+### Option A — One-liner via feralos-keyring (recommended)
+
+```sh
+# Bootstrap: key + repository in one package (like alpine-keys)
+wget -q https://skea999.github.io/feralos-aports/feralos-aports/x86_64/feralos-keyring-1-r0.apk -O /tmp/feralos-keyring.apk
+apk add --allow-untrusted /tmp/feralos-keyring.apk
+apk update
+apk add dinit-chimera        # example — pulls dinit, sd-tools, snooze, eudev
+```
+
+`apk add --allow-untrusted https://...` with a direct URL is **not** supported by apk-tools 3 — use `wget` + local file as above. After the keyring is installed, every further install is signature-verified without `--allow-untrusted`.
+
+### Option B — Manual key + repository
 
 ```sh
 # 1. Trust our key — the filename is part of the signature scheme
@@ -36,12 +50,13 @@ wget -qO /etc/apk/keys/feralos.rsa.pub \
 
 # 2. Add the repository (append — do not replace the Alpine repos;
 #    Alpine CDN serves the transitive dependencies of our packages)
-echo "https://skea999.github.io/feralos-aports/feralos-aports/x86_64" \
+#    NOTE: no /x86_64 suffix — apk appends the arch itself
+echo "https://skea999.github.io/feralos-aports/feralos-aports" \
     >> /etc/apk/repositories
 
 # 3. Refresh indexes and install
 apk update
-apk add dinit-chimera        # example — pulls dinit, sd-tools, snooze, eudev
+apk add dinit-chimera
 ```
 
 `apk update` verifies the `APKINDEX.tar.gz` signature against
@@ -95,7 +110,7 @@ from our repo.
 |---------|-------|-----|
 | `UNTRUSTED signature` | key missing, wrong name, or stale | re-run step 1; filename MUST be `feralos.rsa.pub` |
 | `ERROR: unable to select packages` | package pinned/version conflict | `apk policy <pkg>`; remove pins |
-| `404` on APKINDEX | wrong URL (check the doubled project dir) or Pages down | verify with `curl -I` against the layout above |
+| `404` on APKINDEX | wrong URL (must be `.../feralos-aports` without `/x86_64` — apk appends arch) or Pages down | verify with `curl -I` against the layout above |
 | `key feralos.rsa.pub is unknown` | key CN does not match filename | re-download the published `feralos.pub`; do not self-generate |
 | index very old | `apk update` not run | run it; Pages deploys on every push to main |
 

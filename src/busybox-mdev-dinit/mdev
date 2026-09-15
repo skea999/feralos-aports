@@ -1,0 +1,4 @@
+type = process
+command = /sbin/mdev -s
+restart = false
+depends-on = local.target

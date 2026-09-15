@@ -17,9 +17,9 @@
 | 2c — dinit-cryptdisks hook | ✅ **DONE** (crypttab semantics + graceful CI; .gitignore trap fixed) |
 | 2d — dinitcheck + client-test | ✅ **DONE** (all 3 jobs green; suite validated on clean client) |
 | 2e — dinit-console hook (kbd) | ✅ **DONE** (CI green, client dinit-check passed) |
-| **2f — kdump tools (kexec + makedumpfile)** | ◀ **IN PROGRESS** (both on Alpine community — depends bump only) |
+| **2f — kdump tools (kexec + makedumpfile)** | ✅ **DONE** (r1 published, depends verified in APKINDEX) |
 | 2g — bless-boot | ⏳ **DEFERRED — execute LAST** (after Step 8; user decision: not needed on our UKI stack, packaged for others) |
-| 4 — getty-dinit | pending (NOT in Alpine) |
+| **4 — getty-dinit** | ◀ **NEXT** (NOT in Alpine) |
 | 5 — boot test QEMU (booster) | pending |
 | 6 — system services | pending (not in Alpine as -dinit variants) |
 | 7 — desktop | pending (turnstile: only edge/testing → ours) |
@@ -180,17 +180,17 @@ signed package from Pages with zero warnings → **Step 2 COMPLETE**. ✅
 
 **DoD**: hook runs `keyboard` and full actions in chroot without errors. → **MET**.
 
-## Step 2f — kdump enablement (tools exist on Alpine — rule 5/6) 🔄 IN PROGRESS
+## Step 2f — kdump enablement ✅ DONE (2026-09-10)
 
 - [x] verified: `kexec-tools` 2.0.32 (cmd:kexec, cmd:vmcore-dmesg) and
       `makedumpfile` 1.7.9 (depends kexec-tools) both in Alpine community
-- [x] add `kexec-tools makedumpfile` to dinit-chimera `depends` (rule 5:
-      optional packages all mandatory) → upstream `early-kdump`/`try-kdump`
-      services become functional
-- [ ] rebuild (pkgrel 0→1) + CI green + client-test
+- [x] added `kexec-tools makedumpfile` to dinit-chimera `depends` (rule 5)
+      → upstream `early-kdump`/`try-kdump` services functional
+- [x] rebuild (pkgrel 0→1) + CI green + client-test green; APKINDEX confirmed
+      `V:0.99.24-r1` with both tools in `D:`
 
 **DoD**: package installs kdump tools; upstream kdump services present and
-tool-backed.
+tool-backed. → **MET**.
 
 > Step 2g (bless-boot) is DEFERRED to LAST — see its section near the end of this plan.
 

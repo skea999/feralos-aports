@@ -5,12 +5,18 @@
 
 ## Current
 
-- **Step**: 2f 🔄 IN PROGRESS — kdump tools added to depends (pkgrel 0→1), CI pending
-- **Next action**: push → CI green → 2f done. Then Step 4 (getty-dinit); 2g bless-boot DEFERRED to last (user decision).
+- **Step**: 2f ✅ COMPLETE — kdump tools in depends (r1 published, APKINDEX verified)
+- **Next action**: Step 4 — `getty-dinit` (getty@ template + ttyS0 for harness).
+  2g bless-boot DEFERRED to last (after Step 8).
 
 ## Log
 
-### 2026-09-10 — Step 2f in progress + 2g DEFERRED to last
+### 2026-09-10 — Step 2f COMPLETE
+- depends += kexec-tools makedumpfile; pkgrel 0→1; all CI jobs green
+- APKINDEX verified: V:0.99.24-r1, D: contains kexec-tools + makedumpfile
+- early-kdump/try-kdump upstream services now tool-backed
+
+### 2026-09-10 — Step 2e COMPLETE (1 fix: dinit-check -d dir form)
 - depends += kexec-tools makedumpfile (verified on Alpine community);
   early-kdump/try-kdump upstream services become functional; pkgrel 0→1
 - 2g bless-boot DEFERRED to LAST (user: not needed on our UKI stack, packaged

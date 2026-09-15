@@ -11,12 +11,10 @@
 
 ## Log
 
-### 2026-09-15 — Step 6 COMPLETE (25 new services generated)
-- 42 openrc services from niri-full harness mapped; 8 skipped (handled by
-  dinit-chimera: eudev, udev-init-scripts, btrfs-scan, cryptsetup, kbd,
-  incus-feature x2, busybox). 34 unique dinit packages created (36 total
-  with getty-dinit + openssh symlink). CI green (commit 07c1733).
-- All sha512sums computed, syntax verified, generator script in scripts/.
+### 2026-09-15 — Step 6 COMPLETE (39 dinit packages, all 42 openrc covered)
+- Generator script + 4 subpackage extractions + symlink fix
+- 37 meaningful packages + 2 redundant (openssh-server-common → sshd-dinit,
+  busybox-mdev → eudev). CI green (commits 07c1733, 535386e, 45ae0c9).
 
 ### 2026-09-15 — Step 4 COMPLETE (1 fix: dinit-check -d dir form)
 

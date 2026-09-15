@@ -183,12 +183,8 @@ jobs:
         run: |
           set -e
           BASE=https://skea999.github.io/feralos-aports
-          # keyring bootstrap: adds key + repo, like on a real PC
-          # apk add with https URL is flaky in alpine container (no such package) — wget + local install
-          wget -q "$BASE/feralos-aports/x86_64/feralos-keyring-1-r0.apk" -O /tmp/feralos-keyring.apk
-          apk add --allow-untrusted /tmp/feralos-keyring.apk
-          # keyring currently ships with /x86_64 suffix but apk appends arch itself — fix
-          sed -i 's|/x86_64$||' /etc/apk/repositories.d/feralos.list || true
+          # real PC flow: exactly as documented in docs/REPO-SETUP.md
+          apk add --allow-untrusted "https://skea999.github.io/feralos-aports/feralos-aports/x86_64/feralos-keyring-1-r0.apk"
           apk update
           # install every package we publish (keyring already installed)
           for d in src/*/APKBUILD; do

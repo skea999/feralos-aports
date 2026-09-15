@@ -5,9 +5,16 @@
 
 ## Current
 
-- **Step**: 2f ✅ COMPLETE — kdump tools in depends (r1 published, APKINDEX verified)
-- **Next action**: Step 4 — `getty-dinit` (getty@ template + ttyS0 for harness).
-  2g bless-boot DEFERRED to last (after Step 8).
+- **Step**: 4 ✅ COMPLETE — `getty-dinit-0.1.0-r0` signed, smoke + client-test green
+- **Next action**: Step 5 — boot test QEMU (booster; with installer repo fixture `btrfs_standard_dinit.yaml`)
+
+## Log
+
+### 2026-09-10 — Step 4 COMPLETE (2 fixes)
+- `src/getty-dinit` + `getty@.service`/`getty` base installs correctly, boot.d symlinks validated, `dinit-check -d` passes
+- 2 fixes: empty -doc subpackage removal, template `%I` → `$1` + base `getty` file (dinit-check load)
+
+### 2026-09-10 — Step 2f ✅ COMPLETE — kdump tools in depends (r1 published, APKINDEX verified)
 
 ## Log
 

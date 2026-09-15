@@ -17,10 +17,10 @@
 | 2c — dinit-cryptdisks hook | ✅ **DONE** (crypttab semantics + graceful CI; .gitignore trap fixed) |
 | 2d — dinitcheck + client-test | ✅ **DONE** (all 3 jobs green; suite validated on clean client) |
 | 2e — dinit-console hook (kbd) | ✅ **DONE** (CI green, client dinit-check passed) |
-| **2f — kdump tools (kexec + makedumpfile)** | ✅ **DONE** (r1 published, depends verified in APKINDEX) |
-| 2g — bless-boot | ⏳ **DEFERRED — execute LAST** (after Step 8; user decision: not needed on our UKI stack, packaged for others) |
-| **4 — getty-dinit** | ◀ **NEXT** (NOT in Alpine) |
-| 5 — boot test QEMU (booster) | pending |
+| 2f — kdump tools (kexec + makedumpfile) | ✅ **DONE** (r1 published, depends verified) |
+| 2g — bless-boot | ⏳ **DEFERRED — execute LAST** (after Step 8) |
+| 4 — getty-dinit | ✅ **DONE** (0.1.0-r0 signed, smoke + client-test green) |
+| **5 — boot test QEMU (booster)** | ◀ **NEXT** |
 | 6 — system services | pending (not in Alpine as -dinit variants) |
 | 7 — desktop | pending (turnstile: only edge/testing → ours) |
 | 8 — release v0.1.0 | pending |
@@ -211,13 +211,16 @@ tool-backed. → **MET**.
 
 **DoD**: from ANY Alpine chroot: add key + repo → `apk add sd-tools` works.
 
-## Step 4 — getty-dinit (needed for boot test)
+## Step 4 — getty-dinit (needed for boot test) ✅ DONE (2026-09-10)
 
-- [ ] `getty-dinit/APKBUILD`: `getty@` template service (agetty from util-linux)
-      + enabled `getty@tty1` + `getty@ttyS0` instance for harness serial console
-- [ ] service file pattern: `depends-on: login.target`, `runs-on-console`
+- [x] `src/getty-dinit/APKBUILD`: `getty@` template service (agetty from util-linux,
+      `depends-on: login.target`, `restart = true`) + base `getty` for `$1` template,
+      enabled `getty@tty1` + `getty@ttyS0` instances via boot.d symlinks
+- [x] CI: 2 fixes (empty -doc subpackage removed; template `%I` → `$1` + `getty` base)
+- [x] Smoke + client-test: service files present, symlinks validated, `dinit-check`
+      boot passes; pkg published `getty-dinit-0.1.0-r0` alongside dinit-chimera
 
-**DoD**: package builds; service file validates with `dinitcheck`.
+**DoD**: package builds; service file validates with `dinit-check`. → **MET**.
 
 ## Step 5 — Boot test QEMU, booster (with installer repo)
 

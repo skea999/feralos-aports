@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=openssh-server-common-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="openssh server common service for dinit"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit openssh-server-common"
+makedepends=""
+source="sshd"
+
+build() {
+	# nothing to build
+	return 0
+}
+
+check() {
+	# nothing to test
+	return 0
+}
+
+package() {
+	install -Dm644 "$srcdir/sshd" "$pkgdir/usr/lib/dinit.d/sshd"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf ../sshd "$pkgdir/usr/lib/dinit.d/boot.d/sshd"
+}
+
+sha512sums="a8b376292d0991aac819f832a1fdabc7eff044ab46dd33ddb62b65fc2feea4e2ee751a24e3e60814301dda2b9aa0842666908ade6d2bded0cc590091819fce55  sshd"

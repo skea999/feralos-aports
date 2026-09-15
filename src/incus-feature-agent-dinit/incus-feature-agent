@@ -1,0 +1,4 @@
+type = process
+command = /usr/sbin/incus-agent
+restart = true
+depends-on = local.target

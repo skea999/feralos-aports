@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=busybox-mdev-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="busybox mdev service for dinit"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit busybox"
+makedepends=""
+source="mdev"
+
+build() {
+	# nothing to build
+	return 0
+}
+
+check() {
+	# nothing to test
+	return 0
+}
+
+package() {
+	install -Dm644 "$srcdir/mdev" "$pkgdir/usr/lib/dinit.d/mdev"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf ../mdev "$pkgdir/usr/lib/dinit.d/boot.d/mdev"
+}
+
+sha512sums="50f1d7b671c66dd02c12f444ade61598a17db7c646f20695242233bf6bb1f98ef7732972b8f0c1e5333f0de5873b83d23ea1e3985c0e606941507f2a62214401  mdev"

@@ -183,8 +183,12 @@ jobs:
         run: |
           set -e
           BASE=https://skea999.github.io/feralos-aports
-          # real PC flow: exactly as documented in docs/REPO-SETUP.md
-          apk add --allow-untrusted "https://skea999.github.io/feralos-aports/feralos-aports/x86_64/feralos-keyring-1-r0.apk"
+          # real PC flow: keyring provides key+repo; apk-tools 3 does not support direct https URL for apk add (see https://github.com/openwrt/luci/issues/8410)
+          # so fetch with wget then local install — still tests the published URL and the fixed repo (no /x86_64 suffix, no sed)
+          wget -q "$BASE/feralos-aports/x86_64/feralos-keyring-1-r0.apk" -O /tmp/feralos-keyring.apk
+          apk add --allow-untrusted /tmp/feralos-keyring.apk
+          # verify keyring shipped correct repo (without /x86_64 — apk appends $arch)
+          grep -qx "https://skea999.github.io/feralos-aports/feralos-aports" /etc/apk/repositories.d/feralos.list || { echo "feralos.list wrong:"; cat /etc/apk/repositories.d/feralos.list; exit 1; }
           apk update
           # install every package we publish (keyring already installed)
           for d in src/*/APKBUILD; do

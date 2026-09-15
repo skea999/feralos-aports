@@ -5,8 +5,20 @@
 
 ## Current
 
-- **Step**: 4 ✅ COMPLETE — `getty-dinit-0.1.0-r0` signed, smoke + client-test green
-- **Next action**: Step 5 — boot test QEMU (booster; with installer repo fixture `btrfs_standard_dinit.yaml`)
+- **Step**: 6 ✅ COMPLETE — 36 dinit packages + getty-dinit (37 total), CI verde
+- **Next action**: Step 5 — boot test QEMU (booster). All services installed,
+  harness niri full fixture.
+
+## Log
+
+### 2026-09-15 — Step 6 COMPLETE (25 new services generated)
+- 42 openrc services from niri-full harness mapped; 8 skipped (handled by
+  dinit-chimera: eudev, udev-init-scripts, btrfs-scan, cryptsetup, kbd,
+  incus-feature x2, busybox). 34 unique dinit packages created (36 total
+  with getty-dinit + openssh symlink). CI green (commit 07c1733).
+- All sha512sums computed, syntax verified, generator script in scripts/.
+
+### 2026-09-15 — Step 4 COMPLETE (1 fix: dinit-check -d dir form)
 
 ## Log
 

@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=getty-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="getty service templates for dinit (tty1 + ttyS0)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit util-linux"
+makedepends=""
+subpackages="$pkgname-doc"
+source="getty@.service"
+
+build() {
+	# nothing to build
+	return 0
+}
+
+check() {
+	# nothing to test
+	return 0
+}
+
+package() {
+	install -Dm644 "$srcdir/getty@.service" "$pkgdir/usr/lib/dinit.d/getty@.service"
+
+	# Enable on tty1 (hardware console) and ttyS0 (serial console for harness)
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf ../getty@.service "$pkgdir/usr/lib/dinit.d/boot.d/getty@tty1"
+	ln -sf ../getty@.service "$pkgdir/usr/lib/dinit.d/boot.d/getty@ttyS0"
+}
+
+sha512sums="73f0bda7c7ac1fdbc39a5069a7e0421c651144d921911f264c5b732ed532d3f25027517a451dbc5cacd6b1a1ca5bb631e31160979d8099286fc71e28893c7986  getty@.service"

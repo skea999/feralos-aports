@@ -110,9 +110,12 @@ jobs:
           test -x /usr/libexec/dinit-console || { echo "missing dinit-console hook"; exit 1; }
           sh -n /usr/libexec/dinit-console || { echo "dinit-console syntax error"; exit 1; }
           /usr/libexec/dinit-console keyboard || { echo "dinit-console keyboard must exit 0"; exit 1; }
-          # 2d: suite syntax validation (Alpine dinit ships dinit-check; -d is
-          # mandatory — dinit-check default dirs exclude /usr/lib/dinit.d)
-          dinit-check -d /usr/lib/dinit.d boot || { echo "dinit-check boot FAILED"; exit 1; }
+          # 2d: suite syntax validation (Alpine dinit ships dinitcheck)
+          dinit-check -d /usr/lib/dinit.d boot || { echo "dinitcheck boot FAILED"; exit 1; }
+          # getty-dinit: service files present and enabled
+          test -f /usr/lib/dinit.d/getty@.service || { echo "missing getty@.service"; exit 1; }
+          test -L /usr/lib/dinit.d/boot.d/getty@tty1 || { echo "missing getty@tty1 symlink"; exit 1; }
+          test -L /usr/lib/dinit.d/boot.d/getty@ttyS0 || { echo "missing getty@ttyS0 symlink"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories

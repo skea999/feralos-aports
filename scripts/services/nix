@@ -1,0 +1,6 @@
+# alpine-dep: nix
+# dinit service: nix-dinit (converted from openrc nix)
+type = process
+command = nix-daemon
+restart = true
+depends-on = local.target

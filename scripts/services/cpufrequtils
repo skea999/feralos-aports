@@ -1,0 +1,6 @@
+# alpine-dep: cpufrequtils
+# dinit service: cpufrequtils-dinit (converted from openrc cpufrequtils)
+type = process
+command = cpufreqd
+restart = true
+depends-on = local.target

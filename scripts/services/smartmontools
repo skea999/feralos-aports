@@ -1,0 +1,6 @@
+# alpine-dep: smartmontools
+# dinit service: smartmontools-dinit (converted from openrc smartmontools)
+type = process
+command = smartd
+restart = true
+depends-on = local.target

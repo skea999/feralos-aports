@@ -1,0 +1,5 @@
+# alpine-dep: acpid
+type = process
+command = /sbin/acpid --foreground
+restart = true
+depends-on = local.target

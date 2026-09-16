@@ -1,0 +1,6 @@
+# alpine-dep: rasdaemon
+# dinit service: rasdaemon-dinit (converted from openrc rasdaemon)
+type = process
+command = rasdaemon
+restart = true
+depends-on = local.target

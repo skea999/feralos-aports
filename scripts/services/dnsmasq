@@ -1,0 +1,6 @@
+# alpine-dep: dnsmasq
+# dinit service: dnsmasq-dinit (converted from openrc dnsmasq)
+type = process
+command = dnsmasq
+restart = true
+depends-on = local.target

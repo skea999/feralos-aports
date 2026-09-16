@@ -1,0 +1,5 @@
+# alpine-dep: chrony
+type = process
+command = /usr/sbin/chronyd -d -s
+restart = true
+depends-on = network.target

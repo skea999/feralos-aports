@@ -3,28 +3,21 @@
 pkgname=openssh-server-common-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="openssh server common service for dinit"
+pkgdesc="dinit service for openssh-server-common"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit openssh-server-common"
 makedepends=""
-source="sshd"
+source="openssh-server-common"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/sshd" "$pkgdir/usr/lib/dinit.d/sshd"
+	install -Dm644 "$srcdir/openssh-server-common" "$pkgdir/usr/lib/dinit.d/openssh-server-common"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../sshd "$pkgdir/usr/lib/dinit.d/boot.d/sshd"
+	ln -sf "../openssh-server-common" "$pkgdir/usr/lib/dinit.d/boot.d/openssh-server-common"
 }
 
-sha512sums="a8b376292d0991aac819f832a1fdabc7eff044ab46dd33ddb62b65fc2feea4e2ee751a24e3e60814301dda2b9aa0842666908ade6d2bded0cc590091819fce55  sshd"
+sha512sums="5b8c7d4f04d74b00292e2a53b963527dee55bb7781e3eb9fa52b5030b3dada9b  openssh-server-common"

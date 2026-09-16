@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit rsync"
 makedepends=""
-source="rsync-dinit"
+source="rsync"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/rsync-dinit" "$pkgdir/usr/lib/dinit.d/rsync-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"rsync-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/rsync-dinit"
+	install -Dm644 "$srcdir/rsync" "$pkgdir/usr/lib/dinit.d/rsync"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../rsync" "$pkgdir/usr/lib/dinit.d/boot.d/rsync"
 }
 
-sha512sums="e408478b006ab5d7f23cc52d4d212bc8531ab9b147b69600ea3d6c300df1e3dd73fa0ddbe694569d4add6f4263f5b6aff05fb640193de083c993223406525614  rsync-dinit"
+sha512sums="5c598715653dfed9fcbf79a11cba0042577e55ff8d66ce0a22288c3088873127  rsync"

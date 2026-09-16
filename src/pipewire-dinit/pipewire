@@ -1,0 +1,5 @@
+# dinit service: pipewire (auto-generated from Alpine openrc pipewire)
+type = process
+command = /usr/bin/pipewire-pulse
+restart = true
+depends-on = local.target

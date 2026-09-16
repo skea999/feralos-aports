@@ -1,6 +1,3 @@
-# alpine-dep: incus
-type = process
+alpine-dep: incus
 command = /usr/sbin/incusd --group incus-admin
-restart = true
-depends-on = local.target
 depends-on = network.target

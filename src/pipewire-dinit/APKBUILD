@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit pipewire"
 makedepends=""
-source="pipewire-dinit"
+source="pipewire"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/pipewire-dinit" "$pkgdir/usr/lib/dinit.d/pipewire-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"pipewire-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/pipewire-dinit"
+	install -Dm644 "$srcdir/pipewire" "$pkgdir/usr/lib/dinit.d/pipewire"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../pipewire" "$pkgdir/usr/lib/dinit.d/boot.d/pipewire"
 }
 
-sha512sums="6cdbcb7e1fae1d296ccd108a263522acf3cf70722e425fe71b4b196cc49465ff2c91c330793a14855308ec9b3c0d7924a8afc4d9b63c1bc25640d33b14144247  pipewire-dinit"
+sha512sums="036867dffec4c4ccc219cc8a40a6426923b897550af1f9b665dcef3a88320c44  pipewire"

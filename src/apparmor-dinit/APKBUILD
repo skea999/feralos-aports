@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit apparmor"
 makedepends=""
-source="apparmor-dinit"
+source="apparmor"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/apparmor-dinit" "$pkgdir/usr/lib/dinit.d/apparmor-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"apparmor-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/apparmor-dinit"
+	install -Dm644 "$srcdir/apparmor" "$pkgdir/usr/lib/dinit.d/apparmor"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../apparmor" "$pkgdir/usr/lib/dinit.d/boot.d/apparmor"
 }
 
-sha512sums="180f19ddaef69d0576dcb4510cb2df067c983bee1f63112c7bc55a32c64a9ef7da577ac9392d9b123f28184e72751b41671d11fa3f618f9ea0bd1a36871803bd  apparmor-dinit"
+sha512sums="2b922ec6ee99cba28086892495fbabc26151989e788f781a633525b55e0e0ab6  apparmor"

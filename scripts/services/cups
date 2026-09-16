@@ -1,6 +1,1 @@
-# alpine-dep: cups
-# dinit service: cups-dinit (converted from openrc cups)
-type = process
-command = cupsd
-restart = true
-depends-on = local.target
+alpine-dep: cups

@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit polkit"
 makedepends=""
-source="polkit-dinit"
+source="polkit"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/polkit-dinit" "$pkgdir/usr/lib/dinit.d/polkit-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"polkit-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/polkit-dinit"
+	install -Dm644 "$srcdir/polkit" "$pkgdir/usr/lib/dinit.d/polkit"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../polkit" "$pkgdir/usr/lib/dinit.d/boot.d/polkit"
 }
 
-sha512sums="fb7c0d7b63eb8c14934f3e130c33a5c44cce972cf9557e94de856334d4e355011cd3cfc8bb589c6942eb9a544e527e50b7364f4307183c4e40d37aaf61dfa38a  polkit-dinit"
+sha512sums="d0090254bc4026b207e4560258c9873f2ae26827bb6e12ba7efb679184ff5edb  polkit"

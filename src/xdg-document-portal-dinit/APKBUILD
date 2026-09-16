@@ -3,28 +3,21 @@
 pkgname=xdg-document-portal-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="xdg document portal service for dinit"
+pkgdesc="dinit service for xdg-document-portal"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit xdg-document-portal"
 makedepends=""
-source="xdg-document-portal-dinit"
+source="xdg-document-portal"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/xdg-document-portal-dinit" "$pkgdir/usr/lib/dinit.d/xdg-document-portal-dinit"
+	install -Dm644 "$srcdir/xdg-document-portal" "$pkgdir/usr/lib/dinit.d/xdg-document-portal"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../xdg-document-portal-dinit "$pkgdir/usr/lib/dinit.d/boot.d/xdg-document-portal-dinit"
+	ln -sf "../xdg-document-portal" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-document-portal"
 }
 
-sha512sums="9e34d9d77dac402f69a0bf709e0f5effcfec934e57c963686908639e5d6f81feb95e1f5ab23884a7d9358b5785d5618c4f195871837b1bf3bbe25b047f5da411  xdg-document-portal-dinit"
+sha512sums="5e3b125b3fe43a5d239d6ea52d24427192445d210168c53e09092216c8fc0fb2  xdg-document-portal"

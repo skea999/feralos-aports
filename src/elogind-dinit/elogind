@@ -1,0 +1,5 @@
+# dinit service: elogind (auto-generated from Alpine openrc elogind)
+type = process
+command = /usr/libexec/elogind/elogind
+restart = true
+depends-on = local.target

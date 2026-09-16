@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit xdg-desktop-portal-wlr"
 makedepends=""
-source="xdg-desktop-portal-wlr-dinit"
+source="xdg-desktop-portal-wlr"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/xdg-desktop-portal-wlr-dinit" "$pkgdir/usr/lib/dinit.d/xdg-desktop-portal-wlr-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"xdg-desktop-portal-wlr-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-desktop-portal-wlr-dinit"
+	install -Dm644 "$srcdir/xdg-desktop-portal-wlr" "$pkgdir/usr/lib/dinit.d/xdg-desktop-portal-wlr"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../xdg-desktop-portal-wlr" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-desktop-portal-wlr"
 }
 
-sha512sums="fc17058e6d658c5bb5a814e658f24bb2d908e3eb80b6a1ee57cf8db27cf8dc60397930fa318ee7a20ae47fa50f63b7e01d792b57647a3bad85b7ced8102582f8  xdg-desktop-portal-wlr-dinit"
+sha512sums="4afe6ab5a36877674d9b1dacfbee64349ade417c0e1f44f8c4be3ea75a976b20  xdg-desktop-portal-wlr"

@@ -3,7 +3,7 @@
 pkgname=sshd-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="openssh server service for dinit"
+pkgdesc="dinit service for sshd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit openssh"
 makedepends=""
 source="sshd"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/sshd" "$pkgdir/usr/lib/dinit.d/sshd"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../sshd "$pkgdir/usr/lib/dinit.d/boot.d/sshd"
+	ln -sf "../sshd" "$pkgdir/usr/lib/dinit.d/boot.d/sshd"
 }
 
-sha512sums="ca73966ca704b5838411cd272d1650e60308d2ba4ecfacc850bc3b62ecddb45bbf69686296cadc3de5ca7dd531efc52d488d96eee5381dc63d423f63288c7d58  sshd"
+sha512sums="d996e2a5fa9a070f3dd95de4951e0df80d1bcf0ae995f0b78c3317ac19ede74d  sshd"

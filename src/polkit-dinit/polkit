@@ -1,0 +1,5 @@
+# dinit service: polkit (auto-generated from Alpine openrc polkit)
+type = process
+command = /usr/lib/polkit-1/polkitd ${POLKIT_OPTS:---no-debug}
+restart = true
+depends-on = local.target

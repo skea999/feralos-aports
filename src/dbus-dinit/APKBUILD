@@ -3,7 +3,7 @@
 pkgname=dbus-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="dbus service for dinit"
+pkgdesc="dinit service for dbus"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit dbus"
 makedepends=""
 source="dbus"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/dbus" "$pkgdir/usr/lib/dinit.d/dbus"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../dbus "$pkgdir/usr/lib/dinit.d/boot.d/dbus"
+	ln -sf "../dbus" "$pkgdir/usr/lib/dinit.d/boot.d/dbus"
 }
 
-sha512sums="2d8b5f09862a47b20bdba5794cf4833b0ab6318cbbcee024543714d7f888e5e12bca63c2c902aa281a8f8235efdf3995657d39daf35ca7b33dab4253a61203ec  dbus"
+sha512sums="6bbe62c2e2790b87d8eefdf0972d5ac90c157e5f00b70636e24a89cd6546d88e  dbus"

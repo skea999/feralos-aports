@@ -3,7 +3,7 @@
 pkgname=cronie-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="cronie service for dinit"
+pkgdesc="dinit service for cronie"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit cronie"
 makedepends=""
 source="cronie"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/cronie" "$pkgdir/usr/lib/dinit.d/cronie"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../cronie "$pkgdir/usr/lib/dinit.d/boot.d/cronie"
+	ln -sf "../cronie" "$pkgdir/usr/lib/dinit.d/boot.d/cronie"
 }
 
-sha512sums="70daafcd7047184c4a2e4e0d1a21ee82f64cc5f6d0cc72f2b02d40f1155908eaeddb6dac6322ddaf6d776e774bc4a50518492c18ad43e3d8e5d3aa0b6f9ed758  cronie"
+sha512sums="cc181bb0ce961ce5ad991a70d550299cec0a0a4b279d0fae33deab420a3e8225  cronie"

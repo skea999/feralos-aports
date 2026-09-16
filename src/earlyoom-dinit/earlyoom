@@ -1,3 +1,4 @@
+# dinit service: earlyoom (Alpine openrc earlyoom + overrides)
 type = process
 command = /usr/bin/earlyoom -r 60
 restart = true

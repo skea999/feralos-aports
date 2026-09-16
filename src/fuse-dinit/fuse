@@ -1,0 +1,5 @@
+# dinit service: fuse (Alpine openrc fuse + overrides)
+type = process
+command = 
+restart = false
+depends-on = local.target

@@ -1,5 +1,1 @@
-# alpine-dep: irqbalance
-type = process
-command = /usr/sbin/irqbalance --foreground
-restart = true
-depends-on = local.target
+alpine-dep: irqbalance

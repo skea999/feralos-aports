@@ -3,28 +3,21 @@
 pkgname=chrony-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="chrony service for dinit"
+pkgdesc="dinit service for chrony"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit chrony"
 makedepends=""
-source="chronyd"
+source="chrony"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/chronyd" "$pkgdir/usr/lib/dinit.d/chronyd"
+	install -Dm644 "$srcdir/chrony" "$pkgdir/usr/lib/dinit.d/chrony"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../chronyd "$pkgdir/usr/lib/dinit.d/boot.d/chronyd"
+	ln -sf "../chrony" "$pkgdir/usr/lib/dinit.d/boot.d/chrony"
 }
 
-sha512sums="f5da125a48f9a5e6d97012fe2c6c613f45d8b018dad00012ca9d469a7e98ea5a5bb975ea91eb49e2539a3fbf93587af0af599b390235caa102f70161170efce3  chronyd"
+sha512sums="d9c2605ea62a9ea9e996a8df2ce9cd1f0f70dae1c0dcc692e74211165a5ee04b  chrony"

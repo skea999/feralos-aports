@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit wireplumber"
 makedepends=""
-source="wireplumber-dinit"
+source="wireplumber"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/wireplumber-dinit" "$pkgdir/usr/lib/dinit.d/wireplumber-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"wireplumber-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/wireplumber-dinit"
+	install -Dm644 "$srcdir/wireplumber" "$pkgdir/usr/lib/dinit.d/wireplumber"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../wireplumber" "$pkgdir/usr/lib/dinit.d/boot.d/wireplumber"
 }
 
-sha512sums="53848abe76b38875baf0402cb94261caa3dd019b31da41fe7e590286b4646b68c73da0eb1eb8e61da8983c2ef519c8fcf74f27fb7d32c118d69d93dd3ea50f51  wireplumber-dinit"
+sha512sums="287443a88847325d42e0c5a2cf414337899df57b4d8e7ed1af8c00e18e5e3eb3  wireplumber"

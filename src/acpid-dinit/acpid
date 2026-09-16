@@ -1,3 +1,4 @@
+# dinit service: acpid (Alpine openrc acpid + overrides)
 type = process
 command = /sbin/acpid --foreground
 restart = true

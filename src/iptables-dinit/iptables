@@ -1,0 +1,5 @@
+# dinit service: iptables (auto-generated from Alpine openrc iptables)
+type = process
+command = 
+restart = true
+depends-on = local.target

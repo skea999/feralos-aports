@@ -1,6 +1,1 @@
-# alpine-dep: udisks2
-# dinit service: udisks2-dinit (converted from openrc udisks2)
-type = process
-command = udisksd
-restart = true
-depends-on = local.target
+alpine-dep: udisks2

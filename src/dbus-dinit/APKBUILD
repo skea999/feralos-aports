@@ -20,4 +20,4 @@ package() {
 	ln -sf "../dbus" "$pkgdir/usr/lib/dinit.d/boot.d/dbus"
 }
 
-sha512sums="6bbe62c2e2790b87d8eefdf0972d5ac90c157e5f00b70636e24a89cd6546d88e  dbus"
+sha512sums="ecd9f70601b14725fa28e49071e60144ef5e528868480ff35a0d529ab155eb3381241f0c8394f899a534331c0d64539a5858e2aee877314b137e8c4419b5ae71  dbus"

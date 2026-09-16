@@ -20,4 +20,4 @@ package() {
 	ln -sf "../smartmontools" "$pkgdir/usr/lib/dinit.d/boot.d/smartmontools"
 }
 
-sha512sums="471866462b78740e1dd2a3d214cd1e8951078ae0808aa555f3d244b142247afd  smartmontools"
+sha512sums="ca35201afee0a511f2c31ffcf2f5b13e90c8a6a7a6b81d70934e4102eb13417303d46def7e4ee08ba4d86c60889f373a1fd66ba9cc4f3c1c779dfb5a7bf42dac  smartmontools"

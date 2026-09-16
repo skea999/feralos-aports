@@ -20,4 +20,4 @@ package() {
 	ln -sf "../polkit" "$pkgdir/usr/lib/dinit.d/boot.d/polkit"
 }
 
-sha512sums="d0090254bc4026b207e4560258c9873f2ae26827bb6e12ba7efb679184ff5edb  polkit"
+sha512sums="0dfc7c0ad0ccf3c847a8f338616265f0f031513288d549755af97408d8704bcc6b1270b718728cc556cfafcdacec9d2f114e76e1cb289161db21c4025b72c632  polkit"

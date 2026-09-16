@@ -20,4 +20,4 @@ package() {
 	ln -sf "../lxc" "$pkgdir/usr/lib/dinit.d/boot.d/lxc"
 }
 
-sha512sums="ed3f1963f698e10b97bb7996e4e9f2cf58562e141be13340a9888af3292d65cf  lxc"
+sha512sums="de8f6637430e4af1a4f8b37e1e3d7bf6067f3da141cbcda3790c6bbd3266729e06d288bfca957b8cdb3329c274d47c91b9133e0607b2f814e8525d9902b40453  lxc"

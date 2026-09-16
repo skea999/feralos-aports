@@ -20,4 +20,4 @@ package() {
 	ln -sf "../fuse" "$pkgdir/usr/lib/dinit.d/boot.d/fuse"
 }
 
-sha512sums="5c10d60ec013ce7e14e2812b7f88f4dcfd60a667b1cf5c55589ed7ace371f941  fuse"
+sha512sums="5e3738112afadae33e6a3001c9945f68d778092dcff79836d7c26347820c6cdef08819c481d05bd1775203621aec771def42245ceac0efbd207d1f9d66614534  fuse"

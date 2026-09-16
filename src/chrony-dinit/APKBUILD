@@ -20,4 +20,4 @@ package() {
 	ln -sf "../chrony" "$pkgdir/usr/lib/dinit.d/boot.d/chrony"
 }
 
-sha512sums="d9c2605ea62a9ea9e996a8df2ce9cd1f0f70dae1c0dcc692e74211165a5ee04b  chrony"
+sha512sums="158065d39d6092b429399ef5ff0ef6e3d6d07d3c90368366f8a7399ececf0f03762530c10825984dca23b6b3546e6949df1e3185071724bca4cc2e66490f4fe3  chrony"

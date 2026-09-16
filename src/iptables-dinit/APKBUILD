@@ -20,4 +20,4 @@ package() {
 	ln -sf "../iptables" "$pkgdir/usr/lib/dinit.d/boot.d/iptables"
 }
 
-sha512sums="b0ad38e3b4a9ca9c05619cbcabaa6e27fb1766ed292aa2e4bde9e798cb7050d5  iptables"
+sha512sums="27283f5f7375c7ad3bf22ddbe69bec66dc1fd184a103adb3756380f2cda03ae0c0e9d1174a1d6624c0ccea268bd84d1f7555801776307253ac8a72a679a1da74  iptables"

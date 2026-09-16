@@ -20,4 +20,4 @@ package() {
 	ln -sf "../busybox-mdev" "$pkgdir/usr/lib/dinit.d/boot.d/busybox-mdev"
 }
 
-sha512sums="a3aef12685d00a811dc30811d6b3830c210869a4d92225e804a1a53536f13f73  busybox-mdev"
+sha512sums="0da29c825694efd5ea7140b7e8d1cccb025f79e505d10a5b61aa1744c033ec98f511aba5b60c79df79cec8c5af84fd7a919a8ca66adea7d7deee3e483242d1af  busybox-mdev"

@@ -20,4 +20,4 @@ package() {
 	ln -sf "../cronie" "$pkgdir/usr/lib/dinit.d/boot.d/cronie"
 }
 
-sha512sums="cc181bb0ce961ce5ad991a70d550299cec0a0a4b279d0fae33deab420a3e8225  cronie"
+sha512sums="1c61784c2c02db991d7a08fc7e39cc4caceadd767734cff36a5d8476fb946fdd83d84a36a040ddaa65bd8a805ba3a6fdfa60b2f692ee9546ae4bd77fb527ad53  cronie"

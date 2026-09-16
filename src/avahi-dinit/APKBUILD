@@ -20,4 +20,4 @@ package() {
 	ln -sf "../avahi" "$pkgdir/usr/lib/dinit.d/boot.d/avahi"
 }
 
-sha512sums="2dfe729a7747ab30ae1710dac79ff5861c3008fac6828275f2c7777b87ccae93  avahi"
+sha512sums="34c9fded8f954e70719c57c71c879fc0c01bd415cd9d5e5cd617b71a55fffcc84b679bd7ed395d8b5e5a17ab8cc87f251a9ada14270d44392ea2e964ac06650c  avahi"

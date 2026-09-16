@@ -20,4 +20,4 @@ package() {
 	ln -sf "../cups" "$pkgdir/usr/lib/dinit.d/boot.d/cups"
 }
 
-sha512sums="9fd2fe6d2af6ff87e175478afdc8a118b81a7b875f22446ca23524bd6a9e5dc6  cups"
+sha512sums="1446f92256f64f3062883490dbdf20f925b9eaad70aecc84dee12807d3a5318770134e6051f4302e9e4a6c363128087d72603cf24c4c449622ae98567ac69295  cups"

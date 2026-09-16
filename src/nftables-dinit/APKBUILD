@@ -20,4 +20,4 @@ package() {
 	ln -sf "../nftables" "$pkgdir/usr/lib/dinit.d/boot.d/nftables"
 }
 
-sha512sums="fa971d53b9ffcd90d1add94add79b1787415008af14f76648bb37f82c17a6674  nftables"
+sha512sums="8d662ff1df9c28592074f91e44a5cda3fc7a9b895f7ff97c110cf35b751e86770571d493c79bdf8ac9ceaa5b1919624e982c7dda970a50db2a096a2a83fa47a7  nftables"

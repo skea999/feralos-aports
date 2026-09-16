@@ -20,4 +20,4 @@ package() {
 	ln -sf "../udisks2" "$pkgdir/usr/lib/dinit.d/boot.d/udisks2"
 }
 
-sha512sums="9b31371f1eef4fe817dbc47970b5631abb276da50e4d9187f6ef81dacd4afca1  udisks2"
+sha512sums="c0c10071eff9765bc97687bd5fd0df48b17374dbb279dd12725a7898d5bf5089f3b1c7c626206ab0e57b6e52837435f0daede8671066dbe8c50415ef77c3a7dd  udisks2"

@@ -20,4 +20,4 @@ package() {
 	ln -sf "../wireplumber" "$pkgdir/usr/lib/dinit.d/boot.d/wireplumber"
 }
 
-sha512sums="287443a88847325d42e0c5a2cf414337899df57b4d8e7ed1af8c00e18e5e3eb3  wireplumber"
+sha512sums="e1669d2ee4669c53ed66cc720e1fdae3163cf8f37082c8ebabb0bf94a54e038a0e65181acaabd10bacd36cc75af8f6bfc2eb973cd8414a1a7f5b36b636b6edac  wireplumber"

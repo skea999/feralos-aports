@@ -20,4 +20,4 @@ package() {
 	ln -sf "../incus" "$pkgdir/usr/lib/dinit.d/boot.d/incus"
 }
 
-sha512sums="2086440f35069e088cdd84eceeb2c8e2f1f25025519917c2e0c1f091674e19f0  incus"
+sha512sums="96f0ffbe7baee389fc22445b4b20082224391e223edb983529bcc46560f6e460d2241bef9d431c3d3858ff54f9490d1bbb036382ba3cc7cccd679d202adc4fde  incus"

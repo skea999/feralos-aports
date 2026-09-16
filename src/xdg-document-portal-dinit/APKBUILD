@@ -20,4 +20,4 @@ package() {
 	ln -sf "../xdg-document-portal" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-document-portal"
 }
 
-sha512sums="5e3b125b3fe43a5d239d6ea52d24427192445d210168c53e09092216c8fc0fb2  xdg-document-portal"
+sha512sums="5cecf2032b8b8074e10f8f196d1a2fcf3970fc5a3b70272ec59074e6b3cd4ed8600bc6c2de8ca0dac4e2c08c5f1e807bcc6509b30334ad2bd6918bbebd890184  xdg-document-portal"

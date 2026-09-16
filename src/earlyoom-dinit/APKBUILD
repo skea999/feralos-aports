@@ -20,4 +20,4 @@ package() {
 	ln -sf "../earlyoom" "$pkgdir/usr/lib/dinit.d/boot.d/earlyoom"
 }
 
-sha512sums="1c1a8669bb28317d5c2c17b174bcdb942fcccf8550baa2d7e0449de2f132c8cc  earlyoom"
+sha512sums="f08d8a7c18dc12b2d1d7af7928f2aaf975cca8c0c88c13a50560a3a85b4dfd49593173d0dc7d2477e1c77b30eaa139ea992e2e105bee8019d137c0adfe75c19f  earlyoom"

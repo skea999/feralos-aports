@@ -20,4 +20,4 @@ package() {
 	ln -sf "../incus-feature-agent" "$pkgdir/usr/lib/dinit.d/boot.d/incus-feature-agent"
 }
 
-sha512sums="1ee91db5475e1a38985cce5e84c95c9c83b9f095070cdea163e978694f893056  incus-feature-agent"
+sha512sums="58a1867d11e6a7272c2deb668951412dbf87aefda3f5d46beb24d05f2c02bf54526d2bd28b2f4087c401e7143af96aec76c4bdd287950b0af0f96ed3a05af6b0  incus-feature-agent"

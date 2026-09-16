@@ -11,6 +11,14 @@
 
 ## Log
 
+### 2026-09-17 — per-service smoke checks in CI
+- Every file in /usr/lib/dinit.d/ syntax-checked with `sh -n` (targets + *.d
+  dirs skipped); key services (boot, system, targets, dbus, sshd, chrony,
+  cronie, acpid, irqbalance, earlyoom, vector, getty, getty@.service) must exist
+- 1 fix cycle: key list said `chronyd`, package ships `chrony` — docker
+  alpine:latest repro before push showed sole failure; commit 739ad09 green
+  (build+deploy+client-test all success)
+
 ### 2026-09-15 — CI fixed after generator refactor (3 bugs)
 - BUG 1: generator used sha256 but wrote into sha512sums → 38 stale hashes
 - BUG 2: incus-dinit + incus-feature-agent-dinit conflict (both provide cmd:incusd)

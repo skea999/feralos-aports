@@ -20,4 +20,4 @@ package() {
 	ln -sf "../cpufrequtils" "$pkgdir/usr/lib/dinit.d/boot.d/cpufrequtils"
 }
 
-sha512sums="7458ce2f7650bed14ad0574251aa313c1178abf3565289c99bedb02c54e040a9729b36926eba03d2e5ef7dfbbce802c78a93333b9836b3ddeba056d3ff8133d5  cpufrequtils"
+sha512sums="7ba402be2663efd9673d8f551852dc54620de1c78bfa7dc0c8e899ea9426663d5145f82899e60d2a9d589fa64ee534dc8211c92fa4dcf084200b2f7f501bec27  cpufrequtils"

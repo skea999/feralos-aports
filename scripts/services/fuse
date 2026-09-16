@@ -1,2 +1,3 @@
 alpine-dep: fuse
+type = internal
 restart = false

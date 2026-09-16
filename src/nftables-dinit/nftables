@@ -1,5 +1,4 @@
-# dinit service: nftables (auto-generated from Alpine openrc nftables)
-type = process
-command = 
-restart = true
+# dinit service: nftables (Alpine openrc nftables + overrides)
+type = internal
+restart = false
 depends-on = local.target

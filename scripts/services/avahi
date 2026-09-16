@@ -1,1 +1,2 @@
 alpine-dep: avahi
+command = /usr/sbin/avahi-daemon

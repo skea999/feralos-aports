@@ -1,1 +1,2 @@
 alpine-dep: pipewire
+command = /usr/bin/pipewire

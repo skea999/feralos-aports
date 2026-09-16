@@ -1,1 +1,2 @@
 alpine-dep: xdg-document-portal
+command = /usr/libexec/xdg-document-portal

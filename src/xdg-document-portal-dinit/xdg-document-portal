@@ -1,5 +1,5 @@
-# dinit service: xdg-document-portal (auto-generated from Alpine openrc xdg-document-portal)
+# dinit service: xdg-document-portal (Alpine openrc xdg-document-portal + overrides)
 type = process
-command = 
+command = /usr/libexec/xdg-document-portal
 restart = true
 depends-on = local.target

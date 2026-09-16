@@ -1,5 +1,4 @@
-# dinit service: cpufrequtils (auto-generated from Alpine openrc cpufrequtils)
-type = process
-command = 
-restart = true
+# dinit service: cpufrequtils (Alpine openrc cpufrequtils + overrides)
+type = internal
+restart = false
 depends-on = local.target

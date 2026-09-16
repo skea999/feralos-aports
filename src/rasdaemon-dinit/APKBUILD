@@ -20,4 +20,4 @@ package() {
 	ln -sf "../rasdaemon" "$pkgdir/usr/lib/dinit.d/boot.d/rasdaemon"
 }
 
-sha512sums="75b9a9186a0341e471c836dde26b33ed94d2f44b1d285808876d4124df669e63  rasdaemon"
+sha512sums="67b84f8d79f3a4b2aa18a00dd9749dd1eb034f77c2a00dce1192e108dbe4ed74d2bb2b2f06614bca523065005c95fffc610f8c4a7dbf47b07e94b6ac70e9f371  rasdaemon"

@@ -20,4 +20,4 @@ package() {
 	ln -sf "../greetd" "$pkgdir/usr/lib/dinit.d/boot.d/greetd"
 }
 
-sha512sums="078bc74e70de7e12f82f9d0db01033d9c3e781e479643d790f89e036dbf3b342  greetd"
+sha512sums="fe4ca0db603f79e8d0b2fb24ba2c37df09ee1177a6b193777ccdade7183bedc844c06c60ed3ed63c0783e40e3cd206fdde67186b3d9618dad2435412672e2f58  greetd"

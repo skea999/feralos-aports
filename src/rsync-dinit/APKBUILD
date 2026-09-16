@@ -20,4 +20,4 @@ package() {
 	ln -sf "../rsync" "$pkgdir/usr/lib/dinit.d/boot.d/rsync"
 }
 
-sha512sums="5c598715653dfed9fcbf79a11cba0042577e55ff8d66ce0a22288c3088873127  rsync"
+sha512sums="c93244a764b61d5821b941509d523fb1d3bd80e39c253d20e2c1f44899dca4170d1f4d5265fa1a84370e7837c51e7a0569b2c2778f8a00ab34d35b92134a4a70  rsync"

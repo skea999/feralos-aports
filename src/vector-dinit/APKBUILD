@@ -20,4 +20,4 @@ package() {
 	ln -sf "../vector" "$pkgdir/usr/lib/dinit.d/boot.d/vector"
 }
 
-sha512sums="b95e69b2987b37d6f046a3f7fceaf5c26918fe68775b9e485f716b0f425abdd0  vector"
+sha512sums="8b7539fcea93bdecb1d620757cccba4a1b8d939a5e63a161c1107df6a6b0feff52d736c07e3d71a405eae4b05bb898b2a90fbaaefd1441311dd5b76b905c5c51  vector"

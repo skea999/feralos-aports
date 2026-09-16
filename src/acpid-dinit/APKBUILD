@@ -20,4 +20,4 @@ package() {
 	ln -sf "../acpid" "$pkgdir/usr/lib/dinit.d/boot.d/acpid"
 }
 
-sha512sums="26664f108dd7244894d483988fd546a61a52d83bf3af6901e85681ae1b800bc9  acpid"
+sha512sums="843fe4b540a2ba36259addbb12f757d8faa37fe85a6124c890318c8e3f53d90cf3b8d958d1f4e8e545f6eb8e3c82838c4219b5c9032398719248b526d8e24f70  acpid"

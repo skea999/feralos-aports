@@ -20,4 +20,4 @@ package() {
 	ln -sf "../xdg-desktop-portal-wlr" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-desktop-portal-wlr"
 }
 
-sha512sums="4afe6ab5a36877674d9b1dacfbee64349ade417c0e1f44f8c4be3ea75a976b20  xdg-desktop-portal-wlr"
+sha512sums="5486b7dafaedabc4494b251f5893465eec82a7806938f64ad61b3bb0e97a38fb36d381fc60702746cde36e61dacd2fa96c5e9b586d880f4ded338662e0dcf95f  xdg-desktop-portal-wlr"

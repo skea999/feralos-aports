@@ -20,4 +20,4 @@ package() {
 	ln -sf "../elogind" "$pkgdir/usr/lib/dinit.d/boot.d/elogind"
 }
 
-sha512sums="c946b96c7e0c5ec669fd9a23c627988f74e921f2501fb1bfeae152e39ec77f0c  elogind"
+sha512sums="abeaba8dda0c513d8a7b16201c87beb55532b15117a0cbc2ce6e93b6fc9ef745f5144192a5aa21d74b3571e31603de4d575cc6e1bf66aaabd24e4128dd635080  elogind"

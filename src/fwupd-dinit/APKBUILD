@@ -20,4 +20,4 @@ package() {
 	ln -sf "../fwupd" "$pkgdir/usr/lib/dinit.d/boot.d/fwupd"
 }
 
-sha512sums="03343e93470e48a3a6b8972a8b57791965fd7261aafb36cca282ab245393e329  fwupd"
+sha512sums="e952b113d789397d7f62031ea0e6925f223bdc1eec9a46c9795920a6608d25ffdb6d0ccefd51016a7336e07b6d04f10d135ef33c83aa22db4c553af0636db04f  fwupd"

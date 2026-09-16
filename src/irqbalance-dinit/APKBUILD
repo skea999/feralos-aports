@@ -20,4 +20,4 @@ package() {
 	ln -sf "../irqbalance" "$pkgdir/usr/lib/dinit.d/boot.d/irqbalance"
 }
 
-sha512sums="abe3c4b53b954c84b918eec8a0524f4ac2343fe3994fc3d51c1a22c7ab7d6dfb  irqbalance"
+sha512sums="76367e1778069c5b94af749b82d01a777959727fbfa748d0aa3d300420cd1613e496896f60102821ff899f9298cc3d305c87145d41c02a384a9e96643b8f3281  irqbalance"

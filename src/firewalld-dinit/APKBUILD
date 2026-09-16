@@ -20,4 +20,4 @@ package() {
 	ln -sf "../firewalld" "$pkgdir/usr/lib/dinit.d/boot.d/firewalld"
 }
 
-sha512sums="2305f84e9b2bb790494ee54a18aa09b31400859714e986f63ee01b7d3db12545  firewalld"
+sha512sums="150e7fa7a76b9a88e42d5444e579dfd2ccb8c6cad1f0e2b1147c98a88e60d7f6e90a07262bdd2e330924069049ebfd211dc7f95aca8b35ee439d99cbace5d46f  firewalld"

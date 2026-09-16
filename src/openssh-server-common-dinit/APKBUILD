@@ -20,4 +20,4 @@ package() {
 	ln -sf "../openssh-server-common" "$pkgdir/usr/lib/dinit.d/boot.d/openssh-server-common"
 }
 
-sha512sums="5b8c7d4f04d74b00292e2a53b963527dee55bb7781e3eb9fa52b5030b3dada9b  openssh-server-common"
+sha512sums="fd626a630d7fc26c5123558e4350fd9271bd02b281c2b3f5abf40c9d5af1c36bbf5b4b62e8684aec02d8b3c27805e45d2e9d6e28eff314cacdfbcb646c63aaae  openssh-server-common"

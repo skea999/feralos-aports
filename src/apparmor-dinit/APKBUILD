@@ -20,4 +20,4 @@ package() {
 	ln -sf "../apparmor" "$pkgdir/usr/lib/dinit.d/boot.d/apparmor"
 }
 
-sha512sums="2b922ec6ee99cba28086892495fbabc26151989e788f781a633525b55e0e0ab6  apparmor"
+sha512sums="c06a57dc35e3e7a499111462f3f5e0bb24d655cbf3d943649bd1e0d602728081a50ab5908e3b8a5078527a3e20991794314a9dfce6d55ab1fe6071b5cc4bfc8c  apparmor"

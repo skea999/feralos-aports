@@ -34,6 +34,14 @@ for manifest in "$SERVICES_DIR"/*; do
         continue
     fi
 
+    # skip services already handled by dinit-chimera early boot chain
+    # (creating a dinit service would conflict with the early chain)
+    if grep -q '^covered-by: dinit-chimera' "$manifest" 2>/dev/null; then
+        echo "SKIP $name: covered by dinit-chimera"
+        skipped=$((skipped + 1))
+        continue
+    fi
+
     # read overrides from manifest (lines that are not comments/alpine-dep)
     overrides=$(grep -v '^#' "$manifest" | grep -v '^alpine-dep' | grep -v '^\s*$' || true)
 

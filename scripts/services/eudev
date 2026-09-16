@@ -1,0 +1,3 @@
+alpine-dep: eudev
+covered-by: dinit-chimera
+# udevd started by dinit-devd hook (early-devd service)

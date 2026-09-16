@@ -1,0 +1,3 @@
+alpine-dep: cryptsetup
+covered-by: dinit-chimera
+# root LUKS in initramfs, non-root crypttab via dinit-cryptdisks hook

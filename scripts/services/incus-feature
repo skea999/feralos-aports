@@ -1,0 +1,3 @@
+alpine-dep: incus-feature
+covered-by: dinit-chimera
+# covered by incusd-dinit (same daemon)

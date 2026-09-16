@@ -1,0 +1,5 @@
+# dinit service: smartmontools (auto-generated from Alpine openrc smartmontools)
+type = process
+command = /usr/sbin/smartd --configfile=$cfgfile --no-fork ${command_args:-$SMARTD_OPTS}
+restart = true
+depends-on = local.target

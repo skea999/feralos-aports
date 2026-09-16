@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit podman"
 makedepends=""
-source="podman-dinit"
+source="podman"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/podman-dinit" "$pkgdir/usr/lib/dinit.d/podman-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"podman-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/podman-dinit"
+	install -Dm644 "$srcdir/podman" "$pkgdir/usr/lib/dinit.d/podman"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../podman" "$pkgdir/usr/lib/dinit.d/boot.d/podman"
 }
 
-sha512sums="d20ab9eed681c65faaf0d6b37a56067bedbb1bb84bd9b47e927b439ceab464349a23fcf90e0d50163081acf999aba70e84235cca0945a0a359fb23d177974223  podman-dinit"
+sha512sums="cc3932d6e2f8ef175a31ee0f63c57659474c615ad94f18cd72060fc487cfbfe0  podman"

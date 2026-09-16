@@ -1,6 +1,2 @@
-# alpine-dep: fuse
-# dinit service: fuse-dinit (converted from openrc fuse)
-type = process
-command = fusermount -V
-restart = true
-depends-on = local.target
+alpine-dep: fuse
+restart = false

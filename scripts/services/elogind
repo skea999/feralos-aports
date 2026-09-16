@@ -1,6 +1,1 @@
-# alpine-dep: elogind
-# dinit service: elogind-dinit (converted from openrc elogind)
-type = process
-command = elogind
-restart = true
-depends-on = local.target
+alpine-dep: elogind

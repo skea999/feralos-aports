@@ -1,0 +1,5 @@
+# dinit service: xdg-desktop-portal (auto-generated from Alpine openrc xdg-desktop-portal)
+type = process
+command = /usr/libexec/xdg-permission-store --replace $command_args
+restart = true
+depends-on = local.target

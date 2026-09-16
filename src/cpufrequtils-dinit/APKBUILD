@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit cpufrequtils"
 makedepends=""
-source="cpufrequtils-dinit"
+source="cpufrequtils"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/cpufrequtils-dinit" "$pkgdir/usr/lib/dinit.d/cpufrequtils-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"cpufrequtils-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/cpufrequtils-dinit"
+	install -Dm644 "$srcdir/cpufrequtils" "$pkgdir/usr/lib/dinit.d/cpufrequtils"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../cpufrequtils" "$pkgdir/usr/lib/dinit.d/boot.d/cpufrequtils"
 }
 
-sha512sums="87e6c3238a49e858f9fc0f616af106c9eea920752a72b9d7950204d1dc17b215e09cd5249001dbfec4bcd55f91addc1f8de7c04452ba601465d74f4cf035eaf7  cpufrequtils-dinit"
+sha512sums="f415d60f0f42c6168011a106281c1ba7838c60fae5b29a3d322e4962d1c27e3e  cpufrequtils"

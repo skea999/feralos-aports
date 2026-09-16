@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit greetd"
 makedepends=""
-source="greetd-dinit"
+source="greetd"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/greetd-dinit" "$pkgdir/usr/lib/dinit.d/greetd-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"greetd-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/greetd-dinit"
+	install -Dm644 "$srcdir/greetd" "$pkgdir/usr/lib/dinit.d/greetd"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../greetd" "$pkgdir/usr/lib/dinit.d/boot.d/greetd"
 }
 
-sha512sums="316c54bd39bdc24f6f40882974c7f5bdf58f24a04f9a492cf033eb2790eb7440b99f65d2f5d460e807188db4982e8305e75a993b1b6081724f8206df1b68af75  greetd-dinit"
+sha512sums="078bc74e70de7e12f82f9d0db01033d9c3e781e479643d790f89e036dbf3b342  greetd"

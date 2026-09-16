@@ -1,3 +1,4 @@
+# dinit service: dbus (Alpine openrc dbus + overrides)
 type = process
 command = /usr/bin/dbus-daemon --system --nofork --nopidfile --syslog-only
 restart = true

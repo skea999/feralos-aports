@@ -3,7 +3,7 @@
 pkgname=incus-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="incus service for dinit"
+pkgdesc="dinit service for incus"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit incus"
 makedepends=""
 source="incus"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/incus" "$pkgdir/usr/lib/dinit.d/incus"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../incus "$pkgdir/usr/lib/dinit.d/boot.d/incus"
+	ln -sf "../incus" "$pkgdir/usr/lib/dinit.d/boot.d/incus"
 }
 
-sha512sums="142ce25d7dd4a75147eaec61fd077253fd44110e2337e57fbc33d3f5ab5ee9e5604f1dd12063f455e7ec78fb14bfdde8248fd935bdcba217e2cafc57f71fa08d  incus"
+sha512sums="2086440f35069e088cdd84eceeb2c8e2f1f25025519917c2e0c1f091674e19f0  incus"

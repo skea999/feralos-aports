@@ -1,3 +1,4 @@
+# dinit service: cronie (Alpine openrc cronie + overrides)
 type = process
 command = /usr/sbin/crond -n
 restart = true

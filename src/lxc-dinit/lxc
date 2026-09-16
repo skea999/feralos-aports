@@ -1,0 +1,5 @@
+# dinit service: lxc (auto-generated from Alpine openrc lxc)
+type = process
+command = /usr/bin/lxc-start
+restart = true
+depends-on = local.target

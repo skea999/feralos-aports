@@ -1,3 +1,4 @@
+# dinit service: vector (Alpine openrc vector + overrides)
 type = process
 command = /usr/bin/vector --config /etc/vector/vector.toml
 restart = true

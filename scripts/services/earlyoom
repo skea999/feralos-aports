@@ -1,5 +1,2 @@
-# alpine-dep: earlyoom
-type = process
+alpine-dep: earlyoom
 command = /usr/bin/earlyoom -r 60
-restart = true
-depends-on = local.target

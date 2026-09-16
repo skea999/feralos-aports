@@ -1,5 +1,3 @@
-# alpine-dep: openssh
-type = process
+alpine-dep: openssh
 command = /usr/sbin/sshd -D -e
-restart = true
 depends-on = network.target

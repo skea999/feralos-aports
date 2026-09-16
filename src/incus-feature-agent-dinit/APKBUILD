@@ -3,7 +3,7 @@
 pkgname=incus-feature-agent-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="incus feature agent service for dinit"
+pkgdesc="dinit service for incus-feature-agent"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit incus-feature"
 makedepends=""
 source="incus-feature-agent"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/incus-feature-agent" "$pkgdir/usr/lib/dinit.d/incus-feature-agent"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../incus-feature-agent "$pkgdir/usr/lib/dinit.d/boot.d/incus-feature-agent"
+	ln -sf "../incus-feature-agent" "$pkgdir/usr/lib/dinit.d/boot.d/incus-feature-agent"
 }
 
-sha512sums="803178996555a61ed8803a72152dd81a4116723255963b028f1f44ab01305e3e198f87fe32b786e75e2d5af259da3471aab3470c6a1b47df527b855df8b98fc5  incus-feature-agent"
+sha512sums="1ee91db5475e1a38985cce5e84c95c9c83b9f095070cdea163e978694f893056  incus-feature-agent"

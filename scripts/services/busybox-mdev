@@ -1,5 +1,3 @@
-# alpine-dep: busybox
-type = process
+alpine-dep: busybox
 command = /sbin/mdev -s
 restart = false
-depends-on = local.target

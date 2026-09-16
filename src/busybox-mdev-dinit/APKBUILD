@@ -3,28 +3,21 @@
 pkgname=busybox-mdev-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="busybox mdev service for dinit"
+pkgdesc="dinit service for busybox-mdev"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit busybox"
 makedepends=""
-source="mdev"
+source="busybox-mdev"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/mdev" "$pkgdir/usr/lib/dinit.d/mdev"
+	install -Dm644 "$srcdir/busybox-mdev" "$pkgdir/usr/lib/dinit.d/busybox-mdev"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../mdev "$pkgdir/usr/lib/dinit.d/boot.d/mdev"
+	ln -sf "../busybox-mdev" "$pkgdir/usr/lib/dinit.d/boot.d/busybox-mdev"
 }
 
-sha512sums="50f1d7b671c66dd02c12f444ade61598a17db7c646f20695242233bf6bb1f98ef7732972b8f0c1e5333f0de5873b83d23ea1e3985c0e606941507f2a62214401  mdev"
+sha512sums="a3aef12685d00a811dc30811d6b3830c210869a4d92225e804a1a53536f13f73  busybox-mdev"

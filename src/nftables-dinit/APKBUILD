@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit nftables"
 makedepends=""
-source="nftables-dinit"
+source="nftables"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/nftables-dinit" "$pkgdir/usr/lib/dinit.d/nftables-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"nftables-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/nftables-dinit"
+	install -Dm644 "$srcdir/nftables" "$pkgdir/usr/lib/dinit.d/nftables"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../nftables" "$pkgdir/usr/lib/dinit.d/boot.d/nftables"
 }
 
-sha512sums="ae30dd1e210a3014ed439c4d3da351fbd505656c8c26dea6a42898b39dc613529072d95a16658e9312c26d2799b5be2bb324b66f34af547429118135e63b07c1  nftables-dinit"
+sha512sums="fa971d53b9ffcd90d1add94add79b1787415008af14f76648bb37f82c17a6674  nftables"

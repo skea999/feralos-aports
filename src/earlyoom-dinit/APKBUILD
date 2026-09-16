@@ -3,7 +3,7 @@
 pkgname=earlyoom-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="earlyoom service for dinit"
+pkgdesc="dinit service for earlyoom"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit earlyoom"
 makedepends=""
 source="earlyoom"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/earlyoom" "$pkgdir/usr/lib/dinit.d/earlyoom"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../earlyoom "$pkgdir/usr/lib/dinit.d/boot.d/earlyoom"
+	ln -sf "../earlyoom" "$pkgdir/usr/lib/dinit.d/boot.d/earlyoom"
 }
 
-sha512sums="11de15b2daab2997893e022af69f87a0222ec3529375b7d94192e45af0ddb18b2c3ab4f6850fbc16cec5f47b16b2dcbc6121481eb7036031d5740c0c296b46fd  earlyoom"
+sha512sums="1c1a8669bb28317d5c2c17b174bcdb942fcccf8550baa2d7e0449de2f132c8cc  earlyoom"

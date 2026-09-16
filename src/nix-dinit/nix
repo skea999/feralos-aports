@@ -1,0 +1,5 @@
+# dinit service: nix (auto-generated from Alpine openrc nix)
+type = process
+command = /usr/sbin/nix-daemon
+restart = true
+depends-on = local.target

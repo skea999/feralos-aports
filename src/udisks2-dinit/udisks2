@@ -1,0 +1,5 @@
+# dinit service: udisks2 (auto-generated from Alpine openrc udisks2)
+type = process
+command = /usr/libexec/udisks2/udisksd
+restart = true
+depends-on = local.target

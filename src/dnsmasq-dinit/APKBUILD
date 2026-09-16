@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit dnsmasq"
 makedepends=""
-source="dnsmasq-dinit"
+source="dnsmasq"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/dnsmasq-dinit" "$pkgdir/usr/lib/dinit.d/dnsmasq-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"dnsmasq-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/dnsmasq-dinit"
+	install -Dm644 "$srcdir/dnsmasq" "$pkgdir/usr/lib/dinit.d/dnsmasq"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../dnsmasq" "$pkgdir/usr/lib/dinit.d/boot.d/dnsmasq"
 }
 
-sha512sums="2b0033f77dc774d4e075510d2ba8da600cf3016a54006ab10c5847a40b9a00d6669375edbe3d3dd3a9583068ae45ae9b62f169f96b5faab433db613b0cf78629  dnsmasq-dinit"
+sha512sums="65097299a9fad922a4df692f00bbca4907cc3e405dace57cb42883f8f166a800  dnsmasq"

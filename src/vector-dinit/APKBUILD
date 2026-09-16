@@ -3,7 +3,7 @@
 pkgname=vector-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="vector service for dinit"
+pkgdesc="dinit service for vector"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit vector"
 makedepends=""
 source="vector"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/vector" "$pkgdir/usr/lib/dinit.d/vector"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../vector "$pkgdir/usr/lib/dinit.d/boot.d/vector"
+	ln -sf "../vector" "$pkgdir/usr/lib/dinit.d/boot.d/vector"
 }
 
-sha512sums="6fcec568f33ec7a35d03adb162fc68d6c6cbbff6148118b4d786e6b986230db30b3e479088fb800acd461a805328c1f487983b8a63683bd9adc5c7f1b8b0dd52  vector"
+sha512sums="b95e69b2987b37d6f046a3f7fceaf5c26918fe68775b9e485f716b0f425abdd0  vector"

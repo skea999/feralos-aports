@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit xdg-desktop-portal"
 makedepends=""
-source="xdg-desktop-portal-dinit"
+source="xdg-desktop-portal"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/xdg-desktop-portal-dinit" "$pkgdir/usr/lib/dinit.d/xdg-desktop-portal-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"xdg-desktop-portal-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-desktop-portal-dinit"
+	install -Dm644 "$srcdir/xdg-desktop-portal" "$pkgdir/usr/lib/dinit.d/xdg-desktop-portal"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../xdg-desktop-portal" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-desktop-portal"
 }
 
-sha512sums="2d3520ea2ed0c6112d0f096db4b7ca1c5ef1e06a29aee9b3c9f9ecdd47993c8235fd74cf0faab7c49749cf46afb4347ea0d97c0b4e9967618e987a32633fe0c9  xdg-desktop-portal-dinit"
+sha512sums="cde6010d53aa94916684e028a69c84b8c250fb1c8213c058a7608490b897bace  xdg-desktop-portal"

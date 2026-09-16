@@ -1,0 +1,5 @@
+# dinit service: podman (auto-generated from Alpine openrc podman)
+type = process
+command = /usr/bin/podman system service ${podman_opts:=--time 0} $podman_uri
+restart = true
+depends-on = local.target

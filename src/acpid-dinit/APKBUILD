@@ -3,7 +3,7 @@
 pkgname=acpid-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="acpid service for dinit"
+pkgdesc="dinit service for acpid"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit acpid"
 makedepends=""
 source="acpid"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/acpid" "$pkgdir/usr/lib/dinit.d/acpid"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../acpid "$pkgdir/usr/lib/dinit.d/boot.d/acpid"
+	ln -sf "../acpid" "$pkgdir/usr/lib/dinit.d/boot.d/acpid"
 }
 
-sha512sums="d9e1f810ea2768d21294e465db95de7c5ed1bb4e586da97aaed699f87b132cd042132cf8b25ead927e3310f6bc52f8b5974333b33465ff2401d4c3b973c7e8e3  acpid"
+sha512sums="26664f108dd7244894d483988fd546a61a52d83bf3af6901e85681ae1b800bc9  acpid"

@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit cups"
 makedepends=""
-source="cups-dinit"
+source="cups"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/cups-dinit" "$pkgdir/usr/lib/dinit.d/cups-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"cups-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/cups-dinit"
+	install -Dm644 "$srcdir/cups" "$pkgdir/usr/lib/dinit.d/cups"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../cups" "$pkgdir/usr/lib/dinit.d/boot.d/cups"
 }
 
-sha512sums="0ea31b3cc66db9ee2fa43523be1a22197d08d3e78a213615e7e70145b866c7ea9b895c15d1e715914c9e923e8d0ef11c9eec9edaebeb262381da0b299438a242  cups-dinit"
+sha512sums="9fd2fe6d2af6ff87e175478afdc8a118b81a7b875f22446ca23524bd6a9e5dc6  cups"

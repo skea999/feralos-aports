@@ -1,6 +1,1 @@
-# alpine-dep: polkit
-# dinit service: polkit-dinit (converted from openrc polkit)
-type = process
-command = polkitd
-restart = true
-depends-on = local.target
+alpine-dep: polkit

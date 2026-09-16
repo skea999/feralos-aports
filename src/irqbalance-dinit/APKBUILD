@@ -3,7 +3,7 @@
 pkgname=irqbalance-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="irqbalance service for dinit"
+pkgdesc="dinit service for irqbalance"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -11,20 +11,13 @@ depends="dinit irqbalance"
 makedepends=""
 source="irqbalance"
 
-build() {
-	# nothing to build
-	return 0
-}
-
-check() {
-	# nothing to test
-	return 0
-}
+build() { return 0; }
+check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/irqbalance" "$pkgdir/usr/lib/dinit.d/irqbalance"
 	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../irqbalance "$pkgdir/usr/lib/dinit.d/boot.d/irqbalance"
+	ln -sf "../irqbalance" "$pkgdir/usr/lib/dinit.d/boot.d/irqbalance"
 }
 
-sha512sums="822a34f3aadea4e665d0539451f2fbdf5ffabb7416cfad4e87eea234751a958ef3e4d62ef861d656a54c92d45f12c17124ad947501b4bea801295a853720bb54  irqbalance"
+sha512sums="abe3c4b53b954c84b918eec8a0524f4ac2343fe3994fc3d51c1a22c7ab7d6dfb  irqbalance"

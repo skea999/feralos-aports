@@ -9,15 +9,15 @@ arch="all"
 license="ISC"
 depends="dinit iptables"
 makedepends=""
-source="iptables-dinit"
+source="iptables"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "$srcdir/iptables-dinit" "$pkgdir/usr/lib/dinit.d/iptables-dinit"
-    mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"iptables-dinit" "$pkgdir/usr/lib/dinit.d/boot.d/iptables-dinit"
+	install -Dm644 "$srcdir/iptables" "$pkgdir/usr/lib/dinit.d/iptables"
+	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../iptables" "$pkgdir/usr/lib/dinit.d/boot.d/iptables"
 }
 
-sha512sums="8f3f37f51ae794576a7fba43ccfb754ee9dd9ccc4831ac070d6a3b6e3d8d0df55887fe4c8bcd27744233c9d6e8b3b718d0e1d8875b7e93f9fba6774b0193a38f  iptables-dinit"
+sha512sums="b0ad38e3b4a9ca9c05619cbcabaa6e27fb1766ed292aa2e4bde9e798cb7050d5  iptables"

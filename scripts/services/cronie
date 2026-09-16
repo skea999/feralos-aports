@@ -1,5 +1,2 @@
-# alpine-dep: cronie
-type = process
+alpine-dep: cronie
 command = /usr/sbin/crond -n
-restart = true
-depends-on = local.target

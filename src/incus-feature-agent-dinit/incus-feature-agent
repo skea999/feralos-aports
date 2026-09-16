@@ -1,4 +1,5 @@
+# dinit service: incus-feature-agent (auto-generated from Alpine openrc incus-feature-agent)
 type = process
-command = /usr/sbin/incus-agent
+command = 
 restart = true
 depends-on = local.target

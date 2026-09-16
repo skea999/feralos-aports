@@ -1,55 +1,95 @@
 #!/bin/sh
-# generate-services.sh — generate dinit packages from scripts/services/
+# generate-services.sh — generate dinit packages from scripts/services/ + Alpine openrc
 #
-# scripts/services/<name> = dinit service file. The file IS the source of truth.
-# Edit it to change the service. Create a new file to add a service.
+# scripts/services/<name> = manifest + overrides for each service.
+#   Empty file = auto-convert from Alpine .initd (command, restart, deps = defaults)
+#   File with content = overrides to apply (key=value dinit service lines)
 #
-# File format: dinit service definition + one metadata comment:
-#   # alpine-dep: <alpine-package-name>     (used for APKBUILD depends)
+# The Alpine .initd (from fetch-alpine-openrc.sh) provides the base:
+#   command, command_args → dinit "command ="
+#   depend() { need/after } → mapped to dinit targets
 #
-# The generator creates src/<name>-dinit/{APKBUILD, <name>} for each file.
-#
-# Usage:
-#   ./scripts/generate-services.sh              # generate all
-#   ./scripts/generate-services.sh --check      # verify only, no writes
+# Output: src/<name>-dinit/{APKBUILD, <name>} for each service.
 
 set -e
 BASE="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$BASE/src"
 SERVICES_DIR="$BASE/scripts/services"
+ALPINE_DIR="$BASE/references/alpine-openrc"
 
 [ -d "$SERVICES_DIR" ] || { echo "no scripts/services/ dir"; exit 1; }
 
-found=0; errors=0
+found=0; errors=0; skipped=0
 
-for svc_path in "$SERVICES_DIR"/*; do
-    [ -f "$svc_path" ] || continue
-    name=$(basename "$svc_path")
+for manifest in "$SERVICES_DIR"/*; do
+    [ -f "$manifest" ] || continue
+    name=$(basename "$manifest")
     outdir="$SRC/${name}-dinit"
-    apkbuild="$outdir/APKBUILD"
 
-    # extract alpine-dep from metadata comment
-    alpine_dep=$(grep -m1 '^# alpine-dep:' "$svc_path" 2>/dev/null | sed 's/^# alpine-dep: *//')
-    [ -z "$alpine_dep" ] && alpine_dep="$name"
-
-    if [ "${1:-}" = "--check" ]; then
-        if [ ! -f "$outdir/$name" ]; then
-            echo "MISSING: $outdir/$name"
-            errors=$((errors + 1))
-        elif ! sh -n "$outdir/$name" 2>/dev/null; then
-            echo "SYNTAX:  $outdir/$name"
-            errors=$((errors + 1))
-        fi
+    # extract alpine-dep from manifest (mandatory)
+    alpine_dep=$(grep -m1 '^alpine-dep' "$manifest" 2>/dev/null | sed 's/^alpine-dep[ =:]*//' | tr -d ' ')
+    if [ -z "$alpine_dep" ]; then
+        echo "SKIP $name: no alpine-dep in manifest"
+        skipped=$((skipped + 1))
         continue
+    fi
+
+    # read overrides from manifest (lines that are not comments/alpine-dep)
+    overrides=$(grep -v '^#' "$manifest" | grep -v '^alpine-dep' | grep -v '^\s*$' || true)
+
+    # read Alpine .initd for base command extraction
+    initd=$(find "$ALPINE_DIR" -path "*/$name/*.initd" 2>/dev/null | head -1)
+    base_command=""
+    if [ -n "$initd" ]; then
+        base_command=$(grep -m1 '^command=' "$initd" | sed 's/^command=//;s/"//g;s/^ *//;s/ *$//')
+        base_args=$(grep -m1 '^command_args=' "$initd" | sed 's/^command_args=//;s/"//g;s/^ *//;s/ *$//')
+        [ -n "$base_args" ] && base_command="$base_command $base_args"
     fi
 
     mkdir -p "$outdir"
 
-    # copy service file (is the dinit service, as-is)
-    cp "$svc_path" "$outdir/$name"
+    # ---- build the dinit service file ----
+    if [ -z "$overrides" ]; then
+        # pure auto-generation from Alpine .initd
+        cat > "$outdir/$name" <<EOF
+# dinit service: $name (auto-generated from Alpine openrc $name)
+type = process
+command = $base_command
+restart = true
+depends-on = local.target
+EOF
+    else
+        # apply overrides: start from defaults, then replace/add override lines
+        # defaults
+        svc_command="$base_command"
+        svc_restart="true"
+        svc_depends="local.target"
 
-    # generate APKBUILD
-    cat > "$apkbuild" <<APKBUILD_EOF
+        # apply overrides line by line
+        while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            case "$line" in
+                command*=*) svc_command=${line#command = };;
+                command=*)  svc_command=${line#command=};;
+                restart*=*) svc_restart=${line#restart = };;
+                restart=*)  svc_restart=${line#restart=};;
+                depends-on*=*) svc_depends=${line#depends-on = };;
+            esac
+        done <<EOF
+$overrides
+EOF
+
+        cat > "$outdir/$name" <<EOF
+# dinit service: $name (Alpine openrc $name + overrides)
+type = process
+command = $svc_command
+restart = $svc_restart
+depends-on = $svc_depends
+EOF
+    fi
+
+    # ---- generate APKBUILD ----
+    cat > "$outdir/APKBUILD" <<APKBUILD_EOF
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=${name}-dinit
@@ -75,30 +115,13 @@ package() {
 sha512sums="REPLACE_ME  $name"
 APKBUILD_EOF
 
+    # compute sha512
+    H=$(sha256sum "$outdir/$name" 2>/dev/null | awk '{print $1}')
+    [ -n "$H" ] && sed -i "s/REPLACE_ME/$H/" "$outdir/APKBUILD"
+
     found=$((found + 1))
-    echo "OK: ${name}-dinit"
+    echo "OK: ${name}-dinit (alpine-dep: $alpine_dep)"
 done
 
-# compute sha512sums for new/updated packages
-if [ "${1:-}" != "--check" ]; then
-    updated=0
-    for svc_dir in "$SRC"/*-dinit; do
-        [ -d "$svc_dir" ] || continue
-        pkg=$(basename "$svc_dir")
-        apkbuild="$svc_dir/APKBUILD"
-        [ -f "$apkbuild" ] || continue
-        grep -q 'REPLACE_ME' "$apkbuild" || continue
-        svc_file="$svc_dir/$pkg"  # pkg = name-dinit, svc file = name
-        base_name=${pkg%-dinit}
-        svc_file="$svc_dir/$base_name"
-        [ -f "$svc_file" ] || continue
-        H=$(sha256sum "$svc_file" 2>/dev/null | awk '{print $1}') || continue
-        sed -i "s/REPLACE_ME/$H/" "$apkbuild"
-        updated=$((updated + 1))
-    done
-    echo ""
-    echo "Checksums updated: $updated"
-fi
-
 echo ""
-echo "=== Done: $found packages, $errors errors ==="
+echo "=== Done: $found generated, $skipped skipped, $errors errors ==="

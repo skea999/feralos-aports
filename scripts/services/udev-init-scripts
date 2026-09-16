@@ -1,0 +1,3 @@
+alpine-dep: udev-init-scripts
+covered-by: dinit-chimera
+# early boot chain handles udev init

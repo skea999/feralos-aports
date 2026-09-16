@@ -146,6 +146,20 @@ jobs:
           test -f /usr/lib/dinit.d/getty@.service || { echo "missing getty@.service"; exit 1; }
           test -L /usr/lib/dinit.d/boot.d/getty@tty1 || { echo "missing getty@tty1 symlink"; exit 1; }
           test -L /usr/lib/dinit.d/boot.d/getty@ttyS0 || { echo "missing getty@ttyS0 symlink"; exit 1; }
+          # 6: per-service verification — every -dinit service file exists and is valid
+          svc_fail=0
+          for svc in /usr/lib/dinit.d/*; do
+            [ -f "$svc" ] || continue
+            case "$svc" in *.target|*.d) continue ;; esac
+            sh -n "$svc" 2>/dev/null || { echo "SYNTAX: $svc"; svc_fail=1; }
+          done
+          # key services must exist
+          for svc in boot system local.target network.target login.target \
+                     dbus sshd chronyd cronie acpid irqbalance earlyoom \
+                     vector getty getty@.service; do
+            test -f "/usr/lib/dinit.d/$svc" || { echo "missing: $svc"; svc_fail=1; }
+          done
+          [ "$svc_fail" -eq 0 ] || { echo "service checks FAILED"; exit 1; }
           echo "smoke-install OK"
 
       - name: Index repositories

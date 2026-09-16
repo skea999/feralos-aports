@@ -5,9 +5,20 @@
 
 ## Current
 
-- **Step**: 6 ✅ COMPLETE — 36 dinit packages + getty-dinit (37 total), CI verde
+- **Step**: 6 ✅ COMPLETE — 41 packages, CI all green (build+deploy+client-test)
 - **Next action**: Step 5 — boot test QEMU (booster). All services installed,
-  harness niri full fixture.
+  harness niri full fixture. 2g bless-boot deferred to last.
+
+## Log
+
+### 2026-09-15 — CI fixed after generator refactor (3 bugs)
+- BUG 1: generator used sha256 but wrote into sha512sums → 38 stale hashes
+- BUG 2: incus-dinit + incus-feature-agent-dinit conflict (both provide cmd:incusd)
+  → per-apk isolated fresh-root smoke + shared-root skip of variant pair
+- BUG 3: 9 services with empty command (one-shot/config services) + pipewire
+  wrong binary → 7 type=internal + 3 real commands fixed
+- All verified in docker alpine:latest before push (full rehearsal)
+- Commit fc09675: all 3 jobs green
 
 ## Log
 

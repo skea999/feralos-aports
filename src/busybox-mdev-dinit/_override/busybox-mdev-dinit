@@ -1,0 +1,6 @@
+# dinit service: busybox-mdev-dinit (generated from openrc busybox-mdev)
+# OVERRIDE: one-shot coldplug scan, not a daemon
+type = process
+command = /sbin/mdev -s
+restart = false
+depends-on = local.target

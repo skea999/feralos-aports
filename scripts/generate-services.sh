@@ -185,6 +185,54 @@ if [ "$MODE" = "generate" ]; then
     echo "Checksums updated: $updated"
 fi
 
+# ============================================================
+# OVERRIDE DOCUMENTATION — services that differ from the default pattern
+# ============================================================
+# Default pattern: type=process, restart=true, depends-on=<target>
+#
+# For each service that needs customization, create:
+#   src/<dinit_name>/_override/<filename>
+# Any file in _override/ REPLACES the generated file of the same name.
+# Example: src/busybox-mdev-dinit/_override/busybox-mdev-dinit
+#          (contains service file with restart=false instead of restart=true)
+#
+# Services that differ (as of 2026-09-15):
+#
+# 1. busybox-mdev — one-shot coldplug scan (NOT a daemon)
+#    Command: /sbin/mdev -s   restart=false
+#    Reason: mdev -s scans /dev once at boot, does not run continuously
+#
+# 2. btrfs-progs — one-shot device scan (NOT a daemon)
+#    Command: btrfs device scan   restart=false
+#    Reason: btrfs device scan runs once at boot, finds block devices
+#
+# 3. fuse — FUSE is kernel-level (NOT a daemon)
+#    Command: fusermount -V (or no service needed)
+#    Reason: FUSE module is loaded by kernel; fusermount is just a helper
+#
+# 4. vector — needs vector-setup BEFORE vector daemon
+#    Consider: depends-on should include vector-setup or a custom wrapper
+#    that starts vector-setup first, then vector.
+#
+# 5. nix — nix-daemon may need /etc/nix/nix.conf or NIX_PATH environment
+#    Check: does nix-daemon need special env to find the store?
+#
+# 6. podman — may need --force-restart or specific storage driver flags
+#    Check: podman system service flags for rootless vs rootful mode
+#
+# To add a new override:
+#   mkdir -p src/<dinit_name>/_override
+#   cat > src/<dinit_name>/_override/<dinit_name> <<EOF
+#   type = process
+#   command = <modified command>
+#   restart = false    # or true
+#   depends-on = <target>
+#   EOF
+#
+# The next ./scripts/generate-services.sh run will apply this override
+# and keep it across regenerations.
+# ============================================================
+
 # cleanup
 rm -f /tmp/_svc_list.txt
 

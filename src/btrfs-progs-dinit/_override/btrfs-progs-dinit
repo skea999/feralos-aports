@@ -1,0 +1,6 @@
+# dinit service: btrfs-progs-dinit (generated from openrc btrfs-progs)
+# OVERRIDE: one-shot device scan, not a daemon
+type = process
+command = btrfs device scan
+restart = false
+depends-on = local.target

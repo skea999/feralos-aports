@@ -1,0 +1,8 @@
+# dinit service: fuse-dinit (generated from openrc fuse)
+# OVERRIDE: FUSE is kernel-level, fusermount is just a helper
+# This service is a no-op placeholder; actual FUSE mounting is
+# handled by individual FUSE users at runtime.
+type = process
+command = /bin/true
+restart = false
+depends-on = local.target

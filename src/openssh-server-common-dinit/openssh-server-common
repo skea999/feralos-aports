@@ -1,5 +1,4 @@
-# dinit service: openssh-server-common (auto-generated from Alpine openrc openssh-server-common)
-type = process
-command = 
-restart = true
+# dinit service: openssh-server-common (Alpine openrc openssh-server-common + overrides)
+type = internal
+restart = false
 depends-on = local.target

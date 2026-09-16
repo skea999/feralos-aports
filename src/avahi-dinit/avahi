@@ -1,5 +1,5 @@
-# dinit service: avahi (auto-generated from Alpine openrc avahi)
+# dinit service: avahi (Alpine openrc avahi + overrides)
 type = process
-command = 
+command = /usr/sbin/avahi-daemon
 restart = true
 depends-on = local.target

@@ -59,16 +59,19 @@ for manifest in "$SERVICES_DIR"/*; do
     # ---- build the dinit service file ----
     if [ -z "$overrides" ]; then
         # pure auto-generation from Alpine .initd
-        cat > "$outdir/$name" <<EOF
-# dinit service: $name (auto-generated from Alpine openrc $name)
-type = process
-command = $base_command
-restart = true
-depends-on = local.target
-EOF
+        {
+            echo "# dinit service: $name (auto-generated from Alpine openrc $name)"
+            echo "type = process"
+            # guard: OpenRC script-based initd units have no command= line —
+            # emitting an empty command makes the service invalid
+            [ -n "$base_command" ] && echo "command = $base_command"
+            echo "restart = true"
+            echo "depends-on = local.target"
+        } > "$outdir/$name"
     else
         # apply overrides: start from defaults, then replace/add override lines
         # defaults
+        svc_type="process"
         svc_command="$base_command"
         svc_restart="true"
         svc_depends="local.target"
@@ -77,6 +80,8 @@ EOF
         while IFS= read -r line; do
             [ -z "$line" ] && continue
             case "$line" in
+                type*=*)    svc_type=${line#type = };;
+                type=*)     svc_type=${line#type=};;
                 command*=*) svc_command=${line#command = };;
                 command=*)  svc_command=${line#command=};;
                 restart*=*) svc_restart=${line#restart = };;
@@ -87,13 +92,15 @@ EOF
 $overrides
 EOF
 
-        cat > "$outdir/$name" <<EOF
-# dinit service: $name (Alpine openrc $name + overrides)
-type = process
-command = $svc_command
-restart = $svc_restart
-depends-on = $svc_depends
-EOF
+        {
+            echo "# dinit service: $name (Alpine openrc $name + overrides)"
+            echo "type = $svc_type"
+            # command only makes sense for process/scripted services —
+            # milestone services must not carry an empty command line
+            [ -n "$svc_command" ] && echo "command = $svc_command"
+            echo "restart = $svc_restart"
+            echo "depends-on = $svc_depends"
+        } > "$outdir/$name"
     fi
 
     # ---- generate APKBUILD ----
@@ -123,8 +130,8 @@ package() {
 sha512sums="REPLACE_ME  $name"
 APKBUILD_EOF
 
-    # compute sha512
-    H=$(sha256sum "$outdir/$name" 2>/dev/null | awk '{print $1}')
+    # compute sha512 (sha512sums= requires sha512, not sha256)
+    H=$(sha512sum "$outdir/$name" 2>/dev/null | awk '{print $1}')
     [ -n "$H" ] && sed -i "s/REPLACE_ME/$H/" "$outdir/APKBUILD"
 
     found=$((found + 1))

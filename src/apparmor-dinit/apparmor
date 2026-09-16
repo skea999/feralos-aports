@@ -1,5 +1,4 @@
-# dinit service: apparmor (auto-generated from Alpine openrc apparmor)
-type = process
-command = 
-restart = true
+# dinit service: apparmor (Alpine openrc apparmor + overrides)
+type = internal
+restart = false
 depends-on = local.target

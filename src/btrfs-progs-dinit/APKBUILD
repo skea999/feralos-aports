@@ -20,4 +20,4 @@ package() {
 	ln -sf "../btrfs-progs" "$pkgdir/usr/lib/dinit.d/boot.d/btrfs-progs"
 }
 
-sha512sums="7b97d40cbe360df40c4d005f0a3d7ed9aad259841a98b0c00c08a675bc1396c585afa4d70db0771a9d07a75d68077a92db98a6befbdad3b528efaabe51c7fc69  btrfs-progs"
+sha512sums="66ddd8a5f6b56931a816b6e7e0dbcc18571a516b299ec39da4a75ef0aaf0fb5e1880acef6b4ecd190a0df9f77fec6fe62388ab25f0336064be66174e7ac22269  btrfs-progs"

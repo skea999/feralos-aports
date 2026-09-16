@@ -87,10 +87,37 @@ jobs:
       - name: Smoke-install built packages
         run: |
           set -e
+          # 1) per-package isolated smoke: EVERY apk must install cleanly
+          #    (deps resolve, triggers run) on a fresh root. This catches
+          #    broken packages independently of provider conflicts between
+          #    variants (incus vs incus-feature both provide cmd:incusd,
+          #    so they can never coexist in one root by Alpine design).
+          cache=/tmp/apk-smoke-cache
+          mkdir -p "$cache"
           for apkfile in ~/packages/*/x86_64/*.apk; do
-            # empty glob stays literal when nothing was built
             [ -f "$apkfile" ] || continue
-            # deps (dinit, eudev, sd-tools, ...) resolve from Alpine CDN
+            root=$(mktemp -d)
+            # fresh root has no repository list — reuse the container's
+            apk add --quiet --root "$root" --initdb \
+              --repositories-file /etc/apk/repositories \
+              --cache-dir "$cache" \
+              --allow-untrusted "$apkfile" \
+              || { echo "smoke install FAIL: $apkfile"; exit 1; }
+            rm -rf "$root"
+            echo "smoke install OK: $(basename "$apkfile")"
+          done
+          # 2) shared-root install for the artifact checks below. Skip
+          #    mutually exclusive provider variants — each one already
+          #    proved installable standalone in step 1, and a real machine
+          #    always picks exactly one variant.
+          # incus-dinit -> incus, incus-feature-agent-dinit -> incus-feature
+          # (incus and incus-feature conflict on cmd:incusd)
+          skip_pkgs="incus-dinit incus-feature-agent-dinit"
+          for apkfile in ~/packages/*/x86_64/*.apk; do
+            [ -f "$apkfile" ] || continue
+            name=$(basename "$apkfile" | sed -E 's/-[0-9][^-]*-r[0-9]+\.apk$//')
+            case " $skip_pkgs " in *" $name "*)
+              echo "skip shared-root install (variant): $name"; continue;; esac
             apk add --allow-untrusted "$apkfile"
           done
           # expected artifacts from built packages (update as packages land)
@@ -190,11 +217,18 @@ jobs:
           # verify keyring shipped correct repo (without /x86_64 — apk appends $arch)
           grep -qx "https://skea999.github.io/feralos-aports/feralos-aports" /etc/apk/repositories.d/feralos.list || { echo "feralos.list wrong:"; cat /etc/apk/repositories.d/feralos.list; exit 1; }
           apk update
-          # install every package we publish (keyring already installed)
+          # mutually exclusive provider variants: incus-dinit pulls `incus`,
+          # incus-feature-agent-dinit pulls `incus-feature`, and both
+          # packages ship cmd:incusd so they can never coexist on one
+          # machine. The build job smoke-installs each variant standalone;
+          # here (one simulated machine) we install the remaining packages.
+          skip_pkgs="incus-dinit incus-feature-agent-dinit"
           for d in src/*/APKBUILD; do
             pkg=$(basename "$(dirname "$d")")
             [ "$pkg" = feralos-keyring ] && continue
             [ -e "$d" ] || continue
+            case " $skip_pkgs " in *" $pkg "*)
+              echo "Skipping variant (conflicts on cmd:incusd): $pkg"; continue;; esac
             echo "Installing $pkg..."
             apk add "$pkg"
             apk policy "$pkg" | grep 'skea999.github.io/feralos-aports'

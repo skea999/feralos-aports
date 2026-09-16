@@ -155,7 +155,7 @@ jobs:
           done
           # key services must exist
           for svc in boot system local.target network.target login.target \
-                     dbus sshd chronyd cronie acpid irqbalance earlyoom \
+                     dbus sshd chrony cronie acpid irqbalance earlyoom \
                      vector getty getty@.service; do
             test -f "/usr/lib/dinit.d/$svc" || { echo "missing: $svc"; svc_fail=1; }
           done

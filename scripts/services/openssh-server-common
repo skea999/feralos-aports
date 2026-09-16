@@ -1,0 +1,5 @@
+# alpine-dep: openssh-server-common
+type = process
+command = /usr/sbin/sshd -D
+restart = true
+depends-on = local.target

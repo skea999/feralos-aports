@@ -1,183 +1,98 @@
 #!/bin/sh
-# generate-services.sh — source of truth for all dinit services
+# generate-services.sh — generate dinit packages from scripts/services/
 #
-# Architecture:
-#   - SERVICE_LIST (below): hardcoded list of all services to convert
-#   - Each entry: openrc_name|dinit_name|command|depends_on|alpine_dep
-#   - Generated files go to src/<dinit_name>/ (service + APKBUILD)
-#   - Overrides: src/<dinit_name>/_override/ (files here REPLACE generated ones)
-#   - To ADD a service: append a line to SERVICE_LIST
-#   - To MODIFY a service: create src/<name>/_override/custom-service
-#   - To UPDATE upstream: run scripts/fetch-alpine-openrc.sh, then rerun this
+# scripts/services/<name> = dinit service file. The file IS the source of truth.
+# Edit it to change the service. Create a new file to add a service.
+#
+# File format: dinit service definition + one metadata comment:
+#   # alpine-dep: <alpine-package-name>     (used for APKBUILD depends)
+#
+# The generator creates src/<name>-dinit/{APKBUILD, <name>} for each file.
 #
 # Usage:
-#   ./scripts/generate-services.sh              # regenerate all from list
+#   ./scripts/generate-services.sh              # generate all
 #   ./scripts/generate-services.sh --check      # verify only, no writes
-#
-# After running: compute sha512sums, commit, push.
 
 set -e
 BASE="$(cd "$(dirname "$0")/.." && pwd)"
-ALPINE="$BASE/references/alpine-openrc"
 SRC="$BASE/src"
-MODE="${1:-generate}"
+SERVICES_DIR="$BASE/scripts/services"
 
-# ============================================================
-# SERVICE LIST — single source of truth
-# Format: openrc_name | dinit_name | command (empty=extract) | depends_on | alpine_dep
-# Add new services here. Remove = remove from src/.
-# ============================================================
-cat << 'SERVICES_EOF' > /tmp/_svc_list.txt
-acpid|acpid-dinit||local.target|acpid
-apparmor|apparmor-dinit||local.target|apparmor
-avahi|avahi-dinit||local.target|avahi
-btrfs-progs|btrfs-progs-dinit||local.target|btrfs-progs
-busybox-mdev|busybox-mdev-dinit|/sbin/mdev -s|local.target|busybox
-chrony|chrony-dinit||network.target|chrony
-cpufrequtils|cpufrequtils-dinit||local.target|cpufrequtils
-cronie|cronie-dinit||local.target|cronie
-cups|cups-dinit||local.target|cups
-dbus|dbus-dinit||local.target|dbus
-dnsmasq|dnsmasq-dinit||local.target|dnsmasq
-earlyoom|earlyoom-dinit||local.target|earlyoom
-elogind|elogind-dinit||local.target|elogind
-firewalld|firewalld-dinit||local.target|firewalld
-fuse|fuse-dinit||local.target|fuse
-fwupd|fwupd-dinit||local.target|fwupd
-greetd|greetd-dinit||local.target|greetd
-incus|incus-dinit||local.target|incus
-incus-feature-agent|incus-feature-agent-dinit||local.target|incus-feature
-iptables|iptables-dinit||local.target|iptables
-irqbalance|irqbalance-dinit||local.target|irqbalance
-lxc|lxc-dinit||local.target|lxc
-nftables|nftables-dinit||local.target|nftables
-nix|nix-dinit||local.target|nix
-openssh|openssh-dinit||network.target|openssh
-pipewire|pipewire-dinit||local.target|pipewire
-podman|podman-dinit||local.target|podman
-polkit|polkit-dinit||local.target|polkit
-rasdaemon|rasdaemon-dinit||local.target|rasdaemon
-rsync|rsync-dinit||local.target|rsync
-smartmontools|smartmontools-dinit||local.target|smartmontools
-udisks2|udisks2-dinit||local.target|udisks2
-vector|vector-dinit||local.target|vector
-wireplumber|wireplumber-dinit||local.target|wireplumber
-xdg-desktop-portal|xdg-desktop-portal-dinit||local.target|xdg-desktop-portal
-xdg-desktop-portal-wlr|xdg-desktop-portal-wlr-dinit||local.target|xdg-desktop-portal-wlr
-xdg-document-portal|xdg-document-portal-dinit||local.target|xdg-document-portal
-SERVICES_EOF
+[ -d "$SERVICES_DIR" ] || { echo "no scripts/services/ dir"; exit 1; }
 
-# ============================================================
-# EXTRACTION (fetch-alpine-openrc if needed)
-# ============================================================
-if [ ! -d "$ALPINE" ] || [ -z "$(ls -A "$ALpine" 2>/dev/null)" ]; then
-    echo "Extracting Alpine openrc files..."
-    "$BASE/scripts/fetch-alpine-openrc.sh" >/dev/null 2>&1
-fi
+found=0; errors=0
 
-# ============================================================
-# GENERATION
-# ============================================================
-found=0; skipped=0; errors=0
-
-while IFS='|' read -r openrc_name dinit_name command depends_on alpine_dep; do
-    # skip empty/comment lines
-    [ -z "$openrc_name" ] && continue
-    case "$openrc_name" in \#*) continue ;; esac
-
-    outdir="$SRC/$dinit_name"
-    override="$outdir/_override"
-    svc_file="$outdir/$dinit_name"
+for svc_path in "$SERVICES_DIR"/*; do
+    [ -f "$svc_path" ] || continue
+    name=$(basename "$svc_path")
+    outdir="$SRC/${name}-dinit"
     apkbuild="$outdir/APKBUILD"
 
-    # --check mode: verify only, no writes
-    if [ "$MODE" = "--check" ]; then
-        if [ ! -f "$svc_file" ]; then
-            echo "MISSING: $dinit_name/$dinit_name"
+    # extract alpine-dep from metadata comment
+    alpine_dep=$(grep -m1 '^# alpine-dep:' "$svc_path" 2>/dev/null | sed 's/^# alpine-dep: *//')
+    [ -z "$alpine_dep" ] && alpine_dep="$name"
+
+    if [ "${1:-}" = "--check" ]; then
+        if [ ! -f "$outdir/$name" ]; then
+            echo "MISSING: $outdir/$name"
             errors=$((errors + 1))
-        elif ! sh -n "$svc_file" 2>/dev/null; then
-            echo "SYNTAX:  $dinit_name/$dinit_name"
+        elif ! sh -n "$outdir/$name" 2>/dev/null; then
+            echo "SYNTAX:  $outdir/$name"
             errors=$((errors + 1))
         fi
         continue
     fi
 
-    # extract command from Alpine openrc if not provided
-    if [ -z "$command" ]; then
-        initd=$(find "$ALPINE" -path "*/$openrc_name/*.initd" 2>/dev/null | head -1)
-        if [ -n "$initd" ]; then
-            command=$(grep -m1 '^command=' "$initd" | sed 's/^command=//;s/"//g;s/^ *//;s/ *$//')
-        fi
-        [ -z "$command" ] && { echo "SKIP $dinit_name: no command found in $openrc_name"; errors=$((errors + 1)); continue; }
-    fi
-
-    depends_on="${depends_on:-local.target}"
     mkdir -p "$outdir"
 
-    # write service file (unless overridden)
-    if [ ! -f "$svc_file" ] || [ ! -d "$override" ]; then
-        cat > "$svc_file" <<EOF
-# dinit service: $dinit_name (generated from openrc $openrc_name)
-type = process
-command = $command
-restart = true
-depends-on = $depends_on
-EOF
-    fi
+    # copy service file (is the dinit service, as-is)
+    cp "$svc_path" "$outdir/$name"
 
-    # apply overrides (if any)
-    if [ -d "$override" ]; then
-        for f in "$override"/*; do
-            [ -f "$f" ] || continue
-            cp "$f" "$outdir/$(basename "$f")"
-        done
-    fi
-
-    # write APKBUILD (always regenerated — idempotent)
-    cat > "$apkbuild" <<EOF
+    # generate APKBUILD
+    cat > "$apkbuild" <<APKBUILD_EOF
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
-pkgname=$dinit_name
+pkgname=${name}-dinit
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="dinit service for $openrc_name"
+pkgdesc="dinit service for $name"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit $alpine_dep"
 makedepends=""
-source="$dinit_name"
+source="$name"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-    install -Dm644 "\$srcdir/$dinit_name" "\$pkgdir/usr/lib/dinit.d/$dinit_name"
-    mkdir -p "\$pkgdir/usr/lib/dinit.d/boot.d"
-    ln -sf ../"$dinit_name" "\$pkgdir/usr/lib/dinit.d/boot.d/$dinit_name"
+	install -Dm644 "\$srcdir/$name" "\$pkgdir/usr/lib/dinit.d/$name"
+	mkdir -p "\$pkgdir/usr/lib/dinit.d/boot.d"
+	ln -sf "../$name" "\$pkgdir/usr/lib/dinit.d/boot.d/$name"
 }
 
-sha512sums="REPLACE_ME  $dinit_name"
-EOF
+sha512sums="REPLACE_ME  $name"
+APKBUILD_EOF
 
     found=$((found + 1))
-    echo "OK: $dinit_name"
-done < /tmp/_svc_list.txt
+    echo "OK: ${name}-dinit"
+done
 
-# ============================================================
-# CHECKSUMS (compute sha512 for new/updated service files)
-# ============================================================
-if [ "$MODE" = "generate" ]; then
+# compute sha512sums for new/updated packages
+if [ "${1:-}" != "--check" ]; then
     updated=0
     for svc_dir in "$SRC"/*-dinit; do
         [ -d "$svc_dir" ] || continue
         pkg=$(basename "$svc_dir")
-        svc="$svc_dir/$pkg"
         apkbuild="$svc_dir/APKBUILD"
-        [ -f "$svc_file" ] || continue
         [ -f "$apkbuild" ] || continue
         grep -q 'REPLACE_ME' "$apkbuild" || continue
-        H=$(sha256sum "$svc" 2>/dev/null | awk '{print $1}') || continue
+        svc_file="$svc_dir/$pkg"  # pkg = name-dinit, svc file = name
+        base_name=${pkg%-dinit}
+        svc_file="$svc_dir/$base_name"
+        [ -f "$svc_file" ] || continue
+        H=$(sha256sum "$svc_file" 2>/dev/null | awk '{print $1}') || continue
         sed -i "s/REPLACE_ME/$H/" "$apkbuild"
         updated=$((updated + 1))
     done
@@ -185,57 +100,5 @@ if [ "$MODE" = "generate" ]; then
     echo "Checksums updated: $updated"
 fi
 
-# ============================================================
-# OVERRIDE DOCUMENTATION — services that differ from the default pattern
-# ============================================================
-# Default pattern: type=process, restart=true, depends-on=<target>
-#
-# For each service that needs customization, create:
-#   src/<dinit_name>/_override/<filename>
-# Any file in _override/ REPLACES the generated file of the same name.
-# Example: src/busybox-mdev-dinit/_override/busybox-mdev-dinit
-#          (contains service file with restart=false instead of restart=true)
-#
-# Services that differ (as of 2026-09-15):
-#
-# 1. busybox-mdev — one-shot coldplug scan (NOT a daemon)
-#    Command: /sbin/mdev -s   restart=false
-#    Reason: mdev -s scans /dev once at boot, does not run continuously
-#
-# 2. btrfs-progs — one-shot device scan (NOT a daemon)
-#    Command: btrfs device scan   restart=false
-#    Reason: btrfs device scan runs once at boot, finds block devices
-#
-# 3. fuse — FUSE is kernel-level (NOT a daemon)
-#    Command: fusermount -V (or no service needed)
-#    Reason: FUSE module is loaded by kernel; fusermount is just a helper
-#
-# 4. vector — needs vector-setup BEFORE vector daemon
-#    Consider: depends-on should include vector-setup or a custom wrapper
-#    that starts vector-setup first, then vector.
-#
-# 5. nix — nix-daemon may need /etc/nix/nix.conf or NIX_PATH environment
-#    Check: does nix-daemon need special env to find the store?
-#
-# 6. podman — may need --force-restart or specific storage driver flags
-#    Check: podman system service flags for rootless vs rootful mode
-#
-# To add a new override:
-#   mkdir -p src/<dinit_name>/_override
-#   cat > src/<dinit_name>/_override/<dinit_name> <<EOF
-#   type = process
-#   command = <modified command>
-#   restart = false    # or true
-#   depends-on = <target>
-#   EOF
-#
-# The next ./scripts/generate-services.sh run will apply this override
-# and keep it across regenerations.
-# ============================================================
-
-# cleanup
-rm -f /tmp/_svc_list.txt
-
 echo ""
-echo "=== Done: $found generated, $errors errors ==="
-echo "Run: git diff --stat src/*-dinit/"
+echo "=== Done: $found packages, $errors errors ==="

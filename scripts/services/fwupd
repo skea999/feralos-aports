@@ -1,0 +1,5 @@
+# alpine-dep: fwupd
+type = process
+command = /usr/libexec/fwupd/fwupd --daemon
+restart = true
+depends-on = local.target

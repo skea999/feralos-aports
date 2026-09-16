@@ -1,0 +1,6 @@
+# alpine-dep: rsync
+# dinit service: rsync-dinit (converted from openrc rsync)
+type = process
+command = rsync --daemon
+restart = true
+depends-on = local.target

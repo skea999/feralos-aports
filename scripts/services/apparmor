@@ -1,0 +1,6 @@
+# alpine-dep: apparmor
+# dinit service: apparmor-dinit (converted from openrc apparmor)
+type = process
+command = aa-notify -p /etc/apparmor.d/notify.conf
+restart = true
+depends-on = local.target

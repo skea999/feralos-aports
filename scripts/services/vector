@@ -1,0 +1,5 @@
+# alpine-dep: vector
+type = process
+command = /usr/bin/vector --config /etc/vector/vector.toml
+restart = true
+depends-on = local.target

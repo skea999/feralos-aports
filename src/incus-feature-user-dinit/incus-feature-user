@@ -1,0 +1,4 @@
+type = process
+command = /usr/sbin/incus-user
+restart = true
+depends-on = local.target

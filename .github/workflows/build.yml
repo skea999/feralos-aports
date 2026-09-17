@@ -112,7 +112,8 @@ jobs:
           #    always picks exactly one variant.
           # incus-dinit -> incus, incus-feature-agent-dinit -> incus-feature
           # (incus and incus-feature conflict on cmd:incusd)
-          skip_pkgs="incus-dinit incus-feature-agent-dinit"
+          # incus-feature-user-dinit -> incus-feature (also provides incusd)
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit"
           for apkfile in ~/packages/*/x86_64/*.apk; do
             [ -f "$apkfile" ] || continue
             name=$(basename "$apkfile" | sed -E 's/-[0-9][^-]*-r[0-9]+\.apk$//')
@@ -236,7 +237,7 @@ jobs:
           # packages ship cmd:incusd so they can never coexist on one
           # machine. The build job smoke-installs each variant standalone;
           # here (one simulated machine) we install the remaining packages.
-          skip_pkgs="incus-dinit incus-feature-agent-dinit"
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit"
           for d in src/*/APKBUILD; do
             pkg=$(basename "$(dirname "$d")")
             [ "$pkg" = feralos-keyring ] && continue

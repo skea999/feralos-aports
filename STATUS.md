@@ -5,14 +5,27 @@
 
 ## Current
 
-- **Step**: 6b — services dir relocated `/usr/lib/dinit.d` → `/lib/dinit.d`
-  (Alpine standard; stock Alpine dinit does NOT scan /usr/lib/dinit.d).
-  All APKBUILDs bumped (dinit-chimera r2, *-dinit r1). **NEEDS: push → CI
-  republish → QEMU boot test** (first run 2026-09-17 failed: `dinit: boot:
-  could not find service description.` — services invisible to PID 1)
-- **Next action**: commit + push, verify CI green, re-run harness dinit fixture
+- **Step**: 6c — incus-feature-agent service had empty `command` (generator
+  artifact; 2026-09-15 "empty command fix" missed it) → `type=process` fatal
+  for dinit: `Could not load service incus-feature-agent: 'command' setting
+  not specified.` First boot test with /lib/dinit.d REACHED service loading
+  (path fix CONFIRMED) but died here. pkgrel r2 + real command
+  `/usr/sbin/incus-agent` (from Alpine incus-agent.initd). **NEEDS: push → CI
+  → harness re-run**
+- **Next action**: commit + push, CI green, harness `btrfs_standard_dinit.yaml`
 
 ## Log
+
+### 2026-09-18 — boot test round 2: path fix CONFIRMED, empty-command stragglers
+- Harness 2026-09-18T00-18-17Z: dinit PID1 loaded /lib/dinit.d/boot OK
+  ('could not find service description' GONE) → relocation works
+- New failure: `dinit: Could not load service incus-feature-agent: 'command'
+  setting not specified.` → boot aborted (boot → error loading dependency)
+- Cause: generated service had `type = process` + empty `command =` — dinit
+  treats as fatal at LOAD time (boot fails entirely, not just that service)
+- Sweep: only incus-feature-agent affected (grep `^command = *$` across src/)
+- Fix: `command = /usr/sbin/incus-agent` (Alpine incus-agent.initd: binary
+  runs foreground, openrc used command_background), pkgrel 1→2
 
 ### 2026-09-18 — CI smoke + generator + waits-for.d aligned to /lib (round 2)
 - Round-1 CI run 35289343535 FAILED at smoke-install: workflow `build.yml`

@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-feature-agent-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for incus-feature-agent"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,4 +20,4 @@ package() {
 	ln -sf "../incus-feature-agent" "$pkgdir/lib/dinit.d/boot.d/incus-feature-agent"
 }
 
-sha512sums="58a1867d11e6a7272c2deb668951412dbf87aefda3f5d46beb24d05f2c02bf54526d2bd28b2f4087c401e7143af96aec76c4bdd287950b0af0f96ed3a05af6b0  incus-feature-agent"
+sha512sums="498b1fe2f936179574cc6c05e9d8510c57f7ef10f79688215458b3b5e6f7ffeac572375fda8b812f95d67945c819c5d22286a707873660bd166376a81b2a3950  incus-feature-agent"

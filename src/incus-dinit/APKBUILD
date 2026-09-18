@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for incus"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/incus" "$pkgdir/usr/lib/dinit.d/incus"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../incus" "$pkgdir/usr/lib/dinit.d/boot.d/incus"
+	install -Dm644 "$srcdir/incus" "$pkgdir/lib/dinit.d/incus"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../incus" "$pkgdir/lib/dinit.d/boot.d/incus"
 }
 
 sha512sums="96f0ffbe7baee389fc22445b4b20082224391e223edb983529bcc46560f6e460d2241bef9d431c3d3858ff54f9490d1bbb036382ba3cc7cccd679d202adc4fde  incus"

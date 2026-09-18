@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=wireplumber-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for wireplumber"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/wireplumber" "$pkgdir/usr/lib/dinit.d/wireplumber"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../wireplumber" "$pkgdir/usr/lib/dinit.d/boot.d/wireplumber"
+	install -Dm644 "$srcdir/wireplumber" "$pkgdir/lib/dinit.d/wireplumber"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../wireplumber" "$pkgdir/lib/dinit.d/boot.d/wireplumber"
 }
 
 sha512sums="e1669d2ee4669c53ed66cc720e1fdae3163cf8f37082c8ebabb0bf94a54e038a0e65181acaabd10bacd36cc75af8f6bfc2eb973cd8414a1a7f5b36b636b6edac  wireplumber"

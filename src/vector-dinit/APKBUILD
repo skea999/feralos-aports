@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=vector-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for vector"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/vector" "$pkgdir/usr/lib/dinit.d/vector"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../vector" "$pkgdir/usr/lib/dinit.d/boot.d/vector"
+	install -Dm644 "$srcdir/vector" "$pkgdir/lib/dinit.d/vector"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../vector" "$pkgdir/lib/dinit.d/boot.d/vector"
 }
 
 sha512sums="8b7539fcea93bdecb1d620757cccba4a1b8d939a5e63a161c1107df6a6b0feff52d736c07e3d71a405eae4b05bb898b2a90fbaaefd1441311dd5b76b905c5c51  vector"

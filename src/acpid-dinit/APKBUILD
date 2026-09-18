@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=acpid-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for acpid"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/acpid" "$pkgdir/usr/lib/dinit.d/acpid"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../acpid" "$pkgdir/usr/lib/dinit.d/boot.d/acpid"
+	install -Dm644 "$srcdir/acpid" "$pkgdir/lib/dinit.d/acpid"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../acpid" "$pkgdir/lib/dinit.d/boot.d/acpid"
 }
 
 sha512sums="843fe4b540a2ba36259addbb12f757d8faa37fe85a6124c890318c8e3f53d90cf3b8d958d1f4e8e545f6eb8e3c82838c4219b5c9032398719248b526d8e24f70  acpid"

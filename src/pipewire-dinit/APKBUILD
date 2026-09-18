@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=pipewire-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for pipewire"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/pipewire" "$pkgdir/usr/lib/dinit.d/pipewire"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../pipewire" "$pkgdir/usr/lib/dinit.d/boot.d/pipewire"
+	install -Dm644 "$srcdir/pipewire" "$pkgdir/lib/dinit.d/pipewire"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../pipewire" "$pkgdir/lib/dinit.d/boot.d/pipewire"
 }
 
 sha512sums="34a81d73ca9ec3884060c2d8d8fde4e740d2231890c3b51146a733e54025563284bab93e8d4bd5c77916cf9643ad3920f50e349a710bd8564d46208dbde33e36  pipewire"

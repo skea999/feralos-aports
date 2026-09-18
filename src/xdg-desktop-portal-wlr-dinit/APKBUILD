@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=xdg-desktop-portal-wlr-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for xdg-desktop-portal-wlr"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/xdg-desktop-portal-wlr" "$pkgdir/usr/lib/dinit.d/xdg-desktop-portal-wlr"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../xdg-desktop-portal-wlr" "$pkgdir/usr/lib/dinit.d/boot.d/xdg-desktop-portal-wlr"
+	install -Dm644 "$srcdir/xdg-desktop-portal-wlr" "$pkgdir/lib/dinit.d/xdg-desktop-portal-wlr"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../xdg-desktop-portal-wlr" "$pkgdir/lib/dinit.d/boot.d/xdg-desktop-portal-wlr"
 }
 
 sha512sums="5486b7dafaedabc4494b251f5893465eec82a7806938f64ad61b3bb0e97a38fb36d381fc60702746cde36e61dacd2fa96c5e9b586d880f4ded338662e0dcf95f  xdg-desktop-portal-wlr"

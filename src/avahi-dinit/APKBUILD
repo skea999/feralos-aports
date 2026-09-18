@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=avahi-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for avahi"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/avahi" "$pkgdir/usr/lib/dinit.d/avahi"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../avahi" "$pkgdir/usr/lib/dinit.d/boot.d/avahi"
+	install -Dm644 "$srcdir/avahi" "$pkgdir/lib/dinit.d/avahi"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../avahi" "$pkgdir/lib/dinit.d/boot.d/avahi"
 }
 
 sha512sums="9505bfeedc78785d8eee590c2f2c30e1a70816219ad9860d9fb606d87d2aa8d8f3319ad06a3d628f4423c0544320d74c7264ddd9a01cb9c15b8a63d0671af3df  avahi"

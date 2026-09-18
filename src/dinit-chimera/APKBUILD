@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dinit-chimera
 pkgver=0.99.24
-pkgrel=1
+pkgrel=2
 pkgdesc="Dinit core service suite (Chimera upstream) for FeralOS"
 url="https://github.com/chimera-linux/dinit-chimera"
 arch="all"
@@ -15,6 +15,19 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/dinit-chimera/
 	dinit-cryptdisks
 	dinit-console"
 options="!check"  # upstream ships no test suite
+
+prepare() {
+	default_prepare
+	# Alpine standard service dir: the stock Alpine dinit (0.21) scans
+	# /etc/dinit.d, /run/dinit.d, /usr/local/lib/dinit.d, /lib/dinit.d —
+	# it does NOT scan /usr/lib/dinit.d (Chimera works because cports patches
+	# their dinit). Override srvdir to /lib/dinit.d so dinit finds the `boot`
+	# service; the `/` operator with an absolute RHS discards the prefix, so
+	# EARLY_PATH/HELPER_PATH/SCRIPT_PATH stay coherent (all /lib/dinit.d/*).
+	# libdir-relative dirs are NOT affected: tmpfdir stays /usr/lib/tmpfiles.d
+	# and dlibdir (shutdown-hook) stays /usr/lib/dinit.
+	sed -i "s|srvdir = get_option('libdir') / 'dinit.d'|srvdir = '/lib/dinit.d'|" "$builddir"/meson.build
+}
 
 build() {
 	# plain meson setup (NOT abuild-meson: it auto-passes --sbindir which
@@ -58,7 +71,8 @@ package() {
 
 	# drop-in dirs: packages (and admins) symlink enabled services here;
 	# dinit-check + dinit require them to exist
-	install -d "$pkgdir/usr/lib/dinit.d/boot.d" "$pkgdir/etc/dinit.d/boot.d"
+	# (services dir = /lib/dinit.d — see prepare() srvdir override)
+	install -d "$pkgdir/lib/dinit.d/boot.d" "$pkgdir/etc/dinit.d/boot.d"
 }
 
 sha512sums="cb743ee5d802818df6c232e90bbd0c3a84ce211403b27453900d866311118e4df30cda9eb6eca68d7e09f66f822bd7e4446256b8b24679bc5bb364b57e5d0565  $pkgname-$pkgver.tar.gz

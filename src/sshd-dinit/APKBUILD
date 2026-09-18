@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=sshd-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for sshd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/sshd" "$pkgdir/usr/lib/dinit.d/sshd"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../sshd" "$pkgdir/usr/lib/dinit.d/boot.d/sshd"
+	install -Dm644 "$srcdir/sshd" "$pkgdir/lib/dinit.d/sshd"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../sshd" "$pkgdir/lib/dinit.d/boot.d/sshd"
 }
 
 sha512sums="4fdc90ce3e6fa2ac1f1283b1b723c565ffae432523b558d6b6405cbd993b5d695cbf948cd17b5b73174a42d086ee007c35290b1924516dd45fb35d331d751a49  sshd"

@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=podman-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for podman"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/podman" "$pkgdir/usr/lib/dinit.d/podman"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../podman" "$pkgdir/usr/lib/dinit.d/boot.d/podman"
+	install -Dm644 "$srcdir/podman" "$pkgdir/lib/dinit.d/podman"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../podman" "$pkgdir/lib/dinit.d/boot.d/podman"
 }
 
 sha512sums="264f95e69d251bb029dee680f1013d57cf5872cd03c817752a7395412e2168438926c5f79a85eb5b208ace72fab9d9f10f8bfb274d12797ba1f503d54984052c  podman"

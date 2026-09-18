@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=irqbalance-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for irqbalance"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/irqbalance" "$pkgdir/usr/lib/dinit.d/irqbalance"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../irqbalance" "$pkgdir/usr/lib/dinit.d/boot.d/irqbalance"
+	install -Dm644 "$srcdir/irqbalance" "$pkgdir/lib/dinit.d/irqbalance"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../irqbalance" "$pkgdir/lib/dinit.d/boot.d/irqbalance"
 }
 
 sha512sums="76367e1778069c5b94af749b82d01a777959727fbfa748d0aa3d300420cd1613e496896f60102821ff899f9298cc3d305c87145d41c02a384a9e96643b8f3281  irqbalance"

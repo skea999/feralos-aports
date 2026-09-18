@@ -5,11 +5,32 @@
 
 ## Current
 
-- **Step**: 6 ✅ COMPLETE — 41 packages, CI all green (build+deploy+client-test)
-- **Next action**: Step 5 — boot test QEMU (booster). All services installed,
-  harness niri full fixture. 2g bless-boot deferred to last.
+- **Step**: 6b — services dir relocated `/usr/lib/dinit.d` → `/lib/dinit.d`
+  (Alpine standard; stock Alpine dinit does NOT scan /usr/lib/dinit.d).
+  All APKBUILDs bumped (dinit-chimera r2, *-dinit r1). **NEEDS: push → CI
+  republish → QEMU boot test** (first run 2026-09-17 failed: `dinit: boot:
+  could not find service description.` — services invisible to PID 1)
+- **Next action**: commit + push, verify CI green, re-run harness dinit fixture
 
 ## Log
+
+### 2026-09-18 — services dir → /lib/dinit.d (boot failure root cause)
+- First dinit boot test (installer run 2026-09-17T22-53-05Z) failed:
+  `dinit: boot: could not find service description.` after booster switch_root
+- Root cause: stock Alpine dinit 0.21 scans /etc/dinit.d, /run/dinit.d,
+  /usr/local/lib/dinit.d, /lib/dinit.d — NOT /usr/lib/dinit.d
+  (options-processing.cc build_paths; Chimera patches cports dinit, Alpine doesn't)
+- Note: Step 2e CI smoke already source-verified this and used explicit
+  `-d /usr/lib/dinit.d` — which MASKED the problem; PID 1 wrapper passes no -d
+- Fix: dinit-chimera APKBUILD prepare() seds meson `srvdir` → '/lib/dinit.d'
+  (meson `/` operator: absolute RHS discards prefix → EARLY_PATH etc coherent;
+  tmpfdir /usr/lib/tmpfiles.d + dlibdir /usr/lib/dinit unaffected), pkgrel 1→2
+- All 40 *-dinit APKBUILDs: install paths → /lib/dinit.d, pkgrel 0→1
+  (boot.d relative links `../name` unaffected)
+- Installer side synced: services.go symlinks → /lib/dinit.d,
+  defaultRunlevelsDinit emptied (getty owned by getty-dinit pkg; plain-name
+  link of a template is invalid — $1 not expanded),
+  dinitReplacedByChimera skip-list (9 -openrc pkgs covered by chimera suite)
 
 ### 2026-09-17 — per-service smoke checks in CI
 - Every file in /usr/lib/dinit.d/ syntax-checked with `sh -n` (targets + *.d

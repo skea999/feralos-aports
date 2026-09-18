@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-feature-agent-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for incus-feature-agent"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/incus-feature-agent" "$pkgdir/usr/lib/dinit.d/incus-feature-agent"
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../incus-feature-agent" "$pkgdir/usr/lib/dinit.d/boot.d/incus-feature-agent"
+	install -Dm644 "$srcdir/incus-feature-agent" "$pkgdir/lib/dinit.d/incus-feature-agent"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../incus-feature-agent" "$pkgdir/lib/dinit.d/boot.d/incus-feature-agent"
 }
 
 sha512sums="58a1867d11e6a7272c2deb668951412dbf87aefda3f5d46beb24d05f2c02bf54526d2bd28b2f4087c401e7143af96aec76c4bdd287950b0af0f96ed3a05af6b0  incus-feature-agent"

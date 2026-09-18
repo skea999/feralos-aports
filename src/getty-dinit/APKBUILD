@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=getty-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="getty service templates for dinit (tty1 + ttyS0)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,13 +22,13 @@ check() {
 }
 
 package() {
-	install -Dm644 "$srcdir/getty@.service" "$pkgdir/usr/lib/dinit.d/getty@.service"
-	install -Dm644 "$srcdir/getty@.service" "$pkgdir/usr/lib/dinit.d/getty"
+	install -Dm644 "$srcdir/getty@.service" "$pkgdir/lib/dinit.d/getty@.service"
+	install -Dm644 "$srcdir/getty@.service" "$pkgdir/lib/dinit.d/getty"
 
 	# Enable on tty1 (hardware console) and ttyS0 (serial console for harness)
-	mkdir -p "$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf ../getty "$pkgdir/usr/lib/dinit.d/boot.d/getty@tty1"
-	ln -sf ../getty "$pkgdir/usr/lib/dinit.d/boot.d/getty@ttyS0"
+	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
+	ln -sf ../getty "$pkgdir/lib/dinit.d/boot.d/getty@tty1"
+	ln -sf ../getty "$pkgdir/lib/dinit.d/boot.d/getty@ttyS0"
 }
 
 sha512sums="bd8e064fd42ac5b5567fafc46b7079b9250a0a6a32b0f730ea8c64b429443db69048a3d9dd2073ebef2268caccc44fa804f1f025539bdabbd5f8fc64388ec9ab  getty@.service"

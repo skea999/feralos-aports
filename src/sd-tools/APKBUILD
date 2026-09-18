@@ -1,0 +1,54 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# Version scheme: pkgver 0.99.990 (NOT upstream 0.99.0) so our build ALWAYS
+# wins over any current/future Alpine 0.99.x — Alpine's sd-tools segfaults at
+# runtime (GCC use-after-scope in tmpfiles CONF_PATHS_STRV,
+# chimera-linux/sd-tools#5; their check() never runs --create). Rule 0
+# exception: Alpine package exists but is broken at runtime.
+# When upstream ships a release WITH the fix: revert pkgver to the real one,
+# drop the patch, bump pkgrel above Alpine's.
+_upstream=0.99.0
+pkgname=sd-tools
+pkgver=0.99.990
+pkgrel=993
+pkgdesc="Standalone, cleaned up utilities from systemd"
+url="https://github.com/chimera-linux/sd-tools"
+arch="all"
+license="LGPL-2.1-or-later"
+makedepends="
+	acl-dev
+	libcap-dev
+	meson
+	"
+checkdepends="bash"  # test-sysusers.sh has a bash shebang (exit 127 without)
+subpackages="$pkgname-doc"
+source="$pkgname-$_upstream.tar.gz::https://github.com/chimera-linux/sd-tools/archive/refs/tags/v$_upstream.tar.gz
+	tmpfiles-config-dirs-lifetime.patch
+	"
+# tarball dir follows the UPSTREAM version, not our inflated pkgver
+builddir="$srcdir"/$pkgname-$_upstream
+
+build() {
+	# plain meson (NOT abuild-meson: keep our explicit option), RULE 5:
+	# all optional deps enabled
+	meson setup \
+		--prefix=/usr \
+		--buildtype=plain \
+		-Dacl=enabled \
+		. output
+	meson compile -C output
+}
+
+check() {
+	meson test -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+
+	install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname
+	install -Dm644 LICENSE.LGPL2.1 -t "$pkgdir"/usr/share/doc/$pkgname
+}
+
+sha512sums="f82471a33f204766977c24a56c78ad41a295cb7b7c8190bdad4d40c45db67677c3bb2f71222fc02ca1c42653bc60b2cf742b0114b5bfc2d9efdfc238c866c52f  sd-tools-0.99.0.tar.gz
+2289af67cba3efa111e1e89207caa193807798afed11660d73de1a597dda2da4db31667e6a3a5c64b13047d63e27b87c468ca2f051381975b5ee107fc14543db  tmpfiles-config-dirs-lifetime.patch"

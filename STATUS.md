@@ -14,6 +14,20 @@
 
 ## Log
 
+### 2026-09-18 — CI smoke + generator + waits-for.d aligned to /lib (round 2)
+- Round-1 CI run 35289343535 FAILED at smoke-install: workflow `build.yml`
+  still asserted /usr/lib/dinit.d paths (masked by the same stale expectations
+  the relocation removes) — assertions updated to /lib/dinit.d
+- NEW catch: upstream `services/system` hardcodes ABSOLUTE
+  `waits-for.d: /usr/lib/dinit.d/boot.d` — meson srvdir sed alone would leave
+  `system` waiting on a nonexistent dir → ALL package boot.d services silently
+  never started. prepare() now seds `services/system` too; build.yml asserts
+  `grep waits-for.d: /lib/dinit.d/boot.d` on the installed file
+- `scripts/generate-services.sh` template → /lib/dinit.d (future pkgs inherit)
+- Living docs updated (PACKAGES/SERVICES/CONVERSION paths); historical log
+  entries left as-is
+- client-test `dinit-check -d /lib/dinit.d boot|system` aligned
+
 ### 2026-09-18 — services dir → /lib/dinit.d (boot failure root cause)
 - First dinit boot test (installer run 2026-09-17T22-53-05Z) failed:
   `dinit: boot: could not find service description.` after booster switch_root

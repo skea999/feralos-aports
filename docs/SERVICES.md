@@ -1,15 +1,18 @@
 # Dinit Service Files — Upstream Reference
 
-> These are **Chimera upstream files** (`/usr/lib/dinit.d/`, v0.99.24). FeralOS does not
-> write or maintain them — documented here as the reference our packages and `*-dinit`
-> conversions must align with. Verified from `services/meson.build`.
+> These are **Chimera upstream files** (upstream dir `/usr/lib/dinit.d/`, v0.99.24).
+> **FeralOS relocates the suite to `/lib/dinit.d/`** (stock Alpine dinit does not scan
+> `/usr/lib/dinit.d` — dinit-chimera APKBUILD `prepare()` sed). FeralOS does not
+> write or maintain the files themselves — documented here as the reference our
+> packages and `*-dinit` conversions must align with. Verified from `services/meson.build`.
 
 ## Complete Upstream Service List (52 + zram-device)
 
 **Entry points**
 - `boot` — `type=internal`, `depends-on: system`, `waits-for.d: /etc/dinit.d/boot.d`
 - `system` — `type=internal`, `depends-on: login.target`, `depends-on: network.target`,
-  `waits-for.d: /usr/lib/dinit.d/boot.d` ← **our packages symlink here**
+  `waits-for.d: /lib/dinit.d/boot.d` ← **our packages symlink here**
+  (upstream: `/usr/lib/dinit.d/boot.d` — relocated by our `prepare()` sed)
 - `recovery`, `single` — boot-failure shell / single-user (`chain-to` back to boot)
 
 **Pseudo-fs & env**
@@ -65,7 +68,7 @@ waits-for.d: /etc/dinit.d/boot.d
 type = internal
 depends-on: login.target
 depends-on: network.target
-waits-for.d: /usr/lib/dinit.d/boot.d
+waits-for.d: /lib/dinit.d/boot.d   # upstream: /usr/lib/dinit.d/boot.d (our sed)
 ```
 
 **services/early-pseudofs**

@@ -161,15 +161,15 @@ package() {
 `dinit-sulogin-path`, `default-path-env`. Unset options fall back to upstream defaults
 (`/usr/libexec/…`, sulogin `/usr/sbin/sulogin`).
 
-### What the package installs (upstream, no maintenance on our side)
+### What the package installs (paths after our `prepare()` srvdir override)
 
 ```
-/usr/lib/dinit.d/                  # 52+1 service files (boot, system, early-*, targets…)
-/usr/lib/dinit.d/early/scripts/    # ~35 shell scripts (@SCRIPT_PATH@-substituted)
-/usr/lib/dinit.d/early/helpers/    # 12 SEPARATE small binaries (see table below)
-/usr/lib/dinit.d/man/              # man pages
-/usr/lib/tmpfiles.d/               # dinit.conf, utmp.conf
-/usr/lib/sysctl.d/                 # upstream defaults
+/lib/dinit.d/                       # 52+1 service files (boot, system, early-*, targets…)
+/lib/dinit.d/early/scripts/         # ~35 shell scripts (@SCRIPT_PATH@-substituted)
+/lib/dinit.d/early/helpers/         # 12 SEPARATE small binaries (see table below)
+/lib/dinit.d/man/                   # man pages
+/usr/lib/tmpfiles.d/                # dinit.conf, utmp.conf (libdir-relative, unchanged)
+/usr/lib/sysctl.d/                  # upstream defaults
 ```
 
 ### Divergence from upstream v0.99.24 (exact)
@@ -339,9 +339,9 @@ pkgname=sshd-dinit
 depends="dinit-chimera openssh"
 
 package() {
-	install -Dm644 sshd "$pkgdir"/usr/lib/dinit.d/sshd
-	mkdir -p "$pkgdir"/usr/lib/dinit.d/boot.d
-	ln -s /usr/lib/dinit.d/sshd "$pkgdir"/usr/lib/dinit.d/boot.d/sshd
+	install -Dm644 sshd "$pkgdir"/lib/dinit.d/sshd
+	mkdir -p "$pkgdir"/lib/dinit.d/boot.d
+	ln -s ../sshd "$pkgdir"/lib/dinit.d/boot.d/sshd
 }
 ```
 

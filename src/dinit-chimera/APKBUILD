@@ -27,6 +27,11 @@ prepare() {
 	# libdir-relative dirs are NOT affected: tmpfdir stays /usr/lib/tmpfiles.d
 	# and dlibdir (shutdown-hook) stays /usr/lib/dinit.
 	sed -i "s|srvdir = get_option('libdir') / 'dinit.d'|srvdir = '/lib/dinit.d'|" "$builddir"/meson.build
+	# upstream service files hardcode ABSOLUTE waits-for.d paths — align the
+	# package drop-in with the relocated service dir (boot waits for
+	# /etc/dinit.d/boot.d — the admin dir — and needs no change)
+	sed -i "s|waits-for.d: /usr/lib/dinit.d/boot.d|waits-for.d: /lib/dinit.d/boot.d|" \
+		"$builddir"/services/system
 }
 
 build() {

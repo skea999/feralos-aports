@@ -122,9 +122,10 @@ jobs:
             apk add --allow-untrusted "$apkfile"
           done
           # expected artifacts from built packages (update as packages land)
-          # dinit-chimera:
-          test -f /usr/lib/dinit.d/boot || { echo "missing boot service"; exit 1; }
-          test -x /usr/lib/dinit.d/early/helpers/mnt || { echo "missing mnt helper"; exit 1; }
+          # dinit-chimera: services dir = /lib/dinit.d (Alpine standard —
+          # stock dinit does NOT scan /usr/lib/dinit.d, see APKBUILD prepare())
+          test -f /lib/dinit.d/boot || { echo "missing boot service"; exit 1; }
+          test -x /lib/dinit.d/early/helpers/mnt || { echo "missing mnt helper"; exit 1; }
           test -f /usr/libexec/dinit/init || { echo "missing init wrapper"; exit 1; }
           grep -q '/usr/bin/dinit' /usr/libexec/dinit/init || { echo "init wrapper does not target /usr/bin/dinit"; exit 1; }
           # init wrapper must NOT be at sbin location (OpenRC coexistence)
@@ -142,14 +143,16 @@ jobs:
           sh -n /usr/libexec/dinit-console || { echo "dinit-console syntax error"; exit 1; }
           /usr/libexec/dinit-console keyboard || { echo "dinit-console keyboard must exit 0"; exit 1; }
           # 2d: suite syntax validation (Alpine dinit ships dinitcheck)
-          dinit-check -d /usr/lib/dinit.d boot || { echo "dinitcheck boot FAILED"; exit 1; }
+          dinit-check -d /lib/dinit.d boot || { echo "dinitcheck boot FAILED"; exit 1; }
+          # system must waits-for the RELOCATED package drop-in (prepare() sed)
+          grep -q 'waits-for.d: /lib/dinit.d/boot.d' /lib/dinit.d/system || { echo "system waits-for.d not relocated to /lib"; exit 1; }
           # getty-dinit: service files present and enabled
-          test -f /usr/lib/dinit.d/getty@.service || { echo "missing getty@.service"; exit 1; }
-          test -L /usr/lib/dinit.d/boot.d/getty@tty1 || { echo "missing getty@tty1 symlink"; exit 1; }
-          test -L /usr/lib/dinit.d/boot.d/getty@ttyS0 || { echo "missing getty@ttyS0 symlink"; exit 1; }
+          test -f /lib/dinit.d/getty@.service || { echo "missing getty@.service"; exit 1; }
+          test -L /lib/dinit.d/boot.d/getty@tty1 || { echo "missing getty@tty1 symlink"; exit 1; }
+          test -L /lib/dinit.d/boot.d/getty@ttyS0 || { echo "missing getty@ttyS0 symlink"; exit 1; }
           # 6: per-service verification — every -dinit service file exists and is valid
           svc_fail=0
-          for svc in /usr/lib/dinit.d/*; do
+          for svc in /lib/dinit.d/*; do
             [ -f "$svc" ] || continue
             case "$svc" in *.target|*.d) continue ;; esac
             sh -n "$svc" 2>/dev/null || { echo "SYNTAX: $svc"; svc_fail=1; }
@@ -158,7 +161,7 @@ jobs:
           for svc in boot system local.target network.target login.target \
                      dbus sshd chrony cronie acpid irqbalance earlyoom \
                      vector getty getty@.service; do
-            test -f "/usr/lib/dinit.d/$svc" || { echo "missing: $svc"; svc_fail=1; }
+            test -f "/lib/dinit.d/$svc" || { echo "missing: $svc"; svc_fail=1; }
           done
           [ "$svc_fail" -eq 0 ] || { echo "service checks FAILED"; exit 1; }
           echo "smoke-install OK"
@@ -251,12 +254,12 @@ jobs:
       - name: Validate suite (dinit-check)
         run: |
           set -e
-          dinit-check -d /usr/lib/dinit.d boot
-          dinit-check -d /usr/lib/dinit.d system
+          dinit-check -d /lib/dinit.d boot
+          dinit-check -d /lib/dinit.d system
       - name: Sanity files and binaries
         run: |
           set -e
-          for f in /usr/lib/dinit.d/early/helpers/mnt \
+          for f in /lib/dinit.d/early/helpers/mnt \
                    /usr/libexec/dinit/init \
                    /usr/libexec/dinit-devd \
                    /usr/libexec/dinit-cryptdisks; do

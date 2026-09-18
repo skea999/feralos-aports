@@ -42,7 +42,8 @@ After extraction, create the `-dinit` package in `src/<name>-dinit/` following t
 ## Rules
 
 1. One package per service: `<name>-dinit`, depends on `dinit-chimera` + daemon pkg.
-2. Service file → `/usr/lib/dinit.d/<name>`; enable = symlink in `/usr/lib/dinit.d/boot.d/`.
+2. Service file → `/lib/dinit.d/<name>`; enable = symlink in `/lib/dinit.d/boot.d/`.
+   (Alpine standard: stock dinit does NOT scan `/usr/lib/dinit.d`.)
 3. `type = process` is **supervised** — no `command_background`, no pidfiles, no
    start-stop-daemon. Foreground flags on the daemon.
 4. Depend on upstream targets, never on other distro services:
@@ -184,7 +185,7 @@ service instead).
 ## Validation Checklist (per service)
 
 ```sh
-dinitcheck /usr/lib/dinit.d/<name>     # syntax
+dinitcheck /lib/dinit.d/<name>         # syntax
 dinitctl start <name>                  # live start
 dinitctl status <name>                 # state + exit info
 dinitctl stop <name> && dinitctl start <name>   # restart cleanliness
@@ -197,6 +198,6 @@ Boot-level: service appears in `dinitctl status` output after reboot; no
 
 `internal_rules.yaml` `services: {name: runlevel}` currently → `rc-update add`.
 With `enableDinit`, service applier emits `boot.d` symlinks instead
-(`logic.go`/services writer): map `default` → `/usr/lib/dinit.d/boot.d/` symlink.
+(`logic.go`/services writer): map `default` → `/lib/dinit.d/boot.d/` symlink.
 `boot`/`sysinit`-level OpenRC services (udev etc.) are **dropped** under dinit —
 upstream early chain replaces them.

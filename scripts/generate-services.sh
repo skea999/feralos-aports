@@ -122,9 +122,11 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "\$srcdir/$name" "\$pkgdir/usr/lib/dinit.d/$name"
-	mkdir -p "\$pkgdir/usr/lib/dinit.d/boot.d"
-	ln -sf "../$name" "\$pkgdir/usr/lib/dinit.d/boot.d/$name"
+	# services dir = /lib/dinit.d (Alpine standard — stock dinit does NOT
+	# scan /usr/lib/dinit.d, see dinit-chimera APKBUILD prepare())
+	install -Dm644 "\$srcdir/$name" "\$pkgdir/lib/dinit.d/$name"
+	mkdir -p "\$pkgdir/lib/dinit.d/boot.d"
+	ln -sf "../$name" "\$pkgdir/lib/dinit.d/boot.d/$name"
 }
 
 sha512sums="REPLACE_ME  $name"

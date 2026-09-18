@@ -5,16 +5,38 @@
 
 ## Current
 
-- **Step**: 6c — incus-feature-agent service had empty `command` (generator
-  artifact; 2026-09-15 "empty command fix" missed it) → `type=process` fatal
-  for dinit: `Could not load service incus-feature-agent: 'command' setting
-  not specified.` First boot test with /lib/dinit.d REACHED service loading
-  (path fix CONFIRMED) but died here. pkgrel r2 + real command
-  `/usr/sbin/incus-agent` (from Alpine incus-agent.initd). **NEEDS: push → CI
-  → harness re-run**
+- **Step**: 6d — sd-tools REINSTATED (**0.99.990-r993**) with tmpfiles lifetime
+  patch. Boot test round 3 (run 2026-09-18T00-29-53Z): dinit + early chain OK
+  up to `early-tmpfiles-dev` → **exit 139**: sd-tmpfiles GCC use-after-scope
+  (CONF_PATHS_STRV compound literal dies at end of switch block, used after;
+  clang masks it — upstream issue #5, no fix). Alpine r3 = GCC = crashes
+  (their check() never runs --create). Ours: static-storage patch + inflated
+  pkgver 0.99.990 (beats ANY Alpine 0.99.x) so our patched build always wins.
+  CI now runtime-smokes sd-tmpfiles + asserts policy resolves 0.99.990-r993.
+  **NEEDS: push → CI → harness**
 - **Next action**: commit + push, CI green, harness `btrfs_standard_dinit.yaml`
 
 ## Log
+
+### 2026-09-18 — sd-tools reinstated 0.99.990-r993: tmpfiles use-after-scope (#5)
+- Boot test round 3: early chain OK (env/pseudofs/tmpfs/cgroups/modules via
+  our GCC-built dinit-chimera + Alpine GCC dinit — both fine) until
+  `early-tmpfiles-dev` → sd-tmpfiles SIGSEGV (139) → whole boot cascade FAILED
+- Reproduced 100% in stock alpine:3.24.1 container: `sd-tmpfiles --create
+  --boot` = 139; `--version` fine
+- Upstream issue #5: CONF_PATHS_STRV compound literal has block-scoped
+  lifetime; stored in config_dirs inside switch, used after switch →
+  use-after-scope (ASan confirmed by issue author). clang keeps the dead slot
+  → Chimera (clang) unaffected; GCC ≥14 reuses it → crash. sd-sysusers NOT
+  affected (literal used inline as function arg = legal)
+- Fix: static const array with CONF_PATHS_USR("tmpfiles.d") + cast — kills
+  the UB for every compiler; keeps repo GCC-only (TOOLCHAIN.md)
+- Version scheme: pkgver 0.99.990 (upstream tarball 0.99.0 via _upstream +
+  builddir override) — beats any Alpine 0.99.x; revert to real version +
+  drop patch when upstream fixes (#5); sd-sysusers NOT affected (literal
+  used inline as function arg = legal)
+- CI: build job runtime-smokes `sd-tmpfiles --create --boot` (exit must be
+  0/65/73, not 139/134); client-test asserts apk policy resolves 0.99.990-r993
 
 ### 2026-09-18 — boot test round 2: path fix CONFIRMED, empty-command stragglers
 - Harness 2026-09-18T00-18-17Z: dinit PID1 loaded /lib/dinit.d/boot OK

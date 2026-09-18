@@ -164,6 +164,14 @@ jobs:
             test -f "/lib/dinit.d/$svc" || { echo "missing: $svc"; svc_fail=1; }
           done
           [ "$svc_fail" -eq 0 ] || { echo "service checks FAILED"; exit 1; }
+          # sd-tmpfiles runtime smoke: the GCC build MUST NOT segfault on
+          # --create (use-after-scope in CONF_PATHS_STRV, upstream issue #5 —
+          # Alpine's r3 crashes here; our r993 carries the static-storage patch)
+          rc=0; sd-tmpfiles --create --boot || rc=$?
+          case "$rc" in
+            0|65|73) echo "sd-tmpfiles runtime OK (exit $rc)" ;;
+            *) echo "sd-tmpfiles runtime FAIL (exit $rc — 139/134 = crash)"; exit 1 ;;
+          esac
           echo "smoke-install OK"
 
       - name: Index repositories
@@ -256,6 +264,14 @@ jobs:
           set -e
           dinit-check -d /lib/dinit.d boot
           dinit-check -d /lib/dinit.d system
+          # our sd-tools (0.99.990-r993, tmpfiles lifetime patch) must WIN over
+          # Alpine's runtime-broken 0.99.0-r3 — pkgver 0.99.990 > any 0.99.x
+          apk policy sd-tools | grep -q '0.99.990-r993' || { echo "sd-tools did not resolve to our 0.99.990-r993:"; apk policy sd-tools; exit 1; }
+          rc=0; sd-tmpfiles --create --boot || rc=$?
+          case "$rc" in
+            0|65|73) echo "sd-tmpfiles runtime OK (exit $rc)" ;;
+            *) echo "sd-tmpfiles runtime FAIL (exit $rc — crash?)"; exit 1 ;;
+          esac
       - name: Sanity files and binaries
         run: |
           set -e

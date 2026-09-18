@@ -21,7 +21,7 @@ doesn't ship or what needs FeralOS patches.
 
 | Package | Source | Phase |
 |---------|--------|-------|
-| ~~`sd-tools`~~ | **Alpine community 0.99.0-r3** — use Alpine's (rule 0; ours removed) | — |
+| `sd-tools` | **ours again (0.99.990-r993)** — rule 0 exception: Alpine's r3 segfaults at runtime (GCC use-after-scope in tmpfiles, [upstream #5](https://github.com/chimera-linux/sd-tools/issues/5)); we carry the static-storage patch; inflated pkgver `0.99.990` always beats any Alpine `0.99.x` | 2 |
 | `feralos-keyring` | ours — key + repo definition | done |
 | `dinit-chimera` | [chimera-linux/dinit-chimera](https://github.com/chimera-linux/dinit-chimera) | 2 |
 | `getty-dinit` | ours (`getty@` template, upstream ships none) | 4 |

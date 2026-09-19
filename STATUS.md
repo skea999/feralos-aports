@@ -5,18 +5,48 @@
 
 ## Current
 
-- **Step**: 6d — sd-tools REINSTATED (**0.99.990-r993**) with tmpfiles lifetime
-  patch. Boot test round 3 (run 2026-09-18T00-29-53Z): dinit + early chain OK
-  up to `early-tmpfiles-dev` → **exit 139**: sd-tmpfiles GCC use-after-scope
-  (CONF_PATHS_STRV compound literal dies at end of switch block, used after;
-  clang masks it — upstream issue #5, no fix). Alpine r3 = GCC = crashes
-  (their check() never runs --create). Ours: static-storage patch + inflated
-  pkgver 0.99.990 (beats ANY Alpine 0.99.x) so our patched build always wins.
-  CI now runtime-smokes sd-tmpfiles + asserts policy resolves 0.99.990-r993.
-  **NEEDS: push → CI → harness**
-- **Next action**: commit + push, CI green, harness `btrfs_standard_dinit.yaml`
+- **Step**: 7 — **Alpine/Artix model**: packages ship service files ONLY
+  (install != enabled), enablement is rules-driven via
+  `dinitctl --offline -d /lib/dinit.d enable <svc>` (the upstream command;
+  links land in boot's waits-for.d = /etc/dinit.d/boot.d, the admin dir —
+  same flow Artix documents in its alpm hooks). Service files renamed to
+  Alpine initd names (chronyd, smartd, sshd, incusd, nix-daemon, mdev,
+  incus-agent) so installer rules work identically for both inits. NEW:
+  networking-dinit (ifup -a — nothing brought eth0 up before),
+  incus-feature-dinit (incusd host daemon), sshd-dinit DELETED (duplicate —
+  sshd now in openssh-server-common-dinit, mirroring Alpine's
+  openssh-server-common-openrc which ships sshd.initd). Chimera volume
+  services (zfs/lvm/mdadm/dmraid) left untouched: upstream design = no-op
+  when the tool is missing (we never install those tools). getty-dinit
+  simplified: single `getty` template body, depends agetty.
+  **NEEDS: git rm (old service files) + abuild checksum + push → CI → harness**
+- **Next action**: commands in installer repo handoff; harness
+  `btrfs_standard_dinit.yaml`
 
 ## Log
+
+### 2026-09-19 — Alpine/Artix model: ship-only packages + dinitctl enablement
+- Research: Artix dinit-rc optdepends (cryptsetup-dinit, lvm2-dinit,
+  mdadm-dinit = SEPARATE optional packages), cronie-dinst ships service file
+  only, alpm hook prints `dinitctl enable <service>` — admin enables. Source:
+  artix/alpm-hooks dinit-hook + packages/cronie-dinit PKGBUILD
+- All 41 -dinit packages: boot.d auto-enablement REMOVED (getty included);
+  pkgrel → 2 (agent r3); enablement moved to installer rules
+- Renames to Alpine initd names: chrony→chronyd (dep networking),
+  smartmontools→smartd (--no-fork, was broken $cfgfile),
+  openssh-server-common→sshd (REAL daemon + ssh-keygen -A, was empty
+  internal placeholder), incus→incusd (dep networking), nix→nix-daemon,
+  busybox-mdev→mdev, incus-feature-agent→incus-agent
+- NEW networking-dinit: `networking` = scripted ifup -a (CRITICAL gap:
+  nothing brought eth0 up under dinit; chimera network.target is only an
+  ordering milestone). Network daemons now depends-on networking
+- NEW incus-feature-dinit: incusd host daemon (was silently skipped; wrong
+  service incus-feature-agent got auto-enabled instead)
+- DELETE sshd-dinit: duplicate of openssh-server-common-dinit/sshd
+- vector-dinit: depends-on vector-setup (ordering, mirrors OpenRC `before
+  vector`), config path fixed vector.toml → vector.yaml (installer writes .yaml)
+- generate-services.sh template: no boot.d; build.yml getty assertions
+  updated (no more boot.d links in packages; chronyd/networking in key list)
 
 ### 2026-09-18 — sd-tools reinstated 0.99.990-r993: tmpfiles use-after-scope (#5)
 - Boot test round 3: early chain OK (env/pseudofs/tmpfs/cgroups/modules via

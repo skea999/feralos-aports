@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=lxc-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for lxc"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,8 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/lxc" "$pkgdir/lib/dinit.d/lxc"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../lxc" "$pkgdir/lib/dinit.d/boot.d/lxc"
 }
 
 sha512sums="de8f6637430e4af1a4f8b37e1e3d7bf6067f3da141cbcda3790c6bbd3266729e06d288bfca957b8cdb3329c274d47c91b9133e0607b2f814e8525d9902b40453  lxc"

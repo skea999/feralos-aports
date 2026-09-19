@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=rsync-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for rsync"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,8 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/rsync" "$pkgdir/lib/dinit.d/rsync"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../rsync" "$pkgdir/lib/dinit.d/boot.d/rsync"
 }
 
 sha512sums="c93244a764b61d5821b941509d523fb1d3bd80e39c253d20e2c1f44899dca4170d1f4d5265fa1a84370e7837c51e7a0569b2c2778f8a00ab34d35b92134a4a70  rsync"

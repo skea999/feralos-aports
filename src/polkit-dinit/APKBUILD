@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=polkit-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for polkit"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,8 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/polkit" "$pkgdir/lib/dinit.d/polkit"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../polkit" "$pkgdir/lib/dinit.d/boot.d/polkit"
 }
 
 sha512sums="0dfc7c0ad0ccf3c847a8f338616265f0f031513288d549755af97408d8704bcc6b1270b718728cc556cfafcdacec9d2f114e76e1cb289161db21c4025b72c632  polkit"

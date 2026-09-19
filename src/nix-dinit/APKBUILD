@@ -2,22 +2,23 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=nix-dinit
 pkgver=0.1.0
-pkgrel=1
-pkgdesc="dinit service for nix"
+pkgrel=2
+pkgdesc="dinit service for nix-daemon (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit nix"
 makedepends=""
-source="nix"
+source="nix-daemon"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/nix" "$pkgdir/lib/dinit.d/nix"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../nix" "$pkgdir/lib/dinit.d/boot.d/nix"
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/nix-daemon" "$pkgdir/lib/dinit.d/nix-daemon"
 }
 
-sha512sums="d45ea05698746af6db4a47a7c2e5b41fa2423ed13ac6187bae5606e87262745c61397c0865ffc7678574c0c667274a03c21d83652ef7c25be46a9b75c581771e  nix"
+sha512sums="
+356e07ef495922f58be8b780a182e6de28ead8fc5814130ea5e6c09c40345a5c71ec2086028841514cc5900b80c7f4c7cc108835cbaac2e9f49b7294712c34f4  nix-daemon
+"

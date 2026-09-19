@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=fuse-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for fuse"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,8 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/fuse" "$pkgdir/lib/dinit.d/fuse"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../fuse" "$pkgdir/lib/dinit.d/boot.d/fuse"
 }
 
 sha512sums="d7ff5f2345045f8da51c14e29d5ca2c6a8f9d2673b1992b6235171907db7921cf55a5a8bd812fcad25d2abd40cce2f4cf7175083a804c1ddd2004932f393d6a2  fuse"

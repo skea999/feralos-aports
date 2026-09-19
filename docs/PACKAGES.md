@@ -339,9 +339,9 @@ pkgname=sshd-dinit
 depends="dinit-chimera openssh"
 
 package() {
+	# Alpine model: ship the service file only — install != enabled.
+	# Enablement is rules-driven: dinitctl --offline -d /lib/dinit.d enable sshd
 	install -Dm644 sshd "$pkgdir"/lib/dinit.d/sshd
-	mkdir -p "$pkgdir"/lib/dinit.d/boot.d
-	ln -s ../sshd "$pkgdir"/lib/dinit.d/boot.d/sshd
 }
 ```
 

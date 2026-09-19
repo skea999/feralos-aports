@@ -1,0 +1,6 @@
+# dinit service: networking (Alpine openrc networking + overrides)
+# Brings up interfaces via ifupdown-ng — nothing else does this under dinit
+# (chimera network.target is only an ordering milestone)
+type = scripted
+command = /sbin/ifup -a
+depends-on = local.target

@@ -2,22 +2,23 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-feature-agent-dinit
 pkgver=0.1.0
-pkgrel=2
-pkgdesc="dinit service for incus-feature-agent"
+pkgrel=3
+pkgdesc="dinit service for incus-agent (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit incus-feature"
 makedepends=""
-source="incus-feature-agent"
+source="incus-agent"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/incus-feature-agent" "$pkgdir/lib/dinit.d/incus-feature-agent"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../incus-feature-agent" "$pkgdir/lib/dinit.d/boot.d/incus-feature-agent"
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/incus-agent" "$pkgdir/lib/dinit.d/incus-agent"
 }
 
-sha512sums="498b1fe2f936179574cc6c05e9d8510c57f7ef10f79688215458b3b5e6f7ffeac572375fda8b812f95d67945c819c5d22286a707873660bd166376a81b2a3950  incus-feature-agent"
+sha512sums="
+ce960c37e329d9c6f696f1cfab2ef45f150ce81c92cbf59f299484686e65e85293a144bc98408dfce967de217d32a41701ce94abacdefbea507e74c8e33ae8f9  incus-agent
+"

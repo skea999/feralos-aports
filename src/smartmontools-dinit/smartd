@@ -1,0 +1,5 @@
+# dinit service: smartd (Alpine openrc smartd + overrides)
+type = process
+command = /usr/sbin/smartd --no-fork
+restart = true
+depends-on = local.target

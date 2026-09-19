@@ -1,5 +1,7 @@
 # dinit service: vector (Alpine openrc vector + overrides)
+# depends-on vector-setup: /run/vector + /dev/log + /var/log ownership
+# (service file written by the installer, mirrors OpenRC vector-setup)
 type = process
-command = /usr/bin/vector --config /etc/vector/vector.toml
+command = /usr/bin/vector --config /etc/vector/vector.yaml
 restart = true
-depends-on = local.target
+depends-on = vector-setup

@@ -1,3 +1,4 @@
+# dinit service: mdev (Alpine openrc mdev + overrides) — unused on FeralOS (eudev)
 type = process
 command = /sbin/mdev -s
 restart = false

@@ -2,33 +2,25 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=getty-dinit
 pkgver=0.1.0
-pkgrel=1
-pkgdesc="getty service templates for dinit (tty1 + ttyS0)"
+pkgrel=2
+pkgdesc="getty service template for dinit (tty1 + ttyS0)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-depends="dinit util-linux"
+depends="dinit agetty"
 makedepends=""
-source="getty@.service"
+source="getty"
 
-build() {
-	# nothing to build
-	return 0
-}
+build() { return 0; }
 
-check() {
-	# nothing to test
-	return 0
-}
+check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/getty@.service" "$pkgdir/lib/dinit.d/getty@.service"
-	install -Dm644 "$srcdir/getty@.service" "$pkgdir/lib/dinit.d/getty"
-
-	# Enable on tty1 (hardware console) and ttyS0 (serial console for harness)
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf ../getty "$pkgdir/lib/dinit.d/boot.d/getty@tty1"
-	ln -sf ../getty "$pkgdir/lib/dinit.d/boot.d/getty@ttyS0"
+	# Alpine model: ship the template body only; enablement is rules-driven
+	# (dinitctl enable getty@tty1 / getty@ttyS0 — instance name carries $1)
+	install -Dm644 "$srcdir/getty" "$pkgdir/lib/dinit.d/getty"
 }
 
-sha512sums="bd8e064fd42ac5b5567fafc46b7079b9250a0a6a32b0f730ea8c64b429443db69048a3d9dd2073ebef2268caccc44fa804f1f025539bdabbd5f8fc64388ec9ab  getty@.service"
+sha512sums="
+d41f4add683fbf5df9185eed8d36a5f598d1c8c1bbc9db2ec1cd66c12c94b984cd4b65272402272df771bc7082cbadc3ef207a6aa4e82ff2b098213d3043a14f  getty
+"

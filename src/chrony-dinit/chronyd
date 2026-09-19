@@ -1,4 +1,5 @@
+# dinit service: chronyd (Alpine openrc chronyd + overrides)
 type = process
 command = /usr/sbin/chronyd -d -s
 restart = true
-depends-on = network.target
+depends-on = networking

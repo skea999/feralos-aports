@@ -1,4 +1,4 @@
-# dinit service: incus-feature-agent (incus-agent VM guest daemon, foreground)
+# dinit service: incus-agent (Alpine openrc incus-agent + overrides)
 type = process
 command = /usr/sbin/incus-agent
 restart = true

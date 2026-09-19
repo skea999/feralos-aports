@@ -1,24 +1,24 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
-pkgname=chrony-dinit
+pkgname=incus-feature-dinit
 pkgver=0.1.0
-pkgrel=2
-pkgdesc="dinit service for chronyd (Alpine initd name)"
+pkgrel=1
+pkgdesc="dinit service for incusd (incus-feature hosts)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-depends="dinit chrony"
+depends="dinit incus-feature"
 makedepends=""
-source="chronyd"
+source="incusd"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
-	install -Dm644 "$srcdir/chronyd" "$pkgdir/lib/dinit.d/chronyd"
+	install -Dm644 "$srcdir/incusd" "$pkgdir/lib/dinit.d/incusd"
 }
 
 sha512sums="
-2fe0b2c9dc8e04756d666dfc7cc8f3f17e83a57ea56e230f3f270d1a5a13994476959b1f925462101031a69d3f9a49b339bbbfec8674c50db3e8249f1993f443  chronyd
+730cc72a764390a11bccc8ac2ec2e12bf7caee58c074f92970f0e4578f73d271b0abcb5a7a75dadf2d8db04d99dc0eccc7a3d545218aceb2062a3e7d7648ed14  incusd
 "

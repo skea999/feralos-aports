@@ -16,23 +16,22 @@ That is a use-after-scope:
 clang happens to keep the (dead) stack slot intact, masking the bug; GCC 14+
 actively reuses the slot (-Wdangling-pointer warns), so the strings turn into
 garbage and sd-tmpfiles segfaults on every --create/--cat-config run
-(strack-use-after-scope confirmed with ASan in upstream issue #5).
+(stack-use-after-scope confirmed with ASan in upstream issue #5).
 
 Fix: copy the four paths into an array with static storage duration so the
 pointer stays valid for the lifetime of the program. CONF_PATHS_USR expands
 to plain string-literal concatenations, so a file-scope array is valid.
-
 --- a/src/tmpfiles/tmpfiles.c
 +++ b/src/tmpfiles/tmpfiles.c
-@@ -660,6 +660,17 @@ static int user_config_paths(char*** ret) {
-         return 0;
- }
-
-+/* The CONF_PATHS_STRV() compound literal has automatic storage duration
-+ * scoped to the enclosing block. Storing it in config_dirs and using it
-+ * after the switch() reads dead stack memory: GCC 14+ reuses the slot and
-+ * sd-tmpfiles segfaults on every --create run (clang keeps the slot alive
-+ * and only masks the bug). Keep the paths in static storage instead.
+@@ -657,6 +657,18 @@
+                  arg_dry_run ? (would) : (doing),       \
+                  __VA_ARGS__)
+ 
++/* CONF_PATHS_STRV() compound literals have block-scoped automatic storage
++ * duration: storing the literal in config_dirs and using it after the
++ * switch reads dead stack memory — GCC 14+ reuses the slot and
++ * sd-tmpfiles segfaults on every --create (clang keeps the slot alive and
++ * only masks the bug). Keep the paths in static storage instead.
 + * Ref: https://github.com/chimera-linux/sd-tools/issues/5
 + */
 +static const char *const system_config_dirs[] = {
@@ -40,15 +39,15 @@ to plain string-literal concatenations, so a file-scope array is valid.
 +        NULL,
 +};
 +
- #define log_action(would, doing, fmt, ...)              \
-         log_full(arg_dry_run ? LOG_INFO : LOG_DEBUG,    \
-                  fmt,                                   \
-@@ -5549,7 +5560,7 @@ static int run(int argc, char **argv) {
+ static int user_config_paths(char*** ret) {
+         _cleanup_strv_free_ char **config_dirs = NULL, **data_dirs = NULL;
+         _cleanup_free_ char *persistent_config = NULL, *runtime_config = NULL, *data_home = NULL;
+@@ -5549,7 +5561,7 @@
                  break;
-
+ 
          case RUNTIME_SCOPE_SYSTEM:
 -                config_dirs = CONF_PATHS_STRV("tmpfiles.d");
 +                config_dirs = (char **) system_config_dirs;
                  break;
-
+ 
          default:

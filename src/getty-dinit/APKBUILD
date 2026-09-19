@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=getty-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="getty service template for dinit (tty1 + ttyS0)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,5 +22,5 @@ package() {
 }
 
 sha512sums="
-b128289f30cdd16888cdc5e51b42731659859875bb442a1a019540468b9d14dca7e6bb35f6e5e907a9dfe875ac3c29559c85315d98ecc86798e75b447a0d3d5b  getty
+586529cd374ce454a888162976d1cf7be1690de53046ad75756140076f7e0e6b8c4ba352c84698bf790979b7266e292e4df16a17d3f95961af8ae170d269de4c  getty
 "

@@ -2,14 +2,15 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=vector-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for vector"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit vector"
 makedepends=""
-source="vector"
+source="vector
+	vector-dinit.tmpfiles"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +18,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/vector" "$pkgdir/lib/dinit.d/vector"
+	# /run/vector, /dev/log, /var/log, /btrbk — replaces the OpenRC
+	# vector-setup script (processed by the dinit-chimera early chain)
+	install -Dm644 "$srcdir/vector-dinit.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/vector-dinit.conf"
 }
 
 sha512sums="
 c74b8893daf4f5830becc92a07490a7ffd7d1e44a887001f09c1fb815963173eceaf5a49ca1379326b6cd7a9d5d576c7268d04c7e07d92ddbdca6b55a24a2047  vector
+6228608f47289c16ec5b4ae647e6c33be2e9f3d060b388704e98005577af613e74ff92c7b29712877a3ca6a63e1b23c460d2d12e7d30f26da3127cd9e81a934d  vector-dinit.tmpfiles
 "

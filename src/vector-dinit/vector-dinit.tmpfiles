@@ -1,0 +1,7 @@
+# FeralOS vector-dinit: runtime + log dirs on a tmpfs /run
+# (processed by sd-tmpfiles in the dinit-chimera early chain — replaces the
+# OpenRC vector-setup script)
+d /run/vector 0755 vector vector -
+L /dev/log 0777 - - - /run/vector/syslog.sock
+d /var/log 0755 vector vector -
+d /btrbk 0755 btrbk btrbk -

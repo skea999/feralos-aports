@@ -1,0 +1,5 @@
+# dinit service: incusd (Alpine openrc incusd + overrides)
+type = process
+command = /usr/sbin/incusd --group incus-admin
+restart = true
+depends-on = networking

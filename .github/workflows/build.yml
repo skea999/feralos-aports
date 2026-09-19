@@ -146,10 +146,8 @@ jobs:
           dinit-check -d /lib/dinit.d boot || { echo "dinitcheck boot FAILED"; exit 1; }
           # system must waits-for the RELOCATED package drop-in (prepare() sed)
           grep -q 'waits-for.d: /lib/dinit.d/boot.d' /lib/dinit.d/system || { echo "system waits-for.d not relocated to /lib"; exit 1; }
-          # getty-dinit: service files present and enabled
-          test -f /lib/dinit.d/getty@.service || { echo "missing getty@.service"; exit 1; }
-          test -L /lib/dinit.d/boot.d/getty@tty1 || { echo "missing getty@tty1 symlink"; exit 1; }
-          test -L /lib/dinit.d/boot.d/getty@ttyS0 || { echo "missing getty@ttyS0 symlink"; exit 1; }
+          # getty-dinit: template body present (enablement is rules-driven)
+          test -f /lib/dinit.d/getty || { echo "missing getty template"; exit 1; }
           # 6: per-service verification — every -dinit service file exists and is valid
           svc_fail=0
           for svc in /lib/dinit.d/*; do
@@ -159,8 +157,8 @@ jobs:
           done
           # key services must exist
           for svc in boot system local.target network.target login.target \
-                     dbus sshd chrony cronie acpid irqbalance earlyoom \
-                     vector getty getty@.service; do
+                     dbus sshd chronyd cronie acpid irqbalance earlyoom \
+                     vector networking getty; do
             test -f "/lib/dinit.d/$svc" || { echo "missing: $svc"; svc_fail=1; }
           done
           [ "$svc_fail" -eq 0 ] || { echo "service checks FAILED"; exit 1; }

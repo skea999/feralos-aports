@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=vector-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for vector"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,10 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/vector" "$pkgdir/lib/dinit.d/vector"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../vector" "$pkgdir/lib/dinit.d/boot.d/vector"
 }
 
-sha512sums="8b7539fcea93bdecb1d620757cccba4a1b8d939a5e63a161c1107df6a6b0feff52d736c07e3d71a405eae4b05bb898b2a90fbaaefd1441311dd5b76b905c5c51  vector"
+sha512sums="
+c74b8893daf4f5830becc92a07490a7ffd7d1e44a887001f09c1fb815963173eceaf5a49ca1379326b6cd7a9d5d576c7268d04c7e07d92ddbdca6b55a24a2047  vector
+"

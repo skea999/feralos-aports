@@ -1,5 +1,0 @@
-# dinit service: chrony (Alpine openrc chrony + overrides)
-type = process
-command = /usr/sbin/chronyd -d -s
-restart = true
-depends-on = network.target

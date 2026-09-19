@@ -1,0 +1,24 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=networking-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for networking (ifup -a, ifupdown-ng)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit ifupdown-ng"
+makedepends=""
+source="networking"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/networking" "$pkgdir/lib/dinit.d/networking"
+}
+
+sha512sums="
+8b58e0ca62ef9da16e86c59dc4e93c1d53db8f1aa9b502530b385fc19bd08ced48df7a2089726465953eb752de1bbe11f26d83cd6ee49af68d14d76d7c117597  networking
+"

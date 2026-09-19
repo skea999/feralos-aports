@@ -1,5 +1,0 @@
-# dinit service: sshd (Alpine openrc sshd + overrides)
-type = process
-command = /usr/sbin/sshd -D -e
-restart = true
-depends-on = network.target

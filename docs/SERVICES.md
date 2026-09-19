@@ -165,6 +165,6 @@ OpenRC → Dinit dependency mapping:
 | `need net` | `depends-on: network.target` |
 | `need localmount` / `after bootmisc` | `depends-on: local.target` |
 | runlevel `boot` | `depends-on: pre-local.target` (rarely needed) |
-| runlevel `default` (rc-update add) | symlink in `/usr/lib/dinit.d/boot.d/` |
+| runlevel `default` (rc-update add) | `dinitctl --offline enable X` (installer rules) |
 | `command_background=true` + pidfile | not needed — `type = process` is supervised |
 | `keyword -stop` / `stop()` | `stop-command =` (rarely needed) |

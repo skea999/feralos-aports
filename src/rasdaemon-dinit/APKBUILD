@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=rasdaemon-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for rasdaemon"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,8 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/rasdaemon" "$pkgdir/lib/dinit.d/rasdaemon"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../rasdaemon" "$pkgdir/lib/dinit.d/boot.d/rasdaemon"
 }
 
 sha512sums="67b84f8d79f3a4b2aa18a00dd9749dd1eb034f77c2a00dce1192e108dbe4ed74d2bb2b2f06614bca523065005c95fffc610f8c4a7dbf47b07e94b6ac70e9f371  rasdaemon"

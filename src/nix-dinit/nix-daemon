@@ -1,4 +1,4 @@
-# dinit service: nix (auto-generated from Alpine openrc nix)
+# dinit service: nix-daemon (Alpine openrc nix-daemon + overrides)
 type = process
 command = /usr/sbin/nix-daemon
 restart = true

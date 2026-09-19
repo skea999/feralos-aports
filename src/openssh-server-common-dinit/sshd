@@ -1,4 +1,6 @@
+# dinit service: sshd (Alpine openrc sshd + overrides)
+# ssh-keygen -A replaces the OpenRC initd host-key generation (idempotent)
 type = process
-command = /usr/sbin/sshd -D
+command = /bin/sh -c '/usr/bin/ssh-keygen -A; exec /usr/sbin/sshd -D -e'
 restart = true
-depends-on = local.target
+depends-on = networking

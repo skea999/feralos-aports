@@ -2,22 +2,23 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=busybox-mdev-dinit
 pkgver=0.1.0
-pkgrel=1
-pkgdesc="dinit service for busybox-mdev"
+pkgrel=2
+pkgdesc="dinit service for mdev (Alpine initd name) — unused on FeralOS (eudev)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit busybox"
 makedepends=""
-source="busybox-mdev"
+source="mdev"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/busybox-mdev" "$pkgdir/lib/dinit.d/busybox-mdev"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../busybox-mdev" "$pkgdir/lib/dinit.d/boot.d/busybox-mdev"
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/mdev" "$pkgdir/lib/dinit.d/mdev"
 }
 
-sha512sums="0da29c825694efd5ea7140b7e8d1cccb025f79e505d10a5b61aa1744c033ec98f511aba5b60c79df79cec8c5af84fd7a919a8ca66adea7d7deee3e483242d1af  busybox-mdev"
+sha512sums="
+d5910402019b4b5e5a5587c5e47bad0e10676c0b8de7813e1563ddbfcb7473bbf6e1ea121529a8c5926f546859c724c9f5f8be09666147d15e7971544befbc41  mdev
+"

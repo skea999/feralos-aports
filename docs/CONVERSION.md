@@ -64,7 +64,7 @@ After extraction, create the `-dinit` package in `src/<name>-dinit/` following t
 | `depend() { need net }` | `depends-on: network.target` |
 | `depend() { need localmount }` / `after bootmisc` | `depends-on: local.target` |
 | `depend() { use logger }` | drop (vector is `local.target`-ordered) |
-| `rc-update add X default` | symlink `boot.d/X` (package does it) |
+| `rc-update add X default` | nothing at package level — installer rules run `dinitctl --offline -d /lib/dinit.d enable X` |
 | `start_pre()` (mkdir /var/run/…) | tmpfiles.d entry (sd-tmpfiles) or wrapper `-c 'mkdir … && exec daemon'` |
 | `keyword -stop` | nothing (supervised stop is built-in) |
 | `supervise-daemon` | nothing (native supervision) |

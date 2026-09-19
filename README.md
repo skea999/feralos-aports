@@ -22,10 +22,11 @@ doesn't ship or what needs FeralOS patches.
 | Package | Source | Phase |
 |---------|--------|-------|
 | `sd-tools` | **ours again (0.99.990-r993)** — rule 0 exception: Alpine's r3 segfaults at runtime (GCC use-after-scope in tmpfiles, [upstream #5](https://github.com/chimera-linux/sd-tools/issues/5)); we carry the static-storage patch; inflated pkgver `0.99.990` always beats any Alpine `0.99.x` | 2 |
+| `networking-dinit` | ours — `ifup -a` (nothing else brings eth0 up under dinit) | 2 |
 | `feralos-keyring` | ours — key + repo definition | done |
 | `dinit-chimera` | [chimera-linux/dinit-chimera](https://github.com/chimera-linux/dinit-chimera) | 2 |
-| `getty-dinit` | ours (`getty@` template, upstream ships none) | 4 |
-| `*-dinit` services | ours (~10-line files, pattern in `docs/CONVERSION.md`) | 6 |
+| `getty-dinit` | ours (single `getty` template body; upstream ships none) | 4 |
+| `*-dinit` services | ours — **Alpine/Artix model: ship the service file only, install ≠ enabled**; service names = Alpine initd names (chronyd, sshd, incusd...); enablement via `dinitctl --offline enable` from installer rules | 6 |
 | `elogind-dinit` / `seatd-dinit`, DM services | ours | 7 |
 | `turnstile` | [chimera-linux/turnstile](https://github.com/chimera-linux/turnstile) | 7 |
 | `polkit` (patched) | Alpine APKBUILD + Chimera `turnstile.patch` | 7 |

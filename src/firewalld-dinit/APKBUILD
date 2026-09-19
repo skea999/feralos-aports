@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=firewalld-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for firewalld"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,8 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/firewalld" "$pkgdir/lib/dinit.d/firewalld"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../firewalld" "$pkgdir/lib/dinit.d/boot.d/firewalld"
 }
 
 sha512sums="150e7fa7a76b9a88e42d5444e579dfd2ccb8c6cad1f0e2b1147c98a88e60d7f6e90a07262bdd2e330924069049ebfd211dc7f95aca8b35ee439d99cbace5d46f  firewalld"

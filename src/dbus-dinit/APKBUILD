@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dbus-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for dbus"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -15,9 +15,8 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/dbus" "$pkgdir/lib/dinit.d/dbus"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../dbus" "$pkgdir/lib/dinit.d/boot.d/dbus"
 }
 
 sha512sums="ecd9f70601b14725fa28e49071e60144ef5e528868480ff35a0d529ab155eb3381241f0c8394f899a534331c0d64539a5858e2aee877314b137e8c4419b5ae71  dbus"

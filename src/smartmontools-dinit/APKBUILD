@@ -2,22 +2,23 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=smartmontools-dinit
 pkgver=0.1.0
-pkgrel=1
-pkgdesc="dinit service for smartmontools"
+pkgrel=2
+pkgdesc="dinit service for smartd (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit smartmontools"
 makedepends=""
-source="smartmontools"
+source="smartd"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/smartmontools" "$pkgdir/lib/dinit.d/smartmontools"
-	mkdir -p "$pkgdir/lib/dinit.d/boot.d"
-	ln -sf "../smartmontools" "$pkgdir/lib/dinit.d/boot.d/smartmontools"
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/smartd" "$pkgdir/lib/dinit.d/smartd"
 }
 
-sha512sums="ca35201afee0a511f2c31ffcf2f5b13e90c8a6a7a6b81d70934e4102eb13417303d46def7e4ee08ba4d86c60889f373a1fd66ba9cc4f3c1c779dfb5a7bf42dac  smartmontools"
+sha512sums="
+b13c2625e95439b8ad0cf26b995e7a7e720ccd64a93ae27fabde6da0a036d9ae2b6bda2135fab23b4dd0361c65f8c9d9dbb1f38f25c4244dfb0120ec04945752  smartd
+"

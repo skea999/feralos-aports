@@ -1,4 +1,0 @@
-# dinit service: openssh-server-common (Alpine openrc openssh-server-common + overrides)
-type = internal
-restart = false
-depends-on = local.target

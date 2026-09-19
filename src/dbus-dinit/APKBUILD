@@ -2,14 +2,15 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dbus-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for dbus"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit dbus"
 makedepends=""
-source="dbus"
+source="dbus
+	dbus-dinit.tmpfiles"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,6 +18,9 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/dbus" "$pkgdir/lib/dinit.d/dbus"
+	# /run/dbus must exist before the daemon (OpenRC initd did checkpath)
+	install -Dm644 "$srcdir/dbus-dinit.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/dbus-dinit.conf"
 }
 
-sha512sums="ecd9f70601b14725fa28e49071e60144ef5e528868480ff35a0d529ab155eb3381241f0c8394f899a534331c0d64539a5858e2aee877314b137e8c4419b5ae71  dbus"
+sha512sums="ecd9f70601b14725fa28e49071e60144ef5e528868480ff35a0d529ab155eb3381241f0c8394f899a534331c0d64539a5858e2aee877314b137e8c4419b5ae71  dbus
+279bef8a4bb8c4b80b1d89a18e34970c3eb3003ce29c8042f0f63d166303cf7b7ab1f69ef712ac3043a547d903a748750d1eecdf67bb0deff002919cf1dabb69  dbus-dinit.tmpfiles"

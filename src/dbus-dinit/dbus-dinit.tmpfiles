@@ -1,0 +1,3 @@
+# FeralOS dbus-dinit: /run is tmpfs — create the bus socket dir early
+# (processed by sd-tmpfiles in the dinit-chimera early chain)
+d /run/dbus 0755 root root -

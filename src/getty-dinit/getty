@@ -1,6 +1,8 @@
 # dinit template: getty@ (FeralOS — upstream dinit-chimera ships no getty)
 # The instance name carries the argument: getty@tty1 -> $1 = tty1
+# -L: local line (no carrier wait — serial has no DCD in QEMU); baud fixed
+# 115200 (ignored on virtual consoles)
 type = process
-command = /sbin/agetty $1
+command = /sbin/agetty -L 115200 $1
 restart = true
 depends-on = local.target

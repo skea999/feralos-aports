@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dinit-chimera
 pkgver=0.99.24
-pkgrel=3
+pkgrel=4
 pkgdesc="Dinit core service suite (Chimera upstream) for FeralOS"
 url="https://github.com/chimera-linux/dinit-chimera"
 arch="all"
@@ -43,10 +43,13 @@ build() {
 	# relocated in package() anyway
 	# -Ddinit-sulogin-path: busybox sulogin on Alpine (upstream default is
 	# /usr/sbin/sulogin)
+	# -Ddefault-path-env: PATH for every process spawned by dinit. Upstream
+	# value /usr/bin suffices on Chimera (usr-merged); Alpine is NOT
+	# usr-merged — daemons shell out to /usr/sbin binaries (incusd -> ip)
 	meson setup \
 		--prefix=/usr \
 		--buildtype=plain \
-		-Ddefault-path-env=/usr/bin \
+		-Ddefault-path-env=/usr/sbin:/usr/bin:/sbin:/bin \
 		-Dsbindir=bin \
 		-Ddinit-sulogin-path=/sbin/sulogin \
 		. output

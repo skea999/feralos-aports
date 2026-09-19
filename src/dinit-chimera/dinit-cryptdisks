@@ -8,9 +8,12 @@
 
 TAB=/etc/crypttab
 
+# no crypttab: perfectly normal (root LUKS handled by the initramfs) — exit 0 quietly
+[ -r "$TAB" ] || exit 0
+
 command -v cryptsetup >/dev/null 2>&1 || {
 	# no cryptsetup: fine unless a crypttab actually exists
-	[ -r "$TAB" ] && grep -qvE '^\s*(#|$)' "$TAB" 2>/dev/null && {
+	grep -qvE '^\s*(#|$)' "$TAB" 2>/dev/null && {
 		echo "cryptdisks: cryptsetup missing but $TAB has entries" >&2
 		exit 1
 	}

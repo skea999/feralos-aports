@@ -2,7 +2,9 @@
 # The instance name carries the argument: getty@tty1 -> $1 = tty1
 # -L: local line (no carrier wait — serial has no DCD in QEMU)
 # agetty syntax: agetty [options] PORT [baud] — port FIRST, then baud
+# depends-on login.target (DINIT-AS-INIT: tty services depend on loginready;
+# never set runs-on-console on tty services — conflicts with login.target)
 type = process
 command = /sbin/agetty -L $1 115200
 restart = true
-depends-on = local.target
+depends-on = login.target

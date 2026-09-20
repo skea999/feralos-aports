@@ -1,0 +1,48 @@
+/home/user==/home/user
+# bump-upstream.sh — check whether upstream packages have new tags==# bump-upstream.sh — check whether upstream packages have new tags
+# and generates a commit with updated pkgver + sha512.==# and generates a commit with updated pkgver + sha512.
+# Usage:==# Usage:
+  ./scripts/bump-upstream.sh              # check all==  ./scripts/bump-upstream.sh              # check all
+  ./scripts/bump-upstream.sh dinit-chimera  # single package only==  ./scripts/bump-upstream.sh dinit-chimera  # single package only
+# Requires: curl, sha256sum, git, abuild (for sha512sums)==# Requires: curl, sha256sum, git, abuild (for sha512sums)
+# Does not push — pushing is manual (or CI on push).==# Does not push — pushing is manual (or CI on push).
+# read current pkgver==# read current pkgver
+# find latest upstream tag from the GitHub API==# find latest upstream tag from the GitHub API
+# dinit-chimera -> chimera-linux/dinit-chimera==# dinit-chimera -> chimera-linux/dinit-chimera
+# turnstile -> chimera-linux/turnstile==# turnstile -> chimera-linux/turnstile
+# update pkgver==# update pkgver
+# re-download the tarball and recompute sha512==# re-download the tarball and recompute sha512
+# update sha512sums (only the tarball line, not the hook lines)==# update sha512sums (only the tarball line, not the hook lines)
+# Check: git diff --stat==# Check: git diff --stat
+# Then: git add -A && git commit -m 'bump: upstream updates'==# Then: git add -A && git commit -m 'bump: upstream updates'
+No upstream updates found==No upstream updates found
+# fetch-alpine-openrc.sh — extracts APKBUILD + init scripts from Alpine aports==# fetch-alpine-openrc.sh — extracts APKBUILD + init scripts from Alpine aports
+# to convert them into dinit services.==# to convert them into dinit services.
+  ./scripts/fetch-alpine-openrc.sh              # all targets==  ./scripts/fetch-alpine-openrc.sh              # all targets
+  ./scripts/fetch-alpine-openrc.sh dbus avahi   # specific list only==  ./scripts/fetch-alpine-openrc.sh dbus avahi   # specific list only
+#   APORTS_BRANCH=edge ./scripts/fetch-alpine-openrc.sh  # alternative branch==#   APORTS_BRANCH=edge ./scripts/fetch-alpine-openrc.sh  # alternative branch
+# CLI flag for an alternative branch==# CLI flag for an alternative branch
+# 2. target list (from arguments or the full list)==# 2. target list (from arguments or the full list)
+# all packages with an openrc init script (manual list, updatable)==# all packages with an openrc init script (manual list, updatable)
+# 3. for each target: find its dir in aports, copy APKBUILD + *.initd + *.confd==# 3. for each target: find its dir in aports, copy APKBUILD + *.initd + *.confd
+# search: exact name first, then -openrc, then without -openrc==# search: exact name first, then -openrc, then without -openrc
+# Extracting OpenRC sources from Alpine aports==# Extracting OpenRC sources from Alpine aports
+Before converting a service, extract its original files:==Before converting a service, extract its original files:
+# first time: clones aports + extracts ALL openrc services==# first time: clones aports + extracts ALL openrc services
+# or specific services only==# or specific services only
+Files land in `references/alpine-openrc/<pkg>/` (APKBUILD + `*.initd` + `*.confd`):==Files land in `references/alpine-openrc/<pkg>/` (APKBUILD + `*.initd` + `*.confd`):
+  dbus.initd          # <- OpenRC init script to convert==  dbus.initd          # <- OpenRC init script to convert
+  dbus.confd          #    optional config==  dbus.confd          #    optional config
+The `references/` folder is **gitignored** (see `.gitignore: references/`): it is a local cache,==The `references/` folder is **gitignored** (see `.gitignore: references/`): it is a local cache,
+must not be committed. Regenerate it when needed with the script above.==must not be committed. Regenerate it when needed with the script above.
+What to look for in the `*.initd`:==What to look for in the `*.initd`:
+| OpenRC | What to look for | Dinit |==| OpenRC | What to look for | Dinit |
+| `command_args` | arguments | append to `command` |==| `command_args` | arguments | append to `command` |
+| `command_background=true` + `pidfile=` | supervision | `type = process` (dinit supervises) |==| `command_background=true` + `pidfile=` | supervision | `type = process` (dinit supervises) |
+| `depend()` { `need` / `after` / `before` } | dependencies | `depends-on:` to targets (see table below) |==| `depend()` { `need` / `after` / `before` } | dependencies | `depends-on:` to targets (see table below) |
+| `start()` / `stop()` custom | special logic | `type = scripted` script if needed |==| `start()` / `stop()` custom | special logic | `type = scripted` script if needed |
+After extraction, create the `-dinit` package in `src/<name>-dinit/` following the templates below.==After extraction, create the `-dinit` package in `src/<name>-dinit/` following the templates below.
+is extracted==is extracted
+if empty==if empty
+from the init script==from the init script
+/home/user==>/home/user

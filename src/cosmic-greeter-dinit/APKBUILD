@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=cosmic-greeter-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for cosmic-greeter (Alpine initd name: cosmic-greeter)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit cosmic-greeter"
+makedepends=""
+source="cosmic-greeter"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/cosmic-greeter" "$pkgdir/lib/dinit.d/cosmic-greeter"
+}
+
+sha512sums="
+a5b75783cc77e4806d7331c838d08debd5dbca61d6609ad3e1f2517416117d5afddb923c620687ee6a915737db0cd93062d11349b2f9b9b58ae8a320ac5d5de4  cosmic-greeter
+"

@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=polkit-elogind-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for polkitd (elogind variant, Alpine initd name: polkitd)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit polkit-elogind"
+makedepends=""
+source="polkitd"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/polkitd" "$pkgdir/lib/dinit.d/polkitd"
+}
+
+sha512sums="
+e5dc756b5eb4890cf1aaddf2989b326514e1dfabb793b3a6d3eff910fc5b0954bd7928386f56b7aa831afb56b0885d9be143a5b727f8406e9dc894b7b6ebfbb3  polkitd
+"

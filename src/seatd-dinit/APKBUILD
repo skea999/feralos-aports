@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=seatd-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for seatd (Alpine initd name: seatd)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit seatd"
+makedepends=""
+source="seatd"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/seatd" "$pkgdir/lib/dinit.d/seatd"
+}
+
+sha512sums="
+870d0eae4af47b4da60b7a40c457c468f0231c5dfcc603f08e9aaf973a5bb41fa5ca8641f9cc1856b10e5276414913862e6dd6be2bbbd46e01cd5983320f73a0  seatd
+"

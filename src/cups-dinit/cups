@@ -1,7 +1,7 @@
-# dinit service: cups (auto-generated from Alpine openrc cups)
+# dinit service: cups
 type = process
 log-type = file
 logfile = /var/log/dinit/cups.log
-command = /usr/sbin/cupsd -f -c $cfgfile
+command = /usr/sbin/cupsd -f
 restart = true
 depends-on = local.target

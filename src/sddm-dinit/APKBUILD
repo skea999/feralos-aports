@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=sddm-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for sddm (Alpine initd name: sddm)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit sddm"
+makedepends=""
+source="sddm"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/sddm" "$pkgdir/lib/dinit.d/sddm"
+}
+
+sha512sums="
+b611b0e7338b0e68fd24c284f476bcf5d7eb040df94f5a0e30d9696481f821cb88afe08750ac1a0357aa8d54cb73e9379492827146d49acc6b8661f807eb61da  sddm
+"

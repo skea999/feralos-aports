@@ -1,0 +1,6 @@
+type = process
+log-type = file
+logfile = /var/log/dinit/polkit-elogind.log
+command = /usr/lib/polkit-1/polkitd ${POLKIT_OPTS:---no-debug}
+restart = true
+depends-on = local.target

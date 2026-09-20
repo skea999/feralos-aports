@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=xdg-document-portal-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for xdg-document-portal"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/xdg-document-portal" "$pkgdir/lib/dinit.d/xdg-document-portal"
 }
 
-sha512sums="3958970abf29fa1eb63a770f3ccfd285b71f342cbfa7ac7732aa94811f549e0d26c23924e5e8c31d7c64deaabf09dcbfd48226dc91f7fee7fd2d444f78db982d  xdg-document-portal"
+sha512sums="
+69216148737b3cd7e99b5051f45b5e57ca7e59ed4a0b5e8e6911d0dc8417ba8e4a6d86ba912774862f3455eb2400c3c91353efb52278a5607bf15de21174c1cc  xdg-document-portal
+"

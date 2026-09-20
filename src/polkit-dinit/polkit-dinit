@@ -1,5 +1,7 @@
 # dinit service: polkit-dinit (converted from openrc polkit)
 type = process
+log-type = file
+logfile = /var/log/dinit/polkit-dinit.log
 command = polkitd
 restart = true
 depends-on = local.target

@@ -1,5 +1,7 @@
 # dinit service: apparmor-dinit (converted from openrc apparmor)
 type = process
+log-type = file
+logfile = /var/log/dinit/apparmor-dinit.log
 command = aa-notify -p /etc/apparmor.d/notify.conf
 restart = true
 depends-on = local.target

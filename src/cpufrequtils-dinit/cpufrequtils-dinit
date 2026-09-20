@@ -1,5 +1,7 @@
 # dinit service: cpufrequtils-dinit (converted from openrc cpufrequtils)
 type = process
+log-type = file
+logfile = /var/log/dinit/cpufrequtils-dinit.log
 command = cpufreqd
 restart = true
 depends-on = local.target

@@ -1,5 +1,7 @@
 # dinit service: cronie (Alpine openrc cronie + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/cronie.log
 command = /usr/sbin/crond -n
 restart = true
 depends-on = local.target

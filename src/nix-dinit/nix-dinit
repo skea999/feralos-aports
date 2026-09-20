@@ -1,5 +1,7 @@
 # dinit service: nix-dinit (converted from openrc nix)
 type = process
+log-type = file
+logfile = /var/log/dinit/nix-dinit.log
 command = nix-daemon
 restart = true
 depends-on = local.target

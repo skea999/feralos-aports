@@ -1,5 +1,7 @@
 # dinit service: wireplumber-dinit (converted from openrc wireplumber)
 type = process
+log-type = file
+logfile = /var/log/dinit/wireplumber-dinit.log
 command = wireplumber
 restart = true
 depends-on = local.target

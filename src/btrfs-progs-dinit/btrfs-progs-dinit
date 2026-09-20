@@ -1,5 +1,7 @@
 # dinit service: btrfs-progs-dinit (converted from openrc btrfs-progs)
 type = process
+log-type = file
+logfile = /var/log/dinit/btrfs-progs-dinit.log
 command = btrfs device scan
 restart = true
 depends-on = local.target

@@ -1,5 +1,7 @@
 # dinit service: rasdaemon (auto-generated from Alpine openrc rasdaemon)
 type = process
+log-type = file
+logfile = /var/log/dinit/rasdaemon.log
 command = /usr/sbin/rasdaemon --foreground --record
 restart = true
 depends-on = local.target

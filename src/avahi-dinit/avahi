@@ -1,5 +1,7 @@
 # dinit service: avahi (Alpine openrc avahi + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/avahi.log
 command = /usr/sbin/avahi-daemon
 restart = true
 depends-on = local.target

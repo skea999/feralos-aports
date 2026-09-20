@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=lxc-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for lxc"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/lxc" "$pkgdir/lib/dinit.d/lxc"
 }
 
-sha512sums="de8f6637430e4af1a4f8b37e1e3d7bf6067f3da141cbcda3790c6bbd3266729e06d288bfca957b8cdb3329c274d47c91b9133e0607b2f814e8525d9902b40453  lxc"
+sha512sums="
+d8463c481586b535898b25221e9b92a7dd89ae32be6de5b3b36b510a01307b324c5b9fb21a3773817d1eca8193537b758bfceb7090c7eaa612edfd650009fe22  lxc
+"

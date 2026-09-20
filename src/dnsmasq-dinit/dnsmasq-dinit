@@ -1,5 +1,7 @@
 # dinit service: dnsmasq-dinit (converted from openrc dnsmasq)
 type = process
+log-type = file
+logfile = /var/log/dinit/dnsmasq-dinit.log
 command = dnsmasq
 restart = true
 depends-on = local.target

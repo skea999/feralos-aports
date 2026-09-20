@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=busybox-mdev-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for mdev (Alpine initd name) — unused on FeralOS (eudev)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-d5910402019b4b5e5a5587c5e47bad0e10676c0b8de7813e1563ddbfcb7473bbf6e1ea121529a8c5926f546859c724c9f5f8be09666147d15e7971544befbc41  mdev
+58e6ec6f8ec777c71e43397bf7e52da51535d298bb7ccbfe18d073ddf565e195c9343f26ed4840404c1d61cd8ff5bcca12e06f89e65b5626417c824142175814  mdev
 "

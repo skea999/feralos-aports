@@ -1,5 +1,7 @@
 # dinit service: firewalld (auto-generated from Alpine openrc firewalld)
 type = process
+log-type = file
+logfile = /var/log/dinit/firewalld.log
 command = /usr/sbin/firewalld
 restart = true
 depends-on = local.target

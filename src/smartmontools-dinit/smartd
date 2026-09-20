@@ -1,5 +1,7 @@
 # dinit service: smartd (Alpine openrc smartd + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/smartd.log
 command = /usr/sbin/smartd --no-fork
 restart = true
 depends-on = local.target

@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=nftables-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for nftables"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/nftables" "$pkgdir/lib/dinit.d/nftables"
 }
 
-sha512sums="8a26738bb17c13dc98f4ab33b7fe0b24715407bff34789d02701df5070f73f17efa70e5f0511d60666295f170c9faa084038a352904de8c68cc59312c65e4c9a  nftables"
+sha512sums="
+8a26738bb17c13dc98f4ab33b7fe0b24715407bff34789d02701df5070f73f17efa70e5f0511d60666295f170c9faa084038a352904de8c68cc59312c65e4c9a  nftables
+"

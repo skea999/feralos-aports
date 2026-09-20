@@ -1,5 +1,7 @@
 # dinit service: incusd (Alpine openrc incusd + overrides) — incus-feature hosts
 type = process
+log-type = file
+logfile = /var/log/dinit/incusd.log
 command = /usr/sbin/incusd --group incus-admin
 restart = true
 depends-on = networking

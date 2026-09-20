@@ -1,5 +1,7 @@
 # dinit service: pipewire-dinit (converted from openrc pipewire)
 type = process
+log-type = file
+logfile = /var/log/dinit/pipewire-dinit.log
 command = pipewire
 restart = true
 depends-on = local.target

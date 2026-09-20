@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=fwupd-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for fwupd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/fwupd" "$pkgdir/lib/dinit.d/fwupd"
 }
 
-sha512sums="e952b113d789397d7f62031ea0e6925f223bdc1eec9a46c9795920a6608d25ffdb6d0ccefd51016a7336e07b6d04f10d135ef33c83aa22db4c553af0636db04f  fwupd"
+sha512sums="
+f96b21aa1cdab0fda6689f4e8a7fe13c3d63e916af53e5ff8d11f920c9b27bb3aa1913294aee8c9baefc3985f46690f399745ba3d7b30ac9f659d0d795ce76b4  fwupd
+"

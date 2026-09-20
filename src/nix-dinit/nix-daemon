@@ -1,5 +1,7 @@
 # dinit service: nix-daemon (Alpine openrc nix-daemon + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/nix-daemon.log
 command = /usr/sbin/nix-daemon
 restart = true
 depends-on = local.target

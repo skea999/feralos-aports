@@ -1,5 +1,7 @@
 # dinit service: rasdaemon-dinit (converted from openrc rasdaemon)
 type = process
+log-type = file
+logfile = /var/log/dinit/rasdaemon-dinit.log
 command = rasdaemon
 restart = true
 depends-on = local.target

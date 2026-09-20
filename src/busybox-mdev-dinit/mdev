@@ -1,5 +1,7 @@
 # dinit service: mdev (Alpine openrc mdev + overrides) — unused on FeralOS (eudev)
 type = process
+log-type = file
+logfile = /var/log/dinit/mdev.log
 command = /sbin/mdev -s
 restart = false
 depends-on = local.target

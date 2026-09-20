@@ -1,5 +1,7 @@
 # dinit service: chronyd (Alpine openrc chronyd + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/chronyd.log
 command = /usr/sbin/chronyd -d -s
 restart = true
 depends-on = networking

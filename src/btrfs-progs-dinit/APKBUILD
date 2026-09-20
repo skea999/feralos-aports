@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=btrfs-progs-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for btrfs-progs"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/btrfs-progs" "$pkgdir/lib/dinit.d/btrfs-progs"
 }
 
-sha512sums="66ddd8a5f6b56931a816b6e7e0dbcc18571a516b299ec39da4a75ef0aaf0fb5e1880acef6b4ecd190a0df9f77fec6fe62388ab25f0336064be66174e7ac22269  btrfs-progs"
+sha512sums="
+66ddd8a5f6b56931a816b6e7e0dbcc18571a516b299ec39da4a75ef0aaf0fb5e1880acef6b4ecd190a0df9f77fec6fe62388ab25f0336064be66174e7ac22269  btrfs-progs
+"

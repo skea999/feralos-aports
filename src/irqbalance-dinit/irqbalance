@@ -1,5 +1,7 @@
 # dinit service: irqbalance (auto-generated from Alpine openrc irqbalance)
 type = process
+log-type = file
+logfile = /var/log/dinit/irqbalance.log
 command = /usr/sbin/irqbalance --foreground $IRQBALANCE_OPTS
 restart = true
 depends-on = local.target

@@ -1,5 +1,7 @@
 # dinit service: firewalld-dinit (converted from openrc firewalld)
 type = process
+log-type = file
+logfile = /var/log/dinit/firewalld-dinit.log
 command = firewalld
 restart = true
 depends-on = local.target

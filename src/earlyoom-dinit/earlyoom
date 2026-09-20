@@ -1,5 +1,7 @@
 # dinit service: earlyoom (Alpine openrc earlyoom + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/earlyoom.log
 command = /usr/bin/earlyoom -r 60
 restart = true
 depends-on = local.target

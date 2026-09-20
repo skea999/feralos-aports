@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cups-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for cups"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/cups" "$pkgdir/lib/dinit.d/cups"
 }
 
-sha512sums="1446f92256f64f3062883490dbdf20f925b9eaad70aecc84dee12807d3a5318770134e6051f4302e9e4a6c363128087d72603cf24c4c449622ae98567ac69295  cups"
+sha512sums="
+e82160c158c05a5ec427ec9690f77634122a6737b3dd2337b3b20220093b4d224eaaa9a9657811b4178fdde3fae60d984f31e88b25c0f17a51c72bf8e843b2e5  cups
+"

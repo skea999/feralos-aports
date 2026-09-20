@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=apparmor-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for apparmor"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/apparmor" "$pkgdir/lib/dinit.d/apparmor"
 }
 
-sha512sums="d25246b08a6e2588375ea4dadbde0778cb742d25a5a117c9b886e6c14e4bc191b64ed4d5cf83020553ac718ecedd306b7d9283493553fc8a7c610ad20cad0f88  apparmor"
+sha512sums="
+d25246b08a6e2588375ea4dadbde0778cb742d25a5a117c9b886e6c14e4bc191b64ed4d5cf83020553ac718ecedd306b7d9283493553fc8a7c610ad20cad0f88  apparmor
+"

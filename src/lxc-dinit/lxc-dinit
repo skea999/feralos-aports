@@ -1,5 +1,7 @@
 # dinit service: lxc-dinit (converted from openrc lxc)
 type = process
+log-type = file
+logfile = /var/log/dinit/lxc-dinit.log
 command = lxc-start --name systemd --daemon
 restart = true
 depends-on = local.target

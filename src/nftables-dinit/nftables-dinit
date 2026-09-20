@@ -1,5 +1,7 @@
 # dinit service: nftables-dinit (converted from openrc nftables)
 type = process
+log-type = file
+logfile = /var/log/dinit/nftables-dinit.log
 command = nft -f /etc/nftables.conf
 restart = true
 depends-on = local.target

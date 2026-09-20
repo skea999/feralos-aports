@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for elogind"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/elogind" "$pkgdir/lib/dinit.d/elogind"
 }
 
-sha512sums="abeaba8dda0c513d8a7b16201c87beb55532b15117a0cbc2ce6e93b6fc9ef745f5144192a5aa21d74b3571e31603de4d575cc6e1bf66aaabd24e4128dd635080  elogind"
+sha512sums="
+3a2f35d459f60abbb972ef6f6206b7410a2873eb96bb2402a421217744dbf7e6a387abd4f918e8d3bd32d5be93a5d22a3c9458fa721b369af3c415cdba5f3c25  elogind
+"

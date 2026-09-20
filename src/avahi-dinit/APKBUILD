@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=avahi-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for avahi"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/avahi" "$pkgdir/lib/dinit.d/avahi"
 }
 
-sha512sums="9505bfeedc78785d8eee590c2f2c30e1a70816219ad9860d9fb606d87d2aa8d8f3319ad06a3d628f4423c0544320d74c7264ddd9a01cb9c15b8a63d0671af3df  avahi"
+sha512sums="
+845f55757c288bca08568d2d2c6f9aba90610d207bf36bdfff6183cd3d4f0c212f81649ddbc6e4b6b86c2858740edc512b4faf3c25b1cac209ee7e41ad7199f0  avahi
+"

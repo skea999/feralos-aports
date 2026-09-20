@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=rsync-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for rsync"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/rsync" "$pkgdir/lib/dinit.d/rsync"
 }
 
-sha512sums="c93244a764b61d5821b941509d523fb1d3bd80e39c253d20e2c1f44899dca4170d1f4d5265fa1a84370e7837c51e7a0569b2c2778f8a00ab34d35b92134a4a70  rsync"
+sha512sums="
+c58fe4a391ddd766736f97d69262a654f2ec9f354ef942b2e9f8ae39b162814eaddc1f94a5d177819db21c79b2fe7b5a8637dbd2577536f19b74a5f90c5591ac  rsync
+"

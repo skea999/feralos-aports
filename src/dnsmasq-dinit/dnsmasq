@@ -1,5 +1,7 @@
 # dinit service: dnsmasq (auto-generated from Alpine openrc dnsmasq)
 type = process
+log-type = file
+logfile = /var/log/dinit/dnsmasq.log
 command = /usr/sbin/dnsmasq --keep-in-foreground --pid-file= $DNSMASQ_OPTS $command_args --conf-file=$cfgfile
 restart = true
 depends-on = local.target

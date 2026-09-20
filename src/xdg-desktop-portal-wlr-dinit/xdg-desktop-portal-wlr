@@ -1,5 +1,7 @@
 # dinit service: xdg-desktop-portal-wlr (auto-generated from Alpine openrc xdg-desktop-portal-wlr)
 type = process
+log-type = file
+logfile = /var/log/dinit/xdg-desktop-portal-wlr.log
 command = /usr/libexec/xdg-desktop-portal-wlr --replace $command_args
 restart = true
 depends-on = local.target

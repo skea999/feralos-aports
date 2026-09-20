@@ -1,5 +1,7 @@
 # dinit service: avahi-dinit (converted from openrc avahi)
 type = process
+log-type = file
+logfile = /var/log/dinit/avahi-dinit.log
 command = avahi-daemon
 restart = true
 depends-on = local.target

@@ -1,5 +1,7 @@
 # dinit service: xdg-document-portal (Alpine openrc xdg-document-portal + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/xdg-document-portal.log
 command = /usr/libexec/xdg-document-portal
 restart = true
 depends-on = local.target

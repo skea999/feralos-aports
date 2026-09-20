@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=earlyoom-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for earlyoom"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/earlyoom" "$pkgdir/lib/dinit.d/earlyoom"
 }
 
-sha512sums="f08d8a7c18dc12b2d1d7af7928f2aaf975cca8c0c88c13a50560a3a85b4dfd49593173d0dc7d2477e1c77b30eaa139ea992e2e105bee8019d137c0adfe75c19f  earlyoom"
+sha512sums="
+85a92c407bd716b2e3b7fd70e6dc9dabe5b33dd672b5420a9417e7599ff8640dc672a455257b0d0a890c87b6aca0da15ee05a8ed5d940c8e1f47250f6a3d91aa  earlyoom
+"

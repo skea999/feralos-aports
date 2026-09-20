@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-feature-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for incus-feature-user"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/incus-feature-user" "$pkgdir/lib/dinit.d/incus-feature-user"
 }
 
-sha512sums="2f581bdb1e00ae21af7f6c6224fa1ff660e54d82b66266ccf29ce5ccac770b2a12ee236a4f02f2d4b84b174366a03578caf059a0682742beea37ebd74fc275c0  incus-feature-user"
+sha512sums="
+8134e45f22eac6cae436a2e4bf5c122e9055170aa6bdd6846c0078c885f79da5471f2113038c7382d93ca9ca3d89cbac7b89bcbded164a888250ae8457af25e7  incus-feature-user
+"

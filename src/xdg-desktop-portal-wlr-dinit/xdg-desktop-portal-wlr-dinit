@@ -1,5 +1,7 @@
 # dinit service: xdg-desktop-portal-wlr-dinit (converted from openrc xdg-desktop-portal-wlr)
 type = process
+log-type = file
+logfile = /var/log/dinit/xdg-desktop-portal-wlr-dinit.log
 command = xdg-desktop-portal-wlr
 restart = true
 depends-on = local.target

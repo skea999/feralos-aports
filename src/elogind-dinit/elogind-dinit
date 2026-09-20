@@ -1,5 +1,7 @@
 # dinit service: elogind-dinit (converted from openrc elogind)
 type = process
+log-type = file
+logfile = /var/log/dinit/elogind-dinit.log
 command = elogind
 restart = true
 depends-on = local.target

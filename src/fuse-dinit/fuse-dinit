@@ -1,5 +1,7 @@
 # dinit service: fuse-dinit (converted from openrc fuse)
 type = process
+log-type = file
+logfile = /var/log/dinit/fuse-dinit.log
 command = fusermount -V
 restart = true
 depends-on = local.target

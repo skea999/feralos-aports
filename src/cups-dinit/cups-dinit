@@ -1,5 +1,7 @@
 # dinit service: cups-dinit (converted from openrc cups)
 type = process
+log-type = file
+logfile = /var/log/dinit/cups-dinit.log
 command = cupsd
 restart = true
 depends-on = local.target

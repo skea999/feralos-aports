@@ -1,5 +1,7 @@
 # dinit service: fwupd (Alpine openrc fwupd + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/fwupd.log
 command = /usr/libexec/fwupd/fwupd
 restart = true
 depends-on = local.target

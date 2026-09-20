@@ -1,5 +1,7 @@
 # dinit service: wireplumber (auto-generated from Alpine openrc wireplumber)
 type = process
+log-type = file
+logfile = /var/log/dinit/wireplumber.log
 command = /usr/bin/wireplumber
 restart = true
 depends-on = local.target

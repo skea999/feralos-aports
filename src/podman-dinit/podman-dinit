@@ -1,5 +1,7 @@
 # dinit service: podman-dinit (converted from openrc podman)
 type = process
+log-type = file
+logfile = /var/log/dinit/podman-dinit.log
 command = podman system service -f
 restart = true
 depends-on = local.target

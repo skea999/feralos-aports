@@ -1,5 +1,7 @@
 # dinit service: udisks2-dinit (converted from openrc udisks2)
 type = process
+log-type = file
+logfile = /var/log/dinit/udisks2-dinit.log
 command = udisksd
 restart = true
 depends-on = local.target

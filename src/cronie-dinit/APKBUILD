@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cronie-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for cronie"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/cronie" "$pkgdir/lib/dinit.d/cronie"
 }
 
-sha512sums="1c61784c2c02db991d7a08fc7e39cc4caceadd767734cff36a5d8476fb946fdd83d84a36a040ddaa65bd8a805ba3a6fdfa60b2f692ee9546ae4bd77fb527ad53  cronie"
+sha512sums="
+ad536e64e7c01e92a5b355a093349b68ef7aeffc1075ea9bfd040a4066994e64115ee6d557a954875cdea56d8e210fbdfd49b65627daadcc2f77792c4110af0c  cronie
+"

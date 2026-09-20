@@ -1,4 +1,6 @@
 type = process
+log-type = file
+logfile = /var/log/dinit/incus-feature-user.log
 command = /usr/sbin/incus-user
 restart = true
 depends-on = local.target

@@ -3,6 +3,8 @@
 # the chroot). NOTE: dinit splits `command` on whitespace WITHOUT shell
 # quoting — never wrap in sh -c '...' (the quotes become part of the token).
 type = process
+log-type = file
+logfile = /var/log/dinit/sshd.log
 command = /usr/sbin/sshd -D -e
 restart = true
 depends-on = networking

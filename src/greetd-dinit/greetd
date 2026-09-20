@@ -1,5 +1,7 @@
 # dinit service: greetd (auto-generated from Alpine openrc greetd)
 type = process
+log-type = file
+logfile = /var/log/dinit/greetd.log
 command = /usr/sbin/greetd --config $cfgfile ${command_args:-}
 restart = true
 depends-on = local.target

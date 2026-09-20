@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-feature-agent-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for incus-agent (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-ce960c37e329d9c6f696f1cfab2ef45f150ce81c92cbf59f299484686e65e85293a144bc98408dfce967de217d32a41701ce94abacdefbea507e74c8e33ae8f9  incus-agent
+3cb62a8dc303ade305a7885efd46833c098ba061765603fa849ce55434ef1ebbbbda60c6ea32c192923573a0dad304a2a16e9bedfc17b061cbe7f6071aaf3d41  incus-agent
 "

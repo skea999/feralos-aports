@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cpufrequtils-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for cpufrequtils"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,4 +19,6 @@ package() {
 	install -Dm644 "$srcdir/cpufrequtils" "$pkgdir/lib/dinit.d/cpufrequtils"
 }
 
-sha512sums="7ba402be2663efd9673d8f551852dc54620de1c78bfa7dc0c8e899ea9426663d5145f82899e60d2a9d589fa64ee534dc8211c92fa4dcf084200b2f7f501bec27  cpufrequtils"
+sha512sums="
+7ba402be2663efd9673d8f551852dc54620de1c78bfa7dc0c8e899ea9426663d5145f82899e60d2a9d589fa64ee534dc8211c92fa4dcf084200b2f7f501bec27  cpufrequtils
+"

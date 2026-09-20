@@ -1,5 +1,7 @@
 # dinit service: acpid (Alpine openrc acpid + overrides)
 type = process
+log-type = file
+logfile = /var/log/dinit/acpid.log
 command = /sbin/acpid --foreground
 restart = true
 depends-on = local.target

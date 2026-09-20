@@ -3,8 +3,8 @@
 # to convert them into dinit services.
 #
 # Usage:
-  ./scripts/fetch-alpine-openrc.sh              # all targets
-  ./scripts/fetch-alpine-openrc.sh dbus avahi   # specific list only
+#   ./scripts/fetch-alpine-openrc.sh              # all targets
+#   ./scripts/fetch-alpine-openrc.sh dbus avahi   # specific list only
 #   APORTS_BRANCH=edge ./scripts/fetch-alpine-openrc.sh  # alternative branch
 
 set -eu

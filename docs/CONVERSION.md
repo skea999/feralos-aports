@@ -24,14 +24,14 @@ references/alpine-openrc/dbus/
   dbus.confd          #    optional config
 ```
 
-The `references/` folder is **gitignored** (see `.gitignore: references/`): it is a local cache,
-must not be committed. Regenerate it when needed with the script above.
+The `references/` folder is **gitignored** (see `.gitignore: references/`): it is a local
+cache, must not be committed. Regenerate it when needed with the script above.
 
 What to look for in the `*.initd`:
 
 | OpenRC | What to look for | Dinit |
 |--------|--------------|-------|
-| `command=` | binario + path | `command =` |
+| `command=` | binary + path | `command =` |
 | `command_args` | arguments | append to `command` |
 | `command_background=true` + `pidfile=` | supervision | `type = process` (dinit supervises) |
 | `depend()` { `need` / `after` / `before` } | dependencies | `depends-on:` to targets (see table below) |

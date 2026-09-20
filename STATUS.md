@@ -5,25 +5,23 @@
 
 ## Current
 
-- **Step**: 7 — **Alpine/Artix model**: packages ship service files ONLY
-  (install != enabled), enablement is rules-driven via
-  `dinitctl --offline -d /lib/dinit.d enable <svc>` (the upstream command;
-  links land in boot's waits-for.d = /etc/dinit.d/boot.d, the admin dir —
-  same flow Artix documents in its alpm hooks). Service files renamed to
-  Alpine initd names (chronyd, smartd, sshd, incusd, nix-daemon, mdev,
-  incus-agent) so installer rules work identically for both inits. NEW:
-  networking-dinit (ifup -a — nothing brought eth0 up before),
-  incus-feature-dinit (incusd host daemon), sshd-dinit DELETED (duplicate —
-  sshd now in openssh-server-common-dinit, mirroring Alpine's
-  openssh-server-common-openrc which ships sshd.initd). Chimera volume
-  services (zfs/lvm/mdadm/dmraid) left untouched: upstream design = no-op
-  when the tool is missing (we never install those tools). getty-dinit
-  simplified: single `getty` template body, depends agetty.
-  **NEEDS: git rm (old service files) + abuild checksum + push → CI → harness**
-- **Next action**: commands in installer repo handoff; harness
-  `btrfs_standard_dinit.yaml`
+- **Step**: 7 — **Alpine/Artix model** ✅ **COMPLETE** — packages ship service
+  files ONLY (install != enabled), enablement is rules-driven. 47/47 harness
+  verify (run 2026-09-20T02-31-53Z): r5 cmdline logfile patch, all daemon
+  services log-type=file → /var/log/dinit/, NEW dinit-boot-log.
+- **Next action**: merge developDinit→main decision + real-hardware test
 
 ## Log
+
+### 2026-09-20 — r5 published: cmdline logfile patch + services log-type=file + dinit-boot-log
+- dinit-chimera r5: init wrapper patch reads dinit_log_file from /proc/cmdline
+  (booster does not forward unknown params to init env — live-verified:
+  /proc/1/cmdline had no -l). Boots now produce /run/dinit-boot.log mirrored
+  to /var/log/dinit/boot.log by dinit-boot-log.
+- all type=process -dinit services: log-type=file -> /var/log/dinit/<name>.log
+  (dinit default log-type=none discards stderr); pkgrel +1 on touched pkgs
+- NEW dinit-boot-log 0.1.0-r1 (script + service + tmpfiles)
+- Live-verified 47/47 harness verify; vector watches /var/log/dinit/*.
 
 ### 2026-09-19 — Alpine/Artix model: ship-only packages + dinitctl enablement
 - Research: Artix dinit-rc optdepends (cryptsetup-dinit, lvm2-dinit,

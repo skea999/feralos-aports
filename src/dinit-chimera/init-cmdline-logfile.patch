@@ -1,0 +1,20 @@
+--- a/init
++++ b/init
+@@ -15,6 +15,17 @@
+     ulimit -c "$dinit_rlimit_core"
+ fi
+ 
++# FeralOS: the initramfs does not forward unknown kernel parameters to
++# init's environment — read the switch from /proc/cmdline like the early
++# volume scripts do (dinit_skip_volumes pattern).
++if [ -r /proc/cmdline ]; then
++    for _x in $(cat /proc/cmdline); do
++        case "$_x" in
++            dinit_log_file=*) dinit_log_file="${_x#dinit_log_file=}" ;;
++        esac
++    done
++fi
++
+ if [ "$dinit_auto_recovery" = "1" ]; then
+     set -- --auto-recovery "$@"
+ fi

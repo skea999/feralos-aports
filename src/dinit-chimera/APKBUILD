@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dinit-chimera
 pkgver=0.99.24
-pkgrel=4
+pkgrel=5
 pkgdesc="Dinit core service suite (Chimera upstream) for FeralOS"
 url="https://github.com/chimera-linux/dinit-chimera"
 arch="all"
@@ -13,7 +13,8 @@ subpackages="$pkgname-doc"
 source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/dinit-chimera/archive/refs/tags/v$pkgver.tar.gz
 	dinit-devd
 	dinit-cryptdisks
-	dinit-console"
+	dinit-console
+	init-cmdline-logfile.patch"
 options="!check"  # upstream ships no test suite
 
 prepare() {
@@ -88,4 +89,5 @@ cb743ee5d802818df6c232e90bbd0c3a84ce211403b27453900d866311118e4df30cda9eb6eca68d
 39828fef6c9851a79e02338e236b010e13b02e7491d49d00b1c0cb53d5b238a6073aec76ce1cc263aa0b2c779133bf17fc11e8574eed38403b5abc2f61ea8156  dinit-devd
 3c42c783b037e44be94a5480138e8e5333ba535852b4022510d70b607ede1a7dc631433796fc877689af8861f0622c2e499280d266bf8623612b32a34fce544c  dinit-cryptdisks
 4850ae67eb7787edb65be93cf04db9953134535a54fbbed30145dedea077e49e3411925e8b2875654c9661967ceb60d3d497067927099cbc605596bdc4fa2b3b  dinit-console
+a430d24617fa4960da19a8017f6b3890e0d6e3a8fc32fceb3d3735dc2ae2da99d21f058d39b0c26d277a69c6c1e24812348d38462e8006cdb4cfacf4d77cafd5  init-cmdline-logfile.patch
 "

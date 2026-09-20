@@ -1,0 +1,31 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=dinit-boot-log
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service mirroring the PID1 status trail to /var/log/dinit/boot.log"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit"  # tail -F: busybox tail (1.35+) supports it
+makedepends=""
+source="dinit-boot-log.sh
+	dinit-boot-log
+	dinit-boot-log.tmpfiles"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# Alpine model: ship the service file; enablement is rules-driven
+	# (defaultRunlevelsDinit in the installer)
+	install -Dm755 "$srcdir/dinit-boot-log.sh" "$pkgdir/usr/libexec/dinit-boot-log"
+	install -Dm644 "$srcdir/dinit-boot-log" "$pkgdir/lib/dinit.d/dinit-boot-log"
+	install -Dm644 "$srcdir/dinit-boot-log.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/dinit-boot-log.conf"
+}
+
+sha512sums="
+df1c9f458e56547eee86085a7f559dda6b7e0eab614b2433fd7453c28eebc951488d65b375fb959296f2f36975320c46aaacb54d117e2bd2bca32b3fc5b36ee9  dinit-boot-log.sh
+66c0d31505b761e071e39883969ec911176bd8e8e537baa278f4b34b46757c00f2249ace7c8e7ca8d371eb2d1e02917ae47edae167d2e1e8ab7d3bcacc9c2d2a  dinit-boot-log
+8566814a4aa1c36e342e6cc1406b9918eccd49b08dfa29c0fdc14575c8075a020933b8a9882a68a683b8194d101f3ef43c868cf798a4301aeabfb7e8dd65a501  dinit-boot-log.tmpfiles
+"

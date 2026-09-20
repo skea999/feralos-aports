@@ -1,0 +1,3 @@
+# FeralOS dinit-boot-log: log dir for the PID1 status trail mirror
+# (processed by sd-tmpfiles in the dinit-chimera early chain)
+d /var/log/dinit 0755 root root -

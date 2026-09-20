@@ -1,0 +1,9 @@
+# dinit service: dinit-boot-log (FeralOS)
+# Mirrors /run/dinit-boot.log into /var/log/dinit/boot.log (persistent;
+# vector source dinit_services + logrotate). log-type=none: its own output
+# must never loop back into the file it tails.
+type = process
+command = /usr/libexec/dinit-boot-log
+restart = true
+depends-on = local.target
+log-type = none

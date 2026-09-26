@@ -32,6 +32,7 @@ doesn't ship or what needs FeralOS patches.
 | `polkit` (patched) | Alpine APKBUILD + Chimera `turnstile.patch` | 7 |
 | `cli11` | [CLIUtils/CLI11](https://github.com/CLIUtils/CLI11) (2.7.2) — quickshell build dep, absent in Alpine | desktop |
 | `quickshell` | [outfoxxed/quickshell](https://quickshell.org/) (0.3.1) — QtQuick shell toolkit (DMS runtime dep); crash-handler dropped (cpptrace absent in Alpine) | desktop |
+| `dms-shell` | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) (1.6.2) — Quickshell desktop shell, QML embedded in Go binary (+ dank-qml-common pinned submodule); musl native, replaces nix dms-shell | desktop |
 
 Toolchain: **GCC** (Alpine default) — decision record: `docs/TOOLCHAIN.md`.
 

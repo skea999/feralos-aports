@@ -30,6 +30,8 @@ doesn't ship or what needs FeralOS patches.
 | `elogind-dinit` / `seatd-dinit`, DM services | ours | 7 |
 | `turnstile` | [chimera-linux/turnstile](https://github.com/chimera-linux/turnstile) | 7 |
 | `polkit` (patched) | Alpine APKBUILD + Chimera `turnstile.patch` | 7 |
+| `cli11` | [CLIUtils/CLI11](https://github.com/CLIUtils/CLI11) (2.7.2) — quickshell build dep, absent in Alpine | desktop |
+| `quickshell` | [outfoxxed/quickshell](https://quickshell.org/) (0.3.1) — QtQuick shell toolkit (DMS runtime dep); crash-handler dropped (cpptrace absent in Alpine) | desktop |
 
 Toolchain: **GCC** (Alpine default) — decision record: `docs/TOOLCHAIN.md`.
 

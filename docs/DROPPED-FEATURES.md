@@ -18,7 +18,7 @@
 
 | Date | Package | Feature (meson flag) | Why dropped | Re-enable | Retry condition |
 |------|---------|----------------------|-------------|-----------|-----------------|
-| — | — | — | none dropped yet | — | — |
+| 2026-09-26 | quickshell | crash-handler (`-DCRASH_HANDLER=OFF`) | cpptrace (stack-trace backend) is not packaged in Alpine | `-DCRASH_HANDLER=ON` | cpptrace lands in aports, or quickshell ships `VENDOR_CPPTRACE=ON` fallback that builds without a system cpptrace |
 
 ### Example entry (do not delete — format reference)
 

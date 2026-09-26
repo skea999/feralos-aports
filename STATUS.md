@@ -5,13 +5,28 @@
 
 ## Current
 
-- **Step**: 7 — **Alpine/Artix model** ✅ **COMPLETE** — packages ship service
-  files ONLY (install != enabled), enablement is rules-driven. 47/47 harness
-  verify (run 2026-09-20T02-31-53Z): r5 cmdline logfile patch, all daemon
-  services log-type=file → /var/log/dinit/, NEW dinit-boot-log.
-- **Next action**: merge developDinit→main decision + real-hardware test
+- **Step**: 9 — **desktop stack** **IN PROGRESS** — 9a/9b done (cli11 +
+  quickshell landed). Next: dms-shell.
+- **Next action**: dms-shell APKBUILD (runtime dep: quickshell)
 
 ## Log
+
+### 2026-09-26 — Step 9a/9b: cli11 2.7.2 + quickshell 0.3.1-r0 landed
+- NEW cli11 2.7.2: quickshell build dep, absent in Alpine; builddir override
+  (GitHub archive strips the `v` from the tag dir name)
+- NEW quickshell 0.3.1-r0: QtQuick shell toolkit (DMS runtime dep); generic
+  build (all compositor features ON), INSTALL_QML_PREFIX=lib/qt6/qml
+- crash-handler DROPPED (cpptrace absent in Alpine) → `docs/DROPPED-FEATURES.md`
+- Qt >= 6.9 needs private CMake components (Qt6QuickPrivate,
+  Qt6WaylandClientPrivate) declared explicitly → makedepends gained
+  qt6-qtdeclarative-private-dev + qt6-qtbase-private-dev (Alpine splits them
+  out of the plain -dev packages)
+- CI: Index moved BEFORE smoke; isolated smoke roots add our local indexed
+  repos (repo ROOT dir — apk appends the arch itself, a /x86_64-suffixed
+  entry doubles to x86_64/x86_64 and never resolves)
+- Rehearsed in Docker before push: cli11 + quickshell build, contents check
+  (usr/bin/quickshell + qs symlink + usr/lib/qt6/qml/Quickshell/*),
+  quickshell --version, isolated-root smoke for both
 
 ### 2026-09-20 — r5 published: cmdline logfile patch + services log-type=file + dinit-boot-log
 - dinit-chimera r5: init wrapper patch reads dinit_log_file from /proc/cmdline

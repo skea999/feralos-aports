@@ -1,0 +1,64 @@
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=dms-shell
+pkgver=1.6.2
+pkgrel=0
+pkgdesc="Quickshell-based desktop shell with Material 3 design principles"
+url="https://github.com/AvengeMedia/DankMaterialShell"
+arch="x86_64 aarch64"
+license="MIT"
+depends="accountsservice quickshell"
+optdepends="networkmanager: network management backend
+	qt6-qtmultimedia: sound effect support
+	power-profiles-daemon: power profile switching
+	cups-pk-helper: printer management
+	i2c-tools: external monitor brightness control
+	wtype: paste from clipboard history and plugins"
+makedepends="go"
+_qmlcommit=26396ce432d6c71c3f5367438f96f4a8d667e160
+source="https://github.com/AvengeMedia/DankMaterialShell/archive/refs/tags/v$pkgver/DankMaterialShell-$pkgver.tar.gz
+	https://github.com/AvengeMedia/dank-qml-common/archive/$_qmlcommit/dank-qml-common-$_qmlcommit.tar.gz"
+builddir="$srcdir/DankMaterialShell-$pkgver"
+options="!check"
+
+prepare() {
+	default_prepare
+	rm -rf "$builddir"/dank-qml-common
+	mv "$srcdir"/dank-qml-common-$_qmlcommit "$builddir"/dank-qml-common
+	sed -i \
+		-e '/@update-desktop-database/d' \
+		-e '/@gtk-update-icon-cache/d' \
+		-e '/^install:/s/install-systemd //' \
+		Makefile
+	make -C core sync-shell
+}
+
+build() {
+	cd core
+	export GOTOOLCHAIN=local
+	export CGO_CPPFLAGS="$CPPFLAGS"
+	export CGO_CFLAGS="$CFLAGS"
+	export CGO_CXXFLAGS="$CXXFLAGS"
+	export CGO_LDFLAGS="$LDFLAGS"
+	go build \
+		-tags distro_binary \
+		-tags withshell \
+		-trimpath \
+		-buildmode=pie \
+		-mod=readonly \
+		-modcacherw \
+		-ldflags="-s -w -linkmode=external -extldflags \"$LDFLAGS\" -X main.Version=v$pkgver" \
+		-o bin/dms ./cmd/dms
+}
+
+package() {
+	make DESTDIR="$pkgdir" PREFIX=/usr install
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+	install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname/
+	mkdir -p "$pkgdir"/usr/share/doc/$pkgname/docs
+	cp -r docs/. "$pkgdir"/usr/share/doc/$pkgname/docs/
+}
+
+sha512sums="
+fdcc304c878766e65e6356d975ce5df2e5a41f637039dc6daaffccc9ea22a8ef1140cc8da59602101195ec8d86b36388f62aa0f38ec7611f6ecf8ab79eb030e6  DankMaterialShell-1.6.2.tar.gz
+5b5198163fd3bd5584ffdc9ceae7e0c8bedf72600305570c70e465fb7f065fde3f4de59c73261794153830c6eedcbe0a98a1e5a65ad761792f36669dc7812290  dank-qml-common-26396ce432d6c71c3f5367438f96f4a8d667e160.tar.gz
+"

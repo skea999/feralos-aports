@@ -154,7 +154,10 @@ jobs:
             name=$(basename "$apkfile" | sed -E 's/-[0-9][^-]*-r[0-9]+\.apk$//')
             case " $skip_pkgs " in *" $name "*)
               echo "skip shared-root install (variant): $name"; continue;; esac
-            apk add --allow-untrusted "$apkfile"
+            # shared root also needs the local repos: inter-package runtime
+            # deps (dms-shell -> quickshell) resolve only from ~/packages
+            apk add --allow-untrusted \
+              --repositories-file /tmp/smoke-repositories "$apkfile"
           done
           # expected artifacts from built packages (update as packages land)
           # dinit-chimera: services dir = /lib/dinit.d (Alpine standard —

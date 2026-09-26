@@ -84,6 +84,19 @@ jobs:
             echo "No APKBUILDs yet — build step skipped (skeleton repo)"
           fi
 
+      - name: Index repositories
+        run: |
+          set -e
+          for arch_dir in ~/packages/*/x86_64; do
+            [ -d "$arch_dir" ] || continue
+            repo=$(basename "$(dirname "$arch_dir")")
+            ( cd "$arch_dir" && apk index \
+                --description "FeralOS $repo" \
+                --rewrite-arch x86_64 \
+                -o APKINDEX.tar.gz *.apk \
+              && abuild-sign APKINDEX.tar.gz )
+          done
+
       - name: Smoke-install built packages
         run: |
           set -e
@@ -92,14 +105,20 @@ jobs:
           #    broken packages independently of provider conflicts between
           #    variants (incus vs incus-feature both provide cmd:incusd,
           #    so they can never coexist in one root by Alpine design).
+          #    Runs AFTER Index: inter-package deps (cli11 -> quickshell)
+          #    resolve from our local indexed repos, Alpine CDN for the rest.
           cache=/tmp/apk-smoke-cache
           mkdir -p "$cache"
+          { cat /etc/apk/repositories
+            # repo ROOT dir (no /x86_64): apk appends the arch itself,
+            # a /x86_64-suffixed entry would be doubled to x86_64/x86_64
+            for d in ~/packages/*; do [ -d "$d/x86_64" ] && echo "$d"; done
+          } > /tmp/smoke-repositories
           for apkfile in ~/packages/*/x86_64/*.apk; do
             [ -f "$apkfile" ] || continue
             root=$(mktemp -d)
-            # fresh root has no repository list — reuse the container's
             apk add --quiet --root "$root" --initdb \
-              --repositories-file /etc/apk/repositories \
+              --repositories-file /tmp/smoke-repositories \
               --cache-dir "$cache" \
               --allow-untrusted "$apkfile" \
               || { echo "smoke install FAIL: $apkfile"; exit 1; }
@@ -171,19 +190,6 @@ jobs:
             *) echo "sd-tmpfiles runtime FAIL (exit $rc — 139/134 = crash)"; exit 1 ;;
           esac
           echo "smoke-install OK"
-
-      - name: Index repositories
-        run: |
-          set -e
-          for arch_dir in ~/packages/*/x86_64; do
-            [ -d "$arch_dir" ] || continue
-            repo=$(basename "$(dirname "$arch_dir")")
-            ( cd "$arch_dir" && apk index \
-                --description "FeralOS $repo" \
-                --rewrite-arch x86_64 \
-                -o APKINDEX.tar.gz *.apk \
-              && abuild-sign APKINDEX.tar.gz )
-          done
 
       - name: Collect site
         run: |

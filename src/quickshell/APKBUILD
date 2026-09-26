@@ -1,0 +1,37 @@
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=quickshell
+pkgver=0.3.1
+pkgrel=0
+pkgdesc="Flexible toolkit for making desktop shells with QtQuick"
+url="https://quickshell.org/"
+arch="all"
+license="LGPL-3.0-only"
+depends="qt6-qtbase qt6-qtdeclarative qt6-qtsvg qt6-qtwayland jemalloc
+	pipewire-libs libxcb wayland libdrm mesa polkit linux-pam"
+makedepends="cmake ninja cli11-dev qt6-qtbase-dev qt6-qtdeclarative-dev
+	qt6-qtdeclarative-private-dev qt6-qtbase-private-dev
+	qt6-qtsvg-dev qt6-qtwayland-dev qt6-qtshadertools jemalloc-dev
+	pipewire-dev libdrm-dev wayland-dev wayland-protocols mesa-dev
+	vulkan-headers libxcb-dev polkit-dev linux-pam-dev spirv-tools-dev
+	glib-dev"
+source="https://github.com/outfoxxed/quickshell/archive/refs/tags/v$pkgver/quickshell-v$pkgver.tar.gz"
+options="!check"
+
+build() {
+	cmake -B build -G Ninja \
+		-DCMAKE_BUILD_TYPE=None \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DDISTRIBUTOR="FeralOS" \
+		-DINSTALL_QML_PREFIX=lib/qt6/qml \
+		-DCRASH_HANDLER=OFF
+	cmake --build build
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
+sha512sums="
+7da5b37a20369e52f14cba2cf03b948522c8d79598f4a54e456034f2d0f868cf525539f15d86ebacde547e862eac8d029a597d5e360cd443ed2404dbd4781ad9  quickshell-v0.3.1.tar.gz
+"

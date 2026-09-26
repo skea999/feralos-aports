@@ -1,0 +1,7 @@
+# dinit service: cupsd (Alpine initd name — installer services map uses it)
+type = process
+log-type = file
+logfile = /var/log/dinit/cupsd.log
+command = /usr/sbin/cupsd -f
+restart = true
+depends-on = local.target

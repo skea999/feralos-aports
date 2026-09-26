@@ -2,23 +2,23 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cups-dinit
 pkgver=0.1.0
-pkgrel=3
-pkgdesc="dinit service for cups"
+pkgrel=4
+pkgdesc="dinit service for cups (cupsd — Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit cups"
 makedepends=""
-source="cups"
+source="cupsd"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
-	install -Dm644 "$srcdir/cups" "$pkgdir/lib/dinit.d/cups"
+	install -Dm644 "$srcdir/cupsd" "$pkgdir/lib/dinit.d/cupsd"
 }
 
 sha512sums="
-52f8fc5c04310589e9e72d904dd549888cadc5fd5cce0e5495267d3a5f8700e7adbbed1d38828c0bd1da3ac28789ec6afa109d5b412e6aff2584309d137e7417  cups
+1cefd21ac1c8ccbbaf7efd2e3bd70da94d48838f25c527aa70da27a46b8ff278e4dbc4d0832f9e81d15fa932cd38d5abbe4190a83732ebd00840c27ae881ed4d  cupsd
 "

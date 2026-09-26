@@ -1,0 +1,34 @@
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=cli11
+pkgver=2.7.2
+pkgrel=0
+pkgdesc="Command line parser for C++11"
+url="https://github.com/CLIUtils/CLI11"
+arch="all"
+license="BSD-3-Clause"
+makedepends="cmake ninja"
+subpackages="$pkgname-dev"
+source="https://github.com/CLIUtils/CLI11/archive/refs/tags/v$pkgver/CLI11-v$pkgver.tar.gz"
+builddir="$srcdir/CLI11-$pkgver"
+options="!check"
+
+build() {
+	cmake -B build -G Ninja \
+		-DCMAKE_BUILD_TYPE=None \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCLI11_BUILD_EXE=OFF \
+		-DCLI11_BUILD_TESTS=OFF \
+		-DCLI11_BUILD_DOCS=OFF \
+		-DCLI11_SINGLE_FILE=OFF \
+		-DCLI11_PRECOMPILED=ON
+	cmake --build build
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
+sha512sums="
+437cd9d704c1b0de0516bdc8cb115befb2e7170417375a64845a2bc2385fa07948c4af724ec615d27fbc102dbe13a7117f33873d6776fe9b17f293d42fe64dd9  CLI11-v2.7.2.tar.gz
+"

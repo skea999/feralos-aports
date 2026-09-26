@@ -69,8 +69,10 @@ jobs:
           apk update
           found=0
           built=" "
-          # feralos-keyring first (provides key+repo for other packages), then alphabetical
-          for d in src/feralos-keyring/APKBUILD src/*/APKBUILD; do
+          # feralos-keyring first (provides key+repo for other packages),
+          # then quickshell (runtime dep of dms-shell, sorts after it
+          # alphabetically), then alphabetical
+          for d in src/feralos-keyring/APKBUILD src/quickshell/APKBUILD src/*/APKBUILD; do
             [ -e "$d" ] || continue
             pkgdir=$(dirname "$d")
             case "$built" in *" $pkgdir "*) continue;; esac

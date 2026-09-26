@@ -69,19 +69,33 @@ jobs:
           apk update
           found=0
           built=" "
-          # feralos-keyring first (provides key+repo for other packages),
-          # then quickshell (runtime dep of dms-shell, sorts after it
-          # alphabetically), then alphabetical
-          for d in src/feralos-keyring/APKBUILD src/quickshell/APKBUILD src/*/APKBUILD; do
-            [ -e "$d" ] || continue
-            pkgdir=$(dirname "$d")
-            case "$built" in *" $pkgdir "*) continue;; esac
-            built="$built$pkgdir "
-            found=1
-            echo "::group::build $pkgdir"
-            ( cd "$pkgdir" && abuild -Fr )
-            echo "::endgroup::"
+          # dependency-safe multi-pass build: every abuild success updates
+          # and signs the local src/x86_64 repo index, so a package whose
+          # deps are built later in the same run (alphabetical order does
+          # not guarantee topological order: dms-shell -> quickshell ->
+          # cli11) succeeds on a following pass. Bounded passes; a pass
+          # with zero progress while packages remain unbuilt is a real
+          # build failure, not an ordering artifact.
+          for pass in $(seq 1 10); do
+            progress=0
+            pending=""
+            for d in src/*/APKBUILD; do
+              [ -e "$d" ] || continue
+              pkgdir=$(dirname "$d")
+              case "$built" in *" $pkgdir "*) continue;; esac
+              found=1
+              pending="$pending $pkgdir"
+              echo "::group::build $pkgdir (pass $pass)"
+              if ( cd "$pkgdir" && abuild -Fr ); then
+                built="$built$pkgdir "
+                progress=1
+              fi
+              echo "::endgroup::"
+            done
+            [ -z "$pending" ] && break
+            [ "$progress" -eq 1 ] || { echo "no progress, unbuilt:$pending"; exit 1; }
           done
+          [ -z "$pending" ] || { echo "unbuilt after 10 passes:$pending"; exit 1; }
           if [ "$found" -eq 0 ]; then
             echo "No APKBUILDs yet — build step skipped (skeleton repo)"
           fi

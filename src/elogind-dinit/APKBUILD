@@ -2,12 +2,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=3
-pkgdesc="dinit service for elogind"
+pkgrel=4
+pkgdesc="dinit service for elogind (depends-on dbus)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-depends="dinit elogind"
+depends="dinit elogind dbus"
 makedepends=""
 source="elogind"
 
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-3a2f35d459f60abbb972ef6f6206b7410a2873eb96bb2402a421217744dbf7e6a387abd4f918e8d3bd32d5be93a5d22a3c9458fa721b369af3c415cdba5f3c25  elogind
+edcbad6c478815cf5f006435e3553dbc92396fb943171714e718e9d49bb7c1453f71b2cf7181f289725f650b8ca4058956dd97f9e24519418a45d04eb021eec4  elogind
 "

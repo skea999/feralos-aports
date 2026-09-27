@@ -1,7 +1,11 @@
 # dinit service: elogind (auto-generated from Alpine openrc elogind)
+# dbus dependency: elogind registers on the system bus; without dbus up
+# first it logs "Failed to connect to system bus" and restarts (run
+# 2026-09-26 serial noise).
 type = process
 log-type = file
 logfile = /var/log/dinit/elogind.log
 command = /usr/libexec/elogind/elogind
 restart = true
 depends-on = local.target
+depends-on = dbus

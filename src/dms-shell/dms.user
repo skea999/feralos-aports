@@ -1,0 +1,11 @@
+# dinit service: DMS (user session) — WAYLAND_DISPLAY resolved at start
+# from the compositor socket (compositor-agnostic; depends-on the
+# wait-wayland gate). QML UI is embedded in the binary.
+type = process
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/dms.log
+command = /etc/dinit.d/user/scripts/dms-session
+restart = true
+smooth-recovery = true
+depends-on = wait-wayland.user
+depends-on = dbus.user

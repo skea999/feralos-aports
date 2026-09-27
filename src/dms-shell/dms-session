@@ -1,0 +1,7 @@
+#!/bin/sh
+# DMS launcher: resolve the compositor wayland socket (guaranteed by the
+# wait-wayland.user dependency), export it, then exec the shell supervised.
+for s in "$XDG_RUNTIME_DIR"/wayland-*; do
+    [ -S "$s" ] && export WAYLAND_DISPLAY="${s##*/}"
+done
+exec dms run

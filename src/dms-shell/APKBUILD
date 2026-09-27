@@ -1,12 +1,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dms-shell
 pkgver=1.6.2
-pkgrel=0
+pkgrel=1
 pkgdesc="Quickshell-based desktop shell with Material 3 design principles"
 url="https://github.com/AvengeMedia/DankMaterialShell"
 arch="x86_64 aarch64"
 license="MIT"
-depends="accountsservice quickshell"
+depends="accountsservice quickshell dbus-user-dinit wayland-wait-user-dinit"
 optdepends="networkmanager: network management backend
 	qt6-qtmultimedia: sound effect support
 	power-profiles-daemon: power profile switching
@@ -16,7 +16,8 @@ optdepends="networkmanager: network management backend
 makedepends="go"
 _qmlcommit=26396ce432d6c71c3f5367438f96f4a8d667e160
 source="https://github.com/AvengeMedia/DankMaterialShell/archive/refs/tags/v$pkgver/DankMaterialShell-$pkgver.tar.gz
-	https://github.com/AvengeMedia/dank-qml-common/archive/$_qmlcommit/dank-qml-common-$_qmlcommit.tar.gz"
+	https://github.com/AvengeMedia/dank-qml-common/archive/$_qmlcommit/dank-qml-common-$_qmlcommit.tar.gz
+	dms.user dms-session"
 builddir="$srcdir/DankMaterialShell-$pkgver"
 options="!check"
 
@@ -56,9 +57,14 @@ package() {
 	install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname/
 	mkdir -p "$pkgdir"/usr/share/doc/$pkgname/docs
 	cp -r docs/. "$pkgdir"/usr/share/doc/$pkgname/docs/
+	# user dinit service: supervised, wayland-gated (compositor-agnostic)
+	install -Dm644 "$srcdir/dms.user" "$pkgdir/etc/dinit.d/user/dms.user"
+	install -Dm755 "$srcdir/dms-session" "$pkgdir/etc/dinit.d/user/scripts/dms-session"
 }
 
 sha512sums="
 fdcc304c878766e65e6356d975ce5df2e5a41f637039dc6daaffccc9ea22a8ef1140cc8da59602101195ec8d86b36388f62aa0f38ec7611f6ecf8ab79eb030e6  DankMaterialShell-1.6.2.tar.gz
 5b5198163fd3bd5584ffdc9ceae7e0c8bedf72600305570c70e465fb7f065fde3f4de59c73261794153830c6eedcbe0a98a1e5a65ad761792f36669dc7812290  dank-qml-common-26396ce432d6c71c3f5367438f96f4a8d667e160.tar.gz
+28d63ab2279b2f857ed37e3c36763f2493bc7bb88562a28c57c144ac7adeab9a707199d33d9570c0d93842905720144f3731016463dd659c06fdec607cf15360  dms.user
+9f33cf123ed1ad9d983ec5e6b4e2312f35613a4240fd0d703fe80a1235693506956048fda0b2e63f2cfffbed284bf4f945a211ec0468a0a2f0c19ac48c65a586  dms-session
 "

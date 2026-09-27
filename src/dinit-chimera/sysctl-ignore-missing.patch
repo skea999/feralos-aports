@@ -1,0 +1,22 @@
+--- a/early/helpers/sysctl.cc
++++ b/early/helpers/sysctl.cc
+@@ -188,7 +188,9 @@ doneg:
+         if (opt) {
+             return true;
+         }
+-        /* unknown entries */
++        /* unknown entries; ignore them (procps sysctl -e semantics) —
++         * kernels booted with e.g. ipv6.disable=1 legitimately lack
++         * net.ipv6.* keys and hard-failing the helper breaks boot */
+         if (errno == ENOENT) {
+             for (;;) {
+                 char *sl = std::strchr(name, '/');
+@@ -198,7 +200,7 @@ doneg:
+                 *sl = '.';
+             }
+             warnx("unknown sysctl '%s'", name);
+-            return false;
++            return true;
+         }
+         /* other error */
+         warn("failed to set sysctl '%s'", name);

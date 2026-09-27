@@ -1,0 +1,11 @@
+# dinit service: wayvnc (user session) — VNC remote desktop
+# Default wayvnc config listens on 127.0.0.1:5900 without auth (loopback
+# only, safe). For LAN access create ~/.config/wayvnc/config with TLS +
+# auth (FIX-niri-dms.md round 37) and open the port in firewalld.
+type = process
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/wayvnc.log
+command = wayvnc
+restart = true
+smooth-recovery = true
+depends-on = wait-wayland.user

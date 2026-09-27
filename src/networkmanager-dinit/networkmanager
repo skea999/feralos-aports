@@ -1,0 +1,10 @@
+# dinit service: NetworkManager (system)
+# NM needs the system bus (clients talk to it over D-Bus).
+type = process
+log-type = file
+logfile = /var/log/dinit/networkmanager.log
+command = /usr/sbin/NetworkManager --no-daemon
+restart = true
+smooth-recovery = true
+depends-on = dbus
+depends-on = local.target

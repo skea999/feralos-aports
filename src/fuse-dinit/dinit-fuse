@@ -1,5 +1,7 @@
 #!/bin/sh
-# Load the fuse kernel module (best-effort — it also auto-loads on first
-# fuse mount via kmod).
-modprobe fuse 2>/dev/null || :
+# Load the fuse kernel module if the kernel does not already provide it
+# (fuse also auto-loads on first fuse mount via kmod).
+if ! grep -q fuse /proc/filesystems; then
+    modprobe fuse 2>/dev/null || :
+fi
 exit 0

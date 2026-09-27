@@ -7,10 +7,14 @@ command -v cpufreq-set >/dev/null 2>&1 || { echo "cpufrequtils: cpufreq-set not 
 
 [ -n "$START_OPTS" ] || { echo "cpufrequtils: no START_OPTS in /etc/conf.d/cpufrequtils, skipping"; exit 0; }
 
+# Any real failure (config present, tool present, cpufreq dir exists) is
+# surfaced: dinit marks the service {X}. CPUs without cpufreq (VMs) are
+# simply skipped.
+rc=0
 for cpupath in /sys/devices/system/cpu/cpu[0-9]*; do
     [ -d "$cpupath/cpufreq" ] || continue
     cpu="${cpupath##*/cpu}"
-    cpufreq-set -c "$cpu" $START_OPTS || echo "cpufrequtils: failed on cpu$cpu" >&2
+    cpufreq-set -c "$cpu" $START_OPTS || { echo "cpufrequtils: failed on cpu$cpu" >&2; rc=1; }
 done
 
-exit 0
+exit $rc

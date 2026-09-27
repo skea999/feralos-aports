@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=bluez-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for bluetoothd"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit bluez"
+makedepends=""
+source="bluez"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/bluez" "$pkgdir/lib/dinit.d/bluez"
+}
+
+sha512sums="
+bd84800c59f4c15db212e736c197ac4ff058a4d327dacd6454eb892590e47aa56614f8ab400cc206265f1e87f89b92396063a9072fcf99fd1cdacc264f9e3fc9  bluez
+"

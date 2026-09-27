@@ -1,0 +1,9 @@
+# dinit service: bluetoothd (system daemon)
+type = process
+log-type = file
+logfile = /var/log/dinit/bluetoothd.log
+command = /usr/libexec/bluetooth/bluetoothd --nodetach
+restart = true
+smooth-recovery = true
+depends-on = dbus
+depends-on = local.target

@@ -1,0 +1,13 @@
+diff --git a/early/scripts/fs-fsck.sh b/early/scripts/fs-fsck.sh
+index a074526..25838d7 100644
+--- a/early/scripts/fs-fsck.sh
++++ b/early/scripts/fs-fsck.sh
+@@ -30,7 +30,7 @@ if [ -r /proc/cmdline ]; then
+     done
+ fi
+ 
+-fsck -A -R -C -t noopts=_netdev $FORCEARG $FIXARG
++fsck -A -R -t noopts=_netdev $FORCEARG $FIXARG
+ FSCKRET=$?
+ 
+ if [ $(($FSCKRET & 4)) -eq 4 ]; then

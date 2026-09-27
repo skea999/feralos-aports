@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dinit-chimera
 pkgver=0.99.24
-pkgrel=6
+pkgrel=7
 pkgdesc="Dinit core service suite (Chimera upstream) for FeralOS"
 url="https://github.com/chimera-linux/dinit-chimera"
 arch="all"
@@ -15,7 +15,8 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/dinit-chimera/
 	dinit-cryptdisks
 	dinit-console
 	init-cmdline-logfile.patch
-	sysctl-ignore-missing.patch"
+	sysctl-ignore-missing.patch
+	fsck-drop-C.patch"
 options="!check"  # upstream ships no test suite
 
 prepare() {
@@ -92,4 +93,5 @@ cb743ee5d802818df6c232e90bbd0c3a84ce211403b27453900d866311118e4df30cda9eb6eca68d
 4850ae67eb7787edb65be93cf04db9953134535a54fbbed30145dedea077e49e3411925e8b2875654c9661967ceb60d3d497067927099cbc605596bdc4fa2b3b  dinit-console
 a430d24617fa4960da19a8017f6b3890e0d6e3a8fc32fceb3d3735dc2ae2da99d21f058d39b0c26d277a69c6c1e24812348d38462e8006cdb4cfacf4d77cafd5  init-cmdline-logfile.patch
 e0872a5ee5be38b47f5f8c44497cf809588a9d6dc8ff23da318f3c273fa42a20a83b838f90c16616702f28752b0f7e615f0d4b815546c9c1af5c60d4fb4db8f8  sysctl-ignore-missing.patch
+15f2de74cb629d4833c8ffafed82ac38a0f90df3bcbb879d8d76fb5d712dde95eb789779e66239537e8ec143ccd05b8ce0348fe256d2a64579a05f690afbd290  fsck-drop-C.patch
 "

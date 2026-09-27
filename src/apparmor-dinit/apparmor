@@ -1,4 +1,6 @@
-# dinit service: apparmor (Alpine openrc apparmor + overrides)
-type = internal
-restart = false
+# dinit service: apparmor — loads configured profiles into the kernel.
+# Equivalent of the Alpine openrc apparmor start() (apparmor_parser over
+# /etc/apparmor.d with cache); scripted + best-effort (never blocks boot).
+type = scripted
+command = /usr/libexec/dinit-apparmor
 depends-on = local.target

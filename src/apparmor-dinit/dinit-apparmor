@@ -1,0 +1,44 @@
+#!/bin/sh
+# Load AppArmor profiles — replicates the Alpine openrc apparmor start()
+# (openrc apparmor.initd sources /usr/libexec/apparmor/rc.apparmor.functions
+# and runs `parse_profiles load`). OpenRC logging functions are stubbed:
+# the library expects them to exist outside openrc-run.
+# Best-effort: this service never fails the boot.
+
+# --- openrc logging stubs ---
+ebegin() { :; }
+eindent() { :; }
+eoutdent() { :; }
+einfo() { echo "apparmor: $*"; }
+einfon() { echo "apparmor: $*"; }
+ewarn() { echo "apparmor: $*" >&2; }
+eerror() { echo "apparmor: $*" >&2; }
+eend() { return 0; }
+vebegin() { :; }
+veend() { :; }
+veinfo() { :; }
+vewarn() { :; }
+aa_log_success_msg() { echo "apparmor: $*"; }
+aa_log_failure_msg() { echo "apparmor: $*" >&2; }
+aa_log_warning_msg() { echo "apparmor: $*" >&2; }
+aa_log_skipped_msg() { echo "apparmor: $*"; }
+aa_log_daemon_msg() { echo "apparmor: $*"; }
+aa_log_action_start() { :; }
+aa_log_action_end() { :; }
+aa_action() { shift; "$@"; }
+
+if [ ! -f /usr/libexec/apparmor/rc.apparmor.functions ]; then
+    echo "apparmor: rc.apparmor.functions not found — nothing to load" >&2
+    exit 0
+fi
+
+. /usr/libexec/apparmor/rc.apparmor.functions
+
+if ! is_apparmor_loaded; then
+    load_module || { echo "apparmor: kernel support not present" >&2; exit 0; }
+fi
+
+parse_profiles load
+
+# Best-effort loader: never report failure to dinit.
+exit 0

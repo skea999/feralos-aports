@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=apparmor-dinit
 pkgver=0.1.0
-pkgrel=3
-pkgdesc="dinit service for apparmor"
+pkgrel=4
+pkgdesc="dinit service for apparmor (scripted profile loader)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit apparmor"
 makedepends=""
-source="apparmor"
+source="apparmor dinit-apparmor"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,10 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/apparmor" "$pkgdir/lib/dinit.d/apparmor"
+	install -Dm755 "$srcdir/dinit-apparmor" "$pkgdir/usr/libexec/dinit-apparmor"
 }
 
 sha512sums="
-d25246b08a6e2588375ea4dadbde0778cb742d25a5a117c9b886e6c14e4bc191b64ed4d5cf83020553ac718ecedd306b7d9283493553fc8a7c610ad20cad0f88  apparmor
+fc41690c08a5603fba37d24fffb8f14a4af385b56f3acbaf96f6464b1bf6f0d01484ba5c35f9e33448b59db395acc7cf2adeacaf0a072cb29b42953c2a62a33b  apparmor
+b625fe56ae19edd5fbf3c76cfc524d4b7f508ac01f0540898280805e0146ad857160334700037ad4a962330ad1f1a148fe026b1c2949f1fc5e53fdbd216b6d2f  dinit-apparmor
 "

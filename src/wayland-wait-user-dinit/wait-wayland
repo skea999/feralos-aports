@@ -1,0 +1,12 @@
+#!/bin/sh
+# Wait up to 5 minutes for a wayland socket in the session runtime dir.
+i=0
+while [ "$i" -lt 600 ]; do
+    for s in "$XDG_RUNTIME_DIR"/wayland-*; do
+        [ -S "$s" ] && exit 0
+    done
+    sleep 0.5
+    i=$((i + 1))
+done
+echo "wait-wayland: no wayland socket after 300s" >&2
+exit 1

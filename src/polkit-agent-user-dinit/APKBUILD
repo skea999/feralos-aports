@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=polkit-agent-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit user service for the polkit authentication agent (polkit-gnome)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="polkit-gnome wayland-wait-user-dinit dbus-user-dinit"
+makedepends=""
+source="polkit-agent.user"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/polkit-agent.user" "$pkgdir/etc/dinit.d/user/polkit-agent.user"
+}
+
+sha512sums="
+472e77eda2776088be6b8c432aa9b8146229206ab21b8fb812c6ac018d3a093e13d8b76779d88c1bd888f95e488824f504a749c8be5dd514e672e24630f3c7f8  polkit-agent.user
+"

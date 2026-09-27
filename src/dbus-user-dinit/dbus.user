@@ -1,0 +1,11 @@
+# dinit service: dbus session bus (user)
+# ready-notification: the session script prints the bus address on fd3 —
+# dinit marks the service started only when dbus is actually serving.
+# The script also exports the address into the dinit environment
+# (dinitctl setenv) so every later user service inherits it.
+type = process
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/dbus.log
+command = /etc/dinit.d/user/scripts/dbus-session --print-address 3
+smooth-recovery = true
+ready-notification = pipefd:3

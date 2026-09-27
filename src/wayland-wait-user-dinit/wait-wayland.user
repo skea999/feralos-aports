@@ -1,0 +1,8 @@
+# dinit service: wait-wayland (compositor-agnostic gate)
+# Blocks (scripted) until ANY compositor creates a wayland socket in the
+# session runtime dir. Services that need the graphical session
+# (polkit-agent, dms, ...) depend on this — works with niri, KDE, cosmic,
+# sway, ... : nothing references a compositor by name.
+type = scripted
+load-options = sub-vars
+command = /etc/dinit.d/user/scripts/wait-wayland

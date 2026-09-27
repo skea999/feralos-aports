@@ -1,0 +1,25 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=wayland-wait-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit user service gate: wait for the compositor wayland socket"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends=""
+makedepends=""
+source="wait-wayland.user wait-wayland"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/wait-wayland.user" "$pkgdir/etc/dinit.d/user/wait-wayland.user"
+	install -Dm755 "$srcdir/wait-wayland" "$pkgdir/etc/dinit.d/user/scripts/wait-wayland"
+}
+
+sha512sums="
+7a43deb6963570e131d9d0ca3a7c46b0a1908e8fb35e59278f0e856e92536139465b11c6454c5eb67abd50f0e913d71a3bb20d2513af38952342650958ada134  wait-wayland.user
+ac4241538a13123e4af50a66a9c0a21b3e4e93a93b997cc1662c13f9cb36ef81918b0d1e77251f0c80cd836c0992f77055892591698e7d2c3c26c6e3e7b60ac0  wait-wayland
+"

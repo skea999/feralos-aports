@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=pipewire-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit user service for pipewire"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="pipewire dbus-user-dinit"
+makedepends=""
+source="pipewire.user"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/pipewire.user" "$pkgdir/etc/dinit.d/user/pipewire.user"
+}
+
+sha512sums="
+f85ef9ba5beb175e9dc1583fa6d8054987109ae0245f010663658b412856397e9c9a0dab9f74a5874767e4a572efa1609d9e48c1966d26c3eac6abdd6449ba31  pipewire.user
+"

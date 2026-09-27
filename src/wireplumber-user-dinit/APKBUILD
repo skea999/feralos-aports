@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=wireplumber-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit user service for wireplumber"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="wireplumber pipewire-user-dinit pipewire-pulse-user-dinit"
+makedepends=""
+source="wireplumber.user"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/wireplumber.user" "$pkgdir/etc/dinit.d/user/wireplumber.user"
+}
+
+sha512sums="
+8a7f7f6a553b7dd5684faa1fbc8f947d39325c1907631218a41577161910f5c4bc0c3afef401ff88ea16ce6ab09f33b00028d0e2e145fbc216b6272c13abd367  wireplumber.user
+"

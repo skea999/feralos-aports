@@ -1,0 +1,23 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=pipewire-pulse-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit user service for pipewire-pulse"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="pipewire-pulse pipewire-user-dinit"
+makedepends=""
+source="pipewire-pulse.user"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/pipewire-pulse.user" "$pkgdir/etc/dinit.d/user/pipewire-pulse.user"
+}
+
+sha512sums="
+6e7324e4019ab9079c6e149d66bf204a3c9dbaeb0fce5c25c46b106793ee9b6acb94506fef80c1d2e19a7bafbd726acdf86755a82a3b67ce84572df2b6342ea1  pipewire-pulse.user
+"

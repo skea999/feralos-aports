@@ -1,7 +1,0 @@
-# dinit service: smartmontools-dinit (converted from openrc smartmontools)
-type = process
-log-type = file
-logfile = /var/log/dinit/smartmontools-dinit.log
-command = smartd
-restart = true
-depends-on = local.target

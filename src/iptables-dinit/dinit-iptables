@@ -1,0 +1,8 @@
+#!/bin/sh
+# Restore saved iptables rules — Alpine openrc iptables start() equivalent.
+command -v iptables-restore >/dev/null 2>&1 || { echo "iptables: iptables-restore not found, skipping"; exit 0; }
+
+RULES=/etc/iptables/iptables.rules
+[ -r "$RULES" ] || { echo "iptables: no saved ruleset at $RULES, skipping"; exit 0; }
+
+iptables-restore "$RULES"

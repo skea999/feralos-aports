@@ -1,4 +1,7 @@
-# dinit service: cpufrequtils (Alpine openrc cpufrequtils + overrides)
-type = internal
-restart = false
+# dinit service: cpufrequtils (apply CPU governor settings at boot)
+# Alpine openrc cpufrequtils start(): cpufreq-set with START_OPTS from
+# /etc/conf.d/cpufrequtils, one invocation per CPU. Graceful: skips when
+# the tool or the config are absent.
+type = scripted
+command = /usr/libexec/dinit-cpufrequtils
 depends-on = local.target

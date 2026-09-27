@@ -1,4 +1,5 @@
-# dinit service: nftables (Alpine openrc nftables + overrides)
-type = internal
-restart = false
+# dinit service: nftables (load ruleset at boot)
+# Graceful: skips when no ruleset exists.
+type = scripted
+command = /usr/libexec/dinit-nftables
 depends-on = local.target

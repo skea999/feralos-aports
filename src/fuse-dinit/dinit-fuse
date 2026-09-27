@@ -1,0 +1,5 @@
+#!/bin/sh
+# Load the fuse kernel module (best-effort — it also auto-loads on first
+# fuse mount via kmod).
+modprobe fuse 2>/dev/null || :
+exit 0

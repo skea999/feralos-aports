@@ -1,4 +1,0 @@
-# dinit service: btrfs-progs (Alpine openrc btrfs-progs + overrides)
-type = internal
-restart = false
-depends-on = local.target

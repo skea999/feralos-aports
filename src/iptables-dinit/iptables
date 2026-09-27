@@ -1,4 +1,7 @@
-# dinit service: iptables (Alpine openrc iptables + overrides)
-type = internal
-restart = false
+# dinit service: iptables (restore saved ruleset at boot)
+# Graceful: skips when no saved ruleset exists. NOTE: when firewalld is the
+# active firewall it owns the runtime rules (flush on start) — this service
+# is for plain iptables persistence setups.
+type = scripted
+command = /usr/libexec/dinit-iptables
 depends-on = local.target

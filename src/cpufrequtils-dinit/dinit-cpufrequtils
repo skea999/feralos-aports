@@ -1,0 +1,16 @@
+#!/bin/sh
+# Apply CPU frequency settings — Alpine openrc cpufrequtils start() equivalent.
+command -v cpufreq-set >/dev/null 2>&1 || { echo "cpufrequtils: cpufreq-set not found, skipping"; exit 0; }
+
+[ -r /etc/conf.d/cpufrequtils ] && . /etc/conf.d/cpufrequtils
+: "${START_OPTS=}"
+
+[ -n "$START_OPTS" ] || { echo "cpufrequtils: no START_OPTS in /etc/conf.d/cpufrequtils, skipping"; exit 0; }
+
+for cpupath in /sys/devices/system/cpu/cpu[0-9]*; do
+    [ -d "$cpupath/cpufreq" ] || continue
+    cpu="${cpupath##*/cpu}"
+    cpufreq-set -c "$cpu" $START_OPTS || echo "cpufrequtils: failed on cpu$cpu" >&2
+done
+
+exit 0

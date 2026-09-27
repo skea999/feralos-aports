@@ -1,4 +1,6 @@
-# dinit service: fuse (Alpine openrc fuse + overrides)
-type = internal
-restart = false
+# dinit service: fuse (load the fuse kernel module, best-effort)
+# The module also auto-loads on first fuse mount; loading it here makes
+# /dev/fuse available early for users that need it.
+type = scripted
+command = /usr/libexec/dinit-fuse
 depends-on = local.target

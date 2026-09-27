@@ -1,7 +1,10 @@
 # dinit service: firewalld (auto-generated from Alpine openrc firewalld)
+# --nofork: stay in foreground — without it the daemon forks, dinit sees the
+# process exit and restarts into "already running" (double-start race).
 type = process
 log-type = file
 logfile = /var/log/dinit/firewalld.log
-command = /usr/sbin/firewalld
+command = /usr/sbin/firewalld --nofork
 restart = true
 depends-on = local.target
+depends-on = dbus

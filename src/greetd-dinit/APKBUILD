@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=greetd-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for greetd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-c617be579c0f1639ae294df47e2df618ed58352d830cc7b7db2b735a9f54b09d47f98adf111f2efd7f534c5e77bad233ddff1daca0ad29f9a47dbfd8349b7fcf  greetd
+4335a6b6d637de86f4c09fa73a0f8dd11ae05e53b2872b08d5b93e89bd3e632b50616356a31c98b4c43bcf701990147e0aa77408a05ba51aca51f439bcd0d641  greetd
 "

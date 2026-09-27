@@ -1,7 +1,7 @@
-# dinit service: greetd
+# dinit service: greetd (Alpine ships the binary in /usr/sbin, not /usr/bin)
 type = process
 log-type = file
 logfile = /var/log/dinit/greetd.log
-command = /usr/bin/greetd
+command = /usr/sbin/greetd
 restart = true
 depends-on = login.target

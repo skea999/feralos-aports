@@ -5,11 +5,38 @@
 
 ## Current
 
-- **Step**: 9 — **desktop stack** **IN PROGRESS** — 9a/9b/9c done (cli11 +
-  quickshell + dms-shell landed). Next: niri-side integration checks.
+- **Step**: 9 — **desktop stack** **IN PROGRESS** — 9a/9b/9c/9d done (cli11 +
+  quickshell + dms-shell + user dinit session stack landed). Next:
+  niri-side integration checks.
 - **Next action**: verify dms-shell against niri session (installer rules)
 
 ## Log
+
+### 2026-09-27 — Step 9d: user dinit services (supervised session stack)
+- NEW 6 packages, one service each (`/etc/dinit.d/user/`, Artix
+  dinit-userservd model): dbus-user-dinit (dbus.user + scripts/dbus-session),
+  pipewire-user-dinit, pipewire-pulse-user-dinit, wireplumber-user-dinit,
+  wayland-wait-user-dinit (wait-wayland.user + scripts/wait-wayland),
+  polkit-agent-user-dinit
+- model: `.user` suffix, `load-options = sub-vars`, `smooth-recovery` /
+  `restart = true`; dbus readiness via `ready-notification = pipefd:3` +
+  launcher `dinitctl setenv DBUS_SESSION_BUS_ADDRESS` so every later user
+  service inherits the bus address
+- wait-wayland.user = compositor-agnostic gate: scripted, polls
+  `$XDG_RUNTIME_DIR/wayland-*` (socket, 5 min budget) — nothing references
+  a compositor by name (niri/KDE/cosmic/sway/... all work)
+- polkit-agent pinned to distro-native polkit-gnome (glibc agents can't
+  resolve elogind sessions — FIX-niri-dms.md round 23)
+- dms-shell r1: depends += dbus-user-dinit + wayland-wait-user-dinit,
+  ships dms.user (depends-on wait-wayland.user + dbus.user) +
+  scripts/dms-session (resolves WAYLAND_DISPLAY from the socket)
+- rehearsal (docker alpine:latest, one run): 6 pkgs abuild -Fr green;
+  dms-shell needed quickshell resolution → real client flow (Pages repo +
+  feralos.pub key) + `apk add --allow-untrusted` of the 2 fresh local deps;
+  contents verified via tar -tf (all .user + scripts present, dms-shell:
+  dms.user + dms-session + usr/bin/dms)
+- CI green ×2 (6 pkgs; dms-shell r1) — multi-pass ordering handles
+  wayland-wait-user-dinit (w > dms-shell alphabetically) via retry
 
 ### 2026-09-26 — Step 9c: dms-shell 1.6.2-r0 landed
 - NEW dms-shell 1.6.2: Quickshell-based desktop shell (Material 3), musl

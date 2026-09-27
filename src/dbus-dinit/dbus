@@ -1,7 +1,12 @@
 # dinit service: dbus (Alpine openrc dbus + overrides)
+# ready-notification = pipefd:3: dbus-daemon writes the bus address to fd3
+# and closes it at startup — dinit gates dependents (elogind, polkit, NM)
+# on the bus being ACTUALLY reachable, not just spawned.
 type = process
 log-type = file
 logfile = /var/log/dinit/dbus.log
-command = /usr/bin/dbus-daemon --system --nofork --nopidfile --syslog-only
+command = /usr/bin/dbus-daemon --system --nofork --nopidfile --syslog-only --print-address=3
 restart = true
+smooth-recovery = true
+ready-notification = pipefd:3
 depends-on = local.target

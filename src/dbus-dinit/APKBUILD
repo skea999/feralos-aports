@@ -2,8 +2,8 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dbus-dinit
 pkgver=0.1.0
-pkgrel=4
-pkgdesc="dinit service for dbus"
+pkgrel=5
+pkgdesc="dinit service for dbus (pipefd readiness)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
@@ -23,6 +23,6 @@ package() {
 }
 
 sha512sums="
-659f8d2f45347164edfbf9cb4e301987dcd505c16efb7f59ebe07173b728640879c298d172f444ccc64e4c97c577cab337d12680cb573e850136f9e27128c762  dbus
+2bb12a8947e7431c55eee61237bbdab7476a8e4097c1f14d60adfab455e4173843abab5b36b74b2e3c00ef1717e53f73b4de9506415b2639c0f49a7dd634f607  dbus
 279bef8a4bb8c4b80b1d89a18e34970c3eb3003ce29c8042f0f63d166303cf7b7ab1f69ef712ac3043a547d903a748750d1eecdf67bb0deff002919cf1dabb69  dbus-dinit.tmpfiles
 "

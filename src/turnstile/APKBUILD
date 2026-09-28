@@ -1,0 +1,56 @@
+# Maintainer: FeralOS <dev@feralos.org>
+#
+# Port of Alpine testing/turnstile 0.1.11-r2 (maintainer Patrycja Rosa).
+# FeralOS deviations from the Alpine reference:
+#  * no-system-dinit.patch DROPPED: Alpine strips the upstream system-service
+#    install because their dinit is only used as a user service manager. On
+#    FeralOS dinit IS PID 1, so upstream data/dinit/turnstiled MUST ship —
+#    meson installs it to /etc/dinit.d/turnstiled (system daemon, started
+#    before login.target; dinit scans /etc/dinit.d natively).
+#  * turnstiled.initd + turnstiled.confd DROPPED: no OpenRC on FeralOS.
+#  * $pkgname-openrc subpackage DROPPED; -doc is the only subpackage.
+#  * runtime depends on linux-pam: pam_turnstile.so links libpam and the
+#    /etc/pam.d/turnstiled stack needs pam_limits/pam_rootok/pam_keyinit/
+#    pam_umask/pam_elogind providers.
+#  * dinit backend always enabled; manage_rundir=true gives every user a
+#    PAM-managed XDG_RUNTIME_DIR at login (no elogind pam_systemd shim).
+pkgname=turnstile
+pkgver=0.1.11
+pkgrel=0
+pkgdesc="Independent session/login tracker"
+url="https://github.com/chimera-linux/turnstile"
+arch="all"
+license="BSD-2-Clause"
+depends="linux-pam"
+makedepends="
+	linux-pam-dev
+	meson
+	scdoc
+	"
+subpackages="$pkgname-doc"
+source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/turnstile/archive/refs/tags/v$pkgver.tar.gz"
+options="!check" # no tests
+
+build() {
+	abuild-meson \
+		-Db_lto=true \
+		-Ddinit=enabled \
+		-Dmanage_rundir=true \
+		. output
+	meson compile -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+	# installed by meson (abuild-meson prefix=/usr sysconfdir=/etc):
+	#   /usr/bin/turnstiled
+	#   /usr/lib/security/pam_turnstile.so
+	#   /etc/dinit.d/turnstiled        (system service, upstream file kept)
+	#   /etc/pam.d/turnstiled
+	#   /etc/turnstile/turnstiled.conf + /etc/turnstile/backend/dinit.conf
+	#   /usr/libexec/turnstile/dinit   (per-user dinit launcher)
+}
+
+sha512sums="
+dc53396e3fe4eb2155d1d10680e22696f69f57a2b345fac541671618a8db9a7c24cf937ae4454598aa67c025da698d4bc14dc34b2b77b59b53328c157315b92c  turnstile-0.1.11.tar.gz
+"

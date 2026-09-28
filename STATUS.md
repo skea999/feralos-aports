@@ -30,6 +30,9 @@
   sha256 into sha512sums) + checksum-line matching fixed.
 - CI client-test assertion updated to 989.0.99.0-r0; docs updated (PACKAGES,
   REPOSITORY, REPO-SETUP, README, GUIDE, PLAN).
+- CI fix: polkit base vs polkit-elogind are mutually exclusive variants —
+  build-job shared root now skips the elogind artifacts and client-test skips
+  polkit-elogind-dinit (polkit packages had never passed CI before 989).
 
 ### 2026-09-27 — Step 9d: user dinit services (supervised session stack)
 - NEW 6 packages, one service each (`/etc/dinit.d/user/`, Artix

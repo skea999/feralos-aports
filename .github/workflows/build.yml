@@ -148,7 +148,10 @@ jobs:
           # incus-dinit -> incus, incus-feature-agent-dinit -> incus-feature
           # (incus and incus-feature conflict on cmd:incusd)
           # incus-feature-user-dinit -> incus-feature (also provides incusd)
-          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit"
+          # polkit base vs polkit-elogind are mutually exclusive variants:
+          # keep base (polkit-dinit + quickshell depend on it), skip the
+          # elogind variant artifacts (isolated smoke covers them)
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind polkit-elogind-dev polkit-elogind-libs polkit-elogind-dinit"
           for apkfile in ~/packages/*/x86_64/*.apk; do
             [ -f "$apkfile" ] || continue
             name=$(basename "$apkfile" | sed -E 's/-[0-9][^-]*-r[0-9]+\.apk$//')
@@ -269,9 +272,11 @@ jobs:
           # mutually exclusive provider variants: incus-dinit pulls `incus`,
           # incus-feature-agent-dinit pulls `incus-feature`, and both
           # packages ship cmd:incusd so they can never coexist on one
-          # machine. The build job smoke-installs each variant standalone;
+          # machine. polkit-elogind-dinit pulls the elogind polkit variant,
+          # mutually exclusive with the base `polkit` installed by the
+          # polkit dir. The build job smoke-installs each variant standalone;
           # here (one simulated machine) we install the remaining packages.
-          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit"
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind-dinit"
           for d in src/*/APKBUILD; do
             pkg=$(basename "$(dirname "$d")")
             [ "$pkg" = feralos-keyring ] && continue

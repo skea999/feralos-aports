@@ -26,8 +26,12 @@
 # Contributor: Carlo Landmeter
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Contributor: Jakub Jirutka <jakub@jirutka.cz>
+# FeralOS override series: pkgver 989.<upstream> — the 989 major component
+# always outranks any Alpine version field-by-field (apk numeric compare),
+# so our build is always selected. Bump the suffix in lockstep with upstream.
+_upstream=127
 pkgname=polkit
-pkgver=127
+pkgver=989.$_upstream
 pkgrel=0
 pkgdesc="Application development toolkit for controlling system-wide privileges"
 url="https://github.com/polkit-org/polkit"
@@ -59,11 +63,13 @@ subpackages="
 	$pkgname-elogind-dev:_elogind_dev
 	$pkgname-elogind-libs:_elogind_libs
 	"
-source="https://github.com/polkit-org/polkit/archive/refs/tags/$pkgver/polkit-$pkgver.tar.gz
+source="https://github.com/polkit-org/polkit/archive/refs/tags/$_upstream/polkit-$_upstream.tar.gz
 	alpine-polkit.pam
 	polkit.initd
 	patches/turnstile.patch
 	"
+# tarball dir follows the UPSTREAM version, not our 989.<upstream> pkgver
+builddir="$srcdir"/$pkgname-$_upstream
 
 # secfixes:
 #   0.120-r2:

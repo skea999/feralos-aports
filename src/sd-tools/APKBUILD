@@ -1,16 +1,17 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
-# Version scheme: pkgver 0.99.990 (NOT upstream 0.99.0) so our build ALWAYS
-# wins over any current/future Alpine 0.99.x — Alpine's sd-tools segfaults at
-# runtime (GCC use-after-scope in tmpfiles CONF_PATHS_STRV,
-# chimera-linux/sd-tools#5; their check() never runs --create). Rule 0
-# exception: Alpine package exists but is broken at runtime.
-# When upstream ships a release WITH the fix: revert pkgver to the real one,
-# drop the patch, bump pkgrel above Alpine's.
+# Why the override: Alpine's sd-tools segfaults at runtime (GCC use-after-scope
+# in tmpfiles CONF_PATHS_STRV, chimera-linux/sd-tools#5; their check() never
+# runs --create). Rule 0 exception: Alpine package exists but is broken at
+# runtime. When Alpine's build carries the upstream fix: drop the patch and
+# revert to the plain upstream pkgver (override no longer needed).
+# FeralOS override series: pkgver 989.<upstream> — the 989 major component
+# always outranks any Alpine version field-by-field (apk numeric compare),
+# so our build is always selected. Bump the suffix in lockstep with upstream.
 _upstream=0.99.0
 pkgname=sd-tools
-pkgver=0.99.990
-pkgrel=993
+pkgver=989.$_upstream
+pkgrel=0
 pkgdesc="Standalone, cleaned up utilities from systemd"
 url="https://github.com/chimera-linux/sd-tools"
 arch="all"
@@ -25,7 +26,7 @@ subpackages="$pkgname-doc"
 source="$pkgname-$_upstream.tar.gz::https://github.com/chimera-linux/sd-tools/archive/refs/tags/v$_upstream.tar.gz
 	tmpfiles-config-dirs-lifetime.patch
 	"
-# tarball dir follows the UPSTREAM version, not our inflated pkgver
+# tarball dir follows the UPSTREAM version, not our 989.<upstream> pkgver
 builddir="$srcdir"/$pkgname-$_upstream
 
 build() {
@@ -50,5 +51,7 @@ package() {
 	install -Dm644 LICENSE.LGPL2.1 -t "$pkgdir"/usr/share/doc/$pkgname
 }
 
-sha512sums="f82471a33f204766977c24a56c78ad41a295cb7b7c8190bdad4d40c45db67677c3bb2f71222fc02ca1c42653bc60b2cf742b0114b5bfc2d9efdfc238c866c52f  sd-tools-0.99.0.tar.gz
-c6e70e2dd7e2d392a0081d58459eaa020391e9304e710a7bc83b159838a358403c0a3a05bfcb722075f1c9e828ece06705047efcf28e24636db9324e96f8b5d8  tmpfiles-config-dirs-lifetime.patch"
+sha512sums="
+f82471a33f204766977c24a56c78ad41a295cb7b7c8190bdad4d40c45db67677c3bb2f71222fc02ca1c42653bc60b2cf742b0114b5bfc2d9efdfc238c866c52f  sd-tools-0.99.0.tar.gz
+c6e70e2dd7e2d392a0081d58459eaa020391e9304e710a7bc83b159838a358403c0a3a05bfcb722075f1c9e828ece06705047efcf28e24636db9324e96f8b5d8  tmpfiles-config-dirs-lifetime.patch
+"

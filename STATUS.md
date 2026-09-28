@@ -12,6 +12,25 @@
 
 ## Log
 
+### 2026-09-29 — 989 override series for Alpine-conflicting packages
+- Conflict scan (`apk search -x` vs v3.24 main+community, plus edge/testing):
+  `polkit` (community), `sd-tools` (community), `turnstile` (edge/testing) —
+  exact same-name matches. No others (59 packages clean).
+- New rule: conflicting packages use `pkgver=989.<upstream>` (dots only),
+  `pkgrel=0`; `_upstream=` keeps the raw tag version for the source URL +
+  builddir, so tarball names and sha512 are unchanged. The 989 major component
+  always outranks any Alpine version field-by-field (apk numeric compare) — no
+  client pinning, no repo-preference hacks.
+- sd-tools: 0.99.990-r993 → 989.0.99.0-r0 (same patched tarball 0.99.0).
+- turnstile: 0.1.11-r0 → 989.0.1.11-r0 (same tarball v0.1.11).
+- polkit: 127-r0 → 989.127-r0 (same tarball 127 + turnstile.patch). Bonus fix:
+  at equal pkgver the old r0 lost to Alpine's 127-r2, so the patch was never
+  selected on a real system; now ours always wins.
+- bump-upstream.sh made override-aware (`_upstream` field), sha512 fixed (was
+  sha256 into sha512sums) + checksum-line matching fixed.
+- CI client-test assertion updated to 989.0.99.0-r0; docs updated (PACKAGES,
+  REPOSITORY, REPO-SETUP, README, GUIDE, PLAN).
+
 ### 2026-09-27 — Step 9d: user dinit services (supervised session stack)
 - NEW 6 packages, one service each (`/etc/dinit.d/user/`, Artix
   dinit-userservd model): dbus-user-dinit (dbus.user + scripts/dbus-session),
@@ -139,8 +158,10 @@
   builddir override) — beats any Alpine 0.99.x; revert to real version +
   drop patch when upstream fixes (#5); sd-sysusers NOT affected (literal
   used inline as function arg = legal)
+  [superseded 2026-09-29 — now pkgver=989.0.99.0-r0, see top entry]
 - CI: build job runtime-smokes `sd-tmpfiles --create --boot` (exit must be
   0/65/73, not 139/134); client-test asserts apk policy resolves 0.99.990-r993
+  [now 989.0.99.0-r0 — assertion updated 2026-09-29]
 
 ### 2026-09-18 — boot test round 2: path fix CONFIRMED, empty-command stragglers
 - Harness 2026-09-18T00-18-17Z: dinit PID1 loaded /lib/dinit.d/boot OK

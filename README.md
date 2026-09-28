@@ -19,17 +19,24 @@ installer repo: `docs/dinit/` on `developDinit`.
 **Rule 0: use Alpine packages whenever they exist.** We build only what Alpine
 doesn't ship or what needs FeralOS patches.
 
+**Alpine name conflicts — 989 override series.** When a FeralOS package shares
+its name with an Alpine package (`sd-tools`, `turnstile`, `polkit`), `pkgver`
+is `989.<upstream>` (dots only). The 989 major component always outranks any
+Alpine version field-by-field (apk numeric compare), so our build is always
+selected; the Alpine repo still serves transitive deps. Bump the suffix in
+lockstep with upstream. Rationale comment lives in each conflicting APKBUILD.
+
 | Package | Source | Phase |
 |---------|--------|-------|
-| `sd-tools` | **ours again (0.99.990-r993)** — rule 0 exception: Alpine's r3 segfaults at runtime (GCC use-after-scope in tmpfiles, [upstream #5](https://github.com/chimera-linux/sd-tools/issues/5)); we carry the static-storage patch; inflated pkgver `0.99.990` always beats any Alpine `0.99.x` | 2 |
+| `sd-tools` | **ours again (989.0.99.0-r0)** — rule 0 exception: Alpine's r3 segfaults at runtime (GCC use-after-scope in tmpfiles, [upstream #5](https://github.com/chimera-linux/sd-tools/issues/5)); we carry the static-storage patch; 989 override series always beats Alpine's `0.99.x` | 2 |
 | `networking-dinit` | ours — `ifup -a` (nothing else brings eth0 up under dinit) | 2 |
 | `feralos-keyring` | ours — key + repo definition | done |
 | `dinit-chimera` | [chimera-linux/dinit-chimera](https://github.com/chimera-linux/dinit-chimera) | 2 |
 | `getty-dinit` | ours (single `getty` template body; upstream ships none) | 4 |
 | `*-dinit` services | ours — **Alpine/Artix model: ship the service file only, install ≠ enabled**; service names = Alpine initd names (chronyd, sshd, incusd...); enablement via `dinitctl --offline enable` from installer rules | 6 |
 | `elogind-dinit` / `seatd-dinit`, DM services | ours | 7 |
-| `turnstile` | [chimera-linux/turnstile](https://github.com/chimera-linux/turnstile) | 7 |
-| `polkit` (patched) | Alpine APKBUILD + Chimera `turnstile.patch` | 7 |
+| `turnstile` | [chimera-linux/turnstile](https://github.com/chimera-linux/turnstile) (989.0.1.11) | 7 |
+| `polkit` (patched) | Alpine APKBUILD + Chimera `turnstile.patch` (989.127) | 7 |
 | `cli11` | [CLIUtils/CLI11](https://github.com/CLIUtils/CLI11) (2.7.2) — quickshell build dep, absent in Alpine | desktop |
 | `quickshell` | [outfoxxed/quickshell](https://quickshell.org/) (0.3.1) — QtQuick shell toolkit (DMS runtime dep); crash-handler dropped (cpptrace absent in Alpine) | desktop |
 | `dms-shell` | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) (1.6.2) — Quickshell desktop shell, QML embedded in Go binary (+ dank-qml-common pinned submodule); musl native, replaces nix dms-shell | desktop |

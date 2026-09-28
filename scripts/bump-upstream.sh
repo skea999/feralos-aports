@@ -22,8 +22,13 @@ for pkg in $PKGS; do
     apkdir="$SRC/$pkg"
     [ -f "$apkdir/APKBUILD" ] || { echo "SKIP $pkg (no APKBUILD)"; continue; }
 
-    # read current pkgver
-    current=$(grep '^pkgver=' "$apkdir/APKBUILD" | head -1 | cut -d= -f2)
+    # read current upstream version: _upstream= for override-series packages
+    # (pkgver=989.<upstream>), pkgver= for plain packages
+    if grep -q '^_upstream=' "$apkdir/APKBUILD"; then
+        current=$(grep '^_upstream=' "$apkdir/APKBUILD" | head -1 | cut -d= -f2)
+    else
+        current=$(grep '^pkgver=' "$apkdir/APKBUILD" | head -1 | cut -d= -f2)
+    fi
 
     # find latest upstream tag from the GitHub API
     # dinit-chimera -> chimera-linux/dinit-chimera
@@ -42,17 +47,23 @@ for pkg in $PKGS; do
 
     echo "BUMP $pkg: $current -> $latest"
 
-    # update pkgver
-    sed -i "s/^pkgver=.*/pkgver=$latest/" "$apkdir/APKBUILD"
+    # update version fields: bump _upstream for the 989.<upstream> override
+    # series (pkgver stays derived), pkgver for plain packages
+    if grep -q '^_upstream=' "$apkdir/APKBUILD"; then
+        sed -i "s/^_upstream=.*/_upstream=$latest/" "$apkdir/APKBUILD"
+    else
+        sed -i "s/^pkgver=.*/pkgver=$latest/" "$apkdir/APKBUILD"
+    fi
     sed -i "s/^pkgrel=.*/pkgrel=0/" "$apkdir/APKBUILD"
 
     # re-download the tarball and recompute sha512
     tarball="$SRC/$pkg/$pkg-$latest.tar.gz"
     curl -fsSL "https://github.com/$repo/archive/refs/tags/v$latest.tar.gz" -o "$tarball"
-    H=$(sha256sum "$tarball" | awk '{print $1}')
+    H=$(sha512sum "$tarball" | awk '{print $1}')
 
-    # update sha512sums (only the tarball line, not the hook lines)
-    sed -i "s/^[a-f0-9]\{64\}  \$pkgname-\$pkgver\.tar\.gz/$H  \$pkgname-\$pkgver.tar.gz/" "$apkdir/APKBUILD"
+    # update the tarball checksum line: it names the upstream-version file
+    # for both plain packages and override-series packages
+    sed -i "s|^[a-f0-9]\{128\}  $pkg-$current\.tar\.gz\$|$H  $pkg-$latest.tar.gz|" "$apkdir/APKBUILD"
 
     rm -f "$tarball"
     bumped=$((bumped + 1))

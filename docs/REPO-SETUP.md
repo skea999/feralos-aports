@@ -83,14 +83,17 @@ broken: fix it, do not work around it.
 ## Package origin policy
 
 Rule 0 of this repo: **we use Alpine packages whenever they exist.** Our
-repository only carries packages that are NOT in Alpine, or that need
-FeralOS-specific patches (e.g. `polkit` with `turnstile.patch`).
+repository only carries packages that are NOT in Alpine, that need
+FeralOS-specific patches (e.g. `polkit` with `turnstile.patch`), or that
+override a broken Alpine build (`sd-tools`).
 
-- A package name may exist in BOTH repositories in the future (it happened with
-  `sd-tools`: Alpine community ships a newer `0.99.0-r3`, we removed ours).
-  When it does, either pin the exact version (`apk add pkg=1.2.3-r0`) or let
-  apk resolve — Alpine's build is the trusted one in that case.
-- `apk policy <pkg>` always shows which repository wins.
+- When a package name exists in BOTH repositories, FeralOS uses the **989
+  override series**: `pkgver=989.<upstream>` — the 989 major component always
+  outranks any Alpine version (apk compares fields numerically, left to
+  right), so our build is selected automatically. Current conflicts:
+  `sd-tools`, `turnstile` (Alpine edge/testing), `polkit` (community).
+- `apk policy <pkg>` always shows which repository wins — for the names above
+  it must be ours.
 
 ## Uninstall / disable
 

@@ -26,7 +26,7 @@ feralos-aports/
 | Package | Repo | Role |
 |---------|------|------|
 | `dinit` 0.21.0 | community | PID 1, `dinitctl`; `dinit-shutdown/halt/reboot/soft-reboot/poweroff` (built `--shutdown-prefix=dinit-`) |
-| **`sd-tools` 0.99.0-r3** | **community (v3.24 + edge)** | `sd-tmpfiles` + `sd-sysusers` — ⚠️ our APKBUILD was REMOVED (superseded, rule 0); history in git |
+| **`sd-tools` 0.99.0-r3** | **community (v3.24 + edge)** | `sd-tmpfiles` + `sd-sysusers` — Alpine's build is broken at runtime (upstream #5), so FeralOS overrides it with `989.0.99.0-r0` (below) |
 | `snooze` 0.6 | community | timer for `tmpfiles-clean` service |
 | `eudev` | main | udevd (`/sbin/udevd`) + udevadm (drives `dinit-devd` hook) |
 | `kmod` | main | libkmod for compiled helpers |
@@ -38,65 +38,72 @@ feralos-aports/
 
 1. **Tags only.** Source = upstream **release tag tarball**
    (`.../archive/refs/tags/v<pkgver>.tar.gz`). `pkgver` MUST equal the upstream
-   tag. **Never** master/main/HEAD/commit snapshots.
+   tag (**exception**: packages sharing a name with an Alpine package use the
+   `989.<upstream>` override series — see below). **Never** master/main/HEAD/commit snapshots.
 2. **Why**: tags are immutable, checksummable, upstream-tested snapshots. These
    repos have NO "stable" branches — `master` moves daily; the tag series IS
    the stable channel (Chimera itself pins tags in its own distro the same way).
 3. **Checksum mandatory** — `sha512sums` verified by abuild + CI; missing or
    `SKIP` hash = build failure. Integrity is pinned per package.
 4. **Bump procedure**: check the upstream tags page → new tag exists → bump
-   `pkgver` (reset `pkgrel=0`) → recompute sha512 → CI green → push.
+   `pkgver` (or `_upstream` for override-series packages; reset `pkgrel=0`) →
+   recompute sha512 → CI green → push.
 5. **Rule 0 first**: if Alpine already packages it, use Alpine's — their pinned
-   source is maintained for us (happened to sd-tools).
+   source is maintained for us. **Exception**: if the Alpine build is broken at
+   runtime (`sd-tools`) or we need FeralOS patches (`polkit`), we override with
+   the 989 series so apk always selects our build.
 6. **No-tag upstreams**: if a project ships no tags, the package is BLOCKED —
    register it in `STATUS.md`; do not invent versions from commits.
+
+### Override series (Alpine name conflicts)
+
+If a FeralOS package has the **same name** as an Alpine package, `pkgver` is
+`989.<upstream-version>` (dots only, raw upstream version in `_upstream=`;
+`pkgrel` normal, 0 for a first rebuild). apk compares version fields
+numerically, left to right: the `989` major component always outranks any
+Alpine version forever, so our build is always selected while source URLs and
+sha512 checksums keep using the raw upstream version. Rationale comment lives
+above `pkgname` in each conflicting APKBUILD. Current conflicts: `sd-tools`,
+`turnstile` (Alpine edge/testing), `polkit` (community).
 
 ### Current pins (latest upstream tags verified 2026-09-10)
 
 | Package | Our pkgver | Upstream latest tag | Status |
 |---------|-----------|---------------------|--------|
 | `dinit-chimera` | 0.99.24 | v0.99.24 (2026-03-02) | ✅ on latest |
-| `sd-tools` | 0.99.0 | v0.99.0 (only tag) | removed — Alpine ships it |
-| `turnstile` | 0.1.11 | v0.1.11 (2025-10-12) | ✅ on latest — planned (Phase 4; Alpine edge/testing pins the same) |
-| `polkit` | 127 | Alpine aports pins polkit-org **127** release | planned (Phase 4: Alpine APKBUILD + turnstile.patch) |
+| `sd-tools` | 989.0.99.0 | v0.99.0 (only tag) | ✅ rebuilt — Alpine's build segfaults (upstream #5), 989 override wins |
+| `turnstile` | 989.0.1.11 | v0.1.11 (2025-10-12) | ✅ on latest — 989 override wins over Alpine edge/testing 0.1.11-r2 |
+| `polkit` | 989.127 | Alpine aports pins polkit-org **127** release | ✅ patched build — 989 override wins over Alpine community 127-r2 |
 | `getty-dinit`, `*-dinit` | ours | no upstream (service files) | policy n/a — reviewed in PR |
 
-## sd-tools APKBUILD — ⚠️ SUPERSEDED (rule 0: use Alpine's)
+## sd-tools APKBUILD — 989 override (Alpine's build is broken)
 
-> **Do not build.** Alpine community ships `sd-tools 0.99.0-r3` (v3.24 + edge,
-> maintainer Achill Gilgenast) providing `cmd:sd-tmpfiles` + `cmd:sd-sysusers`.
-> Our APKBUILD was removed from the active tree (kept in git history). The draft
-> below remains as reference / pipeline proof documentation.
+> **Built.** Alpine community ships `sd-tools 0.99.0-r3` (v3.24 + edge,
+> maintainer Achill Gilgenast) providing `cmd:sd-tmpfiles` + `cmd:sd-sysusers`,
+> but it segfaults at runtime (GCC use-after-scope in `tmpfiles`
+> `CONF_PATHS_STRV`; their `check()` never runs `--create`). FeralOS builds it
+> with the static-storage patch and `pkgver=989.0.99.0-r0` so apk always
+> selects our build over Alpine's. Live APKBUILD: `src/sd-tools/APKBUILD`;
+> removal/reinstate history in `STATUS.md`.
 
 Upstream: C (gnu11) meson project, **only tag `v0.99.0`**, deps `libcap`
 (required) + `libacl` (boolean option `acl`), tests option available.
 Binaries: `sd-tmpfiles` (src/tmpfiles), `sd-sysusers` (src/sysusers).
 
 ```bash
-maintainer="FeralOS <dev@feralos.org>"
+_upstream=0.99.0                    # raw upstream version (source/builddir)
 pkgname=sd-tools
-pkgver=0.99.0                       # only upstream tag (2024-02)
+pkgver=989.$_upstream               # override series: always beats Alpine
 pkgrel=0
-pkgdesc="Standalone systemd tmpfiles and sysusers utilities"
-url="https://github.com/chimera-linux/sd-tools"
-arch="all"
-license="LGPL-2.1+"
-makedepends="meson libcap-dev acl-dev linux-headers"  # GCC — libstdc++ n/a (C code)
-source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/sd-tools/archive/refs/tags/v$pkgver.tar.gz"
+source="$pkgname-$_upstream.tar.gz::https://github.com/chimera-linux/sd-tools/archive/refs/tags/v$_upstream.tar.gz
+	tmpfiles-config-dirs-lifetime.patch"
+builddir="$srcdir"/$pkgname-$_upstream   # tarball dir = upstream version
 
 build() {
-	# policy: optional PACKAGE acl-dev is mandatory (rule 5); the FEATURE is
-	# enabled best-effort — droppable only if build breaks AND boot doesn't need it
-	abuild-meson -Dacl=enabled -Dtests=true . output
+	# plain meson (NOT abuild-meson: keep our explicit option), RULE 5:
+	# all optional deps enabled
+	meson setup --prefix=/usr --buildtype=plain -Dacl=enabled . output
 	meson compile -C output
-}
-
-check() {
-	meson test -C output
-}
-
-package() {
-	DESTDIR="$pkgdir" meson install --no-rebuild -C output
 }
 ```
 
@@ -270,22 +277,24 @@ Refine against `early/scripts/cryptdisks.sh` at impl time.)
 
 Session/login tracker, originally `dinit-userservd`: spawns `dinit --user` at
 login. Dinit backend = upstream reference (requires dinit ≥0.16; Alpine 0.21 ✓).
-Base: the Alpine edge/testing APKBUILD (ptrcnull — same maintainer as dinit), adapted.
+Base: the Alpine edge/testing APKBUILD (ptrcnull — same maintainer as dinit),
+adapted. FeralOS overrides the Alpine package name: `_upstream=0.1.11`,
+`pkgver=989.0.1.11` — ours always wins over Alpine edge/testing 0.1.11-r2.
 
 ```bash
-maintainer="FeralOS <dev@feralos.org>"
+_upstream=0.1.11                    # raw upstream version (source/builddir)
 pkgname=turnstile
-pkgver=0.1.11                       # track upstream tags
+pkgver=989.$_upstream               # override series: always beats Alpine
 pkgrel=0
-pkgdesc="Session/login tracker with dinit user service support"
+pkgdesc="Independent session/login tracker"
 url="https://github.com/chimera-linux/turnstile"
 arch="all"
 license="BSD-2-Clause"
-depends="dinit elogind"             # elogind = seat/power; turnstile = sessions
+depends="linux-pam"                 # pam_turnstile.so links libpam
 makedepends="linux-pam-dev meson scdoc"
 subpackages="$pkgname-doc"
-source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/turnstile/archive/refs/tags/v$pkgver.tar.gz
-	no-system-dinit.patch"          # from Alpine edge testing (Alpine quirks already solved)
+source="$pkgname-$_upstream.tar.gz::https://github.com/chimera-linux/turnstile/archive/refs/tags/v$_upstream.tar.gz"
+builddir="$srcdir"/$pkgname-$_upstream   # tarball dir = upstream version
 
 build() {
 	abuild-meson -Db_lto=true -Ddinit=enabled -Dmanage_rundir=true . output
@@ -294,9 +303,8 @@ build() {
 
 package() {
 	DESTDIR="$pkgdir" meson install --no-rebuild -C output
-	# turnstiled system service: upstream ships an example dinit service —
-	# install it instead of Alpine's turnstiled.initd (OpenRC)
-	# TODO(impl): verify upstream example path; enable via boot.d symlink
+	# upstream data/dinit/turnstiled installs to /etc/dinit.d/turnstiled
+	# (dinit IS PID 1 on FeralOS; Alpine's no-system-dinit.patch NOT applied)
 }
 ```
 
@@ -321,7 +329,10 @@ denied without a patch. Fix: Chimera's `turnstile.patch`
 polkit 127 = Alpine **v3.24/community** polkit 127-r2 (edge identical: same
 build, same commit — coherent with our `branch: latest-stable`) → our aports
 carries `polkit` (Alpine 127-r2 APKBUILD copy + patch; use the
-`polkit-elogind` sub-package). The PAM file MUST be named exactly `turnstiled`
+`polkit-elogind` sub-package). Our build uses the 989 override series
+(`_upstream=127`, `pkgver=989.127`), so it always wins over Alpine's 127-r2
+(which also made the patch dead weight before — same pkgver, lower pkgrel).
+The PAM file MUST be named exactly `turnstiled`
 (upstream default ✓). Phases 1-3: patch NOT needed (dormant without turnstile).
 
 **Verified: Alpine does NOT have the patch** — `community/polkit/` in aports

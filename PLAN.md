@@ -29,18 +29,20 @@
 
 0. **Use Alpine packages whenever they exist.** Before creating ANY APKBUILD,
    check Alpine repos of the target branch (`v3.24` main + community; edge as
-   signal). We build ONLY packages that: don't exist in Alpine, or need
-   FeralOS-specific patches (e.g. polkit + `turnstile.patch`). Example:
-   sd-tools was dropped — Alpine community ships 0.99.0-r3 with exactly the
-   binaries we need.
+   signal). We build ONLY packages that: don't exist in Alpine, need
+   FeralOS-specific patches (e.g. polkit + `turnstile.patch`), or override a
+   broken Alpine build (sd-tools). Alpine name conflicts use the `989.<upstream>`
+   override series so our build always wins — see `docs/PACKAGES.md`.
 1. One step = one commit = one push. Never batch steps.
 2. Every step has a **DoD** (definition of done) — no step is done until DoD is met.
 3. If blocked >2 attempts on the same error: stop, write blocker in `STATUS.md`,
    push, report back. Do not improvise architecture changes.
 4. **Sources = upstream release TAG tarballs** — never branches/master/HEAD.
-   `pkgver` MUST equal the upstream tag; `sha512sums` mandatory (no SKIP).
-   Bumps happen only on new upstream tags. We patch only what's broken, never
-   redesign. See "Source & stability policy" in `docs/PACKAGES.md`.
+   `pkgver` MUST equal the upstream tag; **exception**: packages sharing a name
+   with an Alpine package use `pkgver=989.<upstream>` (`_upstream=` holds the
+   raw tag version) so apk always selects ours; `sha512sums` mandatory (no
+   SKIP). Bumps happen only on new upstream tags. We patch only what's broken,
+   never redesign. See "Source & stability policy" in `docs/PACKAGES.md`.
 5. **Optional PACKAGES: ALL of them, mandatory.** Every optional dependency
    goes into `makedepends` unconditionally and gets compiled in.
 6. **Optional FEATURES: enabled best-effort.** Try them all; a feature may be
@@ -60,12 +62,13 @@
 
 **DoD**: CI workflow exists (even if failing until APKBUILDs land); repo pushes clean. → **MET**: runs green (build skipped pre-packages), Pages live.
 
-## Step 1a — sd-tools package (build) ✅ DONE (2026-09-10) — ⚠️ SUPERSEDED by rule 0
+## Step 1a — sd-tools package (build) ✅ DONE (2026-09-10) — REINSTATED 2026-09-29 (989 override)
 
-> Alpine community ships `sd-tools 0.99.0-r3` (v3.24 + edge) with
-> `cmd:sd-tmpfiles` + `cmd:sd-sysusers` → we USE Alpine's. Our package was
-> removed from the repo (history preserved). The 1a/1b work below remains
-> as PROOF the pipeline works end-to-end (build→sign→publish→client verify).
+> Alpine community ships `sd-tools 0.99.0-r3` (v3.24 + edge), but its build
+> segfaults at runtime (GCC use-after-scope, upstream #5) → our patched build
+> is back with the 989 override series (`pkgver=989.0.99.0-r0`) so apk always
+> selects it. Removal/reinstate history: git + `STATUS.md`. The 1a/1b work
+> below remains as PROOF the pipeline works end-to-end (build→sign→publish→client verify).
 
 - [x] `sd-tools/APKBUILD` — facts verified upstream:
       `pkgver=0.99.0` (only tag), C/gnu11 meson,
@@ -91,9 +94,9 @@
 **DoD**: cryptographic signature verified client-side (`UNTRUSTED` = fail). → **MET**.
 
 > ⚠️ **Correction**: Alpine community HAS sd-tools 0.99.0-r3 (v3.23+; earlier
-> "testing 404" was the wrong repo check). We keep OUR package (self-contained
-> repo + our-key signing) — clients MUST pin `=0.99.0-r0` or our repo must be
-> preferred, else apk resolves the newer Alpine build and bypasses our signature.
+> "testing 404" was the wrong repo check). We keep OUR package: with the 989
+> override series (`989.0.99.0-r0` outranks any Alpine `0.99.x`) apk always
+> resolves our signed build — no client pinning needed.
 
 ## Step 2a — dinit-chimera package (build) ✅ DONE (2026-09-10)
 

@@ -287,9 +287,10 @@ jobs:
           set -e
           dinit-check -d /lib/dinit.d boot
           dinit-check -d /lib/dinit.d system
-          # our sd-tools (0.99.990-r993, tmpfiles lifetime patch) must WIN over
-          # Alpine's runtime-broken 0.99.0-r3 — pkgver 0.99.990 > any 0.99.x
-          apk policy sd-tools | grep -q '0.99.990-r993' || { echo "sd-tools did not resolve to our 0.99.990-r993:"; apk policy sd-tools; exit 1; }
+          # our sd-tools (989.0.99.0-r0, tmpfiles lifetime patch) must WIN over
+          # Alpine's runtime-broken 0.99.0-r3 — 989 major component always
+          # outranks any Alpine version field-by-field (apk numeric compare)
+          apk policy sd-tools | grep -q '989.0.99.0-r0' || { echo "sd-tools did not resolve to our 989.0.99.0-r0:"; apk policy sd-tools; exit 1; }
           rc=0; sd-tmpfiles --create --boot || rc=$?
           case "$rc" in
             0|65|73) echo "sd-tmpfiles runtime OK (exit $rc)" ;;

@@ -90,7 +90,10 @@ Output: `references/alpine-openrc/<pkg>/` (APKBUILD + `*.initd` + `*.confd`). Gi
 ./scripts/bump-upstream.sh dinit-chimera         # single package
 ```
 
-Compares current `pkgver` with latest upstream tag. If newer: updates `pkgver` + `sha512sums`. **Does not push** — review the diff, commit manually.
+Compares current upstream version (`_upstream` for the 989 override series,
+`pkgver` otherwise) with latest upstream tag. If newer: updates the version +
+`sha512sums`, keeping `pkgver=989.<upstream>` intact for override packages.
+**Does not push** — review the diff, commit manually.
 
 ## How to add a new service
 
@@ -134,7 +137,10 @@ Compares current `pkgver` with latest upstream tag. If newer: updates `pkgver` +
 ./scripts/bump-upstream.sh
 ```
 
-Checks the latest upstream tag via GitHub API. If newer than current `pkgver`: updates `pkgver` + `sha512sums`. Review the diff, commit, push.
+Checks the latest upstream tag via GitHub API. If newer than the current
+upstream version (`_upstream` for 989 override-series packages like turnstile,
+`pkgver` otherwise): updates the version + `sha512sums`. Review the diff,
+commit, push.
 
 ## How to update from Alpine stable changes
 

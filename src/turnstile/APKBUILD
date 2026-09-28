@@ -14,8 +14,12 @@
 #    pam_umask/pam_elogind providers.
 #  * dinit backend always enabled; manage_rundir=true gives every user a
 #    PAM-managed XDG_RUNTIME_DIR at login (no elogind pam_systemd shim).
+# FeralOS override series: pkgver 989.<upstream> — the 989 major component
+# always outranks any Alpine version field-by-field (apk numeric compare),
+# so our build is always selected. Bump the suffix in lockstep with upstream.
+_upstream=0.1.11
 pkgname=turnstile
-pkgver=0.1.11
+pkgver=989.$_upstream
 pkgrel=0
 pkgdesc="Independent session/login tracker"
 url="https://github.com/chimera-linux/turnstile"
@@ -28,8 +32,10 @@ makedepends="
 	scdoc
 	"
 subpackages="$pkgname-doc"
-source="$pkgname-$pkgver.tar.gz::https://github.com/chimera-linux/turnstile/archive/refs/tags/v$pkgver.tar.gz"
+source="$pkgname-$_upstream.tar.gz::https://github.com/chimera-linux/turnstile/archive/refs/tags/v$_upstream.tar.gz"
 options="!check" # no tests
+# tarball dir follows the UPSTREAM version, not our 989.<upstream> pkgver
+builddir="$srcdir"/$pkgname-$_upstream
 
 build() {
 	abuild-meson \

@@ -13,7 +13,7 @@ https://feralos.gitea.io/apk-repo/        (or Gitea Pages URL)
     │   └── x86_64/
     │       ├── APKINDEX.tar.gz
     │       ├── dinit-chimera-0.99.24-r0.apk
-    │       ├── sd-tools-0.1.0-r0.apk
+    │       ├── sd-tools-989.0.99.0-r0.apk
     │       └── sshd-dinit-0.1.0-r0.apk
     └── edge/
         └── x86_64/…
@@ -97,7 +97,7 @@ apk add --repository ~/packages/x86_64/ --allow-untrusted dinit-chimera
 |---------|---------------|---------------|
 | `dinit` | Alpine community | none — tracks Alpine |
 | `dinit-chimera` | upstream git tag (`v0.99.24`) | bump `pkgver`, rebuild |
-| `sd-tools` | upstream git tag | bump `pkgver`, rebuild |
+| `sd-tools`, `turnstile`, `polkit` | upstream version in `_upstream`; `pkgver=989.$_upstream` (Alpine name conflict — ours must always win) | bump `_upstream`, rebuild |
 | `*-dinit` | ours | `pkgrel` bump |
 
 Repo release = git tag in `feralos-aports` (`apk-repo/v3.24.0`) → CI republishes

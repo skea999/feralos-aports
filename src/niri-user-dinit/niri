@@ -1,0 +1,9 @@
+# dinit user service: niri session compositor (started by niri-session)
+type = process
+command = niri --session
+restart = false
+working-dir = $HOME
+depends-on = dbus.user
+after = niri-shutdown
+chain-to = niri-shutdown
+options: always-chain

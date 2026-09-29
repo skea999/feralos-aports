@@ -1,0 +1,50 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+#
+# dinit USER services for the niri session. Alpine's niri ships
+# /usr/bin/niri-session, the upstream wrapper that starts the "niri" user
+# service via `dinitctl --user start niri` when a user dinit instance is
+# running. That is exactly the lifecycle we want (niri dies -> session ends).
+# The wrapper's earlier SHELL/bash re-exec branch is dodged via the
+# login-shell symlink below; see README.md for the full rationale.
+#
+# Adapted from upstream niri v25.11 resources/dinit/{niri,niri-shutdown}:
+#  * depends-on = dbus.user (our dbus-user-dinit service name; upstream's
+#    `dbus` service does not exist on FeralOS)
+#  * niri-shutdown also clears XDG_SESSION_DESKTOP
+#
+# FeralOS override series: pkgver 989.0.1.0 — FeralOS-only package (no
+# Alpine counterpart), versioned in the same 989 series as our other
+# overridden packages to keep repo ordering coherent. The 989 major
+# component always outranks any Alpine version field-by-field.
+pkgname=niri-user-dinit
+pkgver=989.0.1.0
+pkgrel=0
+pkgdesc="dinit user services for the niri compositor session"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="niri dinit"
+makedepends=""
+source="niri niri-shutdown"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/niri" "$pkgdir/etc/dinit.d/user/niri"
+	install -Dm644 "$srcdir/niri-shutdown" "$pkgdir/etc/dinit.d/user/niri-shutdown"
+
+	# login-shell: symlink to ash at a path NOT listed in /etc/shells.
+	# niri-session re-execs itself through bash and abandons the user dinit
+	# manager when $SHELL is a valid /etc/shells entry, and greetd always
+	# sets SHELL (ash is in /etc/shells -> would trap). This symlink keeps a
+	# perfectly usable shell while failing that check. See README.md.
+	install -d "$pkgdir/usr/libexec/feralos"
+	ln -s /bin/ash "$pkgdir/usr/libexec/feralos/login-shell"
+}
+
+sha512sums="
+7c97759c566308c6927e3a0a66b0449f2bfd03acf8e037ccb280ed8f9233382ec803badf90f46b88ee80f321c556f90b866e8c288ccc030a623014de701e5ec2  niri
+6fb2d35f11c4e0e4168ffa909848ec7093f9b49ef6e4271cfcbbb46276a148b7979b47056fb66dfdc0d869fb933dd216be3a642fd7cfdf8bb47bec28338ed541  niri-shutdown
+"

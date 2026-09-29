@@ -12,15 +12,23 @@
 #  * runtime depends on linux-pam: pam_turnstile.so links libpam and the
 #    /etc/pam.d/turnstiled stack needs pam_limits/pam_rootok/pam_keyinit/
 #    pam_umask/pam_elogind providers.
-#  * dinit backend always enabled; manage_rundir=true gives every user a
-#    PAM-managed XDG_RUNTIME_DIR at login (no elogind pam_systemd shim).
+#  * default_backend=dinit pinned explicitly: the shipped
+#    /etc/turnstile/turnstiled.conf must say `backend = dinit` even if the
+#    dinit feature auto-detection ever changes; FeralOS has neither systemd
+#    nor runit, dinit is the only service manager.
+#  * manage_rundir=false: elogind is our session/rundir manager.
+#    /etc/pam.d/turnstiled runs pam_elogind.so, which creates
+#    /run/user/<uid> and exports XDG_RUNTIME_DIR at login. Letting turnstile
+#    manage the same rundir path too would race elogind for ownership of it
+#    (create/remove treadmills, wrong permissions) — exactly the conflict the
+#    upstream option documentation warns about.
 # FeralOS override series: pkgver 989.<upstream> — the 989 major component
 # always outranks any Alpine version field-by-field (apk numeric compare),
 # so our build is always selected. Bump the suffix in lockstep with upstream.
 _upstream=0.1.11
 pkgname=turnstile
 pkgver=989.$_upstream
-pkgrel=0
+pkgrel=1
 pkgdesc="Independent session/login tracker"
 url="https://github.com/chimera-linux/turnstile"
 arch="all"
@@ -41,7 +49,8 @@ build() {
 	abuild-meson \
 		-Db_lto=true \
 		-Ddinit=enabled \
-		-Dmanage_rundir=true \
+		-Ddefault_backend=dinit \
+		-Dmanage_rundir=false \
 		. output
 	meson compile -C output
 }

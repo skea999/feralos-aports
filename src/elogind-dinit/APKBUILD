@@ -2,14 +2,15 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=4
-pkgdesc="dinit service for elogind (depends-on dbus)"
+pkgrel=5
+pkgdesc="dinit service for elogind (depends-on dbus, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit elogind dbus"
 makedepends=""
-source="elogind"
+source="elogind
+	elogind-stop"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +18,13 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/elogind" "$pkgdir/lib/dinit.d/elogind"
+	# stop guard: pam_elogind (session tracker PAM stack) talks to elogind over
+	# the system bus while sessions close at shutdown — dinit runs stop-command
+	# INSTEAD of signalling the process (see elogind-stop header)
+	install -Dm755 "$srcdir/elogind-stop" "$pkgdir/usr/libexec/elogind-dinit-stop"
 }
 
 sha512sums="
-edcbad6c478815cf5f006435e3553dbc92396fb943171714e718e9d49bb7c1453f71b2cf7181f289725f650b8ca4058956dd97f9e24519418a45d04eb021eec4  elogind
+e12d0024e275c859a745ce6687d6c913de0de93a008bf6fb43fea0cd359be05ed4eb3ad92a2ec145b63ce4152a53707667fd5eeb6f071a52de4e432e0ff6acc0  elogind
+3a12c8e41fef9a5594d693edcf6c9e92a69663ba8e72fd9b04bbc03e2485c3c93ac2b22c84aaaac5475883bfffdf01fca0e4a538ae61737e32b1a94fe41c07ab  elogind-stop
 "

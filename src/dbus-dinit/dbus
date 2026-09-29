@@ -2,6 +2,10 @@
 # ready-notification = pipefd:3: dbus-daemon writes the bus address to fd3
 # and closes it at startup — dinit gates dependents (elogind, polkit, NM)
 # on the bus being ACTUALLY reachable, not just spawned.
+# stop-command: keep the bus alive while session trackers (turnstiled) close
+# their PAM sessions at shutdown — dinit stops dependencies on release, not
+# on dependent exit. Script waits (bounded) for turnstiled, then stops the
+# bus itself; see /usr/libexec/dbus-dinit-stop.
 type = process
 log-type = file
 logfile = /var/log/dinit/dbus.log
@@ -10,3 +14,5 @@ restart = true
 smooth-recovery = true
 ready-notification = pipefd:3
 depends-on = local.target
+stop-command = /usr/libexec/dbus-dinit-stop
+stop-timeout = 30

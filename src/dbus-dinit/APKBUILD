@@ -2,15 +2,16 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dbus-dinit
 pkgver=0.1.0
-pkgrel=5
-pkgdesc="dinit service for dbus (pipefd readiness)"
+pkgrel=6
+pkgdesc="dinit service for dbus (pipefd readiness, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit dbus"
 makedepends=""
 source="dbus
-	dbus-dinit.tmpfiles"
+	dbus-dinit.tmpfiles
+	dbus-stop"
 
 build() { return 0; }
 check() { return 0; }
@@ -20,9 +21,14 @@ package() {
 	install -Dm644 "$srcdir/dbus" "$pkgdir/lib/dinit.d/dbus"
 	# /run/dbus must exist before the daemon (OpenRC initd did checkpath)
 	install -Dm644 "$srcdir/dbus-dinit.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/dbus-dinit.conf"
+	# stop guard: keep the bus alive while session trackers (turnstiled) close
+	# their PAM sessions at shutdown — dinit runs stop-command INSTEAD of
+	# signalling the process (see dbus-stop header)
+	install -Dm755 "$srcdir/dbus-stop" "$pkgdir/usr/libexec/dbus-dinit-stop"
 }
 
 sha512sums="
-2bb12a8947e7431c55eee61237bbdab7476a8e4097c1f14d60adfab455e4173843abab5b36b74b2e3c00ef1717e53f73b4de9506415b2639c0f49a7dd634f607  dbus
+c05955f99860019f2fe98966a6f9dbef09bb15b8d2d16d004820b69d7807313c7ffd7b0769454e3e226a0e2f445c02b43d327e738d1c17ecd28818887ea1429f  dbus
 279bef8a4bb8c4b80b1d89a18e34970c3eb3003ce29c8042f0f63d166303cf7b7ab1f69ef712ac3043a547d903a748750d1eecdf67bb0deff002919cf1dabb69  dbus-dinit.tmpfiles
+e021022e69e646b4958f24814953156c2adb552824c1f1c91d41aceac0b34ed12b2d86dfdab750a8092f71d6236e550e9e64f9af56e9651488ae1735a6b8083a  dbus-stop
 "

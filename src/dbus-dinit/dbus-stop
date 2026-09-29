@@ -1,0 +1,29 @@
+#!/bin/sh
+# FeralOS shutdown ordering guard.
+#
+# dinit stops a dependency as soon as its dependents have *released* it (i.e.
+# when they begin stopping), not after they have actually finished. At system
+# shutdown that lets dbus-daemon die while turnstiled is still closing its
+# PAM sessions; pam_elogind then logs
+#   "pam_elogind(turnstiled:session): Failed to connect to system bus:
+#    Connection refused"
+# and the harness log_errors check fails (run 2026-09-29T22-35-57Z).
+#
+# dinit runs stop-command INSTEAD of signalling the process: wait (bounded)
+# for turnstiled to exit, then stop the system bus ourselves. When turnstile
+# is not installed the wait is a no-op and behaviour is unchanged.
+# (Alpine busybox pgrep has no -x — use pidof / pgrep -f.)
+i=0
+while [ "$i" -lt 150 ] && pidof turnstiled >/dev/null 2>&1; do
+	sleep 0.1
+	i=$((i + 1))
+done
+pkill -TERM -f 'dbus-daemon --system'
+# Bounded wait for the daemon to actually die, escalate if it lingers.
+i=0
+while [ "$i" -lt 50 ] && pgrep -f 'dbus-daemon --system' >/dev/null 2>&1; do
+	sleep 0.1
+	i=$((i + 1))
+done
+pkill -KILL -f 'dbus-daemon --system' 2>/dev/null
+exit 0

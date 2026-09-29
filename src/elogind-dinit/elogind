@@ -2,6 +2,11 @@
 # dbus dependency: elogind registers on the system bus; without dbus up
 # first it logs "Failed to connect to system bus" and restarts (run
 # 2026-09-26 serial noise).
+# stop-command: pam_elogind (in the session tracker's PAM stack) talks to
+# elogind over the bus while sessions close at shutdown — dinit stops
+# dependencies on release, not on dependent exit. Script waits (bounded)
+# for turnstiled, then stops elogind itself; see
+# /usr/libexec/elogind-dinit-stop.
 type = process
 log-type = file
 logfile = /var/log/dinit/elogind.log
@@ -9,3 +14,5 @@ command = /usr/libexec/elogind/elogind
 restart = true
 depends-on = local.target
 depends-on = dbus
+stop-command = /usr/libexec/elogind-dinit-stop
+stop-timeout = 30

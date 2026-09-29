@@ -1,0 +1,29 @@
+#!/bin/sh
+# FeralOS shutdown ordering guard (see dbus-dinit's stop script for the full
+# background: dinit stops a dependency when dependents have *released* it,
+# which is too early for the system bus / elogind).
+#
+# pam_elogind runs inside the session tracker's PAM stack and talks to
+# elogind over the system bus while sessions are being closed at shutdown.
+# dinit runs stop-command INSTEAD of signalling the process: wait (bounded)
+# for turnstiled to exit, then stop elogind ourselves. When turnstile is not
+# installed the wait is a no-op and behaviour is unchanged.
+# (Alpine busybox pgrep has no -x — use pidof.)
+i=0
+while [ "$i" -lt 150 ] && pidof turnstiled >/dev/null 2>&1; do
+	sleep 0.1
+	i=$((i + 1))
+done
+for p in $(pidof elogind); do
+	kill -TERM "$p"
+done
+# Bounded wait for the daemon to actually die, escalate if it lingers.
+i=0
+while [ "$i" -lt 50 ] && pidof elogind >/dev/null 2>&1; do
+	sleep 0.1
+	i=$((i + 1))
+done
+for p in $(pidof elogind); do
+	kill -KILL "$p"
+done
+exit 0

@@ -28,7 +28,7 @@
 _upstream=0.1.11
 pkgname=turnstile
 pkgver=989.$_upstream
-pkgrel=1
+pkgrel=2
 pkgdesc="Independent session/login tracker"
 url="https://github.com/chimera-linux/turnstile"
 arch="all"
@@ -64,6 +64,9 @@ package() {
 	#   /etc/pam.d/turnstiled
 	#   /etc/turnstile/turnstiled.conf + /etc/turnstile/backend/dinit.conf
 	#   /usr/libexec/turnstile/dinit   (per-user dinit launcher)
+	# pam_env: feed /etc/environment (XDG_SESSION_DESKTOP, XDG_DATA_DIRS) into
+	# the session env turnstiled builds and hands to PAM/backends.
+	printf 'session\t\toptional\tpam_env.so\n' >> "$pkgdir"/etc/pam.d/turnstiled
 }
 
 sha512sums="

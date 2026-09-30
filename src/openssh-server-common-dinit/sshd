@@ -2,10 +2,14 @@
 # Host keys are generated at INSTALL time (installer runs ssh-keygen -A in
 # the chroot). NOTE: dinit splits `command` on whitespace WITHOUT shell
 # quoting — never wrap in sh -c '...' (the quotes become part of the token).
+# Logging: NO `-e` — sshd must log to syslog (/dev/log -> vector) so auth
+# events reach /var/log/auth.log (+ messages); `-e` sent everything to
+# stderr and left auth.log empty (found by the log_coverage harness check,
+# 2026-09-30).
 type = process
 log-type = file
 logfile = /var/log/dinit/sshd.log
-command = /usr/sbin/sshd -D -e
+command = /usr/sbin/sshd -D
 restart = true
 smooth-recovery = true
 depends-on = networking

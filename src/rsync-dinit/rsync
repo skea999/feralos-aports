@@ -4,4 +4,5 @@ log-type = file
 logfile = /var/log/dinit/rsync.log
 command = /usr/bin/rsync --daemon --no-detach --config=$cfgfile
 restart = true
+smooth-recovery = true
 depends-on = local.target

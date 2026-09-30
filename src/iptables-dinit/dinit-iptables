@@ -5,4 +5,4 @@ command -v iptables-restore >/dev/null 2>&1 || { echo "iptables: iptables-restor
 RULES=/etc/iptables/iptables.rules
 [ -r "$RULES" ] || { echo "iptables: no saved ruleset at $RULES, skipping"; exit 0; }
 
-iptables-restore "$RULES"
+iptables-restore -w 3 "$RULES"

@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=iptables-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for iptables (restore saved ruleset)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,5 +22,5 @@ package() {
 
 sha512sums="
 b03cbd4629f50b55603a6ed77b46e92f26889e24c940cc22cf241c073d7a592064469ece8710d91dfbdef03e68268f46c6b3a650be10e780628bada0b5e3aa21  iptables
-77699a3bfc67e96ab205d64e2dd0977bc8f2122f413e2294c14be8630413c20b415fc4db5162979a30787fe2f9d72adc60ebe3cf5943d5be538396a7416c3d59  dinit-iptables
+582d155a83085779bed5dbec5aa30212fc21100febcb75fea549796ab98250befd82538319212eceb0f75a9d0916d2ca3f7c4f30666b9e107df1e6a43124de3e  dinit-iptables
 "

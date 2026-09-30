@@ -6,5 +6,6 @@ log-type = file
 logfile = /var/log/dinit/firewalld.log
 command = /usr/sbin/firewalld --nofork
 restart = true
+smooth-recovery = true
 depends-on = local.target
 depends-on = dbus

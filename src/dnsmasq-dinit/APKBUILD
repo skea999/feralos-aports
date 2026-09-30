@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dnsmasq-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for dnsmasq"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-0ad0a34a2d77e9ba75d8fd6d4a69e7056f9be68ccdcfd0f1e132f1197fc0f5efec90e8e8954b27fc14522008acb6cb49cd3ce40a47f70b05ef2ced9cb8c2ca54  dnsmasq
+92285e136c147ff807111f7febabad2ee54b27f9c0c1ebcda4e7292840aeca98f040e377cc08f2bd461e327cd9b796bba14d7fc4afe5a6e277856f9c3fcdb6e9  dnsmasq
 "

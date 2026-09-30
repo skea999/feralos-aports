@@ -7,4 +7,5 @@ log-type = file
 logfile = /var/log/dinit/sshd.log
 command = /usr/sbin/sshd -D -e
 restart = true
+smooth-recovery = true
 depends-on = networking

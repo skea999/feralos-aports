@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=nftables-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for nftables (load ruleset)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -21,6 +21,6 @@ package() {
 }
 
 sha512sums="
-1953e356ab9f4488bf1be0520858fef4c7b1f9c9ff8602c0b8c0713a186094f4843d1467faa84b0309455a356d41407ff965749349d9da272af48a9893b4d479  nftables
-d8af40079c2524c66201a555f0cbbc5a49ab9eb8cf1ef24189b4eecf7a0a274b0de800ca7aaf69a293a1ccf199acae5d77bf304bc82e7242e6f7496b1ca0173b  dinit-nftables
+1d27f3c518c8f027dd1438ab5173dcaf96ace159bc8db9aab0eb6f64967d1ea1d98591f8c9b16f53183cad87b2b41e2999bec72ad12ea2b5066c10feb18fda91  nftables
+93756235019b61211126a454e06566d4b8b6d47c1445d5b46996b8cce6f399b86223a622980b3656b655902d5f0f670612e23a7b6ce167f7cec115e9ae0488f1  dinit-nftables
 "

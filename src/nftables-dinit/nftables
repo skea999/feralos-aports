@@ -1,5 +1,6 @@
-# dinit service: nftables (load ruleset at boot)
-# Graceful: skips when no ruleset exists.
+# dinit service: nftables (load ruleset at boot; flush on stop)
+# Graceful: skips when no ruleset exists (see dinit-nftables).
 type = scripted
 command = /usr/libexec/dinit-nftables
+stop-command = /usr/libexec/dinit-nftables stop
 depends-on = local.target

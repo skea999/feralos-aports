@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=seatd-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for seatd (Alpine initd name: seatd)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-870d0eae4af47b4da60b7a40c457c468f0231c5dfcc603f08e9aaf973a5bb41fa5ca8641f9cc1856b10e5276414913862e6dd6be2bbbd46e01cd5983320f73a0  seatd
+b5c3e359d4989d0cf4a3e6522fe14c805c0d2c3b6efbd3c5344364d92d540624db425ee45e1b2abca51f795766b61acc2777029410abee6884d182ad58657945  seatd
 "

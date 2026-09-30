@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=chrony-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for chronyd (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-d845b449b62aef1fea6cb8c450011d688bc790a8c5d446ebe32946a432d222f81e196578436aad0de4e77c3a3d4bc7a83bdffb60cee152564c1b151b4f4389a6  chronyd
+82bcb6fc14f8b1aa88c9c46e598aa8208904f30b089ca0e5004149dcfc4faae354faf83b587a75a9802605e8d0db542588220bca85a067b67062522b9ac802fd  chronyd
 "

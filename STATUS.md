@@ -12,6 +12,24 @@
 
 ## Log
 
+### 2026-09-30 — Artix-parity audit round (18 pkgs) + dead-code cleanup
+- Full comparison of FeralOS dinit services vs Artix packages
+  (gitea.artixlinux.org `packages/<name>-dinit`, base suite `artix/dinit-rc`).
+- Fixes: seatd `-g seat -n 3` + `ready-notification = pipefd:3` + `before
+  login.target`; nftables `stop-command` flush (`dinit-nftables stop`);
+  iptables `-w 3`; sddm `+= depends-on elogind`; cosmic-greeter `+= depends-on
+  seatd`; avahi/cupsd/dnsmasq `+= depends-on dbus`; turnstiled logfile →
+  `/var/log/dinit/turnstiled.log` (Artix-style sed).
+- `smooth-recovery = true` added where Artix has it: elogind, seatd, acpid,
+  chronyd, cronie, rsync, earlyoom, dnsmasq, avahi, cupsd, firewalld, sshd,
+  greetd, sddm.
+- REMOVED dead packages `pipewire-dinit` + `wireplumber-dinit` (system
+  services, never installed — Artix ships user-only; cosmic/kde/niri rules
+  reference only the `-user-dinit` variants) + stale `_override/` strays
+  (fuse-dinit, busybox-mdev-dinit).
+- pkgrel +1 on all 18 touched packages; docker rehearsal green
+  (checksum-stable builds, content checks, dinit-check clean).
+
 ### 2026-09-29 — 989 override series for Alpine-conflicting packages
 - Conflict scan (`apk search -x` vs v3.24 main+community, plus edge/testing):
   `polkit` (community), `sd-tools` (community), `turnstile` (edge/testing) —

@@ -4,4 +4,6 @@ log-type = file
 logfile = /var/log/dinit/avahi.log
 command = /usr/sbin/avahi-daemon
 restart = true
+smooth-recovery = true
+depends-on = dbus
 depends-on = local.target

@@ -1,7 +1,0 @@
-# dinit service: pipewire (Alpine openrc pipewire + overrides)
-type = process
-log-type = file
-logfile = /var/log/dinit/pipewire.log
-command = /usr/bin/pipewire
-restart = true
-depends-on = local.target

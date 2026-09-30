@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=sddm-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for sddm (Alpine initd name: sddm)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-b611b0e7338b0e68fd24c284f476bcf5d7eb040df94f5a0e30d9696481f821cb88afe08750ac1a0357aa8d54cb73e9379492827146d49acc6b8661f807eb61da  sddm
+1198425cc112868ae08a1d6ad05b6d004638175ee30f7f1b22c5e528d6b59ffbe3219e92df71819b870700623a5b35f5370ba96de7374531738661e20b387e56  sddm
 "

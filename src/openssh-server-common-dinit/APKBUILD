@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=openssh-server-common-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit sshd service for openssh (Alpine initd name: sshd)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -21,5 +21,5 @@ package() {
 }
 
 sha512sums="
-2963c958dc60a2a6ffe7c1d110a54bd3ec9aa584e98b85cf8f15dda952a52a9b52f611ff60799fc38fd398d3b608c6f8eaf116716fa747518b7912bc5b2890a2  sshd
+99a87214627a4788b55c7d80987ea93b308f95d1e236e4eac93586faba9671926ea1135c3fb522c5d092db00759f3e5c3ba9abb8b844827481ca7172a0620125  sshd
 "

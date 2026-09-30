@@ -3,4 +3,6 @@ log-type = file
 logfile = /var/log/dinit/sddm.log
 command = /usr/bin/sddm
 restart = true
+smooth-recovery = true
 depends-on = login.target
+depends-on = elogind

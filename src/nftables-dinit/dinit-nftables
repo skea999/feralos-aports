@@ -1,8 +1,15 @@
 #!/bin/sh
-# Load the nftables ruleset — Alpine openrc nftables start() equivalent.
+# Load/flush the nftables ruleset — Alpine openrc nftables start()/stop() equivalent.
+# Graceful: skips when nft or the ruleset is absent.
 command -v nft >/dev/null 2>&1 || { echo "nftables: nft not found, skipping"; exit 0; }
 
-RULES=/etc/nftables.nft
-[ -r "$RULES" ] || { echo "nftables: no ruleset at $RULES, skipping"; exit 0; }
-
-nft -f "$RULES"
+case "${1:-}" in
+stop)
+	nft flush ruleset
+	;;
+*)
+	RULES=/etc/nftables.nft
+	[ -r "$RULES" ] || { echo "nftables: no ruleset at $RULES, skipping"; exit 0; }
+	nft -f "$RULES"
+	;;
+esac

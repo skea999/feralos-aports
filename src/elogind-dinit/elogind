@@ -12,6 +12,7 @@ log-type = file
 logfile = /var/log/dinit/elogind.log
 command = /usr/libexec/elogind/elogind
 restart = true
+smooth-recovery = true
 depends-on = local.target
 depends-on = dbus
 stop-command = /usr/libexec/elogind-dinit-stop

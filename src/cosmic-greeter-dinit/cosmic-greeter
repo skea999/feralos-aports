@@ -4,3 +4,4 @@ logfile = /var/log/dinit/cosmic-greeter.log
 command = /usr/bin/cosmic-greeter
 restart = true
 depends-on = login.target
+depends-on = seatd

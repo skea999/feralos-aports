@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit service for elogind (depends-on dbus, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -25,6 +25,6 @@ package() {
 }
 
 sha512sums="
-e12d0024e275c859a745ce6687d6c913de0de93a008bf6fb43fea0cd359be05ed4eb3ad92a2ec145b63ce4152a53707667fd5eeb6f071a52de4e432e0ff6acc0  elogind
+c3da997c04ca914ec597de025700d9e4db73a33213aea856b27f94ea6774ff68596b187687b577418623730a0d14be1ccba0662fe32f26b1864c3caf55fedeca  elogind
 3a12c8e41fef9a5594d693edcf6c9e92a69663ba8e72fd9b04bbc03e2485c3c93ac2b22c84aaaac5475883bfffdf01fca0e4a538ae61737e32b1a94fe41c07ab  elogind-stop
 "

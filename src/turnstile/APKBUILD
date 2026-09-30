@@ -28,7 +28,7 @@
 _upstream=0.1.11
 pkgname=turnstile
 pkgver=989.$_upstream
-pkgrel=3
+pkgrel=4
 pkgdesc="Independent session/login tracker"
 url="https://github.com/chimera-linux/turnstile"
 arch="all"
@@ -67,6 +67,10 @@ package() {
 	# pam_env: feed /etc/environment (XDG_SESSION_DESKTOP, XDG_DATA_DIRS) into
 	# the session env turnstiled builds and hands to PAM/backends.
 	printf 'session\t\toptional\tpam_env.so\n' >> "$pkgdir"/etc/pam.d/turnstiled
+	# Log path: align with the FeralOS convention — upstream ships
+	# logfile = /var/log/turnstiled.log; move under /var/log/dinit/ like every
+	# other -dinit service (/var/log/dinit ships with dinit-boot-log).
+	sed -i 's|/var/log/turnstiled.log|/var/log/dinit/turnstiled.log|' "$pkgdir"/etc/dinit.d/turnstiled
 	# Ordering: turnstiled handles PAM sessions (pam_elogind inside); it must
 	# start after elogind and — dependents stop first — stop BEFORE elogind,
 	# otherwise session open/close hits a dead/deferred system bus.

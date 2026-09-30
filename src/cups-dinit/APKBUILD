@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cups-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for cups (cupsd — Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-1cefd21ac1c8ccbbaf7efd2e3bd70da94d48838f25c527aa70da27a46b8ff278e4dbc4d0832f9e81d15fa932cd38d5abbe4190a83732ebd00840c27ae881ed4d  cupsd
+2deafd4dbbdbd65ef10579e5523a3894a5f7d4b1ee815e3ba7e5a426e0dcc69d9b364ffe226d314e82d52aecf364cc15efa7fbbe324c79af2c398e6f6764a254  cupsd
 "

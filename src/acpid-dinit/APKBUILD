@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=acpid-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for acpid"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-b3b62c5adefb94dcc66e6106c28f08c2e29b40535a74540172ccff98ade769ae3ee8843fe398e09d25bca06de3070dc68dcf59d55b2ca4e90fa53a773ec72272  acpid
+1de98cf71cfa1b716b949e4d0a6d37da3991c74e26eba30549531c617dfc1400fb18c426efaa43c8a4c8dbb76ae765c0f144fb54491ef61da07df2576de9c7e5  acpid
 "

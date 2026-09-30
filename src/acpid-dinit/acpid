@@ -4,4 +4,5 @@ log-type = file
 logfile = /var/log/dinit/acpid.log
 command = /sbin/acpid --foreground
 restart = true
+smooth-recovery = true
 depends-on = local.target

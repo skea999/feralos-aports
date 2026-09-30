@@ -12,6 +12,22 @@
 
 ## Log
 
+### 2026-09-30 — klogd-dinit: kernel ring → vector kern.log (Logging Round 1)
+- NEW klogd-dinit 0.1.0-r0: system dinit service forwarding the kernel ring
+  (`/sbin/klogd -n`, busybox) to /dev/log → vector routes facility kern to
+  /var/log/kern.log; the wrapper also writes a one-shot /var/log/dmesg boot
+  snapshot (early boot messages — /proc/kmsg replay starts at the oldest
+  buffered record).
+- Context: nothing forwarded the kernel ring before — rsyslog's imklog had
+  no vector equivalent (vector has no kmsg source), so kern.log was orphaned
+  (AppArmor denials, OOM, ACPI, hardware errors only on console/console log).
+- dinit-only by design: the Alpine OpenRC klogd service `depend() need logger`
+  (busybox syslogd), which FeralOS replaced with vector → not wired on OpenRC.
+- Installed as a dinit core package (installer packages.go corePkgs) and
+  enabled via defaultRunlevelsDinit (boot.d symlink).
+- Rehearsal green: checksum-stable build, APK content checks, wrapper syntax,
+  busybox klogd applet + /sbin/klogd present, dinit-check clean.
+
 ### 2026-09-30 — Artix-parity audit round (18 pkgs) + dead-code cleanup
 - Full comparison of FeralOS dinit services vs Artix packages
   (gitea.artixlinux.org `packages/<name>-dinit`, base suite `artix/dinit-rc`).

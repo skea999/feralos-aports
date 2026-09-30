@@ -1,0 +1,8 @@
+#!/bin/sh
+# Save the kernel ring once (full boot log — /proc/kmsg replay starts at the
+# oldest buffered record), then forward the ring to the syslog socket
+# (/dev/log -> vector) so facility kern reaches /var/log/kern.log + messages.
+# Runs supervised by dinit (system init); /sbin/klogd is the busybox applet,
+# -n keeps it in the foreground.
+/bin/busybox dmesg > /var/log/dmesg 2>/dev/null || true
+exec /sbin/klogd -n

@@ -1,0 +1,15 @@
+# dinit service: klogd (busybox applet) — forwards the kernel ring to
+# /dev/log; vector routes facility kern to /var/log/kern.log. The wrapper
+# also saves a one-shot /var/log/dmesg before forwarding starts (early boot
+# messages — /proc/kmsg replay starts at the oldest buffered record).
+# NOTE: dinit-only. The Alpine OpenRC service is NOT usable here: its
+# depend() requires the `logger` service (busybox syslogd), which FeralOS
+# replaced with vector.
+type = process
+log-type = file
+logfile = /var/log/dinit/klogd.log
+command = /usr/libexec/dinit-klogd
+restart = true
+smooth-recovery = true
+depends-on = local.target
+before = login.target

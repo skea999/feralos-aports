@@ -1,0 +1,36 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+#
+# OpenRC klogd service for FeralOS. vector replaced busybox syslogd, and the
+# Alpine busybox-openrc script has `depend() need logger` (busybox syslogd) —
+# it can never start here, leaving the kernel ring out of vector's kern.log.
+# This package ships a dependency-free replacement at the same path
+# (/etc/init.d/klogd): dmesg snapshot + klogd -n after vector. apk keeps
+# future busybox-openrc updates as klogd.apk-new (the file stays ours).
+#
+# FeralOS override series: pkgver 989.0.1.0 — FeralOS-only package (no
+# Alpine counterpart), versioned in the same 989 series as our other
+# overridden packages to keep repo ordering coherent. The 989 major
+# component always outranks any Alpine version field-by-field.
+pkgname=klogd-openrc
+pkgver=989.0.1.0
+pkgrel=0
+pkgdesc="OpenRC klogd service for FeralOS (vector path, no logger dependency)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="openrc busybox"
+replaces="busybox-openrc"
+makedepends=""
+source="klogd"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm755 "$srcdir/klogd" "$pkgdir/etc/init.d/klogd"
+}
+
+sha512sums="
+ba1e56dc2d2179004baf0e4a50350f5e6ca6816cbf77449b90d5813ab89673805ea218b61b56b8c77f476eb5235db0d06f7913a1985b27cfee857c42ff63865d  klogd
+"

@@ -1,0 +1,21 @@
+#!/sbin/openrc-run
+# FeralOS override (klogd-openrc 989.0.1.0): vector replaced busybox
+# syslogd, so the vendor busybox-openrc script (its depend() requires the
+# `logger` service) can never start on FeralOS. This dependency-free
+# replacement snapshots the kernel ring to /var/log/dmesg once, then
+# forwards it to /dev/log (vector routes facility kern to /var/log/kern.log).
+name="klogd (vector)"
+description="kernel ring -> /dev/log (vector)"
+
+start_pre() {
+	/bin/busybox dmesg > /var/log/dmesg 2>/dev/null || true
+}
+
+command="/sbin/klogd"
+command_args="-n"
+command_background="yes"
+pidfile="/run/klogd.pid"
+
+depend() {
+	after localmount vector
+}

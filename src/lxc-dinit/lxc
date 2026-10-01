@@ -1,8 +1,10 @@
-# dinit service: lxc (auto-generated from Alpine openrc lxc)
-type = process
-log-type = file
-logfile = /var/log/dinit/lxc.log
-command = /usr/lib/dinit/lxc
-env-file = /etc/dinit.d/config/lxc.conf
-restart = true
+# dinit service: lxc (Alpine openrc lxc + overrides)
+# lxc-autostart is a one-shot (brings autostart containers up, exits) — NOT a
+# daemon: process+restart would loop forever (latent restart-loop bug).
+type = scripted
+command = /usr/lib/dinit/lxc start
+stop-command = /usr/lib/dinit/lxc stop
+restart = false
 depends-on = local.target
+before = login.target
+env-file = /etc/dinit.d/config/lxc.conf

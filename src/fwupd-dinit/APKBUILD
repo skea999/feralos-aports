@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=fwupd-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for fwupd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-de9f6e360100c615e84c43a586bc7a8a91ef5aa2a18b7d67ef8945c4153db0a5efc698dc3a81c78ecdc26f4162338be8040b54b9d669886042f98296e286e1c4  fwupd
+c2691dfcc377e7cf5864c9b544aff2c4efe288cc36171df05cba6d08bd4762347bd9c424e79de880f1df2a0bde0207bd20daddd25f86010ac34392d1d9864cff  fwupd
 175d748ce17b22e20cd978fd89f3d2c70d0ca536f2f5abf7f6a376d4644db310f2fb04124df0737e68af3cb16d43ec8013137115b69829480fdbe0c777c498eb  fwupd.script
 9aa6b72e40971fb5f7e3e99e7ae8757099112514d91d32bd3efa5fbb5eb66c45e1f2819656171357faf7c63ddf940c4c324bae97816cacc44390611676b6dcd5  fwupd.conf
 "

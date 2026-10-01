@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=networkmanager-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for NetworkManager"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-50f012c9e811cab96645106bef87051c2f69622d69994d1b6fb911f79d86afb09b98e7fef82bff7cdcc4cfb9f15d41e3408a663f93d12666335eb5f727fe98a3  networkmanager
+b4f6ee8bcceafc3a251b58ba52b113d89b2c0e8283c31729ee1e6cc5aa4d7af9441a93c9f0980ead63d337a331c6a448e3b6a1ce4e91a4c03b5b273834fcdcf4  networkmanager
 "

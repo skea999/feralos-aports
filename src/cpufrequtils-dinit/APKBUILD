@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cpufrequtils-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit service for cpufrequtils (apply governor settings)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-e2aea45f53ec605fddb2aaa10f32958f285b21b7411107a3918b0b220ed1fbcec327c716c8b3682dbfb09ab350f185cecdd67656ce3b660013b18d8d36c7f704  cpufrequtils
+5d8d041ddf259b4ee5f3a954e3626827abc3f7713ddbcefd303510eb18e287c4dabe0e417a5b7f1cc028d2c33a967880e4495c0520a774b0bc875a9d53e7ef44  cpufrequtils
 18cee9c6a433b0f9ec176c25ef0329e4e150e2584c07367070fefcf1ea62c2d27fd061500771fa4958f650fbdcdec16196a8c35bbb9a1144a931da3dd6cea31d  dinit-cpufrequtils
 bb07c330414003953c087ca5ff12dd481907e13a4109e4e7ce22582312126975081f0b3463da2fb68c0a191fbc6902fcd1de41b8dd316714adb6fe949bf61712  cpufrequtils.conf
 "

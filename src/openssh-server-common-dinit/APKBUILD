@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=openssh-server-common-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit sshd service for openssh (Alpine initd name: sshd)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit openssh"
 makedepends=""
-source="sshd sshd.script sshd.conf"
+source="sshd sshd.script sshd.conf ssh-keygen"
 
 build() { return 0; }
 check() { return 0; }
@@ -20,10 +20,14 @@ package() {
 	install -Dm644 "$srcdir/sshd" "$pkgdir/lib/dinit.d/sshd"
 	install -Dm755 "$srcdir/sshd.script" "$pkgdir/usr/lib/dinit/sshd"
 	install -Dm644 "$srcdir/sshd.conf" "$pkgdir/etc/dinit.d/config/sshd.conf"
+	# belt-and-braces host key generation (Artix openssh-dinit pattern;
+	# the installer already runs ssh-keygen -A at install time)
+	install -Dm644 "$srcdir/ssh-keygen" "$pkgdir/lib/dinit.d/ssh-keygen"
 }
 
 sha512sums="
-61a4911aa33ff3a3ea6b93547e2abf49cadf69efb668d516355837f1c6b1899f24090c39cc8203d7879086e4c6338c4cf36334e7476b1dcbdd0e3068a161e0c8  sshd
+948b4d06e09d408d51b92fa8f99b7b9a3bf0a3aebced13b8ffcef349c25682218a84b18e9f71604afbcd5a6d7f1b5dca1b25952d4e479267545a4f84543c55aa  sshd
 647477a144a087d1df668bebb08b47126e178f1d9b59680965786045d25da8a4fece64585000417becef60712ae7d0cfcf0570125115d3a77695e302dcb2f716  sshd.script
 558e1847b597c17a170efd39672fdedc0e0af3183cde08ccb7d961f96fa91f5be65750b9af5b3229d0ec5f2c9a0cd7f4ec936be12f5d9fdefc30e901de214e57  sshd.conf
+1af4abeb31e6312a617f94c7b7b5a5856a75247a9538831c9aeefba88fe5ba90c09f0a7784b108e7b7c462810a089591dedbea5ea9b76409004323e2f28aaf6e  ssh-keygen
 "

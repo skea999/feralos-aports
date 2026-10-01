@@ -6,3 +6,5 @@ type = scripted
 command = /usr/libexec/dinit-cpufrequtils
 stop-command = /usr/libexec/dinit-cpufrequtils stop
 depends-on = local.target
+before = login.target
+restart = false

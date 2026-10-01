@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=rasdaemon-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for rasdaemon"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-0b87eae0f26ae8c47bb4ada0bf4cfaecf2043ad207ee157418be19934985f8e1728f1863f83af57dc50c8f76eba98ceee8aefeaa83e69708c4669ff5c3287fc6  rasdaemon
+088aefadaef2c09f5b137f86579ac24ed3cb404801883f33b62e7e24b422082a8a07659ac9ed6c25e14ff58457f6c8b6e63e2f647f31a56e8c6535cf3aa83300  rasdaemon
 "

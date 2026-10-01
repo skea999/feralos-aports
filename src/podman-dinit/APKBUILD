@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=podman-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for podman"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-f6068680dc338fb591a02bf703d61c8995f163647a62b39b9722dc1c5456116f2976f5d38b8b36ddaea2bbd1eabb25865f18784744ee62ecbc3f31ddb443eb8e  podman
+e4dd231843e4613b69fd62476aa0638009cad1ff129d36670a764b5fadfc4afd9b108eda3c071892d5b7856084a65246e3d69722ae2cefcb0bab9367bcfbfa0a  podman
 "

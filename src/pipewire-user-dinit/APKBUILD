@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=pipewire-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit user service for pipewire"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-f85ef9ba5beb175e9dc1583fa6d8054987109ae0245f010663658b412856397e9c9a0dab9f74a5874767e4a572efa1609d9e48c1966d26c3eac6abdd6449ba31  pipewire.user
+b8466a7c266b6b4522230f88425e56086a2bd5015c3710cddba74f6b2b7cc1ff15aca5916a896d4909eaf4524fc0451a059c330d0e1461c56ed116bcada3f034  pipewire.user
 "

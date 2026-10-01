@@ -1,0 +1,6 @@
+#!/bin/sh
+# Artix dinit-rc agetty-default pattern: baud/term/args from packaged config.
+[ -r /etc/dinit.d/config/getty.conf ] && . /etc/dinit.d/config/getty.conf
+: "${GETTY_BAUD:=115200}"
+: "${GETTY_TERM:=linux}"
+exec /sbin/agetty -L "$1" "$GETTY_BAUD" "$GETTY_TERM" ${GETTY_ARGS}

@@ -7,13 +7,13 @@
 # on dependent exit. Script waits (bounded) for turnstiled, then stops the
 # bus itself; see /usr/libexec/dbus-dinit-stop.
 type = process
+smooth-recovery = no
 log-type = file
 logfile = /var/log/dinit/dbus.log
 command = /usr/lib/dinit/dbus
 env-file = /etc/dinit.d/config/dbus.conf
-restart = true
-smooth-recovery = true
 ready-notification = pipefd:3
 depends-on = local.target
+before = login.target
 stop-command = /usr/libexec/dbus-dinit-stop
 stop-timeout = 30

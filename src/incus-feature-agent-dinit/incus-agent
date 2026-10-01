@@ -1,7 +1,8 @@
 # dinit service: incus-agent (Alpine openrc incus-agent + overrides)
 type = process
+smooth-recovery = true
 log-type = file
 logfile = /var/log/dinit/incus-agent.log
 command = /usr/sbin/incus-agent
-restart = true
 depends-on = local.target
+before = login.target

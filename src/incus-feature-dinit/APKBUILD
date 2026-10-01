@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-feature-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for incusd (incus-feature hosts)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-95e90073ce7bd4d8582634600e5818600e3ad72c47be0f5aec01ef4f8e3ccae883d9c715d57d3780710725e65182afdbfde959778dca14cea634a5244c8f3f49  incusd
+7ea2d67baeaeb285d228e40ef0770c115e5ee4c3d8f871b07bac9afbac6b418281eeb02f28724f53ee93c36b36b1c84da4eb191a3bb8aee90442969f082e4f78  incusd
 8ca7b5d7a5a2c0de97d7ae97c50424d7b82692d2734d352578505d7931bb8b4c3e7037da8335e326501f11c6ddcfd55f56bb784b827837b1fcb25da4f4ecbd2b  incusd.script
 1c19cee17a207777d5acfbcd7e356fa9d69827fd624726ef90da27cac7de5ec9c9394991cd01d4c6e9eaad17aeedfc201cabba5fbe6ca1bad3bb5c5fc74b7dd7  incusd.conf
 "

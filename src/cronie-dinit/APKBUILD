@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cronie-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit service for cronie"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-469632189e1fac9a00601b89db57079d45ae98f5d4726c904341b5d5d8afa0b78162698698e2e0d6bc10d79fee479e9b691940400f6e718e25f44aeda08e122a  cronie
+e78d327992696571e911baf92d3a340e2d788a0b4bb3d4a911e914eed9901856f59664378bf016ef40b1489bb2690f7bf9931ae249bdf1bfbfdf497c7d271bc9  cronie
 dbd346ce28209eb6b330b449a366add55b9178c47269daf13bf22e01d8525c792eed5a259d854917ec172f4cd4e92bafe544505d3870418af72d36b3bc726c69  cronie.script
 77a8dfcb1283f3f4bc15aee649d5905a5b169636f3573d57e928809b1e02e2144818e86e08ac094e4899c2c4899ee5700f82789ec7debdbae613943e2561eaab  cronie.conf
 "

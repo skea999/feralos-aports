@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=polkit-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for polkit"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-d48465753871a2474f2bf6562aa3dfa57bf0511dda2d96cb331d8761a7f3453ef2b8c8ebf75b09d28dc45670f61f2d1376b445f7117d6351735d2abe429d3205  polkit
+60a1c8299a17a207c538b920df2ce673c088cfe277544dd2e5667707016e9af2c8c69d046b0712b71b633acda96dc07f79f9ce7d4331ab013ad94321ec8e4ea8  polkit
 "

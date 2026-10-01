@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=smartmontools-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for smartd (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-6dc4740f3d2aed48894318722820e5c7455648bacefda833f1bc529640baa5b29c6f727484ddb2917d4182dc27b8142d624e44930ac82ca012d332aa5040f095  smartd
+38c7ed33240602e684bb1e33e0d0ccfd2e3115ac745510d0c00a63ffe70ebcff7f24638ee8fa728bb080401f419e822b1150e5a61d8b20e725eba416386881c0  smartd
 6c78dcec941b1859a83ab2e6ed71669c364b8192a2f1c75884d28973f7886afbeb0071137d4f6e4d26dd797dc699b9f4115098de657d442e65c7d07c11e53f94  smartd.script
 0d76e00df8dfc9486522b89ea996c7f8741c6be1e5c40f8cf6f3198537cbd6c2b7c4f66842e6d1e8d023c484fb402c6e79650f53df52bbb8b96b0101753703b8  smartd.conf
 "

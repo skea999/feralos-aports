@@ -1,8 +1,9 @@
 # dinit service: incusd (Alpine openrc incusd + overrides) — incus-feature hosts
 type = process
+smooth-recovery = true
 log-type = file
 logfile = /var/log/dinit/incusd.log
 command = /usr/lib/dinit/incusd
 env-file = /etc/dinit.d/config/incusd.conf
-restart = true
 depends-on = networking
+before = login.target

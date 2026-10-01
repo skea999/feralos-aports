@@ -2,9 +2,10 @@
 # /run/vector, /dev/log, /var/log and /btrbk ownership are prepared by the
 # bundled tmpfiles file (processed by the dinit-chimera early chain)
 type = process
+smooth-recovery = true
 command = /usr/lib/dinit/vector
 env-file = /etc/dinit.d/config/vector.conf
-restart = true
 depends-on = local.target
+before = login.target
 log-type = file
 logfile = /var/log/vector.log

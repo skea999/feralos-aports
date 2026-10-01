@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=earlyoom-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit service for earlyoom"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-a99d58993e471d4df358e00c3fc3a532da3df377bac972e6d0053352e61b0e9cbfb85a3800a3e8b6013627042d5d1e06d92e277a72d8b374cf03deda40db1512  earlyoom
+f81271824d89b751ebb14080db967b0bde5a0f260e8cfdb348153a4549f27e1c5b190f2c18e484e93fae7b6b2c74b728901938eb18760bd73eb7ed10fa7f3b36  earlyoom
 0ed4390410ddb550e002115c1ea021a4d31f27a7862cdca97701169004adda0c8c8ef0e6ecf8418ac70661a687f850611809d419218f1ef2f1af272a782f270f  earlyoom.script
 8dfa09a3001f3f178206a8161a274a6a647c8e83f519ae005c1777ffa59b281c3c41212bf65292bd520eeddd694d6a585a3d5949952056586adf3735eecf8ee0  earlyoom.conf
 "

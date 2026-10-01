@@ -4,3 +4,5 @@ type = scripted
 command = /usr/libexec/dinit-nftables
 stop-command = /usr/libexec/dinit-nftables stop
 depends-on = local.target
+before = pre-network.target
+restart = false

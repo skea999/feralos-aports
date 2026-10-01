@@ -1,0 +1,6 @@
+# Host keys are baked at install time (installer runs ssh-keygen -A); this
+# service is belt-and-braces for images where keys are missing (Artix openssh-dinit / Chimera pattern).
+type = scripted
+command = /usr/bin/ssh-keygen -A
+restart = false
+after = local.target

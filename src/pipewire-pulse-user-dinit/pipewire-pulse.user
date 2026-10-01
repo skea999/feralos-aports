@@ -1,7 +1,7 @@
 # dinit service: pipewire-pulse (PulseAudio compat, user session)
 type = process
+smooth-recovery = true
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/pipewire-pulse.log
 command = pipewire-pulse
-restart = true
 depends-on = pipewire.user

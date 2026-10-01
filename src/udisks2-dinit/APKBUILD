@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=udisks2-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for udisks2"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-33b2544314b87c953e55610792dea1f27cfb3a768cf2ea54ed7a920c2f3bddf226c5d39261cdfe9d83dbb8be0b9ce92bbc924b91150344b10230fcba2cddb25f  udisks2
+3548857d620f41bdc095ce247a2041b9af2c7e65e543cde584c41023b7a224ce4db097f0505b8e4a6fe2a825f97a414f604c5be18cc9c8f7df7b0e615f2f2d59  udisks2
 "

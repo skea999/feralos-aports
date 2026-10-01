@@ -9,7 +9,6 @@ type = process
 log-type = file
 logfile = /var/log/dinit/klogd.log
 command = /usr/libexec/dinit-klogd
-restart = true
 smooth-recovery = true
 depends-on = local.target
 before = login.target

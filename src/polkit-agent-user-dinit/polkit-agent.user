@@ -5,7 +5,6 @@ type = process
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/polkit-agent.log
 command = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-restart = true
 smooth-recovery = true
 depends-on = wait-wayland.user
 depends-on = dbus.user

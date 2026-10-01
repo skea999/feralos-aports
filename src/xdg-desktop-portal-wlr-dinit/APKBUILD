@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=xdg-desktop-portal-wlr-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for xdg-desktop-portal-wlr"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-5f133abfd6cf5b955c49159b7d76def9ae1c8220e8c8e9f6551eb8a3a9c9defd760895fc79c7258c2f6e97323ddeacde66341034765f056840a5500df0265923  xdg-desktop-portal-wlr
+bd05c496fca9fbb0e0330c3573169642957feca62e153e281092aeb209f92ee9992a67198a0c85e82cbdb4a58a64d6be1e881390945412d070a12be0bd43b201  xdg-desktop-portal-wlr
 "

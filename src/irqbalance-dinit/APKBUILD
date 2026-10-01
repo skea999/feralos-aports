@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=irqbalance-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for irqbalance"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-7d5f28bbacb1e10839a95db94fe2d54722f4ef8a9b035fa556aac5e59eacd78b11f37f0bae10d8544b90b4df53d994121bdb6aec6feb59c6c8348ab00755c966  irqbalance
+2178651ce15a9b1cbf1db854beeaadf7844d4e368a2dc019ef7fc989a6ac2867de78e01dac69034a428294ff7c4b2f862b80e42f4405135c1bb9dfde8f7ce8ae  irqbalance
 c2e48a656bb4e20bbbff228a51b50fce6512546efd02b4e0e8b7351387e3ba930fb7a037f308fccfe3866c5d7073c30c49a02d5bfed4f6c78e4c22e4b884b113  irqbalance.script
 cb6d05405b2036d013bbff9dddc9d0f277b264736561226dfba11c1b497a7eb57d53b7aa250e76f5c2ecf6e0180a23cc2717e0b07132f82c774e234cf203ae41  irqbalance.conf
 "

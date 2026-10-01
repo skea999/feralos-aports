@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for incusd (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 }
 
 sha512sums="
-8b2f81bc194365dcf9da1bd1ba19bfe6849465fbc53e6074215a80964fedec2d02eec5879ce9f43e03251ab6ae7b0e455110fe5b6dd74f9435e96617db11494d  incusd
+2b541831e34d20bd315450b227a173851ed9564ec43fc0c2952d5476fceae9bc90486bc48929e74c5a7cdea34b9224716892c9ff82211a1490a046b745fff888  incusd
 8ca7b5d7a5a2c0de97d7ae97c50424d7b82692d2734d352578505d7931bb8b4c3e7037da8335e326501f11c6ddcfd55f56bb784b827837b1fcb25da4f4ecbd2b  incusd.script
 1c19cee17a207777d5acfbcd7e356fa9d69827fd624726ef90da27cac7de5ec9c9394991cd01d4c6e9eaad17aeedfc201cabba5fbe6ca1bad3bb5c5fc74b7dd7  incusd.conf
 "

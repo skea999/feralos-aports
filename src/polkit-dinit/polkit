@@ -1,7 +1,9 @@
 # dinit service: polkit (auto-generated from Alpine openrc polkit)
 type = process
+depends-on = dbus
+smooth-recovery = true
 log-type = file
 logfile = /var/log/dinit/polkit.log
 command = /usr/lib/polkit-1/polkitd ${POLKIT_OPTS:---no-debug}
-restart = true
 depends-on = local.target
+before = login.target

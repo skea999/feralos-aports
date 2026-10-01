@@ -4,6 +4,6 @@ log-type = file
 logfile = /var/log/dinit/acpid.log
 command = /usr/lib/dinit/acpid
 env-file = /etc/dinit.d/config/acpid.conf
-restart = true
 smooth-recovery = true
 depends-on = local.target
+before = login.target

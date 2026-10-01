@@ -1,0 +1,27 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=dbus-wait-for-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dbus-wait-for readiness helper (Artix dinit-rc)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="BSD-2-Clause"
+depends="dbus-libs"
+makedepends="dbus-dev gcc libc-dev pkgconf"
+source="dbus-wait-for.c"
+
+build() {
+	cd "$srcdir"
+	gcc -O2 -Wall -o dbus-wait-for dbus-wait-for.c $(pkg-config --cflags --libs dbus-1)
+}
+
+check() { return 0; }
+
+package() {
+	install -Dm755 "$srcdir/dbus-wait-for" "$pkgdir/usr/lib/dinit/dbus-wait-for"
+}
+
+sha512sums="
+a0b933bd20a3a0f3759969d0b6f72f52692cb8e024b8291b9edbfb180db3630c8e5da848f39a158d2a0e118da03bcb340d2da1aee1d5aa5cc3012890a439384f  dbus-wait-for.c
+"

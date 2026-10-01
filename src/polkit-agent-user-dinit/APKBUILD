@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=polkit-agent-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit user service for the polkit authentication agent (polkit-gnome)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-472e77eda2776088be6b8c432aa9b8146229206ab21b8fb812c6ac018d3a093e13d8b76779d88c1bd888f95e488824f504a749c8be5dd514e672e24630f3c7f8  polkit-agent.user
+a9197bbed0ce2c098ef7a70a5f202061f7113d3ad1ec5a6fb28ee3c6568858bb45ac3463d8f5c0949c9efcf94a172ece861e62493536b155d36e1dd02bedde46  polkit-agent.user
 "

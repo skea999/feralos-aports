@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=pipewire-pulse-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit user service for pipewire-pulse"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-6e7324e4019ab9079c6e149d66bf204a3c9dbaeb0fce5c25c46b106793ee9b6acb94506fef80c1d2e19a7bafbd726acdf86755a82a3b67ce84572df2b6342ea1  pipewire-pulse.user
+b467419ce8e748f4e247f52e160672d35b9fdd3e7abf976a5ee6b3cc19e8cf587293ffce04b1c1c74610b11e57c08b0a76abf76860330ec3695badbf25e4f4a2  pipewire-pulse.user
 "

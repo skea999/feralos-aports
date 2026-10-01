@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=wireplumber-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit user service for wireplumber"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-8a7f7f6a553b7dd5684faa1fbc8f947d39325c1907631218a41577161910f5c4bc0c3afef401ff88ea16ce6ab09f33b00028d0e2e145fbc216b6272c13abd367  wireplumber.user
+32f3734bf6784efb8b69189b0fc6abffce0b14501e3170254496cf828d5953af352d92ffbfd43e0fd92c580e6d157787510692d69b8edb663ad3a430ce0fe072  wireplumber.user
 "

@@ -5,3 +5,5 @@
 type = scripted
 command = /usr/libexec/dinit-iptables
 depends-on = local.target
+before = pre-network.target
+restart = false

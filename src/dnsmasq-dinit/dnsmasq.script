@@ -1,5 +1,6 @@
 #!/bin/sh
 # dinit wrapper for dnsmasq — sources the packaged config (if present), then execs
-# the daemon with the fixed flags below plus the extra args from the config.
+# the daemon: fixed flags + Artix privilege drop (-u -g dnsmasq) + --enable-dbus
+# (NetworkManager integration; dbus is a hard service dependency) + config args.
 [ -r /etc/dinit.d/config/dnsmasq.conf ] && . /etc/dinit.d/config/dnsmasq.conf
-exec /usr/sbin/dnsmasq --keep-in-foreground --pid-file= ${DNSMASQ_OPTS} --conf-file=${DNSMASQ_CFGFILE}
+exec /usr/sbin/dnsmasq --keep-in-foreground --pid-file= --enable-dbus -u dnsmasq -g dnsmasq ${DNSMASQ_OPTS} --conf-file=${DNSMASQ_CFGFILE}

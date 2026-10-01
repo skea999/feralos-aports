@@ -2,7 +2,6 @@ type = process
 log-type = file
 logfile = /var/log/dinit/seatd.log
 command = /usr/bin/seatd -g seat -n 3
-restart = true
 smooth-recovery = true
 ready-notification = pipefd:3
 depends-on = local.target

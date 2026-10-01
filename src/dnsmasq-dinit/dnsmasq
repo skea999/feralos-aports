@@ -1,10 +1,11 @@
-# dinit service: dnsmasq (auto-generated from Alpine openrc dnsmasq)
+# dinit service: dnsmasq (Alpine openrc dnsmasq + Artix alignment)
+# Artix dnsmasq-dinit: -k --enable-dbus -u dnsmasq -g dnsmasq (privilege drop).
 type = process
 log-type = file
 logfile = /var/log/dinit/dnsmasq.log
 command = /usr/lib/dinit/dnsmasq
 env-file = /etc/dinit.d/config/dnsmasq.conf
-restart = true
 smooth-recovery = true
 depends-on = dbus
 depends-on = local.target
+before = login.target

@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cosmic-greeter-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for cosmic-greeter (Alpine initd name: cosmic-greeter)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-9d42d2d5f567b9b55556a97e962db3dd729faa66cf8596da3d0241be8735a0e3dad0ed3cceadc902bcbeb0c9f9af880293603b9727e3aead0f8ba6e059f9b67f  cosmic-greeter
+fb0654ca8796e21063807899f3d6c5f5ba76db754456c71a716c2552c83325b99122469f5aaaea37876edc9c9f99225ac13970774186975899d1be052cf8cf11  cosmic-greeter
 "

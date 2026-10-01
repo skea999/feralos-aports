@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=fuse-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for fuse (best-effort module load)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -21,6 +21,6 @@ package() {
 }
 
 sha512sums="
-1e0867d91f254d6917d1d2fda2cad6b0b98c47dd46fe86f68a05c313c9e9599a62fe3bbde34564b98c475e8ceb49af091a2d535ff84fd50a4dbd841187eca6df  fuse
+4b7ee0ad2f90ca74caaaa7363ffa03cf325c058dc2b7bd3fe0e4c89f200a3de1d019a35bf155fc9e4c1181bba2d96d8e6a3c3b028ed08f76ad014fb210cd69aa  fuse
 fb1764a868a0509807ea323c23c4edce2f4fbf1a9728e785e6133f2ed7a4bb447db3dbe1c534f883b935042d8a2756c18caa8cc3d8640f920f504cd29359d682  dinit-fuse
 "

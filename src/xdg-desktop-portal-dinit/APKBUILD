@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=xdg-desktop-portal-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for xdg-desktop-portal"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-76be19dd1ab7acf16834171762c6486e3958325d69647415ea01ba9f3da09f9d3f90bc58bc81893cef5874664fcf55659285fd41c76bd6179be91bdd958e3f13  xdg-desktop-portal
+3e4d6e4fd942cbb01dcf0e38b5106fcb6b25ba741fdeb2b71606946f5233dc541c55a5946ab3eb33153e22d4461ec6c4d2265b1660863a23952bc3095326fd47  xdg-desktop-portal
 "

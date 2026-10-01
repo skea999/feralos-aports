@@ -3,4 +3,6 @@
 # /etc/apparmor.d with cache); scripted + best-effort (never blocks boot).
 type = scripted
 command = /usr/libexec/dinit-apparmor
-depends-on = local.target
+after = early-fs-local.target
+before = local.target
+restart = false

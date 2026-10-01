@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=apparmor-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for apparmor (scripted profile loader)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -21,6 +21,6 @@ package() {
 }
 
 sha512sums="
-fc41690c08a5603fba37d24fffb8f14a4af385b56f3acbaf96f6464b1bf6f0d01484ba5c35f9e33448b59db395acc7cf2adeacaf0a072cb29b42953c2a62a33b  apparmor
+0572fe9dcdbae86e58710f97dfaa83f23f2633e84160be4009493a594a970fdf7b50bb9c6af8af1d31ac4d957594f126b017b9d05f0df90d122594906c5863cf  apparmor
 b625fe56ae19edd5fbf3c76cfc524d4b7f508ac01f0540898280805e0146ad857160334700037ad4a962330ad1f1a148fe026b1c2949f1fc5e53fdbd216b6d2f  dinit-apparmor
 "

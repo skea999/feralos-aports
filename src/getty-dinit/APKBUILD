@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=getty-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="getty service template for dinit (tty1 + ttyS0)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit agetty"
 makedepends=""
-source="getty"
+source="getty getty.script getty.conf"
 
 build() { return 0; }
 
@@ -18,9 +18,15 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the template body only; enablement is rules-driven
 	# (dinitctl enable getty@tty1 / getty@ttyS0 — instance name carries $1)
+	# baud/term/args live in /etc/dinit.d/config/getty.conf (Artix
+	# dinit-rc agetty-default pattern); wrapper resolves them at start
 	install -Dm644 "$srcdir/getty" "$pkgdir/lib/dinit.d/getty"
+	install -Dm755 "$srcdir/getty.script" "$pkgdir/usr/lib/dinit/getty"
+	install -Dm644 "$srcdir/getty.conf" "$pkgdir/etc/dinit.d/config/getty.conf"
 }
 
 sha512sums="
-8a23e82e2f21eb83e5672de0844fef1093e950cdba772db86702a7a8a9daca55694eb23eca7b02e7193ecda63983bf3c1012c0a455081c997ca11531b9b2cd7a  getty
+b6d6cc52c7ba1c97d968a445a4f9b9823cacc885e16d1f4646f1ca18f7019dad70a92f84733da5fb43e4ec6e6f87f9f6da62c90af05d4e9bd131ab476039e038  getty
+77b053f351f98137509a171298ea0dae3a36516d33cdcb47cc4a713c5b4325f31ade784c6d24115b5fb64f385562af29d528e5a53daca56850596c5df31e94eb  getty.script
+cffadd78403bf27322f2ec9fd7072e58f4d32a714d2da855b2ebf194465f1d9050028649b7294aeebd6cb1b77dd19c7d51eb3a4a66865e350e2a8e694d49a576  getty.conf
 "

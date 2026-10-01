@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=wayvnc-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit user service for wayvnc"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-94547681e26629e2cd9562b20ba9b2a7e618fbd8b904e33179b5c5a58485ff84ef5106253873e6f65da2294041925d5c1c8bb10d2ffddb8a00ab93c4cd4a1e3d  wayvnc.user
+1e90712bfdfc4b742576dc1ec12ba5c428ed53a7383343d4f1adad525f917a3ec2558aa1c3423c24d875953d2f98baad801349ad464534a5905bc5707c1095ef  wayvnc.user
 "

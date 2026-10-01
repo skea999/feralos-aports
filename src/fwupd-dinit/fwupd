@@ -1,8 +1,9 @@
 # dinit service: fwupd (Alpine openrc fwupd + overrides)
 type = process
+smooth-recovery = true
 log-type = file
 logfile = /var/log/dinit/fwupd.log
 command = /usr/lib/dinit/fwupd
 env-file = /etc/dinit.d/config/fwupd.conf
-restart = true
 depends-on = local.target
+before = login.target

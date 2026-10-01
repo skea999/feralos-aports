@@ -1,10 +1,11 @@
 # dinit service: avahi (Alpine openrc avahi + overrides)
 type = process
+depends-on = networking
 log-type = file
 logfile = /var/log/dinit/avahi.log
 command = /usr/lib/dinit/avahi
 env-file = /etc/dinit.d/config/avahi.conf
-restart = true
 smooth-recovery = true
 depends-on = dbus
 depends-on = local.target
+before = login.target

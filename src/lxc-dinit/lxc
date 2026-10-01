@@ -2,6 +2,7 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/lxc.log
-command = /usr/bin/lxc-start
+command = /usr/lib/dinit/lxc
+env-file = /etc/dinit.d/config/lxc.conf
 restart = true
 depends-on = local.target

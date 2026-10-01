@@ -9,7 +9,8 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/dbus.log
-command = /usr/bin/dbus-daemon --system --nofork --nopidfile --syslog-only --print-address=3
+command = /usr/lib/dinit/dbus
+env-file = /etc/dinit.d/config/dbus.conf
 restart = true
 smooth-recovery = true
 ready-notification = pipefd:3

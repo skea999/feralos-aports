@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for dbus — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/dbus.conf ] && . /etc/dinit.d/config/dbus.conf
+exec /usr/bin/dbus-daemon --system --nofork --nopidfile --syslog-only --print-address=3 ${DBUS_OPTS}

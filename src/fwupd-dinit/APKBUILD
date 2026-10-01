@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=fwupd-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for fwupd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit fwupd"
 makedepends=""
-source="fwupd"
+source="fwupd fwupd.script fwupd.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/fwupd" "$pkgdir/lib/dinit.d/fwupd"
+	install -Dm755 "$srcdir/fwupd.script" "$pkgdir/usr/lib/dinit/fwupd"
+	install -Dm644 "$srcdir/fwupd.conf" "$pkgdir/etc/dinit.d/config/fwupd.conf"
 }
 
 sha512sums="
-f96b21aa1cdab0fda6689f4e8a7fe13c3d63e916af53e5ff8d11f920c9b27bb3aa1913294aee8c9baefc3985f46690f399745ba3d7b30ac9f659d0d795ce76b4  fwupd
+de9f6e360100c615e84c43a586bc7a8a91ef5aa2a18b7d67ef8945c4153db0a5efc698dc3a81c78ecdc26f4162338be8040b54b9d669886042f98296e286e1c4  fwupd
+175d748ce17b22e20cd978fd89f3d2c70d0ca536f2f5abf7f6a376d4644db310f2fb04124df0737e68af3cb16d43ec8013137115b69829480fdbe0c777c498eb  fwupd.script
+9aa6b72e40971fb5f7e3e99e7ae8757099112514d91d32bd3efa5fbb5eb66c45e1f2819656171357faf7c63ddf940c4c324bae97816cacc44390611676b6dcd5  fwupd.conf
 "

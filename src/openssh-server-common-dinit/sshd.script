@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for sshd — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/sshd.conf ] && . /etc/dinit.d/config/sshd.conf
+exec /usr/sbin/sshd -D ${SSHD_OPTS}

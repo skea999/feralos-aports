@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=greetd-dinit
 pkgver=0.1.0
-pkgrel=6
+pkgrel=7
 pkgdesc="dinit service for greetd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit greetd"
 makedepends=""
-source="greetd"
+source="greetd greetd.script greetd.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/greetd" "$pkgdir/lib/dinit.d/greetd"
+	install -Dm755 "$srcdir/greetd.script" "$pkgdir/usr/lib/dinit/greetd"
+	install -Dm644 "$srcdir/greetd.conf" "$pkgdir/etc/dinit.d/config/greetd.conf"
 }
 
 sha512sums="
-26f049c6e650d8b21e4b7191f1052ba8ce2733782702f3be32c8b723c4f9b0fbc8cd5c221d0fe4588771b4d9a58dfe6e563698f7664cf6042840c5c8a3ac5bc8  greetd
+0ac99f82ccfae397edcc9b37be85361623e5cfdbc79e5d410d2db1ce96ee851f5e06f6b9bbf65b49720fda013319851b18c914949d463b63c5dbebca8cf2f414  greetd
+c6563a5f782142a5c8ff3436524c1ee46591093458a7e77545719c4bf14d5e48bf5e02a8e72b0ce86aff7f80484bc709e8b44d02842e0da75e9e9e25ea991b16  greetd.script
+69d1acdc41004fd080d3389cc6e806b9a04a4ebc633673b24481aa6ae69f59fd57df567610350b48e77109365cd1377520215599a17403b89ae1bd356c8ce8be  greetd.conf
 "

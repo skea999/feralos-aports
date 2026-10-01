@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=iptables-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit service for iptables (restore saved ruleset)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit iptables"
 makedepends=""
-source="iptables dinit-iptables"
+source="iptables dinit-iptables iptables.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -18,9 +18,11 @@ package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/iptables" "$pkgdir/lib/dinit.d/iptables"
 	install -Dm755 "$srcdir/dinit-iptables" "$pkgdir/usr/libexec/dinit-iptables"
+	install -Dm644 "$srcdir/iptables.conf" "$pkgdir/etc/dinit.d/config/iptables.conf"
 }
 
 sha512sums="
 b03cbd4629f50b55603a6ed77b46e92f26889e24c940cc22cf241c073d7a592064469ece8710d91dfbdef03e68268f46c6b3a650be10e780628bada0b5e3aa21  iptables
-582d155a83085779bed5dbec5aa30212fc21100febcb75fea549796ab98250befd82538319212eceb0f75a9d0916d2ca3f7c4f30666b9e107df1e6a43124de3e  dinit-iptables
+2f61bbfcc5c3f86e02bfc0ef187ddf4bcef0aaacb1a4bf2d51733fbc0bc8b4b62ca6ec80d10fb3c568147cd3ec3bd87bfe4c4003be087823b10d3dd5ea8f04a9  dinit-iptables
+9e53ef68b897a362d1fbd6e70f5f1e304a79801bee47981857218eed85ed2a40a0d8aa6eaf5f6218827b76bab72bfaa3d0719c45b24e7b9123456717432c0b17  iptables.conf
 "

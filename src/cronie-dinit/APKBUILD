@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cronie-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for cronie"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit cronie"
 makedepends=""
-source="cronie"
+source="cronie cronie.script cronie.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/cronie" "$pkgdir/lib/dinit.d/cronie"
+	install -Dm755 "$srcdir/cronie.script" "$pkgdir/usr/lib/dinit/cronie"
+	install -Dm644 "$srcdir/cronie.conf" "$pkgdir/etc/dinit.d/config/cronie.conf"
 }
 
 sha512sums="
-baa29656e4e68031b6c0f61aa5b14d2bf91a302bfbf0f5dbfdaade6e4461371b5747393fb5b5cf16a00935cacf21e1c357ce5c75929b90db2454e198974be3e1  cronie
+469632189e1fac9a00601b89db57079d45ae98f5d4726c904341b5d5d8afa0b78162698698e2e0d6bc10d79fee479e9b691940400f6e718e25f44aeda08e122a  cronie
+dbd346ce28209eb6b330b449a366add55b9178c47269daf13bf22e01d8525c792eed5a259d854917ec172f4cd4e92bafe544505d3870418af72d36b3bc726c69  cronie.script
+77a8dfcb1283f3f4bc15aee649d5905a5b169636f3573d57e928809b1e02e2144818e86e08ac094e4899c2c4899ee5700f82789ec7debdbae613943e2561eaab  cronie.conf
 "

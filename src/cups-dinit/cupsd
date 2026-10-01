@@ -2,7 +2,8 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/cupsd.log
-command = /usr/sbin/cupsd -f
+command = /usr/lib/dinit/cupsd
+env-file = /etc/dinit.d/config/cupsd.conf
 restart = true
 smooth-recovery = true
 depends-on = dbus

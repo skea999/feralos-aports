@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for incusd (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit incus"
 makedepends=""
-source="incusd"
+source="incusd incusd.script incusd.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/incusd" "$pkgdir/lib/dinit.d/incusd"
+	install -Dm755 "$srcdir/incusd.script" "$pkgdir/usr/lib/dinit/incusd"
+	install -Dm644 "$srcdir/incusd.conf" "$pkgdir/etc/dinit.d/config/incusd.conf"
 }
 
 sha512sums="
-71b61b0cf5bba8d6888c2577ec4a6305e29f366c637f15f56f4e8c5275c45772961d202a3a115f48c8c324cf8bd2d77c9aedeb9dd5a502d87ccbd76e6449812f  incusd
+8b2f81bc194365dcf9da1bd1ba19bfe6849465fbc53e6074215a80964fedec2d02eec5879ce9f43e03251ab6ae7b0e455110fe5b6dd74f9435e96617db11494d  incusd
+8ca7b5d7a5a2c0de97d7ae97c50424d7b82692d2734d352578505d7931bb8b4c3e7037da8335e326501f11c6ddcfd55f56bb784b827837b1fcb25da4f4ecbd2b  incusd.script
+1c19cee17a207777d5acfbcd7e356fa9d69827fd624726ef90da27cac7de5ec9c9394991cd01d4c6e9eaad17aeedfc201cabba5fbe6ca1bad3bb5c5fc74b7dd7  incusd.conf
 "

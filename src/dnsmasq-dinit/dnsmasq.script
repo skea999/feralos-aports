@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for dnsmasq — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/dnsmasq.conf ] && . /etc/dinit.d/config/dnsmasq.conf
+exec /usr/sbin/dnsmasq --keep-in-foreground --pid-file= ${DNSMASQ_OPTS} --conf-file=${DNSMASQ_CFGFILE}

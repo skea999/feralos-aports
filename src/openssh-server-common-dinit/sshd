@@ -9,7 +9,8 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/sshd.log
-command = /usr/sbin/sshd -D
+command = /usr/lib/dinit/sshd
+env-file = /etc/dinit.d/config/sshd.conf
 restart = true
 smooth-recovery = true
 depends-on = networking

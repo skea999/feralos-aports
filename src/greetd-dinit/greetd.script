@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for greetd — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/greetd.conf ] && . /etc/dinit.d/config/greetd.conf
+exec /usr/sbin/greetd ${GREETD_OPTS}

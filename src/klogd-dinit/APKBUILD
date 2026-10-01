@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=klogd-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for klogd (busybox) — kernel ring to /dev/log (vector kern.log)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit busybox"
 makedepends=""
-source="klogd dinit-klogd klogd-dinit.tmpfiles"
+source="klogd dinit-klogd klogd.conf klogd-dinit.tmpfiles"
 
 build() { return 0; }
 check() { return 0; }
@@ -18,12 +18,14 @@ package() {
 	# Alpine model: ship the service file; enablement is rules-driven (boot.d)
 	install -Dm644 "$srcdir/klogd" "$pkgdir/lib/dinit.d/klogd"
 	install -Dm755 "$srcdir/dinit-klogd" "$pkgdir/usr/libexec/dinit-klogd"
+	install -Dm644 "$srcdir/klogd.conf" "$pkgdir/etc/dinit.d/config/klogd.conf"
 	# /var/log/dinit must exist before the service writes its logfile
 	install -Dm644 "$srcdir/klogd-dinit.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/klogd-dinit.conf"
 }
 
 sha512sums="
 f83065f62e45937d3339fe5c5a09c016963165727eaf7d5ea1c2376f710fe45a220f186b48ff39d61e11c5ae42d7e6f0f2b83cbe742ab7d07886f6b6623a650b  klogd
-8db2542dcab733c5fc8470252136e1d3486d59bb26ca13965d3a0c4ed793723404adc3b8f2784569b3c9e23ce516a3d1ba830f9be8d445158c1c29d0ab49976e  dinit-klogd
+f87fbdb1e82fa887c43dfb0d3c5321280639c1de646ce22d26573c0c8c757d3ecb7e73f22d2692c6929571ce167ec57b63f8ad5a7832d9269d048b7ff1eeb960  dinit-klogd
+168eafde84f423d2bf8dc94b9212acd0965554c99fdb265e13f62b33bc72de5a90215c4a5ab8f1c18909ec97c781f1817041cf8ce223dcaf61ca52f18559636a  klogd.conf
 b43a432483db14628fce7531bfbe0df9a699bd955ea326aa470d44d507bc8303454d8600ce83d9b3f12c538cbb5c90ca73cb87852d006d10364c4a916380b28d  klogd-dinit.tmpfiles
 "

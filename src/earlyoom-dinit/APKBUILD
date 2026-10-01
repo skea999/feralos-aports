@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=earlyoom-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for earlyoom"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit earlyoom"
 makedepends=""
-source="earlyoom"
+source="earlyoom earlyoom.script earlyoom.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/earlyoom" "$pkgdir/lib/dinit.d/earlyoom"
+	install -Dm755 "$srcdir/earlyoom.script" "$pkgdir/usr/lib/dinit/earlyoom"
+	install -Dm644 "$srcdir/earlyoom.conf" "$pkgdir/etc/dinit.d/config/earlyoom.conf"
 }
 
 sha512sums="
-d9872e070fe7465f3935df9c7b86124cd6e3b0a3c6c385291dfd9aef2f6f56f3153555f4878361e16ce4958f7ad9cbadb1d4597e019cc2b32c0cb80ddff40b46  earlyoom
+a99d58993e471d4df358e00c3fc3a532da3df377bac972e6d0053352e61b0e9cbfb85a3800a3e8b6013627042d5d1e06d92e277a72d8b374cf03deda40db1512  earlyoom
+0ed4390410ddb550e002115c1ea021a4d31f27a7862cdca97701169004adda0c8c8ef0e6ecf8418ac70661a687f850611809d419218f1ef2f1af272a782f270f  earlyoom.script
+8dfa09a3001f3f178206a8161a274a6a647c8e83f519ae005c1777ffa59b281c3c41212bf65292bd520eeddd694d6a585a3d5949952056586adf3735eecf8ee0  earlyoom.conf
 "

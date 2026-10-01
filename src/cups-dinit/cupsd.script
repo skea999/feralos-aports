@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for cupsd — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/cupsd.conf ] && . /etc/dinit.d/config/cupsd.conf
+exec /usr/sbin/cupsd -f ${CUPSD_OPTS}

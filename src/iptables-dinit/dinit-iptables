@@ -1,8 +1,13 @@
 #!/bin/sh
 # Restore saved iptables rules — Alpine openrc iptables start() equivalent.
+# Parameters come from /etc/dinit.d/config/iptables.conf; the defaults below
+# apply when the config is absent or partial.
 command -v iptables-restore >/dev/null 2>&1 || { echo "iptables: iptables-restore not found, skipping"; exit 0; }
 
-RULES=/etc/iptables/iptables.rules
-[ -r "$RULES" ] || { echo "iptables: no saved ruleset at $RULES, skipping"; exit 0; }
+[ -r /etc/dinit.d/config/iptables.conf ] && . /etc/dinit.d/config/iptables.conf
+: "${IPTABLES_RULES=/etc/iptables/iptables.rules}"
+: "${IPTABLES_RESTORE_WAIT=3}"
 
-iptables-restore -w 3 "$RULES"
+[ -r "$IPTABLES_RULES" ] || { echo "iptables: no saved ruleset at $IPTABLES_RULES, skipping"; exit 0; }
+
+iptables-restore -w "$IPTABLES_RESTORE_WAIT" "$IPTABLES_RULES"

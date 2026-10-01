@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for rsync — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/rsync.conf ] && . /etc/dinit.d/config/rsync.conf
+exec /usr/bin/rsync --daemon --no-detach --config=${RSYNCD_CFGFILE} ${RSYNCD_OPTS}

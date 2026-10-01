@@ -4,4 +4,5 @@
 # the tool or the config are absent.
 type = scripted
 command = /usr/libexec/dinit-cpufrequtils
+stop-command = /usr/libexec/dinit-cpufrequtils stop
 depends-on = local.target

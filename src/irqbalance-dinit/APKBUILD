@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=irqbalance-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for irqbalance"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit irqbalance"
 makedepends=""
-source="irqbalance"
+source="irqbalance irqbalance.script irqbalance.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/irqbalance" "$pkgdir/lib/dinit.d/irqbalance"
+	install -Dm755 "$srcdir/irqbalance.script" "$pkgdir/usr/lib/dinit/irqbalance"
+	install -Dm644 "$srcdir/irqbalance.conf" "$pkgdir/etc/dinit.d/config/irqbalance.conf"
 }
 
 sha512sums="
-51f72e1acd5b5048867584a2dac97c40f33a0cb1bc7606fbd8e269bd2794e56cf25a4d26ed3e144acb32bbb33e38795fa160b5071a977be49d3d2f618b0edc7c  irqbalance
+7d5f28bbacb1e10839a95db94fe2d54722f4ef8a9b035fa556aac5e59eacd78b11f37f0bae10d8544b90b4df53d994121bdb6aec6feb59c6c8348ab00755c966  irqbalance
+c2e48a656bb4e20bbbff228a51b50fce6512546efd02b4e0e8b7351387e3ba930fb7a037f308fccfe3866c5d7073c30c49a02d5bfed4f6c78e4c22e4b884b113  irqbalance.script
+cb6d05405b2036d013bbff9dddc9d0f277b264736561226dfba11c1b497a7eb57d53b7aa250e76f5c2ecf6e0180a23cc2717e0b07132f82c774e234cf203ae41  irqbalance.conf
 "

@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=nftables-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit service for nftables (load ruleset)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit nftables"
 makedepends=""
-source="nftables dinit-nftables"
+source="nftables dinit-nftables nftables.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -18,9 +18,11 @@ package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/nftables" "$pkgdir/lib/dinit.d/nftables"
 	install -Dm755 "$srcdir/dinit-nftables" "$pkgdir/usr/libexec/dinit-nftables"
+	install -Dm644 "$srcdir/nftables.conf" "$pkgdir/etc/dinit.d/config/nftables.conf"
 }
 
 sha512sums="
 1d27f3c518c8f027dd1438ab5173dcaf96ace159bc8db9aab0eb6f64967d1ea1d98591f8c9b16f53183cad87b2b41e2999bec72ad12ea2b5066c10feb18fda91  nftables
-93756235019b61211126a454e06566d4b8b6d47c1445d5b46996b8cce6f399b86223a622980b3656b655902d5f0f670612e23a7b6ce167f7cec115e9ae0488f1  dinit-nftables
+c33b0d063f1de639198cda4657ce45bfa9ffe2a72aa3851d20bbd14a96154401c8aad1e9d1d15d0ce026a3197bed6c745b772e4666e3b219ecfcbf90ca56fd97  dinit-nftables
+2ee2a199574f306cd59c88614a0508f7fc0099be308b5bb9d18cac2735586ce70775323efa7c34766c62f99d037f379415a9199e1ba8717ce98e61e3c08f1adb  nftables.conf
 "

@@ -4,5 +4,7 @@
 # (/dev/log -> vector) so facility kern reaches /var/log/kern.log + messages.
 # Runs supervised by dinit (system init); /sbin/klogd is the busybox applet,
 # -n keeps it in the foreground.
+# Extra klogd args come from /etc/dinit.d/config/klogd.conf (KLOGD_OPTS).
+[ -r /etc/dinit.d/config/klogd.conf ] && . /etc/dinit.d/config/klogd.conf
 /bin/busybox dmesg > /var/log/dmesg 2>/dev/null || true
-exec /sbin/klogd -n
+exec /sbin/klogd -n ${KLOGD_OPTS}

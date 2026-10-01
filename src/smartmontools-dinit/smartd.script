@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for smartd — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/smartd.conf ] && . /etc/dinit.d/config/smartd.conf
+exec /usr/sbin/smartd --no-fork ${SMARTD_OPTS}

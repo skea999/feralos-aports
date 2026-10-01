@@ -2,7 +2,8 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/avahi.log
-command = /usr/sbin/avahi-daemon
+command = /usr/lib/dinit/avahi
+env-file = /etc/dinit.d/config/avahi.conf
 restart = true
 smooth-recovery = true
 depends-on = dbus

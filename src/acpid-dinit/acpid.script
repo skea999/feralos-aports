@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for acpid — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/acpid.conf ] && . /etc/dinit.d/config/acpid.conf
+exec /sbin/acpid --foreground ${ACPID_ARGS}

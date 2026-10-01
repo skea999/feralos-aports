@@ -1,15 +1,19 @@
 #!/bin/sh
-# Load/flush the nftables ruleset — Alpine openrc nftables start()/stop() equivalent.
-# Graceful: skips when nft or the ruleset is absent.
+# Load/flush the nftables ruleset — Alpine openrc nftables start()/stop()
+# equivalent. Parameters come from /etc/dinit.d/config/nftables.conf; the
+# defaults below apply when the config is absent or partial.
 command -v nft >/dev/null 2>&1 || { echo "nftables: nft not found, skipping"; exit 0; }
+
+[ -r /etc/dinit.d/config/nftables.conf ] && . /etc/dinit.d/config/nftables.conf
+: "${NFTABLES_RULES=/etc/nftables.nft}"
+: "${NFTABLES_FLUSH_ON_STOP=yes}"
 
 case "${1:-}" in
 stop)
-	nft flush ruleset
+	[ "$NFTABLES_FLUSH_ON_STOP" = yes ] && nft flush ruleset
 	;;
 *)
-	RULES=/etc/nftables.nft
-	[ -r "$RULES" ] || { echo "nftables: no ruleset at $RULES, skipping"; exit 0; }
-	nft -f "$RULES"
+	[ -r "$NFTABLES_RULES" ] || { echo "nftables: no ruleset at $NFTABLES_RULES, skipping"; exit 0; }
+	nft -f "$NFTABLES_RULES"
 	;;
 esac

@@ -2,7 +2,8 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/greetd.log
-command = /usr/sbin/greetd
+command = /usr/lib/dinit/greetd
+env-file = /etc/dinit.d/config/greetd.conf
 restart = true
 smooth-recovery = true
 depends-on = login.target

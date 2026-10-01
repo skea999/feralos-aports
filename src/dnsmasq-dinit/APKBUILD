@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dnsmasq-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for dnsmasq"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit dnsmasq"
 makedepends=""
-source="dnsmasq"
+source="dnsmasq dnsmasq.script dnsmasq.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/dnsmasq" "$pkgdir/lib/dinit.d/dnsmasq"
+	install -Dm755 "$srcdir/dnsmasq.script" "$pkgdir/usr/lib/dinit/dnsmasq"
+	install -Dm644 "$srcdir/dnsmasq.conf" "$pkgdir/etc/dinit.d/config/dnsmasq.conf"
 }
 
 sha512sums="
-92285e136c147ff807111f7febabad2ee54b27f9c0c1ebcda4e7292840aeca98f040e377cc08f2bd461e327cd9b796bba14d7fc4afe5a6e277856f9c3fcdb6e9  dnsmasq
+dd3fd4fb8f4226d1ecf56bdbf12557dcb82f5178fd182c1f7b7ecd5dc596325ef76be119c430fbde94f3ccdd5fde8f0feb1db0e831a24c0d5ddc0d782b434423  dnsmasq
+8bb805e914d4cf8fff2007649fc8102d6f4cef775ff6b2e454d5f6b0d31651d926caff4a1fe287e7a35fec1bb5080d696a5204fbee65a3af26ca3ad813567293  dnsmasq.script
+0048351792d8919a4f478d742243001f7a0d1236eb979fd851abb6ef7089ff914e0f494809776fd87319ff7058cbf446ac694dd7af5a0d062f3f7a8878fc8d3f  dnsmasq.conf
 "

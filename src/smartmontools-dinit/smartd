@@ -2,6 +2,7 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/smartd.log
-command = /usr/sbin/smartd --no-fork
+command = /usr/lib/dinit/smartd
+env-file = /etc/dinit.d/config/smartd.conf
 restart = true
 depends-on = local.target

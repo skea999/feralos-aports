@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for irqbalance — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/irqbalance.conf ] && . /etc/dinit.d/config/irqbalance.conf
+exec /usr/sbin/irqbalance --foreground ${IRQBALANCE_OPTS}

@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=avahi-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for avahi"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit avahi"
 makedepends=""
-source="avahi"
+source="avahi avahi.script avahi.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/avahi" "$pkgdir/lib/dinit.d/avahi"
+	install -Dm755 "$srcdir/avahi.script" "$pkgdir/usr/lib/dinit/avahi"
+	install -Dm644 "$srcdir/avahi.conf" "$pkgdir/etc/dinit.d/config/avahi.conf"
 }
 
 sha512sums="
-a206cb247402eb30718c2dd37b2f316608faef83441648f81456f685c219166d564d41cdd0c3b8610f6e8a09a03d5d5de0b57a34a5c6004b584eca632d94b9ea  avahi
+e2a7011b4488ce40234b594bb5455bb0c3111c6104cd920eea2d94e171f750718fceb6b6c28e68ccc51b539afe876a8d16cf6af9b7d70a0e4f90738e4303f202  avahi
+f8422b3ffb76c97635c98a093daa52daa151ffbc98324d24b48ece022b8a4d3f617d7f1ce4bd35f840129bbcd6e62066d03d7e23f1e33a53ffd9c8710a6530c7  avahi.script
+138619641cf293dd918570949993f6b539585f31ed2fd2e66bef2fb7f28d08a27a0f58d1dab130ff8907ac0040d117e003b69b1dc94559698ec7c9fd91a31f07  avahi.conf
 "

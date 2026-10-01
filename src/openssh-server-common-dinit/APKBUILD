@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=openssh-server-common-dinit
 pkgver=0.1.0
-pkgrel=6
+pkgrel=7
 pkgdesc="dinit sshd service for openssh (Alpine initd name: sshd)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit openssh"
 makedepends=""
-source="sshd"
+source="sshd sshd.script sshd.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -18,8 +18,12 @@ package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	# NOTE: mirrors openssh-server-common-openrc which ships sshd.initd
 	install -Dm644 "$srcdir/sshd" "$pkgdir/lib/dinit.d/sshd"
+	install -Dm755 "$srcdir/sshd.script" "$pkgdir/usr/lib/dinit/sshd"
+	install -Dm644 "$srcdir/sshd.conf" "$pkgdir/etc/dinit.d/config/sshd.conf"
 }
 
 sha512sums="
-e7b99cfdb04fe969cda373734b82f19c42dae5b1dea77565487dc38a8a116074b418e5e59245284a127e3982c75ba21d165ed056872eb157ea4912746376af48  sshd
+61a4911aa33ff3a3ea6b93547e2abf49cadf69efb668d516355837f1c6b1899f24090c39cc8203d7879086e4c6338c4cf36334e7476b1dcbdd0e3068a161e0c8  sshd
+647477a144a087d1df668bebb08b47126e178f1d9b59680965786045d25da8a4fece64585000417becef60712ae7d0cfcf0570125115d3a77695e302dcb2f716  sshd.script
+558e1847b597c17a170efd39672fdedc0e0af3183cde08ccb7d961f96fa91f5be65750b9af5b3229d0ec5f2c9a0cd7f4ec936be12f5d9fdefc30e901de214e57  sshd.conf
 "

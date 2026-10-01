@@ -2,7 +2,8 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/cronie.log
-command = /usr/sbin/crond -n
+command = /usr/lib/dinit/cronie
+env-file = /etc/dinit.d/config/cronie.conf
 restart = true
 smooth-recovery = true
 depends-on = local.target

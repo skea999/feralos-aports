@@ -2,7 +2,8 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/dnsmasq.log
-command = /usr/sbin/dnsmasq --keep-in-foreground --pid-file= $DNSMASQ_OPTS $command_args --conf-file=$cfgfile
+command = /usr/lib/dinit/dnsmasq
+env-file = /etc/dinit.d/config/dnsmasq.conf
 restart = true
 smooth-recovery = true
 depends-on = dbus

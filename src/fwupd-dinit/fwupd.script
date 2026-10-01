@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for fwupd — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/fwupd.conf ] && . /etc/dinit.d/config/fwupd.conf
+exec /usr/libexec/fwupd/fwupd ${FWUPD_OPTS}

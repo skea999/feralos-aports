@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=acpid-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for acpid"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit acpid"
 makedepends=""
-source="acpid"
+source="acpid acpid.script acpid.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,8 +17,12 @@ check() { return 0; }
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/acpid" "$pkgdir/lib/dinit.d/acpid"
+	install -Dm755 "$srcdir/acpid.script" "$pkgdir/usr/lib/dinit/acpid"
+	install -Dm644 "$srcdir/acpid.conf" "$pkgdir/etc/dinit.d/config/acpid.conf"
 }
 
 sha512sums="
-1de98cf71cfa1b716b949e4d0a6d37da3991c74e26eba30549531c617dfc1400fb18c426efaa43c8a4c8dbb76ae765c0f144fb54491ef61da07df2576de9c7e5  acpid
+781a518b2cc4675d1d91219f85ae5137af8a74d6545d468aa5ceb5f582b481dbf485915b20045a655e2e346343aeb906b22f7eb233f0782b5c6594f2a4ba31d7  acpid
+215e16d0451d579540a186c785fe9e94c22378210d74dde9cf6252ffa5272a4d1c420ffa583079b66c636e2eb78da641f80f3b4b230003b0b7d49f44e4a8e730  acpid.script
+1d38a8447dc4880136d4d55d9c3ba2a7c2e75e0c1374ab4570d89f57f22179907f02a852be20f4527802687dfe534f16b1f94e6036d0eeec1391a7c15f2152fc  acpid.conf
 "

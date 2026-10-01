@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cpufrequtils-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for cpufrequtils (apply governor settings)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit cpufrequtils"
 makedepends=""
-source="cpufrequtils dinit-cpufrequtils"
+source="cpufrequtils dinit-cpufrequtils cpufrequtils.conf"
 
 build() { return 0; }
 check() { return 0; }
@@ -18,9 +18,11 @@ package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/cpufrequtils" "$pkgdir/lib/dinit.d/cpufrequtils"
 	install -Dm755 "$srcdir/dinit-cpufrequtils" "$pkgdir/usr/libexec/dinit-cpufrequtils"
+	install -Dm644 "$srcdir/cpufrequtils.conf" "$pkgdir/etc/dinit.d/config/cpufrequtils.conf"
 }
 
 sha512sums="
-2abc9746143c781cce6cbf29231779958b852766eb21708afd774f5aeddfacf1391df5f5bd350253905360cd7e80889622851b4fb6e258892c60ca5223123071  cpufrequtils
-3fd62ebdbd6aad05feb29fb8c560135d91fff3b5658da053d991f514057a619f4ab1368bbaacbb327aec3de114f4761f7ab4457232baf4e181b8c9cc1c26658d  dinit-cpufrequtils
+e2aea45f53ec605fddb2aaa10f32958f285b21b7411107a3918b0b220ed1fbcec327c716c8b3682dbfb09ab350f185cecdd67656ce3b660013b18d8d36c7f704  cpufrequtils
+18cee9c6a433b0f9ec176c25ef0329e4e150e2584c07367070fefcf1ea62c2d27fd061500771fa4958f650fbdcdec16196a8c35bbb9a1144a931da3dd6cea31d  dinit-cpufrequtils
+bb07c330414003953c087ca5ff12dd481907e13a4109e4e7ce22582312126975081f0b3463da2fb68c0a191fbc6902fcd1de41b8dd316714adb6fe949bf61712  cpufrequtils.conf
 "

@@ -1,0 +1,5 @@
+#!/bin/sh
+# dinit wrapper for vector — sources the packaged config (if present), then execs
+# the daemon with the fixed flags below plus the extra args from the config.
+[ -r /etc/dinit.d/config/vector.conf ] && . /etc/dinit.d/config/vector.conf
+exec /usr/bin/vector --config /etc/vector/vector.yaml ${VECTOR_OPTS}

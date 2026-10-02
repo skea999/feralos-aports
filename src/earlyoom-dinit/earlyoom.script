@@ -1,5 +1,22 @@
 #!/bin/sh
-# dinit wrapper for earlyoom — sources the packaged config (if present), then execs
-# the daemon with the fixed flags below plus the extra args from the config.
+# dinit wrapper for earlyoom — sources the packaged config (if present), then
+# execs earlyoom with tiered victim selection:
+#   tier 1  user apps   -> --prefer (killed first)
+#   tier 2  desktop     -> listed nowhere (medium weight: natural oom_score)
+#   tier 3  system core -> --ignore (hard skip: earlyoom NEVER picks these,
+#                           kernel OOM killer decides afterwards. Note: the
+#                           plain --avoid flag only subtracts 300 oom_score
+#                           and can still be outbid — not used here.)
+# Regex vars expand unquoted: values must contain no spaces and no glob
+# characters ([ ] * ?). Case handled by repeating the name (discord|Discord),
+# not by bracket expressions.
 [ -r /etc/dinit.d/config/earlyoom.conf ] && . /etc/dinit.d/config/earlyoom.conf
-exec /usr/bin/earlyoom ${EARLYOOM_OPTS}
+
+args="${EARLYOOM_OPTS:--m 10 -s 10 -r 60}"
+if [ -n "${EARLYOOM_PREFER}" ]; then
+	args="$args --prefer ${EARLYOOM_PREFER}"
+fi
+if [ -n "${EARLYOOM_IGNORE}" ]; then
+	args="$args --ignore ${EARLYOOM_IGNORE}"
+fi
+exec /usr/bin/earlyoom $args

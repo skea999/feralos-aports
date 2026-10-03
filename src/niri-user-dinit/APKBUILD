@@ -19,14 +19,22 @@
 # component always outranks any Alpine version field-by-field.
 pkgname=niri-user-dinit
 pkgver=989.0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit user services for the niri compositor session"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="niri dinit"
+# replaces: we ship a fixed /usr/bin/niri-session (upstream post-25.11 mechanism — see the script header)
+replaces="niri"
+# !tracedeps: abuild would auto-detect `cmd:niri-session=<our-pkgver>` from the
+# installed file; a versioned provide co-installed with Alpine niri's own
+# `cmd:niri-session` provider is an unresolvable provider conflict (replaces=
+# only settles FILE ownership). No so:/pc:/py: deps here, so !tracedeps drops
+# only that one auto-provide.
+options="!tracedeps"
 makedepends=""
-source="niri niri-shutdown"
+source="niri niri-shutdown niri-session"
 
 build() { return 0; }
 check() { return 0; }
@@ -34,6 +42,7 @@ check() { return 0; }
 package() {
 	install -Dm644 "$srcdir/niri" "$pkgdir/etc/dinit.d/user/niri"
 	install -Dm644 "$srcdir/niri-shutdown" "$pkgdir/etc/dinit.d/user/niri-shutdown"
+	install -Dm755 "$srcdir/niri-session" "$pkgdir/usr/bin/niri-session"
 
 	# login-shell: symlink to ash at a path NOT listed in /etc/shells.
 	# niri-session re-execs itself through bash and abandons the user dinit
@@ -47,4 +56,5 @@ package() {
 sha512sums="
 7c97759c566308c6927e3a0a66b0449f2bfd03acf8e037ccb280ed8f9233382ec803badf90f46b88ee80f321c556f90b866e8c288ccc030a623014de701e5ec2  niri
 6fb2d35f11c4e0e4168ffa909848ec7093f9b49ef6e4271cfcbbb46276a148b7979b47056fb66dfdc0d869fb933dd216be3a642fd7cfdf8bb47bec28338ed541  niri-shutdown
+2ac2d4197330782518564844fc3b52a301019385396607cd5adaf0143f4c61c830da484e4c99e140ac436bff064d01f9413beac203c227346b42c60b5e64b1fa  niri-session
 "

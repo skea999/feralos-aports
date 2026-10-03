@@ -1,0 +1,68 @@
+#!/bin/sh
+# niri-session — FeralOS fix of the dinit branch (shipped by niri-user-dinit,
+# replaces the Alpine niri file; see APKBUILD replaces="niri").
+#
+# Upstream YaLTeR/niri fixed this script after niri 25.11 (our base): its old
+# dinit branch starts the user service and exits immediately — greetd then
+# tears the session down in ~300ms — and never imports the login session env,
+# so niri dies on TakeControl over turnstiled's seatless pseudo session
+# (ENOSYS). This file carries the upstream mechanism, adapted to FeralOS:
+# - setenv of the FULL login environment (real seat/session vars reach niri)
+# - starts OUR niri user service (upstream starts its own niri.target)
+# - dinit-monitor wait (fallback: is-started poll) so this script stays the
+#   greetd session lifetime
+# - Alpine's fallback (exec niri --session when no user dinit) preserved
+#
+# Launch paths: greetd initial_session/autologin, regreet (niri.desktop
+# Exec=niri-session), manual from a tty.
+
+# No user dinit running (OpenRC path, or turnstile absent): run the
+# compositor directly — Alpine's own fallback; real seated session as the
+# display-manager child.
+if ! pgrep -u "$(id -u)" dinit >/dev/null 2>&1; then
+    exec niri --session
+fi
+
+# Make sure there's no already running session.
+if dinitctl --quiet --user is-started niri >/dev/null 2>&1; then
+    echo 'A niri session is already running.'
+    exit 1
+fi
+
+# Import the login manager environment into dinit (upstream mechanism):
+# turnstiled exports a seatless pseudo session, the REAL seated session env
+# from greetd must win so niri can open the session.
+awk 'BEGIN{for(v in ENVIRON) if (v != "AWKPATH" && v != "AWKLIBPATH") print v}' 2>/dev/null | xargs dinitctl --quiet --user setenv 2>/dev/null
+
+# Usually dbus would start as niri's dependency and inherit the environment
+# from dinit, but in case it has already started update its environment.
+if hash dbus-update-activation-environment >/dev/null 2>&1; then
+    dbus-update-activation-environment --all >/dev/null 2>&1
+fi
+
+# niri saves screenshots under ~/Pictures/Screenshots by default and does
+# not create the directory (missing dir = silent no-write on the IPC
+# screenshot action).
+mkdir -p "$HOME/Pictures/Screenshots" 2>/dev/null || :
+
+# Start the session, then hold THIS script open until it ends — this script
+# is the greetd session lifetime.
+dinitctl --user start niri >/dev/null 2>&1 || { echo "failed to start the niri session."; exit 1; }
+
+if hash dinit-monitor >/dev/null 2>&1; then
+    # Upstream mechanism: watch the niri service; when it stops or fails,
+    # kill this script (its own parent) so greetd sees the session end.
+    dinit-monitor --user --initial -c 'sh -c "
+        if [ "%s" = "stopped" ] || [ "%s" = "failed" ]; then
+            ppid=$(ps -o ppid= -p $$)
+            kill "$ppid"
+        fi"' niri >/dev/null 2>&1
+else
+    # dinit-monitor not available: poll the service state.
+    while dinitctl --user is-started niri >/dev/null 2>&1; do
+        sleep 0.5
+    done
+fi
+
+# Unset the environment that we've set (upstream behavior).
+dinitctl --quiet --user unsetenv WAYLAND_DISPLAY DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP NIRI_SOCKET 2>/dev/null

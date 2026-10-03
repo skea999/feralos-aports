@@ -12,13 +12,23 @@
 # - dinit-monitor wait (fallback: is-started poll) so this script stays the
 #   greetd session lifetime
 # - Alpine's fallback (exec niri --session when no user dinit) preserved
+# - async user-dinit spawn race fixed: wait for the control socket before
+#   the fallback decision
 #
 # Launch paths: greetd initial_session/autologin, regreet (niri.desktop
 # Exec=niri-session), manual from a tty.
 
-# No user dinit running (OpenRC path, or turnstile absent): run the
-# compositor directly — Alpine's own fallback; real seated session as the
-# display-manager child.
+# turnstiled spawns the user dinit ASYNCHRONOUSLY after PAM open — a
+# single pgrep here loses the race (seen on 2/2 harness verify boots).
+# Wait for the control socket to actually answer (up to 15s), then
+# decide. Probe = dinitctl list (proves the control path works, unlike
+# a bare process check).
+i=0
+while [ "$i" -lt 30 ]; do
+    dinitctl --user list >/dev/null 2>&1 && break
+    sleep 0.5
+    i=$((i + 1))
+done
 if ! pgrep -u "$(id -u)" dinit >/dev/null 2>&1; then
     exec niri --session
 fi

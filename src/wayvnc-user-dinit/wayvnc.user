@@ -2,9 +2,11 @@
 # Default wayvnc config listens on 127.0.0.1:5900 without auth (loopback
 # only, safe). For LAN access create ~/.config/wayvnc/config with TLS +
 # auth (FIX-niri-dms.md round 37) and open the port in firewalld.
+# WAYLAND_DISPLAY resolved at start from the compositor socket via the
+# launcher wrapper (dms-session pattern; depends-on the wait-wayland gate).
 type = process
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/wayvnc.log
-command = wayvnc
+command = /etc/dinit.d/user/scripts/wayvnc-session
 smooth-recovery = true
 depends-on = wait-wayland.user

@@ -19,7 +19,7 @@
 # component always outranks any Alpine version field-by-field.
 pkgname=niri-user-dinit
 pkgver=989.0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit user services for the niri compositor session"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -54,7 +54,7 @@ package() {
 }
 
 sha512sums="
-7c97759c566308c6927e3a0a66b0449f2bfd03acf8e037ccb280ed8f9233382ec803badf90f46b88ee80f321c556f90b866e8c288ccc030a623014de701e5ec2  niri
+a0c2bea8b1c53eea035ab7ea251fddc85034a37d75546d82df7de87a882a7e621388b48cae313f048e3ccfab069285b9c1d0b9df44c6c98a1d4d839b4c621c2b  niri
 6fb2d35f11c4e0e4168ffa909848ec7093f9b49ef6e4271cfcbbb46276a148b7979b47056fb66dfdc0d869fb933dd216be3a642fd7cfdf8bb47bec28338ed541  niri-shutdown
-2ac2d4197330782518564844fc3b52a301019385396607cd5adaf0143f4c61c830da484e4c99e140ac436bff064d01f9413beac203c227346b42c60b5e64b1fa  niri-session
+f64f7d09faed8326a6830df4c08ba4ba1fdbc9441b68f34bc43f394c7dec1bbdfe280d00c53374f86791eca8b61edef1b29efce4e2df0801ccb5daf67c8a70ca  niri-session
 "

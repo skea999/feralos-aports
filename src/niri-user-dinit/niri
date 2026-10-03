@@ -1,5 +1,7 @@
 # dinit user service: niri session compositor (started by niri-session)
 type = process
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/niri.log
 command = niri --session
 restart = false
 working-dir = $HOME

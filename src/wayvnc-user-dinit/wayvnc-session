@@ -1,0 +1,9 @@
+#!/bin/sh
+# wayvnc launcher: resolve the compositor wayland socket (guaranteed by the
+# wait-wayland.user dependency), export it, then exec the daemon supervised.
+for s in "$XDG_RUNTIME_DIR"/wayland-*; do
+    [ -S "$s" ] && export WAYLAND_DISPLAY="${s##*/}"
+done
+export DISPLAY="${DISPLAY:-:0}"
+export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
+exec wayvnc

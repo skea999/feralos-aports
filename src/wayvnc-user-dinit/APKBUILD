@@ -2,22 +2,24 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=wayvnc-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit user service for wayvnc"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="wayvnc wayland-wait-user-dinit"
 makedepends=""
-source="wayvnc.user"
+source="wayvnc.user wayvnc-session"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/wayvnc.user" "$pkgdir/etc/dinit.d/user/wayvnc.user"
+	install -Dm755 "$srcdir/wayvnc-session" "$pkgdir/etc/dinit.d/user/scripts/wayvnc-session"
 }
 
 sha512sums="
-1e90712bfdfc4b742576dc1ec12ba5c428ed53a7383343d4f1adad525f917a3ec2558aa1c3423c24d875953d2f98baad801349ad464534a5905bc5707c1095ef  wayvnc.user
+f4f18fbdc1ed8ddc258fc687c55e98ab8ab0456408b521661f0bdd156749e1d2e46b44352d0a59111814dfa74eb6e99dd335ac92aee5de751aa99774dff28667  wayvnc.user
+0ed0829498162861f86f7fb0f32a8139df9670e92b5bede2cc978113e649c1347f99a0cce7433c021b885740556e04b41d73a5d317327a08f1f2f6866fae796d  wayvnc-session
 "

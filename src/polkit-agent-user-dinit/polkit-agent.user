@@ -1,10 +1,12 @@
 # dinit service: polkit authentication agent (user session)
 # MUST be a distro-native (musl/elogind) build — glibc agents (nix/quickshell
 # built-in) cannot resolve elogind sessions (FIX-niri-dms.md round 23).
+# WAYLAND_DISPLAY resolved at start from the compositor socket via the
+# launcher wrapper (dms-session pattern; depends-on the wait-wayland gate).
 type = process
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/polkit-agent.log
-command = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+command = /etc/dinit.d/user/scripts/polkit-agent-session
 smooth-recovery = true
 depends-on = wait-wayland.user
 depends-on = dbus.user

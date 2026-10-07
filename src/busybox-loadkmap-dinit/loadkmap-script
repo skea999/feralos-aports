@@ -1,0 +1,9 @@
+#!/bin/sh
+# Load the console keyboard layout — busybox-initscripts loadkmap, dinit port.
+# Keymap path from /etc/conf.d/loadkmap (kbd-bkeymaps .bmap.gz format).
+[ -r /etc/conf.d/loadkmap ] && . /etc/conf.d/loadkmap
+[ -n "$KEYMAP" ] || KEYMAP="/usr/share/bkeymaps/us/us.bmap.gz"
+case "$KEYMAP" in
+  *.gz) zcat "$KEYMAP" 2>/dev/null | busybox loadkmap ;;
+  *)    busybox loadkmap < "$KEYMAP" 2>/dev/null ;;
+esac

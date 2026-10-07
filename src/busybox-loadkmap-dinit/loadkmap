@@ -1,0 +1,7 @@
+# dinit service: loadkmap — load the console keyboard layout (busybox
+# loadkmap + kbd-bkeymaps; port of the busybox-initscripts loadkmap service)
+type = scripted
+command = /usr/lib/dinit/loadkmap
+restart = false
+depends-on = local.target
+before = login.target

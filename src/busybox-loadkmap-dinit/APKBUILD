@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=busybox-loadkmap-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit service for loadkmap (console keyboard layout, busybox loadkmap)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="busybox kbd-bkeymaps"
 makedepends=""
-source="loadkmap loadkmap-script loadkmap.conf"
+source="loadkmap loadkmap-script"
 
 build() { return 0; }
 check() { return 0; }
@@ -18,14 +18,13 @@ package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
 	install -Dm644 "$srcdir/loadkmap" "$pkgdir/lib/dinit.d/loadkmap"
 	install -Dm755 "$srcdir/loadkmap-script" "$pkgdir/usr/lib/dinit/loadkmap"
-	# /etc/conf.d/loadkmap: the FeralOS installer rewrites KEYMAP= from the
-	# user variables — apk keeps the modified file on upgrade (conf.d is
-	# protected), fresh installs get this default.
-	install -Dm644 "$srcdir/loadkmap.conf" "$pkgdir/etc/conf.d/loadkmap"
+	# NOTE: /etc/conf.d/loadkmap is NOT shipped — the path is owned by the
+	# openrc package (apk file-ownership conflict). The FeralOS installer
+	# writes the user keymap into it (misc.go); this wrapper sources it if
+	# present and otherwise defaults to us.bmap.gz.
 }
 
 sha512sums="
 8bdb0d1bf8ab3350f1ca4a5f32decea48520c173ccd717a0f0f797538e30ac5e3b3208179204a343dfeb464891dc39ee04a96d590b90ee2e6e4a3c8dd338a265  loadkmap
 db293f0e368f5386fd2e5c03baf3ab2df273854b16dadf2efef4204478e5995b788d1448299fc5e9e97d1b67ce43beae2030884fae6ed9999471880fae6ebc42  loadkmap-script
-76963db49f775c326cf54d728469ae264eec158ebdb3aaaadd0f59a066e630db8ab851994be7296bc294d8cfbd42800cea416e2a6ff8215214b705d9617ca8ab  loadkmap.conf
 "

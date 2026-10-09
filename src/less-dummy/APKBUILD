@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=less-dummy
 pkgver=999.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="less shim: dumps via bat (memory-safe); eats hardcoded less flags, no interactive paging"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -21,5 +21,5 @@ package() {
 }
 
 sha512sums="
-36f23a87e50566b03ea4da2c80e98964dce4db0d996ed63160815e023ebbdd7d96abf63bd467b254df987524b68bdb03fa3896b9245182d19b7073eb0dc71063  less.sh
+e02c9c4c0316ea862bfcd46ba2752354022c30627634b13548a0cef9fa6cb1cdbef30a1b22be35976788895b249a7677e3cd225aa7b17b7bda1ed1af4bca395a  less.sh
 "

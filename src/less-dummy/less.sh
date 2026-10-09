@@ -12,11 +12,20 @@
 # the PAGER=bat -> less -> bat chain always terminates after one hop.
 # Tradeoff: no interactive scroll/search inside the pager.
 
+nodash=
 kept=0
 for a in "$@"; do
+	if [ -n "$nodash" ]; then
+		set -- "$@" "$a"
+		kept=$((kept + 1))
+		continue
+	fi
 	case "$a" in
+	--)
+		nodash=1
+		;;
 	-*)
-		;; # any less flag (and the -- marker): dropped
+		;; # any less flag: dropped (colors always on, single dump)
 	*)
 		set -- "$@" "$a"
 		kept=$((kept + 1))

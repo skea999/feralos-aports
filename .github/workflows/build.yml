@@ -16,7 +16,7 @@ jobs:
     # runner = GitHub Ubuntu VM; steps run INSIDE the Alpine container below.
     # alpine:latest = latest STABLE (matches installer's branch: latest-stable)
     runs-on: ubuntu-latest
-    container: alpine:latest
+    container: public.ecr.aws/docker/library/alpine:latest
     steps:
       - name: Install toolchain
         run: apk add --no-cache alpine-sdk git
@@ -254,7 +254,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: [build, deploy]
     runs-on: ubuntu-latest
-    container: alpine:latest
+    container: public.ecr.aws/docker/library/alpine:latest
     steps:
       - name: Checkout (package list)
         uses: actions/checkout@v4

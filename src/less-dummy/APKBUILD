@@ -1,0 +1,25 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=less-dummy
+pkgver=999.0.0
+pkgrel=1
+pkgdesc="less shim: dumps via bat (memory-safe); eats hardcoded less flags, no interactive paging"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="bat"
+makedepends=""
+provides="less=999.0.0-r0"
+replaces="less"
+source="less.sh"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm755 "$srcdir/less.sh" "$pkgdir/usr/bin/less"
+}
+
+sha512sums="
+36f23a87e50566b03ea4da2c80e98964dce4db0d996ed63160815e023ebbdd7d96abf63bd467b254df987524b68bdb03fa3896b9245182d19b7073eb0dc71063  less.sh
+"

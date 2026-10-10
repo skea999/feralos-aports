@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=bluez-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for bluetoothd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,5 +19,5 @@ package() {
 }
 
 sha512sums="
-d3e5ff1bcbfd2d53e86435eeec08db680db72a992f9f45148a7f7b21034f7dfa838cb5a67f36ea1663f363c941059ca41cba5c372fef3c681197c221b2bb572e  bluetooth
+8173cb6b6de2680b6fb3d63c3249fe3694453aa6a597989432fc0e8c5a4e494fc9ba32243c60c4b18b736d5a6525649c54d69e45a2ebaa625b1ce8669ee8f98a  bluetooth
 "

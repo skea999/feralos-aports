@@ -2,7 +2,7 @@
 type = process
 log-type = file
 logfile = /var/log/dinit/bluetoothd.log
-command = /usr/lib/dinit/dbus-wait-for -s -f 4 -n org.bluez /usr/libexec/bluetooth/bluetoothd --nodetach
+command = /usr/lib/dinit/dbus-wait-for -s -f 4 -n org.bluez /usr/lib/bluetooth/bluetoothd --nodetach
 ready-notification = pipefd:4
 smooth-recovery = true
 depends-on = dbus

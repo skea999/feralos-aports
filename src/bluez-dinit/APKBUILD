@@ -2,22 +2,22 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=bluez-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for bluetoothd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit bluez dbus-wait-for-dinit"
 makedepends=""
-source="bluez"
+source="bluetooth"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm644 "$srcdir/bluez" "$pkgdir/lib/dinit.d/bluez"
+	install -Dm644 "$srcdir/bluetooth" "$pkgdir/lib/dinit.d/bluetooth"
 }
 
 sha512sums="
-d3e5ff1bcbfd2d53e86435eeec08db680db72a992f9f45148a7f7b21034f7dfa838cb5a67f36ea1663f363c941059ca41cba5c372fef3c681197c221b2bb572e  bluez
+d3e5ff1bcbfd2d53e86435eeec08db680db72a992f9f45148a7f7b21034f7dfa838cb5a67f36ea1663f363c941059ca41cba5c372fef3c681197c221b2bb572e  bluetooth
 "

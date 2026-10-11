@@ -1,0 +1,20 @@
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=dms-window-buttons
+pkgver=1.0.0
+pkgrel=0
+pkgdesc="Windows-style window controls (maximize/fullscreen/close) for the DMS bar"
+url="https://github.com/skea999/dms-window-buttons"
+arch="noarch"
+license="ISC"
+depends="dms-shell"
+source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/dms-window-buttons/archive/refs/tags/v$pkgver.tar.gz"
+
+package() {
+	install -d "$pkgdir"/etc/xdg/quickshell/dms-plugins/dmsWindowButtons
+	install -m644 "$builddir/plugin.json" "$pkgdir"/etc/xdg/quickshell/dms-plugins/dmsWindowButtons/
+	install -m644 "$builddir/WindowButtons.qml" "$pkgdir"/etc/xdg/quickshell/dms-plugins/dmsWindowButtons/
+}
+
+sha512sums="
+fab5eec4a9e883389866f8f53695983e65e1d58ff924e437bdbc80af9c170cab462b18ee2ac0874c1b814c0e8a25cc4812399af795454641ee7b95310967f951  dms-window-buttons-1.0.0.tar.gz
+"

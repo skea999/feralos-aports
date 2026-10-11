@@ -1,12 +1,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dms-shell
 pkgver=1.6.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Quickshell-based desktop shell with Material 3 design principles"
 url="https://github.com/AvengeMedia/DankMaterialShell"
 arch="x86_64 aarch64"
 license="MIT"
-depends="accountsservice quickshell dbus-user-dinit wayland-wait-user-dinit"
+depends="accountsservice quickshell dbus-user-dinit wayland-wait-user-dinit adwaita-icon-theme hicolor-icon-theme"
 optdepends="networkmanager: network management backend
 	qt6-qtmultimedia: sound effect support
 	power-profiles-daemon: power profile switching

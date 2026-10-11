@@ -5,7 +5,8 @@ type = process
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/dms.log
 command = /etc/dinit.d/user/scripts/dms-session
-restart = true
+# no restart: a clean exit (greeter-session guard in dms-session) must stop
+# the service; smooth-recovery still revives crashes (ADR-009 style)
 smooth-recovery = true
 depends-on = wait-wayland.user
 depends-on = dbus.user

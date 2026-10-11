@@ -1,7 +1,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dms-shell
 pkgver=1.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Quickshell-based desktop shell with Material 3 design principles"
 url="https://github.com/AvengeMedia/DankMaterialShell"
 arch="x86_64 aarch64"
@@ -65,6 +65,6 @@ package() {
 sha512sums="
 fdcc304c878766e65e6356d975ce5df2e5a41f637039dc6daaffccc9ea22a8ef1140cc8da59602101195ec8d86b36388f62aa0f38ec7611f6ecf8ab79eb030e6  DankMaterialShell-1.6.2.tar.gz
 5b5198163fd3bd5584ffdc9ceae7e0c8bedf72600305570c70e465fb7f065fde3f4de59c73261794153830c6eedcbe0a98a1e5a65ad761792f36669dc7812290  dank-qml-common-26396ce432d6c71c3f5367438f96f4a8d667e160.tar.gz
-28d63ab2279b2f857ed37e3c36763f2493bc7bb88562a28c57c144ac7adeab9a707199d33d9570c0d93842905720144f3731016463dd659c06fdec607cf15360  dms.user
-9f33cf123ed1ad9d983ec5e6b4e2312f35613a4240fd0d703fe80a1235693506956048fda0b2e63f2cfffbed284bf4f945a211ec0468a0a2f0c19ac48c65a586  dms-session
+ff7a86499f44a852b0094154d5045fd5a9f9bfd3f16802de6a9d81d7d2b5710043dcb2279fc40b4c7f003ea364d2784ac76a982d0d409851546cb3d9332b3435  dms.user
+78fb345d61266fd4c868c64b631f28c7a7388b906d1d7da0e76dca7dc80eef70229e31151fdf8b7b7c8f25aece97ab636945ccb14c14e6c2a140d29e86cd69e4  dms-session
 "

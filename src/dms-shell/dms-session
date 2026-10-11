@@ -1,4 +1,11 @@
 #!/bin/sh
+# DMS is the desktop shell — the greetd greeter session (regreet) must not
+# run it: only niri + regreet belong there. The greeter user has a fixed
+# name created by the installer; XDG_SESSION_CLASS=greeter is greetd's
+# session marker (belt+braces: env may not reach the user dinit).
+if [ "$(id -un)" = "greeter" ] || [ "$XDG_SESSION_CLASS" = "greeter" ]; then
+    exit 0
+fi
 # DMS launcher: resolve the compositor wayland socket (guaranteed by the
 # wait-wayland.user dependency), export it, then exec the shell supervised.
 for s in "$XDG_RUNTIME_DIR"/wayland-*; do

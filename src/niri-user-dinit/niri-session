@@ -59,6 +59,14 @@ mkdir -p "$HOME/Pictures/Screenshots" 2>/dev/null || :
 # is the greetd session lifetime.
 dinitctl --user start niri >/dev/null 2>&1 || { echo "failed to start the niri session."; exit 1; }
 
+# Session apps bound to the niri session (upstream "add-wants niri.service"
+# model): started only for real logins via niri.desktop — the greetd
+# greeter session runs greeter.sh (niri -- regreet), never this script,
+# so the greeter never gets DMS/wayvnc/polkit-agent. Existence-filtered.
+for s in polkit-agent.user dms.user wayvnc.user; do
+    [ -f "/etc/dinit.d/user/$s" ] && dinitctl --user start "$s"
+done
+
 if hash dinit-monitor >/dev/null 2>&1; then
     # Upstream mechanism: watch the niri service; when it stops or fails,
     # kill this script (its own parent) so greetd sees the session end.

@@ -312,7 +312,7 @@ jobs:
           done
           grep -q '/usr/bin/dinit' /usr/libexec/dinit/init || {
             echo "init wrapper does not target /usr/bin/dinit"; exit 1; }
-          for bin in dinitctl dinit-check sd-tmpfiles udevadm; do
+          for bin in dinitctl dinit-check sd-tmpfiles udevadm matugen; do
             command -v "$bin" >/dev/null || { echo "missing $bin"; exit 1; }
           done
           echo "client verification OK"

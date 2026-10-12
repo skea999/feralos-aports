@@ -1,0 +1,40 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# matugen: Material You palette generator — dynamic-theming backend for the
+# niri/DMS desktop stack. Absent from Alpine (main/community/edge; wildcard
+# search yields no matches, checked 2026-10). dms-shell runs it to derive
+# wallpaper palettes and the DankMatugen KColorScheme export that the
+# theme-sync plugin propagates to GTK/Qt/KDE.
+pkgname=matugen
+pkgver=4.2.0
+pkgrel=0
+pkgdesc="Material You and base16 color generation tool (DMS dynamic theming backend)"
+url="https://github.com/InioX/matugen"
+arch="all"
+license="GPL-2.0-or-later"
+makedepends="cargo"
+# upstream tags: v4.2.0 (GitHub strips the leading v in the extracted dir:
+# matugen-4.2.0 = $pkgname-$pkgver, no builddir override needed)
+source="https://github.com/InioX/matugen/archive/refs/tags/v$pkgver/matugen-$pkgver.tar.gz"
+
+prepare() {
+	default_prepare
+	cargo fetch --target="$CTARGET" --locked
+}
+
+build() {
+	cargo build --frozen --release
+}
+
+check() {
+	cargo test --frozen --release
+}
+
+package() {
+	install -Dm755 target/release/$pkgname -t "$pkgdir"/usr/bin/
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+	install -Dm644 CHANGELOG.md -t "$pkgdir"/usr/share/doc/$pkgname/
+}
+
+sha512sums="
+f14ab0b58b19a504ef8e25b300f0781ca0e80cd6bd2cbd2bb5804b32916c1f594853f91634ed31b2fbf1d8f14cb4de9fb5121c0ca66f91ef63ce15dc22bb2894  matugen-4.2.0.tar.gz
+"

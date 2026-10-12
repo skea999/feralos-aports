@@ -40,6 +40,7 @@ lockstep with upstream. Rationale comment lives in each conflicting APKBUILD.
 | `cli11` | [CLIUtils/CLI11](https://github.com/CLIUtils/CLI11) (2.7.2) — quickshell build dep, absent in Alpine | desktop |
 | `quickshell` | [outfoxxed/quickshell](https://quickshell.org/) (0.3.1) — QtQuick shell toolkit (DMS runtime dep); crash-handler dropped (cpptrace absent in Alpine) | desktop |
 | `dms-shell` | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) (1.6.2) — Quickshell desktop shell, QML embedded in Go binary (+ dank-qml-common pinned submodule); musl native, replaces nix dms-shell | desktop |
+| `matugen` | [InioX/matugen](https://github.com/InioX/matugen) (4.2.0) — Material You palette generator; dms-shell dynamic-theming backend (absent in Alpine) | desktop |
 | `dbus-user-dinit` | ours — user dinit session bus (pipefd:3 readiness + `dinitctl setenv` bus address) | desktop |
 | `pipewire-user-dinit` | ours — user dinit service for pipewire | desktop |
 | `pipewire-pulse-user-dinit` | ours — user dinit service for pipewire-pulse (PulseAudio compat) | desktop |

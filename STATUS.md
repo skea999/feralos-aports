@@ -9,8 +9,29 @@
   quickshell + dms-shell + user dinit session stack landed). Next:
   niri-side integration checks.
 - **Next action**: verify dms-shell against niri session (installer rules)
+- **Desktop extras**: matugen 4.2.0 landed (DMS dynamic-theming backend,
+  first Rust/cargo package); installer wiring (niri rules) + live VM
+  validation pending.
 
 ## Log
+
+### 2026-10-13 — matugen 4.2.0: DMS dynamic-theming backend (new package)
+- NEW matugen 4.2.0 (GPL-2.0-or-later): Material You / base16 palette
+  generator — the backend dms-shell runs for dynamic theming (wallpaper →
+  palette → DankMatugen KColorScheme export consumed by the GTK/Qt/KDE
+  theme sync). Absent from Alpine main/community/edge (wildcard search,
+  2026-10); first Rust/cargo package in this repo.
+- packaging (Alpine `bottom` pattern): cargo fetch --target="$CTARGET"
+  --locked in prepare; cargo build --frozen --release; check() runs the
+  upstream suite (6/6 green); installs target/release/matugen + LICENSE +
+  CHANGELOG. Source = GitHub tag tarball v4.2.0 (sha512 f14ab0b5…).
+- rehearsal (docker alpine:latest): abuild -F checksum → abuild -Fr green
+  (fetch+build 1m53s, 4.8 MB signed apk); signature-verified local install
+  (`apk add` without --allow-untrusted); `matugen --version` = 4.2.0.
+  Harness notes: `apk update` before abuild -Fr (apk-tools 3 solves from
+  cache only), pubkey into /etc/apk/keys before the index step.
+- pending (installer repo): niri rules package list += matugen; live VM
+  validation: DMS dynamic theme → KDE apps dark via the theme-sync plugin.
 
 ### 2026-09-30 — klogd-dinit: kernel ring → vector kern.log (Logging Round 1)
 - NEW klogd-dinit 0.1.0-r0: system dinit service forwarding the kernel ring

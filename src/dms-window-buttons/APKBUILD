@@ -1,6 +1,6 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dms-window-buttons
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=0
 pkgdesc="Windows-style window controls (maximize/fullscreen/close) for the DMS bar"
 url="https://github.com/skea999/dms-window-buttons"
@@ -16,5 +16,5 @@ package() {
 }
 
 sha512sums="
-fab5eec4a9e883389866f8f53695983e65e1d58ff924e437bdbc80af9c170cab462b18ee2ac0874c1b814c0e8a25cc4812399af795454641ee7b95310967f951  dms-window-buttons-1.0.0.tar.gz
+6bb5f35d0b3361eb312b5d50659466376ba1649b4a8b29b7f2110c544a18ae1ba1f2be9f26c8b442efdb1464255f6546a8f3a56360dfef0e60098fb6df83f315  dms-window-buttons-1.0.1.tar.gz
 "

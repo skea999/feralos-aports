@@ -7,8 +7,12 @@
 #    FeralOS dinit IS PID 1, so upstream data/dinit/turnstiled MUST ship —
 #    meson installs it to /etc/dinit.d/turnstiled (system daemon, started
 #    before login.target; dinit scans /etc/dinit.d natively).
-#  * turnstiled.initd + turnstiled.confd DROPPED: no OpenRC on FeralOS.
-#  * $pkgname-openrc subpackage DROPPED; -doc is the only subpackage.
+#  * DUAL-INIT package: the OpenRC service ships in the $pkgname-openrc
+#    subpackage (turnstiled.initd + turnstiled.confd — Alpine's files, one
+#    change: depend() needs elogind instead of seatd; turnstiled must start
+#    after elogind and stop before it). Turnstile is service-manager-agnostic:
+#    the dinit backend spawns the per-user dinit instance on BOTH inits, so
+#    the -user-dinit session stack behaves identically under OpenRC and dinit.
 #  * runtime depends on linux-pam: pam_turnstile.so links libpam and the
 #    /etc/pam.d/turnstiled stack needs pam_limits/pam_rootok/pam_keyinit/
 #    pam_umask/pam_elogind providers.
@@ -28,7 +32,7 @@
 _upstream=0.1.11
 pkgname=turnstile
 pkgver=989.$_upstream
-pkgrel=4
+pkgrel=5
 pkgdesc="Independent session/login tracker"
 url="https://github.com/chimera-linux/turnstile"
 arch="all"
@@ -39,8 +43,11 @@ makedepends="
 	meson
 	scdoc
 	"
-subpackages="$pkgname-doc"
-source="$pkgname-$_upstream.tar.gz::https://github.com/chimera-linux/turnstile/archive/refs/tags/v$_upstream.tar.gz"
+subpackages="$pkgname-doc $pkgname-openrc"
+source="$pkgname-$_upstream.tar.gz::https://github.com/chimera-linux/turnstile/archive/refs/tags/v$_upstream.tar.gz
+	turnstiled.initd
+	turnstiled.confd
+	"
 options="!check" # no tests
 # tarball dir follows the UPSTREAM version, not our 989.<upstream> pkgver
 builddir="$srcdir"/$pkgname-$_upstream
@@ -75,8 +82,14 @@ package() {
 	# start after elogind and — dependents stop first — stop BEFORE elogind,
 	# otherwise session open/close hits a dead/deferred system bus.
 	printf 'depends-on: elogind\n' >> "$pkgdir"/etc/dinit.d/turnstiled
+	# OpenRC side (the default_openrc splitfunc moves these into the
+	# turnstile-openrc subpackage): same daemon, same dinit user backend.
+	install -Dm755 "$srcdir"/turnstiled.initd "$pkgdir"/etc/init.d/turnstiled
+	install -Dm644 "$srcdir"/turnstiled.confd "$pkgdir"/etc/conf.d/turnstiled
 }
 
 sha512sums="
 dc53396e3fe4eb2155d1d10680e22696f69f57a2b345fac541671618a8db9a7c24cf937ae4454598aa67c025da698d4bc14dc34b2b77b59b53328c157315b92c  turnstile-0.1.11.tar.gz
+7bab5ad54f539e56c7da6a2dfe218b7df94255c4039f39f09b1440e16ceb8becc3178169e87cc814e9889037941860b3d0733f64d4f22a605717d606d18a297b  turnstiled.initd
+4798d04b707e3b44467c1e75481a5123dbf4755ef1bdd09ac31d180762f67085a7030c4ba7d1f27b1ef30910785d8739375a730f32647c7d554142fac4d6b824  turnstiled.confd
 "

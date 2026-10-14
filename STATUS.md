@@ -12,8 +12,19 @@
 - **Desktop extras**: matugen 4.2.0 landed (DMS dynamic-theming backend,
   first Rust/cargo package); installer wiring (niri rules) + live VM
   validation pending.
+- **Turnstile dual-init**: OpenRC service + boot-order fix (r6) — OpenRC niri session-stack validation pending.
 
 ## Log
+
+### 2026-10-14 — turnstile: OpenRC service + boot-order fix (dual-init)
+- turnstile-openrc subpackage (r5): Alpine's turnstiled.initd + confd
+  restored — same daemon, same dinit user backend (per-user dinit instances
+  under OpenRC too). depend(): need elogind (not seatd).
+- r6 boot-order fix: depend() += `before greetd` — greetd's login session
+  must not open before turnstiled's control socket listens (pam_turnstile is
+  optional/silent; live-caught on the OpenRC niri harness run: no user dinit
+  spawned at boot; verified via debug_run: a greetd restart after the socket
+  is up registers the session and spawns the user dinit).
 
 ### 2026-10-13 — matugen 4.2.0: DMS dynamic-theming backend (new package)
 - NEW matugen 4.2.0 (GPL-2.0-or-later): Material You / base16 palette

@@ -9,4 +9,5 @@ error_log="/var/log/turnstiled.err"
 
 depend() {
 	need elogind
+	before greetd
 }

@@ -8,9 +8,14 @@
 #    meson installs it to /etc/dinit.d/turnstiled (system daemon, started
 #    before login.target; dinit scans /etc/dinit.d natively).
 #  * DUAL-INIT package: the OpenRC service ships in the $pkgname-openrc
-#    subpackage (turnstiled.initd + turnstiled.confd — Alpine's files, one
-#    change: depend() needs elogind instead of seatd; turnstiled must start
-#    after elogind and stop before it). Turnstile is service-manager-agnostic:
+#    subpackage (turnstiled.initd + turnstiled.confd — Alpine's files, two
+#    changes: (1) depend() needs elogind instead of seatd (start after / stop
+#    before elogind); (2) depend() adds `before greetd` — pam_turnstile is
+#    optional/silent, so greetd's login session MUST NOT open before
+#    turnstiled's control socket listens, or no per-user dinit spawns
+#    (live-caught boot-order race under OpenRC; the dinit service gets the
+#    same guarantee from `before: login.target`). Turnstile is
+#    service-manager-agnostic:
 #    the dinit backend spawns the per-user dinit instance on BOTH inits, so
 #    the -user-dinit session stack behaves identically under OpenRC and dinit.
 #  * runtime depends on linux-pam: pam_turnstile.so links libpam and the
@@ -32,7 +37,7 @@
 _upstream=0.1.11
 pkgname=turnstile
 pkgver=989.$_upstream
-pkgrel=5
+pkgrel=6
 pkgdesc="Independent session/login tracker"
 url="https://github.com/chimera-linux/turnstile"
 arch="all"
@@ -90,6 +95,6 @@ package() {
 
 sha512sums="
 dc53396e3fe4eb2155d1d10680e22696f69f57a2b345fac541671618a8db9a7c24cf937ae4454598aa67c025da698d4bc14dc34b2b77b59b53328c157315b92c  turnstile-0.1.11.tar.gz
-7bab5ad54f539e56c7da6a2dfe218b7df94255c4039f39f09b1440e16ceb8becc3178169e87cc814e9889037941860b3d0733f64d4f22a605717d606d18a297b  turnstiled.initd
+6c9c7cece00129d2febf44559deba2585c9081461a90c35d919cfe79755def33c927c9c49bd6cc5fb238b870a457da4a85b1a49672f1eea668c54427d5c7aec8  turnstiled.initd
 4798d04b707e3b44467c1e75481a5123dbf4755ef1bdd09ac31d180762f67085a7030c4ba7d1f27b1ef30910785d8739375a730f32647c7d554142fac4d6b824  turnstiled.confd
 "

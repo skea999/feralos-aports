@@ -1,0 +1,20 @@
+#!/bin/sh
+# wayle launcher: resolve the compositor wayland socket + the niri IPC
+# socket (guaranteed by the wait-wayland.user dependency), export them,
+# then exec the desktop shell in the FOREGROUND (dinit type=process
+# supervision holds the started marker).
+#
+# The user-dinit environment does NOT carry WAYLAND_DISPLAY/NIRI_SOCKET
+# (the login env is imported before the compositor starts), so a direct
+# `wayle shell` cannot find the compositor: wayle fails GTK init and
+# panics. Same wrapper pattern as wayvnc-session (dms-session pattern).
+for s in "$XDG_RUNTIME_DIR"/wayland-*; do
+    [ -S "$s" ] && export WAYLAND_DISPLAY="${s##*/}"
+done
+for s in "$XDG_RUNTIME_DIR"/niri*.sock; do
+    [ -S "$s" ] && export NIRI_SOCKET="$s"
+done
+export DISPLAY="${DISPLAY:-:0}"
+export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
+export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-niri}"
+exec wayle shell

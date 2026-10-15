@@ -1,0 +1,59 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# veila: secure Wayland screen locker. Absent from Alpine (checked 2026-10).
+# Rust/cargo package: matugen pattern (fetch --locked + build --frozen).
+# Ships the full binary set from the workspace: veila (control CLI),
+# veilad (daemon), veila-curtain (bootstrap), veila-ui (unlock UI).
+#
+# PAM: authored here (Alpine locker convention — auth via the login stack,
+# cf. swaylock); upstream's packaging/arch/veila.pam uses Arch's
+# system-auth include which does not exist on Alpine.
+pkgname=veila
+pkgver=0.4.4
+pkgrel=0
+pkgdesc="Secure, elegant and fast Wayland screen locker"
+url="https://github.com/naurissteins/Veila"
+arch="all"
+license="GPL-3.0-or-later"
+makedepends="cargo clang linux-pam-dev libxkbcommon-dev scdoc wayland-dev"
+depends="linux-pam wayland"
+# GUI locker — needs a live compositor + seat for real tests
+options="!check"
+# upstream tag "0.4.4" has NO v prefix; the extracted dir is Veila-0.4.4
+# (repo name, capital V) — builddir override required.
+source="https://github.com/naurissteins/Veila/archive/refs/tags/$pkgver/veila-$pkgver.tar.gz"
+builddir="$srcdir"/Veila-$pkgver
+
+prepare() {
+	default_prepare
+	cargo fetch --target="$CTARGET" --locked
+}
+
+build() {
+	cargo build --frozen --release
+}
+
+package() {
+	install -Dm755 target/release/veila -t "$pkgdir"/usr/bin/
+	install -Dm755 target/release/veilad -t "$pkgdir"/usr/bin/
+	install -Dm755 target/release/veila-curtain -t "$pkgdir"/usr/bin/
+	install -Dm755 target/release/veila-ui -t "$pkgdir"/usr/bin/
+
+	# Pre-rendered man page (docs/man/veila.1 is roff, not .scd);
+	# gzipped — abuild rejects uncompressed man pages
+	install -Dm644 docs/man/veila.1 "$pkgdir"/usr/share/man/man1/veila.1
+	gzip -9 "$pkgdir"/usr/share/man/man1/veila.1
+
+	# PAM service (veilad authenticates via the "veila" service name)
+	install -d "$pkgdir"/etc/pam.d
+	cat > "$pkgdir"/etc/pam.d/veila <<-EOF
+		#%PAM-1.0
+		auth     include     login
+	EOF
+
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+	install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname/
+}
+
+sha512sums="
+f9b502791d985e7b0e79fb772e16205160dfd03d479fbd66f26056db6b6fcd47b02d70d0aa628dae2e142198e2ec9b7826c1164b5b769f10555f3fbd67a63eca  veila-0.4.4.tar.gz
+"

@@ -1,0 +1,69 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# wayle: Wayland Elements — compositor-agnostic desktop shell (bar,
+# notifications, OSD, wallpaper). Absent from Alpine (checked 2026-10).
+# Rust/cargo package: matugen pattern (fetch --locked + build --frozen).
+#
+# Icon semantics (verified in the 0.7.0 source): `wayle icons setup` copies
+# the icons BUNDLED in the source tree (resources/icons/hicolor/scalable/
+# actions) to the per-user dir $XDG_DATA_HOME/wayle/icons — it needs no
+# network, but it is a per-user action and its hardcoded source path
+# (CARGO_MANIFEST_DIR/../resources) does not exist on installed systems.
+# We therefore install the bundled icons SYSTEM-WIDE here
+# (/usr/share/icons/hicolor/scalable/actions — one of wayle's
+# IconTheme::system_icon_paths(), registered into the GTK search path at
+# startup). `wayle icons install/import` (CDN) stays a user action.
+#
+# clang22-libclang: the wayle-cava crate's build.rs runs bindgen, which
+# links against the libclang C API shared library — the `clang` package
+# ships only the driver + libclang-cpp, not libclang.so.
+#
+# NOTE: this package does NOT ship a wayland-session entry — the session
+# desktop file belongs to wayle-session (our niriWayle session).
+pkgname=wayle
+pkgver=0.7.0
+pkgrel=0
+pkgdesc="Wayland Elements — compositor-agnostic desktop shell (bar, notifications, OSD, wallpaper)"
+url="https://github.com/wayle-rs/wayle"
+arch="all"
+license="MIT"
+makedepends="cargo clang clang22-libclang pkgconf gtk4.0-dev gtk4-layer-shell-dev gtksourceview5-dev pulseaudio-dev fftw-dev pipewire-dev eudev-dev wayland-dev"
+depends="gtk4.0 gtk4-layer-shell gtksourceview5 libpulse pipewire hicolor-icon-theme upower"
+# GUI shell — the test suite needs a live compositor
+options="!check"
+# upstream tags: v0.7.0 (GitHub strips the leading v in the extracted dir:
+# wayle-0.7.0 = $pkgname-$pkgver, no builddir override needed)
+source="https://github.com/wayle-rs/wayle/archive/refs/tags/v$pkgver/wayle-$pkgver.tar.gz"
+
+prepare() {
+	default_prepare
+	cargo fetch --target="$CTARGET" --locked
+}
+
+build() {
+	cargo build --frozen --release
+}
+
+package() {
+	install -Dm755 target/release/wayle -t "$pkgdir"/usr/bin/
+	install -Dm755 target/release/wayle-settings -t "$pkgdir"/usr/bin/
+
+	# Desktop entry for the settings app + its icon
+	install -Dm644 resources/com.wayle.settings.desktop \
+		-t "$pkgdir"/usr/share/applications/
+	install -Dm644 resources/wayle-settings.svg \
+		"$pkgdir"/usr/share/icons/hicolor/scalable/apps/wayle-settings.svg
+	install -Dm644 assets/wayle.svg \
+		"$pkgdir"/usr/share/icons/hicolor/scalable/apps/wayle.svg
+
+	# Bundled icons (see header comment): system-wide, offline.
+	install -d "$pkgdir"/usr/share/icons/hicolor/scalable/actions
+	install -m644 resources/icons/hicolor/scalable/actions/*.svg \
+		"$pkgdir"/usr/share/icons/hicolor/scalable/actions/
+
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+	install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname/
+}
+
+sha512sums="
+e614b915ff1267f5e8dd320d4d297fef0c805b310792d339dfe800d0ce98eaa4198caafc3b20ff8beeb7258988887277481ce4554fefd7469620a4b91fcf7c36  wayle-0.7.0.tar.gz
+"

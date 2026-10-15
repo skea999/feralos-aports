@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=niriWayle
+Comment=niri compositor with the Wayle shell
+Exec=wayle-session
+Type=Application
+DesktopNames=niriWayle

@@ -1,0 +1,85 @@
+#!/bin/sh
+# wayle-session — the niriWayle session entry point (FeralOS).
+# Modeled line-by-line on the FeralOS niri-session (shipped by
+# niri-user-dinit): this session runs the niri compositor with the Wayle
+# shell on top instead of DMS.
+#
+# Mechanism (identical to niri-session):
+# - wait for turnstiled's async user-dinit spawn (control socket probe)
+# - fallback: exec niri --session when no user dinit
+# - import the FULL login environment via dinitctl setenv
+# - start the niri user service, then hold this script open as the greetd
+#   session lifetime (dinit-monitor, fallback is-started poll)
+# - session apps bound to the compositor session: started only here (real
+#   logins), never on the greeter — the greeter session runs greeter.sh,
+#   never this script. Existence-filtered.
+#
+# Session apps: wayle.user (shell: bar/notifications/OSD/wallpaper),
+# veila.user (screen locker daemon), polkit-agent.user, wayvnc.user.
+# NOTE: no dms.user — DMS is the niri/DMS stack, not niriWayle.
+
+# turnstiled spawns the user dinit ASYNCHRONOUSLY after PAM open —
+# wait for the control socket to actually answer (up to 15s), then
+# decide. Probe = dinitctl list (proves the control path works, unlike
+# a bare process check).
+i=0
+while [ "$i" -lt 30 ]; do
+    dinitctl --user list >/dev/null 2>&1 && break
+    sleep 0.5
+    i=$((i + 1))
+done
+if ! pgrep -u "$(id -u)" dinit >/dev/null 2>&1; then
+    exec niri --session
+fi
+
+# Make sure there's no already running session.
+if dinitctl --quiet --user is-started niri >/dev/null 2>&1; then
+    echo 'A niri session is already running.'
+    exit 1
+fi
+
+# Import the login manager environment into dinit (upstream mechanism):
+# turnstiled exports a seatless pseudo session, the REAL seated session env
+# from greetd must win so niri can open the session.
+awk 'BEGIN{for(v in ENVIRON) if (v != "AWKPATH" && v != "AWKLIBPATH") print v}' 2>/dev/null | xargs dinitctl --quiet --user setenv 2>/dev/null
+
+# Usually dbus would start as niri's dependency and inherit the environment
+# from dinit, but in case it has already started update its environment.
+if hash dbus-update-activation-environment >/dev/null 2>&1; then
+    dbus-update-activation-environment --all >/dev/null 2>&1
+fi
+
+# niri saves screenshots under ~/Pictures/Screenshots by default and does
+# not create the directory (missing dir = silent no-write on the IPC
+# screenshot action).
+mkdir -p "$HOME/Pictures/Screenshots" 2>/dev/null || :
+
+# Start the session, then hold THIS script open until it ends — this script
+# is the greetd session lifetime.
+dinitctl --user start niri >/dev/null 2>&1 || { echo "failed to start the niri session."; exit 1; }
+
+# Session apps bound to the niri session (upstream "add-wants niri.service"
+# model): started only for real logins via niriwayle.desktop — the greetd
+# greeter session runs greeter.sh (niri -- regreet), never this script,
+# so the greeter never gets wayle/veila/wayvnc/polkit-agent. Existence-filtered.
+for s in wayle.user veila.user polkit-agent.user wayvnc.user; do
+    [ -f "/etc/dinit.d/user/$s" ] && dinitctl --user start "$s"
+done
+
+if hash dinit-monitor >/dev/null 2>&1; then
+    # Upstream mechanism: watch the niri service; when it stops or fails,
+    # kill this script (its own parent) so greetd sees the session end.
+    dinit-monitor --user --initial -c 'sh -c "
+        if [ "%s" = "stopped" ] || [ "%s" = "failed" ]; then
+            ppid=$(ps -o ppid= -p $$)
+            kill "$ppid"
+        fi"' niri >/dev/null 2>&1
+else
+    # dinit-monitor not available: poll the service state.
+    while dinitctl --user is-started niri >/dev/null 2>&1; do
+        sleep 0.5
+    done
+fi
+
+# Unset the environment that we've set (upstream behavior).
+dinitctl --quiet --user unsetenv WAYLAND_DISPLAY DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP NIRI_SOCKET 2>/dev/null

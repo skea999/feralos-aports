@@ -1,0 +1,11 @@
+# dinit user service: Wayle shell — bar, notifications, OSD, wallpaper
+# (started by wayle-session; niriWayle session). `wayle panel start` execs
+# the shell compositor-facing daemon and blocks (panel lifecycle).
+type = process
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/wayle.log
+command = wayle panel start
+smooth-recovery = true
+working-dir = $HOME
+depends-on = wait-wayland.user
+depends-on = dbus.user

@@ -1,0 +1,43 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# raffi: application launcher with YAML configuration (native iced GUI).
+# Absent from Alpine (checked 2026-10). Rust/cargo package: matugen pattern
+# (fetch --locked + build --frozen).
+#
+# License: Cargo.toml declares "Apache-2.0" (the LICENSE file in the tarball
+# matches); the README also mentions MIT for parts of the code — Apache-2.0
+# is the authoritative crate-level declaration.
+#
+# Build uses the DEFAULT cargo features = native iced GUI backend
+# (do NOT pass --no-default-features).
+pkgname=raffi
+pkgver=0.24.0
+pkgrel=0
+pkgdesc="Application launcher with YAML configuration (native iced GUI)"
+url="https://github.com/chmouel/raffi"
+arch="all"
+license="Apache-2.0"
+makedepends="cargo"
+depends="hicolor-icon-theme"
+options="!check"
+# upstream tags: v0.24.0 (GitHub strips the leading v in the extracted dir:
+# raffi-0.24.0 = $pkgname-$pkgver, no builddir override needed)
+source="https://github.com/chmouel/raffi/archive/refs/tags/v$pkgver/raffi-$pkgver.tar.gz"
+
+prepare() {
+	default_prepare
+	cargo fetch --target="$CTARGET" --locked
+}
+
+build() {
+	cargo build --frozen --release
+}
+
+package() {
+	install -Dm755 target/release/$pkgname -t "$pkgdir"/usr/bin/
+	install -Dm644 examples/raffi.yaml -t "$pkgdir"/usr/share/doc/$pkgname/examples/
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
+sha512sums="
+bc0d2fea956d6556c13d6a6334b1d757e7d0dedbfcbb18a6613900466ea7b860ceb7b0e9e0d8fe44b4d80b230a8975e722669fea9fcf5cbf80ae3063aacbc84c  raffi-0.24.0.tar.gz
+"

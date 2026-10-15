@@ -1,0 +1,46 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# wl-clipboard-rs: Wayland clipboard utilities (wl-copy, wl-paste, wl-clip)
+# — the Rust implementation (wl-clipboard-rs-tools workspace member).
+# Absent from Alpine as a standalone package (checked 2026-10). Rust/cargo
+# package: matugen pattern (fetch --locked + build --frozen).
+pkgname=wl-clipboard-rs
+pkgver=0.9.4
+pkgrel=0
+pkgdesc="Wayland clipboard utilities (wl-copy, wl-paste, wl-clip) — Rust implementation"
+url="https://github.com/YaLTeR/wl-clipboard-rs"
+arch="all"
+license="MIT OR Apache-2.0"
+makedepends="cargo"
+depends="wayland"
+options="!check"
+# upstream tags: v0.9.4 (GitHub strips the leading v in the extracted dir:
+# wl-clipboard-rs-0.9.4 = $pkgname-$pkgver, no builddir override needed)
+source="https://github.com/YaLTeR/wl-clipboard-rs/archive/refs/tags/v$pkgver/wl-clipboard-rs-$pkgver.tar.gz"
+
+prepare() {
+	default_prepare
+	cargo fetch --target="$CTARGET" --locked
+}
+
+build() {
+	# --workspace: the root package is lib-only (wl-clipboard-rs); the
+	# binaries (wl-copy/wl-paste/wl-clip) live in the wl-clipboard-rs-tools
+	# workspace member — a plain `cargo build` compiles the lib only.
+	cargo build --frozen --release --workspace
+}
+
+package() {
+	# Binaries verified in the source: wl-clipboard-rs-tools/src/bin/
+	# {wl-copy,wl-paste,wl-clip}.rs
+	install -Dm755 target/release/wl-copy -t "$pkgdir"/usr/bin/
+	install -Dm755 target/release/wl-paste -t "$pkgdir"/usr/bin/
+	install -Dm755 target/release/wl-clip -t "$pkgdir"/usr/bin/
+
+	install -Dm644 LICENSE-MIT -t "$pkgdir"/usr/share/licenses/$pkgname/
+	install -Dm644 LICENSE-APACHE -t "$pkgdir"/usr/share/licenses/$pkgname/
+	install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname/
+}
+
+sha512sums="
+341928bc3f47b97a8b60ad446f3ccf087ad4e68028c7f9715b7b967ef112efb904a11f1f8690137a1a22d3770bc8dfbe7cb41e31cb0a126d9473fec98530296f  wl-clipboard-rs-0.9.4.tar.gz
+"

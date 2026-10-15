@@ -1,0 +1,11 @@
+# dinit user service: Veila screen locker daemon (started by wayle-session;
+# niriWayle session). veilad runs foreground and supervises lock/unlock;
+# the `veila` control CLI and veila-curtain/veila-ui are spawned by the
+# daemon on demand.
+type = process
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/veila.log
+command = veilad
+smooth-recovery = true
+working-dir = $HOME
+depends-on = dbus.user

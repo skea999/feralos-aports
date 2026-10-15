@@ -1,0 +1,8 @@
+# dinit service: oo7-portal — org.freedesktop.impl.portal.Secret (user session)
+# Backend for the Secret portal; zbus connects to the session bus at runtime.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/oo7-portal.log
+command = /usr/libexec/oo7-portal
+depends-on = dbus.user

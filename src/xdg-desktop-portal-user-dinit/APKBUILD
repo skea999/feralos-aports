@@ -1,0 +1,27 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=xdg-desktop-portal-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit services for xdg-desktop-portal (desktop + document portal + permission store)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit xdg-desktop-portal xdg-document-portal dbus-user-dinit"
+makedepends=""
+source="xdg-desktop-portal.user xdg-document-portal.user xdg-permission-store.user"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/xdg-desktop-portal.user" "$pkgdir/etc/dinit.d/user/xdg-desktop-portal.user"
+	install -Dm644 "$srcdir/xdg-document-portal.user" "$pkgdir/etc/dinit.d/user/xdg-document-portal.user"
+	install -Dm644 "$srcdir/xdg-permission-store.user" "$pkgdir/etc/dinit.d/user/xdg-permission-store.user"
+}
+
+sha512sums="
+cddad806a65ed0f31a753b0ef570b6a710728a61d164aad0636c9b0de261560522061a6b0617d08e593bf868b6962ba03673cb2cc2752ee30e6acdca8200c155  xdg-desktop-portal.user
+6ee66126efcce6faa44ad3c75b7114f2408881d9749bd249e4f4fb1eddf1e38d7c923983c11db851748126c773f74a7e19be567ca54ed4c6677dc091cfab060b  xdg-document-portal.user
+040becb918cb388acec98f80508e153536a37bd67027f01a9bcbbb17f1b7a8d0ac3ea8aa599cd22fd630575e48383bc688c1224dc63d9643927679d83122e930  xdg-permission-store.user
+"

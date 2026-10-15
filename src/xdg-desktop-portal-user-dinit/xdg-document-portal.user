@@ -1,0 +1,8 @@
+# dinit service: xdg-document-portal (user session)
+# FUSE-backed document portal; exposes files to sandboxed apps.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/xdg-document-portal.log
+command = /usr/libexec/xdg-document-portal
+depends-on = dbus.user

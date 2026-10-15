@@ -1,0 +1,25 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=oo7-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit services for oo7 (Secret Service daemon + portal)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit oo7 oo7-portal dbus-user-dinit"
+makedepends=""
+source="secrets.user oo7-portal.user"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/secrets.user" "$pkgdir/etc/dinit.d/user/secrets.user"
+	install -Dm644 "$srcdir/oo7-portal.user" "$pkgdir/etc/dinit.d/user/oo7-portal.user"
+}
+
+sha512sums="
+6898951c3a7f114a1ecf8283c6174d69d001e49d5ff9d672aecf7c73fc610879a6ec6bbd7115db18619dcb7fe26a5d1e43ced5d8d2ece06b663cdc8368655f27  secrets.user
+fd3a258907c53f1b18249d69588d802a7a5b89266e0131c4f3cf6d0beed5e4db281b78651f31be352ee00a4702560c442df5f7538a101ff69181a5b985da6a19  oo7-portal.user
+"

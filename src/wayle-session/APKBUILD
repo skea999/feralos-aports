@@ -16,7 +16,7 @@
 # deliberately ships none).
 pkgname=wayle-session
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="Wayle session — niri compositor + Wayle shell session for FeralOS (user dinit services)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -41,7 +41,7 @@ package() {
 
 sha512sums="
 4cc5a49cba261472076924885238b7b05969d1b0b82045cb721c378ef652140b1f5155ee37ff7b0ecd76347f713cc7ee10dccdb80dd790a2e938c2824af02442  wayle-session
-1041ad1c9b622b5529422b6d5cb8bee894b7c2b3cb599fc3faae69a2d691bd5a240feab345453ac3fd4d56e39ad95edd3b961d8e5b2db66d1178bf9ccd2178b8  wayle.user
+95f9352fdd0839e07045314a68f91de356dfad42862946de074f632241c5f528becf281733c841fb7014e96403c272aa69bcf08463e4e0d7d8495d86373b54ed  wayle.user
 fc491646bd6654fb8c2425f417f2fa8a8d7581f4cc221616aae287f6d4a91e5e6b8ab4787f2c5085a0a60b16118e3748b22c2c7866a6f9a46af074cc845794c5  veila.user
 457b41e0639ae4a101ec81391eddd7c4a1ef54e07905597742dcf9013da5986700f5dd19c8f8a01bb52aee75a581838bb3f4d28bc93a6a87a791553ac63c198b  niriwayle.desktop
 "

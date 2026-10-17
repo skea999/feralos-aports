@@ -15,7 +15,9 @@
 #   never this script. Existence-filtered.
 #
 # Session apps: wayle.user (shell: bar/notifications/OSD/wallpaper),
-# veila.user (screen locker daemon), polkit-agent.user, wayvnc.user.
+# veila.user (screen locker daemon), polkit-agent.user, wayvnc.user,
+# stasis.user (idle manager: lock -> dpms -> suspend; started after the
+# shell so the compositor sockets the wrapper resolves already exist).
 # NOTE: no dms.user — DMS is the niri/DMS stack, not niriWayle.
 
 # turnstiled spawns the user dinit ASYNCHRONOUSLY after PAM open —
@@ -61,8 +63,9 @@ dinitctl --user start niri >/dev/null 2>&1 || { echo "failed to start the niri s
 # Session apps bound to the niri session (upstream "add-wants niri.service"
 # model): started only for real logins via niriwayle.desktop — the greetd
 # greeter session runs greeter.sh (niri -- regreet), never this script,
-# so the greeter never gets wayle/veila/wayvnc/polkit-agent. Existence-filtered.
-for s in wayle.user veila.user polkit-agent.user wayvnc.user; do
+# so the greeter never gets wayle/veila/wayvnc/polkit-agent/stasis.
+# Existence-filtered.
+for s in wayle.user veila.user polkit-agent.user wayvnc.user stasis.user; do
     [ -f "/etc/dinit.d/user/$s" ] && dinitctl --user start "$s"
 done
 

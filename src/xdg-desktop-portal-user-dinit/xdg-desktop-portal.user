@@ -1,8 +1,12 @@
 # dinit service: xdg-desktop-portal (user session)
 # Frontend portal daemon; talks to backends over the session bus at runtime.
+# portal-order gate: wait until the permission store AND the document portal
+# own their bus names — the frontend probes Documents at startup, and a
+# too-early start triggers a D-Bus-activated unsupervised twin (the
+# supervised document portal then exits 20 on name loss).
 type = process
 smooth-recovery = true
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/xdg-desktop-portal.log
-command = /usr/libexec/xdg-desktop-portal
+command = /usr/lib/dinit/portal-order org.freedesktop.impl.portal.PermissionStore org.freedesktop.portal.Documents -- /usr/libexec/xdg-desktop-portal
 depends-on = dbus.user

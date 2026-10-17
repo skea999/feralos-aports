@@ -1,0 +1,44 @@
+#!/bin/sh
+# portal-order: gate a portal daemon on the D-Bus names of its peers.
+#
+# usage: portal-order NAME... -- COMMAND [ARG]...
+#
+# Polls org.freedesktop.DBus.NameHasOwner for every NAME (total budget
+# ~60s, 0.5s poll) and only then execs COMMAND. Exits 1 if a name never
+# appears.
+#
+# Rationale (live-caught 2026-10-17, QEMU boot): xdg-desktop-portal probes
+# org.freedesktop.portal.Documents at startup. If the document portal's
+# supervised dinit instance has not claimed the name yet, the session bus
+# ACTIVATES a second, unsupervised instance via
+# /usr/share/dbus-1/services/org.freedesktop.portal.Documents.service and
+# the supervised one loses the name race: xdg-document-portal exits 20
+# (on_name_lost -> final_exit_status = 20, document-portal.c). Gating the
+# frontend on its peers' names keeps the supervised instances the only
+# ones on the bus.
+
+deps=""
+while [ $# -gt 0 ] && [ "$1" != "--" ]; do
+	deps="$deps $1"
+	shift
+done
+if [ "$1" != "--" ] || [ -z "$2" ]; then
+	echo "usage: portal-order NAME... -- COMMAND [ARG]..." >&2
+	exit 2
+fi
+shift
+
+i=0
+while [ "$i" -lt 120 ]; do
+	ok=1
+	for n in $deps; do
+		dbus-send --session --print-reply=literal --dest=org.freedesktop.DBus \
+			/org/freedesktop/DBus org.freedesktop.DBus.NameHasOwner \
+			"string:$n" 2>/dev/null | grep -qw true || ok=0
+	done
+	[ "$ok" -eq 1 ] && exec "$@"
+	i=$((i + 1))
+	sleep 0.5
+done
+echo "portal-order: names never appeared:$deps" >&2
+exit 1

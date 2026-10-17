@@ -61,6 +61,38 @@ jobs:
             echo "signing did not modify file — key setup broken"; exit 1; }
           echo "signing OK"
 
+      - name: Seed published packages (skip-if-unchanged)
+        run: |
+          set -e
+          BASE=https://skea999.github.io/feralos-aports
+          REPO="$HOME/packages/src/x86_64"
+          mkdir -p "$REPO"
+          # Pull the PUBLISHED repo (index + apks) into the abuild REPODEST
+          # so that: (1) unchanged packages are skipped in the build step
+          # below, and (2) inter-package deps of CHANGED packages resolve
+          # from the local repo even when the dep itself is skipped.
+          if wget -q "$BASE/feralos-aports/x86_64/APKINDEX.tar.gz" -O /tmp/pub.tgz; then
+            mkdir -p /tmp/pub && tar -xzf /tmp/pub.tgz -C /tmp/pub APKINDEX
+            # APKINDEX blocks: P:<name> / V:<ver> / ... / blank line.
+            # filename = <name>-<ver>.apk where ver already carries -r<N>.
+            # trailing echo guarantees the last block is flushed.
+            { cat /tmp/pub/APKINDEX; echo; } | while IFS= read -r line; do
+              case "$line" in
+                'P:'*) name=${line#P:} ;;
+                'V:'*) ver=${line#V:} ;;
+                '')
+                  if [ -n "$name" ] && [ -n "$ver" ]; then
+                    wget -q "$BASE/feralos-aports/x86_64/$name-$ver.apk" -O "$REPO/$name-$ver.apk" \
+                      || { echo "seed failed: $name-$ver (will rebuild)"; rm -f "$REPO/$name-$ver.apk"; }
+                  fi
+                  name=; ver= ;;
+              esac
+            done
+            echo "seeded published apks: $(ls "$REPO" | wc -l)"
+          else
+            echo "no published index yet (first run) — building everything"
+          fi
+
       - name: Build all packages
         run: |
           set -e
@@ -69,6 +101,7 @@ jobs:
           apk update
           found=0
           built=" "
+          REPO="$HOME/packages/src/x86_64"
           # dependency-safe multi-pass build: every abuild success updates
           # and signs the local src/x86_64 repo index, so a package whose
           # deps are built later in the same run (alphabetical order does
@@ -84,6 +117,26 @@ jobs:
               pkgdir=$(dirname "$d")
               case "$built" in *" $pkgdir "*) continue;; esac
               found=1
+              # skip-if-unchanged: source the APKBUILD for pkgname and
+              # pkgver-pkgrel; when the published repo already carries
+              # that exact apk, reuse it (seeded into REPO above) and
+              # save the full abuild run.
+              pv=$( ( cd "$pkgdir" && . ./APKBUILD >/dev/null 2>&1 && printf '%s %s-r%s' "$pkgname" "$pkgver" "$pkgrel" ) ) || pv=""
+              pkgname=${pv%% *}
+              fullver=${pv#* }
+              if [ -n "$pkgname" ] && [ "$pkgname" != "$fullver" ] && [ -f "$REPO/$pkgname-$fullver.apk" ]; then
+                echo "skip $pkgdir ($pkgname-$fullver already published)"
+                built="$built$pkgdir "
+                progress=1
+                continue
+              fi
+              if [ -n "$pkgname" ]; then
+                # rebuilt package: drop older published builds of the same
+                # name so the final index carries ONE version per package
+                # (versions start with a digit — the glob is name-safe:
+                # foo-[0-9]*.apk never matches foo-bar-*.apk)
+                rm -f "$REPO/$pkgname-"[0-9]*.apk
+              fi
               pending="$pending $pkgdir"
               echo "::group::build $pkgdir (pass $pass)"
               if ( cd "$pkgdir" && abuild -Fr ); then

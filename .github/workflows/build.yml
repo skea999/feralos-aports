@@ -92,6 +92,17 @@ jobs:
           else
             echo "no published index yet (first run) — building everything"
           fi
+          # index the seeded repo NOW: abuild resolves depends against
+          # $REPODEST, and a rebuilt package whose deps are all skipped
+          # would otherwise fail ("no such package") — the per-build
+          # abuild index updates take over from the first build on
+          if [ -n "$(ls -A "$REPO" 2>/dev/null)" ]; then
+            ( cd "$REPO" && apk index \
+                --description "FeralOS src" \
+                --rewrite-arch x86_64 \
+                -o APKINDEX.tar.gz *.apk \
+              && abuild-sign APKINDEX.tar.gz )
+          fi
 
       - name: Build all packages
         run: |

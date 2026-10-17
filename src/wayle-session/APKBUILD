@@ -4,8 +4,8 @@
 # The session script is modeled line-by-line on the FeralOS niri-session
 # (niri-user-dinit): turnstiled async-race wait, full login-env setenv,
 # `dinitctl --user start niri`, existence-filtered session apps
-# (wayle.user veila.user polkit-agent.user wayvnc.user — NOT dms.user),
-# dinit-monitor hold = greetd session lifetime.
+# (wayle.user veila.user polkit-agent.user wayvnc.user stasis.user —
+# NOT dms.user), dinit-monitor hold = greetd session lifetime.
 #
 # Depends on niri-user-dinit for: the niri user service + niri-shutdown,
 # the login-shell trick (/usr/libexec/feralos/login-shell, not in
@@ -13,15 +13,15 @@
 # niri-session mechanism this script mirrors.
 #
 # This package owns the niriWayle wayland-session entry (wayle itself
-# deliberately ships none).
+# deliberately ships none). stasis = idle orchestrator (r3).
 pkgname=wayle-session
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Wayle session — niri compositor + Wayle shell session for FeralOS (user dinit services)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
-depends="niri-user-dinit wayle veila raffi dinit"
+depends="niri-user-dinit wayle veila raffi stasis dinit"
 makedepends=""
 # polkit-agent.user / wayvnc.user are started existence-filtered by the
 # session script; they ship with polkit-agent-user-dinit / wayvnc and stay
@@ -42,7 +42,7 @@ package() {
 }
 
 sha512sums="
-4cc5a49cba261472076924885238b7b05969d1b0b82045cb721c378ef652140b1f5155ee37ff7b0ecd76347f713cc7ee10dccdb80dd790a2e938c2824af02442  wayle-session
+79437bb55ec7d5d1ce183ebefad72799c6436b55ce2c28709a67354101d831573dc79dcaaa43d1ce60e0c0e43085e3dd3813c4f343c338f2693459a1f52d5390  wayle-session
 dfd56a031ace19a51e13d9e3c6da122a883c39064655552ffa58e40594891e5dfaa889c9c4b9702f654a090bfb2f2178efdb9178c96e01a77cb7f4338364432e  wayle.user
 fc491646bd6654fb8c2425f417f2fa8a8d7581f4cc221616aae287f6d4a91e5e6b8ab4787f2c5085a0a60b16118e3748b22c2c7866a6f9a46af074cc845794c5  veila.user
 457b41e0639ae4a101ec81391eddd7c4a1ef54e07905597742dcf9013da5986700f5dd19c8f8a01bb52aee75a581838bb3f4d28bc93a6a87a791553ac63c198b  niriwayle.desktop

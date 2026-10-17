@@ -1,0 +1,18 @@
+#!/bin/sh
+# stasis launcher: resolve the compositor wayland socket + the niri IPC
+# socket (guaranteed by the wait-wayland.user dependency), export them,
+# then exec the idle manager in the FOREGROUND (dinit type=process
+# supervision holds the started marker).
+#
+# stasis needs WAYLAND_DISPLAY (ext-idle-notify + power-off-monitors via
+# niri msg) and NIRI_SOCKET (app-id detection for inhibit_apps/games);
+# the user-dinit environment carries neither (wayle-shell-session
+# pattern — same wrapper family as wayvnc-session).
+for s in "$XDG_RUNTIME_DIR"/wayland-*; do
+    [ -S "$s" ] && export WAYLAND_DISPLAY="${s##*/}"
+done
+for s in "$XDG_RUNTIME_DIR"/niri*.sock; do
+    [ -S "$s" ] && export NIRI_SOCKET="$s"
+done
+export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
+exec stasis

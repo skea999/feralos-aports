@@ -1,11 +1,12 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
-# Unit name = system bus name. D-Bus activation (.service override in
-# /etc/dbus-1/system-services/) starts this unit through feralos-dbus-activate.
+# Unit name = system bus name. D-Bus activation (.service override packaged
+# in /usr/share/feralos/dbus-system-services, materialized at boot into the
+# launch helper's standard dirs) starts this unit through feralos-dbus-activate.
 # The wrapper/config keep their fwupd names (they are internal to the unit).
 pkgname=fwupd-dinit
 pkgver=0.1.0
-pkgrel=6
+pkgrel=7
 pkgdesc="dinit service for fwupd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -26,7 +27,7 @@ package() {
 	install -Dm644 "$srcdir/fwupd.conf" "$pkgdir/etc/dinit.d/config/fwupd.conf"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.fwupd.service" \
-		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.fwupd.service"
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.fwupd.service"
 }
 
 sha512sums="

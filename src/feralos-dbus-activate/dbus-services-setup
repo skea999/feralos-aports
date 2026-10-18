@@ -1,0 +1,9 @@
+# feralos dbus-services-setup — copy the packaged system-bus D-Bus activation
+# overrides into the launch helper's first eligible dir before dbus starts
+# (ADR-010; see feralos-dbus-activate and docs/architecture/dbus-activation.md
+# in the feralos repository).
+type = scripted
+command = /usr/libexec/feralos/dbus-system-services-setup
+depends-on = local.target
+before = dbus
+restart = false

@@ -1,0 +1,34 @@
+#!/bin/sh
+# feralos dbus-system-services-setup — materialize the FeralOS system-bus
+# D-Bus activation overrides (ADR-010) into the launch helper's first
+# eligible standard service directory.
+#
+# The system bus activates through the setuid dbus-daemon-launch-helper,
+# which resolves names ONLY against the standard system service directories
+# (/usr/local/share, /usr/share, /lib) — its config parser is the "trivial"
+# one and never sees /etc/dbus-1/system-services or /run/dbus-1/system-services
+# (those are daemon-enumerated but NOT helper-activatable). /usr/local/share/
+# dbus-1/system-services is first in helper precedence, so the packaged
+# overrides are copied there before dbus starts (dinit unit / OpenRC initd
+# `dbus-services-setup`, both ordered before dbus). Copy-only, idempotent,
+# self-healing at every boot; stale files are pruned.
+
+src=/usr/share/feralos/dbus-system-services
+dst=/usr/local/share/dbus-1/system-services
+
+[ -d "$src" ] || exit 0
+
+rc=0
+mkdir -p "$dst" || exit 1
+
+for f in "$src"/*.service; do
+	[ -e "$f" ] || continue
+	cp -f "$f" "$dst/${f##*/}" || rc=1
+done
+
+for f in "$dst"/*.service; do
+	[ -e "$f" ] || continue
+	[ -e "$src/${f##*/}" ] || rm -f "$f" || rc=1
+done
+
+exit $rc

@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+# feralos dbus-services-setup — copy the packaged system-bus D-Bus activation
+# overrides into the launch helper's first eligible dir before dbus starts
+# (ADR-010; see feralos-dbus-activate).
+description="Materialize FeralOS system-bus D-Bus activation overrides"
+
+depend() {
+	before dbus
+}
+
+start() {
+	ebegin "Materializing FeralOS system-bus D-Bus overrides"
+	/usr/libexec/feralos/dbus-system-services-setup
+	eend $?
+}

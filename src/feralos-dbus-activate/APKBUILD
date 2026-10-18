@@ -5,22 +5,39 @@
 # .service file Exec points here, the shim forwards the activation environment
 # to dinit and starts the unit. See docs/architecture/dbus-activation.md in
 # the feralos repository.
+# Ships dbus-services-setup (dinit unit + OpenRC initd, both before dbus):
+# it materializes the packaged system-bus overrides from
+# /usr/share/feralos/dbus-system-services into /usr/local/share/dbus-1/
+# system-services — the setuid launch helper's trivial parser resolves names
+# only against the standard dirs, never the /etc override tree
+# (daemon-enumerated only, not helper-searched).
 pkgname=feralos-dbus-activate
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="FeralOS D-Bus activation shim: activation always starts a dinit service"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="dinit"
 makedepends=""
-source="dbus-activate"
+source="dbus-activate
+	dbus-system-services-setup
+	dbus-services-setup
+	dbus-services-setup.initd"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
 	install -Dm755 "$srcdir/dbus-activate" "$pkgdir/usr/libexec/feralos/dbus-activate"
+	install -Dm755 "$srcdir/dbus-system-services-setup" "$pkgdir/usr/libexec/feralos/dbus-system-services-setup"
+	install -Dm644 "$srcdir/dbus-services-setup" "$pkgdir/lib/dinit.d/dbus-services-setup"
+	install -Dm755 "$srcdir/dbus-services-setup.initd" "$pkgdir/etc/init.d/dbus-services-setup"
 }
 
-sha512sums="549a71410319abb4e0668557a512ac2c2367ac39972eeca5d5db0c1376d55e07217606768e3d5ddd37fa1e6fd0d442990b22c6d5c095d4d1ee81a32c08971ef6  dbus-activate"
+sha512sums="
+549a71410319abb4e0668557a512ac2c2367ac39972eeca5d5db0c1376d55e07217606768e3d5ddd37fa1e6fd0d442990b22c6d5c095d4d1ee81a32c08971ef6  dbus-activate
+15df5d926435b5bd48343fa3018707ea84deb7d070bd0cc833d1a5e070f3b749ec6c158f828a4c285eb669821a0fdadb1e94fb3b5ac3b8f47dbe8822447fe9cd  dbus-system-services-setup
+b585336326a7bc2775beb83fcc044ece94cc3d4b23683573caf3e6ecd7c1eb0ea974ceaccee5e530d77d23581b2277172ad26094b939c2d3b2f626fa6f1f93b0  dbus-services-setup
+a3553429ae1e34532ba8055c142a592e054b667bdd7fdc124875461055fed1fda30060617e90874eb321d968126fe0a33e8cb1d55d15c6d18da7348793bbd7f8  dbus-services-setup.initd
+"

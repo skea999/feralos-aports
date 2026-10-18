@@ -2,10 +2,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # dinit services for BlueZ. Unit names = canonical system D-Bus bus names
 # (org.bluez / org.bluez.mesh, ADR-010); D-Bus activation is routed through
-# feralos-dbus-activate via overrides in /etc/dbus-1/system-services/.
+# feralos-dbus-activate via overrides packaged in
+# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# launch helper's first eligible standard service dir).
 pkgname=bluez-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit services for bluetoothd and bluetooth-meshd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -23,9 +25,9 @@ package() {
 	install -Dm644 "$srcdir/org.bluez.mesh" "$pkgdir/lib/dinit.d/org.bluez.mesh"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.bluez.service" \
-		"$pkgdir/etc/dbus-1/system-services/org.bluez.service"
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.bluez.service"
 	install -Dm644 "$srcdir/org.bluez.mesh.service" \
-		"$pkgdir/etc/dbus-1/system-services/org.bluez.mesh.service"
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.bluez.mesh.service"
 }
 
 sha512sums="

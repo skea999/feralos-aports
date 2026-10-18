@@ -2,11 +2,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # dinit service for upower. Daemon path verified on Alpine 3.24:
 # /usr/libexec/upowerd (flat, NOT /usr/libexec/upower/upowerd).
-# Unit name = system bus name. D-Bus activation (.service override in
-# /etc/dbus-1/system-services/) starts this unit through feralos-dbus-activate.
+# Unit name = system bus name. D-Bus activation (.service override packaged
+# in /usr/share/feralos/dbus-system-services, materialized at boot into the
+# launch helper's standard dirs) starts this unit through feralos-dbus-activate.
 pkgname=upower-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for upower"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,7 +30,7 @@ package() {
 		"$pkgdir/etc/dinit.d/config/org.freedesktop.UPower.conf"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.UPower.service" \
-		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.UPower.service"
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.UPower.service"
 }
 
 sha512sums="

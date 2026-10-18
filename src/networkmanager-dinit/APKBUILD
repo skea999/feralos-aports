@@ -3,10 +3,12 @@
 # NetworkManager itself has no D-Bus activation file (clients assume it is
 # already running, enabled as a boot service). The two helper daemons ARE
 # bus-activatable: their units are named after the bus name and activation
-# goes through feralos-dbus-activate (ADR-010).
+# goes through feralos-dbus-activate (ADR-010); the overrides are packaged
+# in /usr/share/feralos/dbus-system-services (materialized at boot into the
+# launch helper's standard dirs).
 pkgname=networkmanager-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for NetworkManager"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -28,9 +30,9 @@ package() {
 		"$pkgdir/lib/dinit.d/org.freedesktop.nm_priv_helper"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.nm_dispatcher.service" \
-		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.nm_dispatcher.service"
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.nm_dispatcher.service"
 	install -Dm644 "$srcdir/org.freedesktop.nm_priv_helper.service" \
-		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.nm_priv_helper.service"
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.nm_priv_helper.service"
 }
 
 sha512sums="

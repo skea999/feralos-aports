@@ -3,10 +3,11 @@
 # dinit service for elogind (depends-on dbus, shutdown stop guard).
 # Unit name = canonical system D-Bus bus name (org.freedesktop.login1,
 # ADR-010); D-Bus activation is routed through feralos-dbus-activate via the
-# override in /etc/dbus-1/system-services/.
+# override packaged in /usr/share/feralos/dbus-system-services (materialized
+# at boot into the launch helper's standard dirs).
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=8
+pkgrel=9
 pkgdesc="dinit service for elogind (depends-on dbus, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -26,7 +27,7 @@ package() {
 		"$pkgdir/lib/dinit.d/org.freedesktop.login1"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.login1.service" \
-		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.login1.service"
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.login1.service"
 	# stop guard: pam_elogind (session tracker PAM stack) talks to elogind over
 	# the system bus while sessions close at shutdown — dinit runs stop-command
 	# INSTEAD of signalling the process (see elogind-stop header)

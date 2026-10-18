@@ -1,0 +1,96 @@
+# Stasis — FeralOS system configuration.
+#
+# Loaded by the daemon started with `-c /etc/stasis/stasis.rune` (see the
+# stasis-session wrapper of this package). While this file exists and
+# parses, the per-user ~/.config/stasis/stasis.rune is NOT read (it is
+# only a fallback for a missing/broken system file) — the upstream system
+# deployment pattern (NixOS module) works the same way.
+#
+# Plan: lock (veila) -> display off (niri) -> suspend (elogind loginctl).
+# Desktops use the steps under `default:`; laptops use `default.ac:` /
+# `default.battery:` (chosen by chassis). Timings follow the upstream
+# templates; brightness steps are omitted (brightnessctl is not installed).
+#
+# Key reference: stasis(5), https://saltnpepper97.github.io/stasis-site/
+
+@author "FeralOS"
+@description "FeralOS idle plan: veila lock -> niri dpms -> loginctl suspend"
+
+default:
+  # login1 (elogind) sleep/wake integration: timers pause around
+  # PrepareForSleep and resume cleanly on wake.
+  enable_loginctl_integration true
+
+  # Honor session D-Bus inhibitors (browsers, Steam, portal clients).
+  enable_dbus_inhibit true
+
+  # Media-aware idle: unmuted non-browser playback pauses the plan.
+  monitor_media true
+  ignore_remote_media true
+
+  # Apps that pause the whole plan while running.
+  inhibit_apps [
+    "vlc"
+    "mpv"
+    r"steam_app_.*"
+  ]
+
+  # Optional: also lock the screen immediately on laptop lid close
+  # (timers pause regardless; upstream example pattern).
+  #lid_close_action "veila lock"
+
+  # ---- Desktop plan ----
+  lock_screen:
+    timeout 300
+    command "veila lock"
+  end
+
+  dpms:
+    timeout 60
+    command "niri msg action power-off-monitors"
+    resume_command "niri msg action power-on-monitors"
+  end
+
+  suspend:
+    timeout 1800
+    command "loginctl suspend"
+  end
+
+  # ---- Laptop plan: AC (relaxed) ----
+  ac:
+    dpms:
+      timeout 120
+      command "niri msg action power-off-monitors"
+      resume_command "niri msg action power-on-monitors"
+    end
+
+    lock_screen:
+      timeout 180
+      command "veila lock"
+    end
+
+    suspend:
+      timeout 600
+      command "loginctl suspend"
+    end
+  end
+
+  # ---- Laptop plan: battery (aggressive) ----
+  battery:
+    dpms:
+      timeout 30
+      command "niri msg action power-off-monitors"
+      resume_command "niri msg action power-on-monitors"
+    end
+
+    lock_screen:
+      timeout 60
+      command "veila lock"
+    end
+
+    suspend:
+      timeout 120
+      command "loginctl suspend"
+    end
+  end
+end

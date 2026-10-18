@@ -4,6 +4,13 @@
 # then exec the idle manager in the FOREGROUND (dinit type=process
 # supervision holds the started marker).
 #
+# stasis runs with the SYSTEM config `-c /etc/stasis/stasis.rune` (shipped
+# by this package; FeralOS plan: veila lock -> niri dpms -> loginctl
+# suspend). The upstream NixOS module starts its service the same way —
+# without `-c` the daemon would bootstrap ~/.config/stasis/stasis.rune
+# from a generic template (swaylock/systemctl, absent on FeralOS) and
+# prefer it over the system file.
+#
 # stasis needs WAYLAND_DISPLAY (ext-idle-notify + power-off-monitors via
 # niri msg) and NIRI_SOCKET (app-id detection for inhibit_apps/games);
 # the user-dinit environment carries neither (wayle-shell-session
@@ -15,4 +22,4 @@ for s in "$XDG_RUNTIME_DIR"/niri*.sock; do
     [ -S "$s" ] && export NIRI_SOCKET="$s"
 done
 export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
-exec stasis
+exec stasis -c /etc/stasis/stasis.rune

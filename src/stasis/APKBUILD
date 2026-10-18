@@ -2,7 +2,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # stasis: context-aware Wayland idle manager (Rust) — owns the niriWayle
 # idle timing (lock -> dpms -> suspend plans; veila = lock screen only,
-# its own idle stays disabled). Rust/cargo package: matugen pattern
+# its own idle stays disabled). Ships the FeralOS system config
+# /etc/stasis/stasis.rune (veila lock -> niri dpms -> loginctl suspend),
+# read via `-c` by the stasis-session wrapper — the upstream NixOS-module
+# system-deployment pattern (without `-c` the daemon would bootstrap a
+# generic ~/.config template with swaylock/systemctl, absent on FeralOS).
+# Rust/cargo package: matugen pattern
 # (fetch --locked + build/test --frozen).
 #
 # Licensing: GPL-3.0-only source; the compiled program links
@@ -16,7 +21,7 @@
 # access for gamepad activity.
 pkgname=stasis
 pkgver=1.6.3
-pkgrel=0
+pkgrel=1
 pkgdesc="Context-aware Wayland idle manager — lock/dpms/suspend plans with media, game and gamepad awareness"
 url="https://github.com/saltnpepper97/stasis"
 arch="all"
@@ -26,6 +31,7 @@ makedepends="cargo gcc"
 source="$pkgname-$pkgver.tar.gz::https://github.com/saltnpepper97/stasis/archive/refs/tags/v$pkgver.tar.gz
 	stasis.user
 	stasis-session
+	stasis.rune
 	AGPL-3.0-only.txt"
 options="!check" # unit tests need a rust toolchain env; upstream runs 68 unit tests in their CI
 
@@ -44,6 +50,9 @@ package() {
 	install -Dm644 "$srcdir/stasis.user" "$pkgdir/etc/dinit.d/user/stasis.user"
 	install -Dm755 "$srcdir/stasis-session" \
 		"$pkgdir/etc/dinit.d/user/scripts/stasis-session"
+	# FeralOS system config (read via `-c /etc/stasis/stasis.rune` in the
+	# session wrapper; apk-protected, user-editable)
+	install -Dm644 "$srcdir/stasis.rune" "$pkgdir"/etc/stasis/stasis.rune
 	install -Dm644 assets/stasis.png \
 		"$pkgdir/usr/share/icons/hicolor/256x256/apps/stasis.png"
 	# both licenses must ship with the compiled program (AGPL-3.0 section 13);
@@ -56,7 +65,8 @@ package() {
 
 sha512sums="
 0b347802e28415ab5d63721c6b7949957a09f4687209968ad0738e756b828c95f30b8abbc6f83800b00d515acd5871591713d7d34030b218b31054aeee183edd  stasis-1.6.3.tar.gz
-a2e08ab60fc85af3e286b6fe3f571ab8f79e0db3651b6e6931c89ae1e93e71a61fae4ef99e7ec98193ea0acccd0e71ff9182531c6dffe7e12113d593d7f7badb  stasis.user
-ac906d8f59e602a5b97a84fd0891d5b27961dec139064408f776db259d04da4462801b02026a46a35a41876bacf1ea25ffa892c48ffe6c0d6eaafad62726cf64  stasis-session
+5de1f9d60aab248a6b1dd893ba71b52d8431b3d79bf7b7179bf1e335302d5cbd1f2557e364d63396222be075e2414cbaff54f5645c8a3678a8a8577cb1a49cd2  stasis.user
+021db5de1f29166a8e34a161e778976a7a517d540fc8bc63a838aeaaa82cae9c540aee3d8cefcc0a2e2875d81bea3a75308b2733df84a5f9710353039c022785  stasis-session
+aef9629caa326c2e43c6a7be63bd5b23baf54fdb68b2e1e839e3ae6bd43c5502a462ebc3a8e537521644b4494ccf91b5347e4d42edd01e242633c1b8882b300b  stasis.rune
 3568a76677f3d55dbbc7fc33c4073b4714cc6f68d92cd842a9ca2b230e8bd2140e59c3fc3cce34be34ffed78d75ab6e9d991ba59bf7c4addde7fb96648d3375d  AGPL-3.0-only.txt
 "

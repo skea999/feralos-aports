@@ -1,8 +1,9 @@
 # dinit user service: stasis idle manager (niriWayle session; started by
 # wayle-session). Owns ALL idle timing (lock -> dpms -> suspend plans via
-# ~/.config/stasis/config.rune); veila's own idle stays disabled — veila
-# is the lock SCREEN, stasis the orchestrator. Env-resolving wrapper:
-# the user-dinit env has neither WAYLAND_DISPLAY nor NIRI_SOCKET
+# the system config /etc/stasis/stasis.rune — see the `-c` in the
+# stasis-session wrapper); veila's own idle stays disabled — veila is the
+# lock SCREEN, stasis the orchestrator. Env-resolving wrapper: the
+# user-dinit env has neither WAYLAND_DISPLAY nor NIRI_SOCKET
 # (wayle-shell-session pattern).
 type = process
 load-options = sub-vars

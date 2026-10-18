@@ -1,0 +1,16 @@
+# dinit service: bluetooth-meshd (system daemon, org.bluez.mesh)
+# Bluetooth Mesh daemon — separate daemon from bluetoothd (BlueZ ships both:
+# /usr/lib/bluetooth/bluetoothd + /usr/lib/bluetooth/bluetooth-meshd; the
+# mesh service file execs bluetooth-meshd, source-verified in the Alpine
+# bluez APK contents, v3.24). Unit name = canonical system D-Bus bus name
+# (org.bluez.mesh, ADR-010): D-Bus activation is routed through
+# feralos-dbus-activate via the override in
+# /etc/dbus-1/system-services/org.bluez.mesh.service.
+type = process
+log-type = file
+logfile = /var/log/dinit/bluetooth-meshd.log
+command = /usr/lib/bluetooth/bluetooth-meshd
+smooth-recovery = true
+depends-on = dbus
+depends-on = local.target
+before = login.target

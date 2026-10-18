@@ -1,0 +1,45 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit services for kio (KF6). Unit names = canonical session D-Bus
+# bus names (ADR-010); D-Bus activation is routed through
+# feralos-dbus-activate via overrides in /usr/share/feralos/dbus-services/.
+# All four bus names (org.kde.kiod6, kioexecd6, kpasswdserver6, kssld6) are
+# served by the SAME binary — /usr/lib/libexec/kf6/kiod6 — because KIO's
+# auxiliary daemons are plugins loaded by kiod6; source-verified in the
+# Alpine kio 6.26.0 APK contents (all four shipped .service files carry
+# Exec=/usr/lib/libexec/kf6/kiod6, no per-daemon binaries exist).
+pkgname=kio-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit services for kio (kiod6 + kioexecd/kpasswdserver/kssld)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit kio feralos-dbus-activate"
+makedepends=""
+source="org.kde.kiod6.user org.kde.kioexecd6.user
+	org.kde.kpasswdserver6.user org.kde.kssld6.user
+	org.kde.kiod6.service org.kde.kioexecd6.service
+	org.kde.kpasswdserver6.service org.kde.kssld6.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for s in org.kde.kiod6 org.kde.kioexecd6 org.kde.kpasswdserver6 org.kde.kssld6; do
+		install -Dm644 "$srcdir/$s.user" "$pkgdir/etc/dinit.d/user/$s.user"
+		install -Dm644 "$srcdir/$s.service" \
+			"$pkgdir/usr/share/feralos/dbus-services/$s.service"
+	done
+}
+
+sha512sums="
+a2f8ce766e5d524beb83781af260e97a29202a182a36e8dc95826ff262672cdcbb1622b11c3488f46d8500b4360f4a5db397380808cddb22b60bd0b0a129343c  org.kde.kiod6.user
+24f74ec0510582be7eda53b950e7598c5b7738c856856d286a9cdbe575e68d9735644631fa9aca8e9afead373b03165df1c2d112f8b9c987e99ec7f0b6660a7a  org.kde.kioexecd6.user
+95ebd9fa2789b2c38d089868a807a820d55c09a0bcd0b7372a85d9a396c0c089721ab99839bf5797c50da18fe3d684b833d2e622855ef9eac858a352bf9a725f  org.kde.kpasswdserver6.user
+456cf47d92d13ff1a6401f8fd6b8d352713e5562c6c5f75ccc7bda588ec77bc931d99f807bd490dd328f008f79566b51e5b90db632310f8dc1316437f3aa71f4  org.kde.kssld6.user
+b2a463bdd2b3c92cbb85d998be1676e88d4c41438f5dba68cfd5c67e2a8fab75291fa746661dbe4777818c8675d29ae2cb593f521e034778b140bb109c4347eb  org.kde.kiod6.service
+d1bdb74473174ca5b681d7560f68413960d3791fb6a639d202bf23e4e078862e4a37e72ef2800788395c87e99a1984374b19c1f4ff9f6c71b014fd20e5a395ea  org.kde.kioexecd6.service
+32e034188fb7ebc2fc59eaac692838eade189c1ac029ab05ff26ada28eeda7748eeb05a69129658bf7c78fd3a08114fcd6190a4105e9735737df7514a533974b  org.kde.kpasswdserver6.service
+0bc96a97ee96d8f70bb383f358b1f2612ba7f64bbd5791c47e567fa38c592f8831655298386b7981870fda7eccedf27cd5dad1c16070a463c8b572996aefd59a  org.kde.kssld6.service
+"

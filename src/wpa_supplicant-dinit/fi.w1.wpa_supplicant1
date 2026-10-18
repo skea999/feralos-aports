@@ -1,0 +1,17 @@
+# dinit service: wpa_supplicant (system daemon)
+# Unit name = canonical system D-Bus bus name (fi.w1.wpa_supplicant1,
+# ADR-010): D-Bus activation is routed through feralos-dbus-activate via the
+# override in /etc/dbus-1/system-services/fi.w1.wpa_supplicant1.service.
+# Command source-verified against Alpine main/wpa_supplicant (3.24-stable
+# initd + shipped activation file): /sbin/wpa_supplicant -u — foreground
+# (NO -B: dinit supervises) with the D-Bus interface enabled (-u), exactly
+# what the upstream activation file execs. NOTE: Alpine's path is /sbin,
+# not /usr/sbin (aligned with the harness nm_wifi_support fix).
+type = process
+log-type = file
+logfile = /var/log/dinit/wpa_supplicant.log
+command = /sbin/wpa_supplicant -u
+smooth-recovery = true
+depends-on = dbus
+depends-on = local.target
+before = login.target

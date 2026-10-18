@@ -17,9 +17,9 @@ rt="${XDG_RUNTIME_DIR:-/run/user/$uid}"
 if [ -S "$rt/oo7-pam.sock" ]; then
     exit 0
 fi
-if dinitctl --user status secrets.user >/dev/null 2>&1; then
-    dinitctl --user restart secrets.user >/dev/null 2>&1 || true
+if dinitctl --user status org.freedesktop.secrets.user >/dev/null 2>&1; then
+    dinitctl --user restart org.freedesktop.secrets.user >/dev/null 2>&1 || true
 else
-    dinitctl --user start secrets.user >/dev/null 2>&1 || true
+    dinitctl --user start org.freedesktop.secrets.user >/dev/null 2>&1 || true
 fi
 exit 0

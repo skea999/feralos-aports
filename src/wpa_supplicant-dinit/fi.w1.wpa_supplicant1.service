@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=fi.w1.wpa_supplicant1
+Exec=/usr/libexec/feralos/dbus-activate fi.w1.wpa_supplicant1 -- /sbin/wpa_supplicant -u
+User=root

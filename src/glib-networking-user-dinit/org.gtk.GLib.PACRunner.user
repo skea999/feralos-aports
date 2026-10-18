@@ -1,0 +1,15 @@
+# dinit user service: GLib PACRunner (org.gtk.GLib.PACRunner)
+# Proxy Auto-Configuration resolver — started on demand by GLib/WebKit when
+# a PAC script must be evaluated. Binary verified in the Alpine
+# glib-networking 2.80.1 APK contents: /usr/libexec/glib-pacrunner (matching
+# the shipped org.gtk.GLib.PACRunner.service Exec).
+# Unit name = canonical session D-Bus bus name (ADR-010); D-Bus activation
+# is routed through
+# /usr/share/feralos/dbus-services/org.gtk.GLib.PACRunner.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gtk.GLib.PACRunner.log
+command = /usr/libexec/glib-pacrunner
+working-dir = $HOME
+depends-on = dbus.user

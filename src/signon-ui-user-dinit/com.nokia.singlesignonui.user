@@ -1,0 +1,13 @@
+# dinit user service: signon-ui serving com.nokia.singlesignonui
+# Legacy Single Sign-On UI bus name — the SAME /usr/bin/signon-ui binary
+# serves both names (source-verified in the Alpine signon-ui APK: both
+# shipped .service files exec signon-ui). Unit name = canonical session
+# D-Bus bus name (ADR-010); D-Bus activation is routed through
+# /usr/share/feralos/dbus-services/com.nokia.singlesignonui.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/com.nokia.singlesignonui.log
+command = /usr/bin/signon-ui
+working-dir = $HOME
+depends-on = dbus.user

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.portal.Tracker
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.portal.Tracker.user -- /usr/libexec/tinysparql-xdg-portal-3

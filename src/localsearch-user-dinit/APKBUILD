@@ -12,20 +12,25 @@
 #       both name families)
 #   localsearch-extractor-3 has no D-Bus name (spawned by the indexer) -> no
 #       unit and no activation file.
+#   org.freedesktop.portal.Tracker -> tinysparql-xdg-portal-3 (its OWN unit:
+#       the portal ships in the tinysparql package — Alpine v3.24 APK
+#       contents — not in localsearch; tinysparql is a localsearch dep).
 pkgname=localsearch-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="User dinit services for localsearch (indexer + control + writeback)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
-depends="dinit localsearch feralos-dbus-activate"
+depends="dinit localsearch tinysparql feralos-dbus-activate"
 makedepends=""
 source="org.freedesktop.LocalSearch3.user org.freedesktop.LocalSearch3.Control.user
 	org.freedesktop.LocalSearch3.Writeback.user
+	org.freedesktop.portal.Tracker.user
 	org.freedesktop.LocalSearch3.service org.freedesktop.Tracker3.Miner.Files.service
 	org.freedesktop.LocalSearch3.Control.service org.freedesktop.Tracker3.Miner.Files.Control.service
-	org.freedesktop.LocalSearch3.Writeback.service org.freedesktop.Tracker3.Writeback.service"
+	org.freedesktop.LocalSearch3.Writeback.service org.freedesktop.Tracker3.Writeback.service
+	org.freedesktop.portal.Tracker.service"
 
 build() { return 0; }
 check() { return 0; }
@@ -37,23 +42,28 @@ package() {
 		"$pkgdir/etc/dinit.d/user/org.freedesktop.LocalSearch3.Control.user"
 	install -Dm644 "$srcdir/org.freedesktop.LocalSearch3.Writeback.user" \
 		"$pkgdir/etc/dinit.d/user/org.freedesktop.LocalSearch3.Writeback.user"
+	install -Dm644 "$srcdir/org.freedesktop.portal.Tracker.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.portal.Tracker.user"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	for s in org.freedesktop.LocalSearch3 org.freedesktop.Tracker3.Miner.Files \
 		org.freedesktop.LocalSearch3.Control org.freedesktop.Tracker3.Miner.Files.Control \
-		org.freedesktop.LocalSearch3.Writeback org.freedesktop.Tracker3.Writeback; do
+		org.freedesktop.LocalSearch3.Writeback org.freedesktop.Tracker3.Writeback \
+		org.freedesktop.portal.Tracker; do
 		install -Dm644 "$srcdir/$s.service" \
 			"$pkgdir/usr/share/feralos/dbus-services/$s.service"
 	done
 }
 
 sha512sums="
-4875e4acbe46de36ce14a5eb06c8a3859570cbccb18dc1491788235ae7be3c429d026162badab52f4c9dcf538abebd47e68adf485551b595cf496046f08dbdab  org.freedesktop.LocalSearch3.user
-226375f670fb641e8fc826ef00d081d2728d9cd9ee4c5b6e6a4a1ac977150237c91c598c67ee4911964b4b3760b96bf077db71c91b076bd399a24687683bad70  org.freedesktop.LocalSearch3.Control.user
-5c9854c18101dd7ecfb2c685d326a1891e216e2c75bd9d5a850e3ed0c1c226ad13d79bae0498d637f7e265a7b9ac60a3af8f978d728215ba617ea6bee2ae7519  org.freedesktop.LocalSearch3.Writeback.user
+0b3a255c5b1e29c9dc90f8a237d19e55c5ab3d03c36f7392195c05a8b46d0e7fa8bed726e7b9212655ce7b73fe624feb29c0c9e8b415b60f0fa98e5fb0e3a057  org.freedesktop.LocalSearch3.user
+b49e8c20400555ab811c473cc69b4cf18160deab89f5e38007407283e892bd00704d3ace999a616037907ab9d3d1904ee6fa513a408f6e5480b29467d3f0e585  org.freedesktop.LocalSearch3.Control.user
+5272dd29f6f1f0455217e6b196610182289c36e3630c8f1b6e7865716c26d288013bd36096d49e3e8aacf55822dbce6aaf971fe12edec486094dc30753885364  org.freedesktop.LocalSearch3.Writeback.user
+0e0e4b45e3da3c80cfef107f0e424f627052d68d960cc1297926a6ef59cf388e1125cb2973ee7cbf7588ceb93b035621391adea9086fc17043c503955269785c  org.freedesktop.portal.Tracker.user
 47c0863da0efb327a9994d448ced1a30285870c1a2b40900272c02fb04bfeb9de79c8440ddb44fd3f1e873bde8fb571dfb3ce42be0f0020987e672ab79f22af1  org.freedesktop.LocalSearch3.service
 e50e5e69642eef3b62c755f65a77619d917d9d5842ff2224a4df498fb1a1ee53f16eda5cdeabad662aee0b5eaca655349703f1941e1b7f479201f307463dbd60  org.freedesktop.Tracker3.Miner.Files.service
 49053ebfe95b2f2f655db5bb6d52573978b844760968da09bac4a921363ee67bdd2ace37794e2ebaabc7889553563b3f69ab90907012aea09057f5caeb67abb3  org.freedesktop.LocalSearch3.Control.service
 98b3194109a65a1d92de6ecf3f8ee0d368d225a9e1a4782d6c8c50016c7d612d6cd4a8c97958d50393f5edc02a90a14390a14c20d0d513db577399f61d3253ce  org.freedesktop.Tracker3.Miner.Files.Control.service
 9922a17ce28b9e5c6d70fccd042a2bd73aef83e3e16bab3e0721d0d97292227965317e8665ce08c99a284e0e04ba0c12ba29a0bee5046d9be842019b088e813e  org.freedesktop.LocalSearch3.Writeback.service
 595b18989d2838c07a2c7161788be5a3120fc182aad1369078e39b2b43065124180824bf96ca5f509eb42bb34d9da638c97ec83efb0bb43c9cd1c5bf75429c5d  org.freedesktop.Tracker3.Writeback.service
+8d712abe306f48e7e460f0a9e0ca807fca4aa60ba79b683854de379e1448ab184fe165df9e9a734d9f09a6025b6a1e1b22d45f10ce1b4c88601b29c98f02d2b9  org.freedesktop.portal.Tracker.service
 "

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.gtk.GLib.PACRunner
+Exec=/usr/libexec/feralos/dbus-activate org.gtk.GLib.PACRunner.user -- /usr/libexec/glib-pacrunner

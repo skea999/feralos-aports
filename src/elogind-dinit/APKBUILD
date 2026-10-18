@@ -1,15 +1,20 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
+# dinit service for elogind (depends-on dbus, shutdown stop guard).
+# Unit name = canonical system D-Bus bus name (org.freedesktop.login1,
+# ADR-010); D-Bus activation is routed through feralos-dbus-activate via the
+# override in /etc/dbus-1/system-services/.
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit service for elogind (depends-on dbus, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-depends="dinit elogind dbus dbus-wait-for-dinit"
+depends="dinit elogind dbus dbus-wait-for-dinit feralos-dbus-activate"
 makedepends=""
-source="elogind
+source="org.freedesktop.login1
+	org.freedesktop.login1.service
 	elogind-stop"
 
 build() { return 0; }
@@ -17,7 +22,11 @@ check() { return 0; }
 
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
-	install -Dm644 "$srcdir/elogind" "$pkgdir/lib/dinit.d/elogind"
+	install -Dm644 "$srcdir/org.freedesktop.login1" \
+		"$pkgdir/lib/dinit.d/org.freedesktop.login1"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.login1.service" \
+		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.login1.service"
 	# stop guard: pam_elogind (session tracker PAM stack) talks to elogind over
 	# the system bus while sessions close at shutdown — dinit runs stop-command
 	# INSTEAD of signalling the process (see elogind-stop header)
@@ -25,6 +34,7 @@ package() {
 }
 
 sha512sums="
-92b9ac452e8c000ce97b6018a8ca29754b118fde195a95c31b0f9b76c370adafb7cdba4b3f5ce8ff4d40d9d85154820dfb376576bfa906526634671bfb585388  elogind
+61bf7d7d33e752c96a882029f03e13366588404c17d93c4e857c1fb80115d4eb4b2eb8de9fcef6af8aa622141e7a4e8aff311e79f771871363eecfe4ae7072fe  org.freedesktop.login1
+9515d817859233772ee0413ab1c125008077b3aadfa1e504e405b080af49a499b6c1a129d3ad9137859109f1b24e293af0b47343d30fc2b0f4b9737a09c092fb  org.freedesktop.login1.service
 3a12c8e41fef9a5594d693edcf6c9e92a69663ba8e72fd9b04bbc03e2485c3c93ac2b22c84aaaac5475883bfffdf01fca0e4a538ae61737e32b1a94fe41c07ab  elogind-stop
 "

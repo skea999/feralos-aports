@@ -1,0 +1,18 @@
+# dinit user service: TinySPARQL XDG portal (org.freedesktop.portal.Tracker)
+# The Tracker portal (sandboxed metadata queries) is served by
+# /usr/libexec/tinysparql-xdg-portal-3 — a DIFFERENT binary from the
+# localsearch indexer (source-verified: the activation file
+# org.freedesktop.portal.Tracker.service ships in Alpine's tinysparql
+# package, not localsearch; upstream GNOME/localsearch has no such service),
+# hence its own unit here. Unit name = canonical session D-Bus bus name
+# (ADR-010); D-Bus activation is routed through
+# /usr/share/feralos/dbus-services/org.freedesktop.portal.Tracker.service.
+# tinysparql is a hard dependency of localsearch, so it is always present
+# when this package is installed.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.freedesktop.portal.Tracker.log
+command = /usr/libexec/tinysparql-xdg-portal-3
+working-dir = $HOME
+depends-on = dbus.user

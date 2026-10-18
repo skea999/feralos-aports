@@ -1,7 +1,8 @@
 # dinit user service: localsearch file indexer (org.freedesktop.LocalSearch3)
 # File system data miner. Unit name = canonical D-Bus bus name (ADR-010);
 # D-Bus activation is routed through
-# /usr/local/share/dbus-1/services/org.freedesktop.LocalSearch3.service.
+# /usr/share/feralos/dbus-services/org.freedesktop.LocalSearch3.service
+# (materialized into the session's $XDG_RUNTIME_DIR/dbus-1/services at login).
 # The daemon claims BOTH org.freedesktop.LocalSearch3 and the legacy
 # org.freedesktop.Tracker3.Miner.Files name (source-verified in
 # src/indexer/tracker-main.c: DBUS_NAME_SUFFIX + LEGACY_DBUS_NAME_SUFFIX), so

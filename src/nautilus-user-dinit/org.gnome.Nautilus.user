@@ -1,0 +1,15 @@
+# dinit user service: Nautilus (org.gnome.Nautilus)
+# GNOME Files — started in `--gapplication-service` mode, exactly what
+# upstream's activation files exec (source-verified in the Alpine nautilus
+# 50.1 APK: both org.gnome.Nautilus.service and org.freedesktop.FileManager1
+# carry Exec=/usr/bin/nautilus --gapplication-service).
+# Unit name = canonical session D-Bus bus name (ADR-010); D-Bus activation
+# is routed through /usr/share/feralos/dbus-services/org.gnome.Nautilus.service
+# and .../org.freedesktop.FileManager1.service — both map to this unit.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.Nautilus.log
+command = /usr/bin/nautilus --gapplication-service
+working-dir = $HOME
+depends-on = dbus.user

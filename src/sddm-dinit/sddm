@@ -4,4 +4,4 @@ logfile = /var/log/dinit/sddm.log
 command = /usr/bin/sddm
 smooth-recovery = true
 depends-on = login.target
-depends-on = elogind
+depends-on = org.freedesktop.login1

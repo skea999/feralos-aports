@@ -1,7 +1,8 @@
 # dinit user service: localsearch control (org.freedesktop.LocalSearch3.Control)
 # Tracker control interface. Unit name = canonical D-Bus bus name (ADR-010);
 # D-Bus activation is routed through
-# /usr/local/share/dbus-1/services/org.freedesktop.LocalSearch3.Control.service.
+# /usr/share/feralos/dbus-services/org.freedesktop.LocalSearch3.Control.service
+# (materialized into the session's $XDG_RUNTIME_DIR/dbus-1/services at login).
 # The legacy org.freedesktop.Tracker3.Miner.Files.Control activation file maps
 # to this same unit.
 type = process

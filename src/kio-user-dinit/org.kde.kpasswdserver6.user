@@ -1,0 +1,14 @@
+# dinit user service: kiod6 serving org.kde.kpasswdserver6
+# KIO password server — upstream's activation file execs the SAME kiod6
+# binary (KIO daemons are plugins loaded by kiod6; source-verified in the
+# Alpine kio 6.26.0 APK: all four org.kde.k*6.service files carry
+# Exec=/usr/lib/libexec/kf6/kiod6). Unit name = canonical session D-Bus bus
+# name (ADR-010); D-Bus activation is routed through
+# /usr/share/feralos/dbus-services/org.kde.kpasswdserver6.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.kde.kpasswdserver6.log
+command = /usr/lib/libexec/kf6/kiod6
+working-dir = $HOME
+depends-on = dbus.user

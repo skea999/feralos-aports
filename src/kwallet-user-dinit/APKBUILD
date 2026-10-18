@@ -1,21 +1,27 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
-# User dinit service for kwallet. Unit name = canonical session D-Bus bus name
-# (ADR-010); D-Bus activation is routed through feralos-dbus-activate via
-# overrides in /usr/share/feralos/dbus-services/. The legacy
+# User dinit services for kwallet. Unit names = canonical session D-Bus bus
+# names (ADR-010); D-Bus activation is routed through feralos-dbus-activate
+# via overrides in /usr/share/feralos/dbus-services/. The legacy
 # org.kde.kwalletd5 alias maps to the SAME unit: Alpine's kwallet package
 # ships no kwalletd5 binary and upstream's own kwalletd5 compat service file
 # execs kwalletd6 too.
+# org.kde.secretservicecompat and org.freedesktop.impl.portal.desktop.kwallet
+# are served by the SEPARATE ksecretd binary (/usr/bin/ksecretd, verified in
+# the Alpine kwallet 6.26.0 APK contents), hence their own units.
 pkgname=kwallet-user-dinit
 pkgver=0.1.0
-pkgrel=1
-pkgdesc="User dinit service for kwallet (kwalletd6 + kwalletd5 alias)"
+pkgrel=2
+pkgdesc="User dinit services for kwallet (kwalletd6 + ksecretd compat/portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="dinit kwallet feralos-dbus-activate"
 makedepends=""
-source="org.kde.kwalletd6.user org.kde.kwalletd6.service org.kde.kwalletd5.service"
+source="org.kde.kwalletd6.user org.kde.kwalletd6.service org.kde.kwalletd5.service
+	org.kde.secretservicecompat.user org.kde.secretservicecompat.service
+	org.freedesktop.impl.portal.desktop.kwallet.user
+	org.freedesktop.impl.portal.desktop.kwallet.service"
 
 build() { return 0; }
 check() { return 0; }
@@ -23,15 +29,27 @@ check() { return 0; }
 package() {
 	install -Dm644 "$srcdir/org.kde.kwalletd6.user" \
 		"$pkgdir/etc/dinit.d/user/org.kde.kwalletd6.user"
+	install -Dm644 "$srcdir/org.kde.secretservicecompat.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.secretservicecompat.user"
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.kwallet.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.desktop.kwallet.user"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.kde.kwalletd6.service" \
 		"$pkgdir/usr/share/feralos/dbus-services/org.kde.kwalletd6.service"
 	install -Dm644 "$srcdir/org.kde.kwalletd5.service" \
 		"$pkgdir/usr/share/feralos/dbus-services/org.kde.kwalletd5.service"
+	install -Dm644 "$srcdir/org.kde.secretservicecompat.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.kde.secretservicecompat.service"
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.kwallet.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.impl.portal.desktop.kwallet.service"
 }
 
 sha512sums="
-ffcedb51dc11daed2c052c7bd7f61010b86effd80eb728a4b7c488756ec5dc3be021c99c1da6f42c5c5a9ec73d871ad74e578759b16ecbde5777550da6c897e6  org.kde.kwalletd6.user
+e7f3e10be58dd1aeb033e127b4001b0dd94f7bcf9519abb271714c83b9dcb8e03eb7f7917d9a0ae1c2efffd4842436c0ae42060d5484802f26c56f58be2dc922  org.kde.kwalletd6.user
 d52d47349f6f97a00319fe916b39bb31317fb08f461f8b8d6e62fbfff4080100b1159b05c3ceefb9fb1a333c8f83139d096e236c020ac269a7a14f3c80dd67c6  org.kde.kwalletd6.service
 f9f0dc9d09a808c118f529aad244eed47f4fe947bf50a5c16e8367294973cfb6f958e53a97382fbe426a426c4041e5c2f9be0e7424610895b62b90dc0ca74caf  org.kde.kwalletd5.service
+2467137df2347558b1e160c19d1ddf1372d4a855173d0a8df69c0d55902066a7c574fb09dd06bf22c9134e6af5f70a5860860f2a6664359520e1edc8bd881313  org.kde.secretservicecompat.user
+007e7441a889061cecd9263dbeb3294f80edc0c81bcc9cc88e7bb5b906bf9fe41f2a765e9ace89022913f8e13c052d71e37c981af2024c58295dc587a0f56c37  org.kde.secretservicecompat.service
+b08507cd3c8be647084630a7ae18244f423415cda6bf7ce627595e115be225a1d6d429584e4b44ed93feff69ea25617a161bf28a7ba611d9f117a00e1f5f29fc  org.freedesktop.impl.portal.desktop.kwallet.user
+9af0f160639e9c970d9f165ff8587f2c1b38b0b57c3862048af19d7249d2d2b7fa234ff6104dde61aedc668f2ba09696d64aff8b603d52dbca32b1e88a991f98  org.freedesktop.impl.portal.desktop.kwallet.service
 "

@@ -1,4 +1,7 @@
 # dinit service: bluetoothd (system daemon)
+# Unit name = canonical system D-Bus bus name (org.bluez, ADR-010):
+# D-Bus activation is routed through feralos-dbus-activate via the override
+# in /etc/dbus-1/system-services/org.bluez.service.
 type = process
 log-type = file
 logfile = /var/log/dinit/bluetoothd.log

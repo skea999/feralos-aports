@@ -1,0 +1,13 @@
+# dinit user service: ksecretd serving the KWallet portal backend
+# org.freedesktop.impl.portal.desktop.kwallet — xdg-desktop-portal backend
+# for the Secret portal, served by /usr/bin/ksecretd (source-verified in
+# the Alpine kwallet 6.26.0 APK). Unit name = canonical session D-Bus bus
+# name (ADR-010); D-Bus activation is routed through
+# /usr/share/feralos/dbus-services/org.freedesktop.impl.portal.desktop.kwallet.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.freedesktop.impl.portal.desktop.kwallet.log
+command = /usr/bin/ksecretd
+working-dir = $HOME
+depends-on = dbus.user

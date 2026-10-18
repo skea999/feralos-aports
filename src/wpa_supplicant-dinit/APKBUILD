@@ -1,0 +1,35 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# dinit service for wpa_supplicant. Unit name = canonical system D-Bus bus
+# name (fi.w1.wpa_supplicant1, ADR-010); D-Bus activation is routed through
+# feralos-dbus-activate via the override in /etc/dbus-1/system-services/.
+# Binary path + args source-verified against the Alpine wpa_supplicant APK
+# (v3.24: /sbin/wpa_supplicant) and the Alpine initd (dbus interface -u,
+# foreground). NetworkManager normally spawns its own wpa_supplicant; the
+# unit covers activation when nothing claims the bus name yet.
+pkgname=wpa_supplicant-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for wpa_supplicant (fi.w1.wpa_supplicant1)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit wpa_supplicant feralos-dbus-activate"
+makedepends=""
+source="fi.w1.wpa_supplicant1 fi.w1.wpa_supplicant1.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/fi.w1.wpa_supplicant1" \
+		"$pkgdir/lib/dinit.d/fi.w1.wpa_supplicant1"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/fi.w1.wpa_supplicant1.service" \
+		"$pkgdir/etc/dbus-1/system-services/fi.w1.wpa_supplicant1.service"
+}
+
+sha512sums="
+6136709d21b8817e1d8a1172673bb3bd9a31ce24a0e308fd55cb1af3b065a90a4f8e0da3eb9efc0d50cb6c1419237bac87c9277b44da9f6edabae8b8196fed3b  fi.w1.wpa_supplicant1
+de91586e1eaf0ed39613ca63249241ac83520c38f727cbe70876bb555c8013037ce15bbb7020f048ea5fd89f675f70b67b8e32868ff8f837e8d7327bdc104ee6  fi.w1.wpa_supplicant1.service
+"

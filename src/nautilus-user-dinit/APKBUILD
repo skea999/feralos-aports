@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for Nautilus. Unit name = canonical session D-Bus bus
+# name (ADR-010); D-Bus activation is routed through feralos-dbus-activate
+# via overrides in /usr/share/feralos/dbus-services/. Both activation files
+# shipped by Alpine's nautilus package (org.gnome.Nautilus and
+# org.freedesktop.FileManager1) map to the SAME unit — upstream execs the
+# same command for both (source-verified: /usr/bin/nautilus
+# --gapplication-service).
+pkgname=nautilus-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for Nautilus (+ FileManager1 alias)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit nautilus feralos-dbus-activate"
+makedepends=""
+source="org.gnome.Nautilus.user org.gnome.Nautilus.service
+	org.freedesktop.FileManager1.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.gnome.Nautilus.user" \
+		"$pkgdir/etc/dinit.d/user/org.gnome.Nautilus.user"
+	# D-Bus activation overrides: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.gnome.Nautilus.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.gnome.Nautilus.service"
+	install -Dm644 "$srcdir/org.freedesktop.FileManager1.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.FileManager1.service"
+}
+
+sha512sums="
+fe5a77f269123ace2bdefdc28a49ce02461f164114cb74bd83184f0bdb85534cee7886122992d3824087e3d005fc31b5f32ea6321c206f575a1b536a8d843e7a  org.gnome.Nautilus.user
+8d2afa3fde7a52a2691fa79f10d074b4b8eca8f7458d671c16e376ebeb04982b88c3a2ae10d7b09b72122bd325af22d7a4ca07287157f90df73c18bb900ec441  org.gnome.Nautilus.service
+236adb3516cbf3c43180637a34fdc505c626beffab86d5bf229a158c137c2324ad1e1dab533e65bd4d948a7cacf3561bc2f45d9af2069a3185b70a2bff799fb0  org.freedesktop.FileManager1.service
+"

@@ -2,7 +2,8 @@
 # Backend for the Secret portal; zbus connects to the session bus at runtime.
 # Unit name = the portal's real well-known bus name (verified in the oo7 portal
 # source: PORTAL_NAME const + meson dbus_name). D-Bus activation is routed to
-# this unit via /usr/local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.oo7.service.
+# this unit via /usr/share/feralos/dbus-services/org.freedesktop.impl.portal.desktop.oo7.service
+# (materialized into the session's $XDG_RUNTIME_DIR/dbus-1/services at login).
 # NOTE: org.freedesktop.impl.portal.Secret is the portal backend INTERFACE,
 # not a bus name — an activation file under that name can never fire (the
 # former override was dead and has been removed).

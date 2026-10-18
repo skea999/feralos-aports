@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.bluez.mesh
+Exec=/usr/libexec/feralos/dbus-activate org.bluez.mesh -- /usr/lib/bluetooth/bluetooth-meshd
+User=root

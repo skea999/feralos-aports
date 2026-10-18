@@ -1,0 +1,25 @@
+#!/bin/sh
+# FeralOS: pam_oo7 auto_start recovery path. The oo7 PAM module execs
+# /usr/bin/oo7-daemon when the listener socket /run/user/$UID/oo7-pam.sock
+# is missing (20x100ms connect retry window). Alpine ships the real binary
+# at /usr/libexec/oo7-daemon; this path exists so the module's recovery can
+# actually find something — but the daemon may ONLY ever run as a
+# SUPERVISED user-dinit service (FeralOS rule: no unsupervised session
+# daemons, ever), so this wrapper asks the user dinit to start the secrets
+# service — or restart it when the service is up but its socket was deleted
+# with /run/user on a session transition (daemon left on an orphaned
+# inode) — and returns. dinitctl --user start/restart blocks until the
+# service reaches the started state, so the PAM retry loop finds the fresh
+# socket. On any dinit failure it exits silently: the PAM module keeps
+# retrying, then gives up without breaking the login.
+uid=$(id -u)
+rt="${XDG_RUNTIME_DIR:-/run/user/$uid}"
+if [ -S "$rt/oo7-pam.sock" ]; then
+    exit 0
+fi
+if dinitctl --user status secrets.user >/dev/null 2>&1; then
+    dinitctl --user restart secrets.user >/dev/null 2>&1 || true
+else
+    dinitctl --user start secrets.user >/dev/null 2>&1 || true
+fi
+exit 0

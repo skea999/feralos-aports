@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=oo7-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit services for oo7 (Secret Service daemon + portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="dinit oo7 oo7-portal dbus-user-dinit"
 makedepends=""
-source="secrets.user oo7-portal.user"
+source="secrets.user oo7-portal.user secrets secrets.conf oo7-daemon"
 
 build() { return 0; }
 check() { return 0; }
@@ -17,9 +17,20 @@ check() { return 0; }
 package() {
 	install -Dm644 "$srcdir/secrets.user" "$pkgdir/etc/dinit.d/user/secrets.user"
 	install -Dm644 "$srcdir/oo7-portal.user" "$pkgdir/etc/dinit.d/user/oo7-portal.user"
+	# ADR-008: service -> wrapper -> config (user-editable, apk-protected).
+	install -Dm755 "$srcdir/secrets" "$pkgdir/usr/libexec/oo7-user-dinit/secrets"
+	install -Dm644 "$srcdir/secrets.conf" "$pkgdir/etc/dinit.d/config/secrets.conf"
+	# pam_oo7 auto_start recovery path — must NEVER exec the daemon
+	# directly (unsupervised); it delegates to dinitctl --user (see the
+	# script header). Placed at /usr/bin because that is the path the
+	# upstream PAM module hardcodes.
+	install -Dm755 "$srcdir/oo7-daemon" "$pkgdir/usr/bin/oo7-daemon"
 }
 
 sha512sums="
-6898951c3a7f114a1ecf8283c6174d69d001e49d5ff9d672aecf7c73fc610879a6ec6bbd7115db18619dcb7fe26a5d1e43ced5d8d2ece06b663cdc8368655f27  secrets.user
+0b8dd252da772e2f1736283aac24afc5d7f4c5b96ee382724d0459fc03d47e03d7dc896ce35ca902d427e9e4a7ddfa76c11fdd2ae1e941f38aab3d87b742c2ba  secrets.user
 fd3a258907c53f1b18249d69588d802a7a5b89266e0131c4f3cf6d0beed5e4db281b78651f31be352ee00a4702560c442df5f7538a101ff69181a5b985da6a19  oo7-portal.user
+8fc2663c10171a8f1fa8aea43e426af6a4bb27b752891e697f5738e8152d573a66f92d28ad9acc5f25a419d0ede59b300215e346fe540049898e98cb55e1760e  secrets
+1c7b400e3fa31f10dcb1c397e5bc2ea311c609d503d949a4318a038caec66bfa3fcd35d175decef5881fd573fd24ada522242cfe44a8d4e5d39c0ead3fbde7c6  secrets.conf
+29368c33acbce668318022a2af45aca8babf41bdc5e6e6147a1961f1f3e773ca2b18947ceff520130d2f68546d10027fceb7ff7f346d0d318b61a55a866905b6  oo7-daemon
 "

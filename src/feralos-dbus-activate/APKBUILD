@@ -1,0 +1,26 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# feralos-dbus-activate: uniform D-Bus activation shim (ADR-010).
+# Every dbus-activatable FeralOS service is a dinit service; the effective
+# .service file Exec points here, the shim forwards the activation environment
+# to dinit and starts the unit. See docs/architecture/dbus-activation.md in
+# the feralos repository.
+pkgname=feralos-dbus-activate
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS D-Bus activation shim: activation always starts a dinit service"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit"
+makedepends=""
+source="dbus-activate"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm755 "$srcdir/dbus-activate" "$pkgdir/usr/libexec/feralos/dbus-activate"
+}
+
+sha512sums="f5baf520c4b342b8a6b2202c82887bebb8ab2e5bcb12342b111059093005ecfb1e2b144a3d2a343a7c6d4dbcfe41232947a481df7b81deb85d87d4719621cfea  dbus-activate"

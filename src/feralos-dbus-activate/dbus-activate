@@ -1,0 +1,64 @@
+#!/bin/sh
+# feralos dbus-activate — uniform D-Bus activation shim (ADR-010).
+#
+# Every FeralOS D-Bus-activatable daemon is a dinit service. The effective
+# .service file must carry:
+#   Exec=/usr/libexec/feralos/dbus-activate <unit> -- <upstream exec...>
+#
+# The shim forwards the D-Bus activation environment to dinit (single setenv
+# call), starts the unit (waits for it) and exits; dbus-daemon completes the
+# activation when the daemon claims its well-known name (forking-activation
+# semantics, service_start_timeout).
+#
+# system bus: uses the system dinit when reachable; under an OpenRC boot there
+# is no system dinit, so the upstream fallback command is executed instead
+# (OpenRC stays a bootable fallback; supervision is a dinit property).
+# session bus: always the turnstile user dinit (present on both inits); a
+# missing user dinit is a hard error, never a silent unsupervised run.
+
+if [ "$#" -lt 1 ]; then
+    echo "dbus-activate: missing unit name" >&2
+    exit 1
+fi
+
+unit=$1
+shift
+fallback=
+if [ "${1:-}" = "--" ]; then
+    shift
+    fallback=1
+fi
+
+DINITCTL=/usr/sbin/dinitctl
+
+forward_env() {
+    # dinitctl setenv NAME... reads each value from our environment.
+    # One call for the whole activation environment; failures are logged but
+    # never mask the activation itself (the service then runs with the dinit
+    # environment, which the session scripts maintain).
+    names=$(env | sed 's/=.*//' | grep -v '^DBUS_STARTER_' || true)
+    # shellcheck disable=SC2086
+    "$DINITCTL" "$@" --quiet setenv $names ||
+        echo "dbus-activate: setenv failed; keeping the dinit environment" >&2
+}
+
+if [ "${DBUS_STARTER_BUS_TYPE:-}" = "system" ]; then
+    if ! "$DINITCTL" --system --quiet list >/dev/null 2>&1; then
+        if [ -n "$fallback" ]; then
+            exec "$@"
+        fi
+        echo "dbus-activate: system dinit not running and no fallback for $unit" >&2
+        exit 1
+    fi
+    forward_env --system
+    if "$DINITCTL" --system --quiet is-started "$unit" >/dev/null 2>&1; then
+        exit 0
+    fi
+    exec "$DINITCTL" --system start "$unit"
+else
+    forward_env --user
+    if "$DINITCTL" --user --quiet is-started "$unit" >/dev/null 2>&1; then
+        exit 0
+    fi
+    exec "$DINITCTL" --user start "$unit"
+fi

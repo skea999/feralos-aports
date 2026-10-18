@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.freedesktop.UPower.PowerProfiles
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.UPower.PowerProfiles -- /usr/libexec/power-profiles-daemon
+User=root

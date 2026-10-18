@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.freedesktop.Accounts
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.Accounts -- /usr/libexec/accounts-daemon
+User=root

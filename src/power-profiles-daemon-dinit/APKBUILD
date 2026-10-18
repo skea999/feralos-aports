@@ -1,0 +1,37 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# power-profiles-daemon on the system bus. Alpine's PPD is D-Bus activated
+# (no init script by design): both bus names must route activation to the
+# dinit unit through feralos-dbus-activate (ADR-010).
+pkgname=power-profiles-daemon-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for power-profiles-daemon"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="dinit power-profiles-daemon feralos-dbus-activate"
+makedepends=""
+source="org.freedesktop.UPower.PowerProfiles
+	org.freedesktop.UPower.PowerProfiles.service
+	net.hadess.PowerProfiles.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/org.freedesktop.UPower.PowerProfiles" \
+		"$pkgdir/lib/dinit.d/org.freedesktop.UPower.PowerProfiles"
+	# D-Bus activation overrides (both names): the effective Exec starts the unit.
+	install -Dm644 "$srcdir/org.freedesktop.UPower.PowerProfiles.service" \
+		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.UPower.PowerProfiles.service"
+	install -Dm644 "$srcdir/net.hadess.PowerProfiles.service" \
+		"$pkgdir/etc/dbus-1/system-services/net.hadess.PowerProfiles.service"
+}
+
+sha512sums="
+e096f6fae456d16ed6442f7d86ed312bbddfa11868fe846cd07484c720584e95ca5a37cbbfe8c22209c8063a85846f0145736ba03e0869edcf5eb9387698ec1d  org.freedesktop.UPower.PowerProfiles
+e79522c2799172ca30352b86480f9c4d31a08424536fd453753991126f45f1a8d4aeb03b8ebcfa04dd5934f43e79ce507255aadeaaea141cd133cea352bc3b0e  org.freedesktop.UPower.PowerProfiles.service
+9c0bd6b3c489aaab7a6f6245d0a13a8d4618e69cc1e6b645ad6c62b7415a5b52403595170ac730a4990417164a8b4491f4c54d9d33506802dc3ebccf226aa99d  net.hadess.PowerProfiles.service
+"

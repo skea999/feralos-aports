@@ -1,24 +1,32 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
+# Unit name = system bus name. D-Bus activation (.service override in
+# /etc/dbus-1/system-services/) starts this unit through feralos-dbus-activate.
 pkgname=polkit-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for polkit"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-depends="dinit polkit"
+depends="dinit polkit feralos-dbus-activate"
 makedepends=""
-source="polkit"
+source="org.freedesktop.PolicyKit1
+	org.freedesktop.PolicyKit1.service"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
-	install -Dm644 "$srcdir/polkit" "$pkgdir/lib/dinit.d/polkit"
+	install -Dm644 "$srcdir/org.freedesktop.PolicyKit1" \
+		"$pkgdir/lib/dinit.d/org.freedesktop.PolicyKit1"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.PolicyKit1.service" \
+		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.PolicyKit1.service"
 }
 
 sha512sums="
-60a1c8299a17a207c538b920df2ce673c088cfe277544dd2e5667707016e9af2c8c69d046b0712b71b633acda96dc07f79f9ce7d4331ab013ad94321ec8e4ea8  polkit
+88a51b3fa3d5e2432a53dc8d289d4c30c771c8fbdfcccb67a21f9a03fe9861aacbd34fbe3a2231bc4d28c23e2f089bde602ad8f9caac561ad3ddc57e785ad4ed  org.freedesktop.PolicyKit1
+4aafa824966eabee2d5266533432220431f8eef2459defa9499e10d7c4a564f5347225181a8e65e092beaed280a07205feff38e40f888e19d5ca9dc6ee4424bc  org.freedesktop.PolicyKit1.service
 "

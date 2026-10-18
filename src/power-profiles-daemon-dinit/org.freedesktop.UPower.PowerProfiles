@@ -1,0 +1,13 @@
+# dinit service: power-profiles-daemon (system bus power profiles)
+# Unit name = system bus name: D-Bus activation is routed through
+# /etc/dbus-1/system-services/org.freedesktop.UPower.PowerProfiles.service
+# (and its net.hadess.PowerProfiles alias), whose Exec starts this unit
+# (ADR-010).
+type = process
+smooth-recovery = true
+log-type = file
+logfile = /var/log/dinit/org.freedesktop.UPower.PowerProfiles.log
+command = /usr/libexec/power-profiles-daemon
+depends-on = dbus
+depends-on = local.target
+before = login.target

@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.freedesktop.fwupd
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.fwupd -- /usr/libexec/fwupd/fwupd
+User=root

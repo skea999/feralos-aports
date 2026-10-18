@@ -1,0 +1,10 @@
+# dinit service: NetworkManager privileged helper (system bus activation unit)
+# Unit name = system bus name: D-Bus activation is routed through
+# /etc/dbus-1/system-services/org.freedesktop.nm_priv_helper.service, whose
+# Exec starts this unit (ADR-010).
+type = process
+smooth-recovery = true
+log-type = file
+logfile = /var/log/dinit/org.freedesktop.nm_priv_helper.log
+command = /usr/libexec/nm-priv-helper
+depends-on = dbus

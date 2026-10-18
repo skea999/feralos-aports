@@ -1,23 +1,42 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
+# NetworkManager itself has no D-Bus activation file (clients assume it is
+# already running, enabled as a boot service). The two helper daemons ARE
+# bus-activatable: their units are named after the bus name and activation
+# goes through feralos-dbus-activate (ADR-010).
 pkgname=networkmanager-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for NetworkManager"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-depends="dinit networkmanager"
+depends="dinit networkmanager feralos-dbus-activate"
 makedepends=""
-source="networkmanager"
+source="networkmanager
+	org.freedesktop.nm_dispatcher org.freedesktop.nm_priv_helper
+	org.freedesktop.nm_dispatcher.service org.freedesktop.nm_priv_helper.service"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/networkmanager" "$pkgdir/lib/dinit.d/networkmanager"
+	install -Dm644 "$srcdir/org.freedesktop.nm_dispatcher" \
+		"$pkgdir/lib/dinit.d/org.freedesktop.nm_dispatcher"
+	install -Dm644 "$srcdir/org.freedesktop.nm_priv_helper" \
+		"$pkgdir/lib/dinit.d/org.freedesktop.nm_priv_helper"
+	# D-Bus activation overrides: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.nm_dispatcher.service" \
+		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.nm_dispatcher.service"
+	install -Dm644 "$srcdir/org.freedesktop.nm_priv_helper.service" \
+		"$pkgdir/etc/dbus-1/system-services/org.freedesktop.nm_priv_helper.service"
 }
 
 sha512sums="
 b4f6ee8bcceafc3a251b58ba52b113d89b2c0e8283c31729ee1e6cc5aa4d7af9441a93c9f0980ead63d337a331c6a448e3b6a1ce4e91a4c03b5b273834fcdcf4  networkmanager
+51531336d57110564e074bd6b18ba1b3698c4a46866b7bd0c19c10ecde47bf85d247215f8be89e36601fd3b23b32433790cd955e11f673f9ad1dc8fe5a487ee5  org.freedesktop.nm_dispatcher
+2933863db5dc4ae4fc4a8713bc253ced560ffd7e868b0a4731703754ff47cfc8e00c463746184dd68dfe88670ae2ea10a044f7dbec3b4718e1e3a2c5862da915  org.freedesktop.nm_priv_helper
+5d985e4965841a3f4f5d5fc04d63cdb4a132a0bab9623d6825a8cb6b292664fe96822d87042913264acf511d68e3353b6c91c26dd61c8f8bd3e6f670d5ead6a7  org.freedesktop.nm_dispatcher.service
+d80b0217e63550934da30bf3d824837a34b22e27fb12bf3c7acea0e2447f3a46fb2a25e4bc9418bfd5810ae9440887ef89c3c4a66609807f463da7283e6437be  org.freedesktop.nm_priv_helper.service
 "

@@ -29,7 +29,17 @@ if [ "${1:-}" = "--" ]; then
     fallback=1
 fi
 
-DINITCTL=/usr/sbin/dinitctl
+# dinitctl moved between /usr/sbin (<=3.22) and /usr/bin (>=3.24): resolve it
+DINITCTL=
+for p in /usr/bin/dinitctl /usr/sbin/dinitctl /sbin/dinitctl; do
+    if [ -x "$p" ]; then
+        DINITCTL="$p"
+        break
+    fi
+done
+if [ -z "$DINITCTL" ]; then
+    DINITCTL=$(command -v dinitctl 2>/dev/null || true)
+fi
 
 forward_env() {
     # dinitctl setenv NAME... reads each value from our environment.
@@ -43,11 +53,11 @@ forward_env() {
 }
 
 if [ "${DBUS_STARTER_BUS_TYPE:-}" = "system" ]; then
-    if ! "$DINITCTL" --system --quiet list >/dev/null 2>&1; then
+    if [ -z "$DINITCTL" ] || ! "$DINITCTL" --system --quiet list >/dev/null 2>&1; then
         if [ -n "$fallback" ]; then
             exec "$@"
         fi
-        echo "dbus-activate: system dinit not running and no fallback for $unit" >&2
+        echo "dbus-activate: system dinit not reachable and no fallback for $unit" >&2
         exit 1
     fi
     forward_env --system
@@ -56,6 +66,10 @@ if [ "${DBUS_STARTER_BUS_TYPE:-}" = "system" ]; then
     fi
     exec "$DINITCTL" --system start "$unit"
 else
+    if [ -z "$DINITCTL" ]; then
+        echo "dbus-activate: dinitctl not found (user dinit required for $unit)" >&2
+        exit 1
+    fi
     forward_env --user
     if "$DINITCTL" --user --quiet is-started "$unit" >/dev/null 2>&1; then
         exit 0

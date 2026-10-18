@@ -7,7 +7,7 @@
 # the feralos repository.
 pkgname=feralos-dbus-activate
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS D-Bus activation shim: activation always starts a dinit service"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -23,4 +23,4 @@ package() {
 	install -Dm755 "$srcdir/dbus-activate" "$pkgdir/usr/libexec/feralos/dbus-activate"
 }
 
-sha512sums="f5baf520c4b342b8a6b2202c82887bebb8ab2e5bcb12342b111059093005ecfb1e2b144a3d2a343a7c6d4dbcfe41232947a481df7b81deb85d87d4719621cfea  dbus-activate"
+sha512sums="549a71410319abb4e0668557a512ac2c2367ac39972eeca5d5db0c1376d55e07217606768e3d5ddd37fa1e6fd0d442990b22c6d5c095d4d1ee81a32c08971ef6  dbus-activate"

@@ -1,11 +1,14 @@
 # dinit user service: Veila screen locker daemon (started by wayle-session;
 # niriWayle session). veilad runs foreground and supervises lock/unlock;
 # the `veila` control CLI and veila-curtain/veila-ui are spawned by the
-# daemon on demand.
+# daemon on demand. Env-resolving wrapper: the user-dinit environment
+# carries neither WAYLAND_DISPLAY nor NIRI_SOCKET; upstream's veilad.service
+# PassEnvironment's the same variables (wayle-shell-session pattern).
 type = process
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/veila.log
-command = veilad
+command = /etc/dinit.d/user/scripts/veilad-session
 smooth-recovery = true
 working-dir = $HOME
+depends-on = wait-wayland.user
 depends-on = dbus.user

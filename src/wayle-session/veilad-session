@@ -1,0 +1,20 @@
+#!/bin/sh
+# veilad launcher: resolve the compositor wayland socket + the niri IPC
+# socket (guaranteed by the wait-wayland.user dependency), export them,
+# then exec the Veila lock daemon in the FOREGROUND (dinit type=process
+# supervision holds the started marker).
+#
+# veilad arms the ext-session-lock surface and spawns veila-curtain/
+# veila-ui on lock — those children inherit this environment. The
+# user-dinit environment carries neither WAYLAND_DISPLAY nor NIRI_SOCKET
+# (wayle-shell-session pattern — same wrapper family as wayvnc-session/
+# stasis-session; upstream's veilad.service passes the same variables
+# through PassEnvironment).
+for s in "$XDG_RUNTIME_DIR"/wayland-*; do
+    [ -S "$s" ] && export WAYLAND_DISPLAY="${s##*/}"
+done
+for s in "$XDG_RUNTIME_DIR"/niri*.sock; do
+    [ -S "$s" ] && export NIRI_SOCKET="$s"
+done
+export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
+exec veilad

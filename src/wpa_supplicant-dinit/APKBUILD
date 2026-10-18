@@ -11,7 +11,7 @@
 # unit covers activation when nothing claims the bus name yet.
 pkgname=wpa_supplicant-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for wpa_supplicant (fi.w1.wpa_supplicant1)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -32,6 +32,6 @@ package() {
 }
 
 sha512sums="
-6136709d21b8817e1d8a1172673bb3bd9a31ce24a0e308fd55cb1af3b065a90a4f8e0da3eb9efc0d50cb6c1419237bac87c9277b44da9f6edabae8b8196fed3b  fi.w1.wpa_supplicant1
+49105328e58cc34a8d6f4e77571c7a3608c29b8774d43f20bd10099f5a21ed3835a99ebd8d8257cbde5f4554fe2aadc3850eb7c447d50565613bf681f1ab7e69  fi.w1.wpa_supplicant1
 de91586e1eaf0ed39613ca63249241ac83520c38f727cbe70876bb555c8013037ce15bbb7020f048ea5fd89f675f70b67b8e32868ff8f837e8d7327bdc104ee6  fi.w1.wpa_supplicant1.service
 "

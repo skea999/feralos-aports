@@ -1,7 +1,8 @@
 # dinit service: fwupd (Alpine openrc fwupd + overrides)
 # Unit name = system bus name: D-Bus activation is routed through
-# /etc/dbus-1/system-services/org.freedesktop.fwupd.service, whose Exec
-# starts this unit (ADR-010).
+# /usr/share/feralos/dbus-system-services/org.freedesktop.fwupd.service
+# (installed at boot into /usr/local/share/dbus-1/system-services by
+# dbus-services-setup), whose Exec starts this unit (ADR-010).
 type = process
 smooth-recovery = true
 log-type = file

@@ -6,7 +6,7 @@
 # (materialized at boot into the launch helper's standard dirs).
 pkgname=accountsservice-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for AccountsService"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -28,6 +28,6 @@ package() {
 }
 
 sha512sums="
-2851739ea2c4d063677cbd4e562b3ed677f259b79bc3b9c6139e8ebc058801e0f8ecff24343dc046ef860b16c367eaa5789103187430856c7172d6e7cb0b9c1e  org.freedesktop.Accounts
+377f9f027a901575771d65d07a7b41345f5e03bc5ea884b4ca8a7144765cb8e2fb679047f9d0f3d7c6f8b467fcfeb5b2fa87d718d1830a45edb395e149fe18ea  org.freedesktop.Accounts
 dfdf29471a944dcf9fa9818f88e761c93acd84de83b51e173798a71aa326df6f0a822f2dad0c2f7047e3835bb27175a8141e60659df6ef82e9df1098523b221f  org.freedesktop.Accounts.service
 "

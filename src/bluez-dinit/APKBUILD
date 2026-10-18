@@ -7,7 +7,7 @@
 # launch helper's first eligible standard service dir).
 pkgname=bluez-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit services for bluetoothd and bluetooth-meshd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -31,8 +31,8 @@ package() {
 }
 
 sha512sums="
-3f6397693b973afbb393e9cbbcd619b3265b17c67928a8a552e829c5257b13484a848950f2c020772421559d2b52ecd559859ac1527ae4b63c1661ace7b3b4b6  org.bluez
-bfbc7e68899bcee8a08844009a2f9238e45eb09c089b0e0816723d2bfb321c6d5825407c342b07eb1c33a57de3b797e005f23695427aa079147f6d165ebb265b  org.bluez.mesh
+99e80c83afb928e18edf73d54114af7717214568b82c64f1aa8b1fbc0521b6697f3acca6d1cb9332fb1874a244e5a4f2eb3aca7d9793e6afd9ffa36c70e85c21  org.bluez
+12309cf76829043675d51cb91e736d668742f97e6758d5d985611a2f97405c73d90feb6b8cb774edb6f1f8c9d66cf16f64f3e25e9936515d8b97889d487b1879  org.bluez.mesh
 e7948651a9aa1d76044b0047ef5a9999690629bd04a11e35d3b5bc60ee19bd7a189da4e5d3aa3c64232b4d4813739ce279ac1c5531b2a2b716ead6c48f5a1ff8  org.bluez.service
 8f3c0304f178038ca5341c718d669619a8f4a3cf0729b3d85a1a6d72e9db76c336cfbd7c0fe3e6f4adb2bff707685f80c45d936ebafefa0b9200efc5a058add6  org.bluez.mesh.service
 "

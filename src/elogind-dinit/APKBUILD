@@ -7,7 +7,7 @@
 # at boot into the launch helper's standard dirs).
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="dinit service for elogind (depends-on dbus, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -35,7 +35,7 @@ package() {
 }
 
 sha512sums="
-61bf7d7d33e752c96a882029f03e13366588404c17d93c4e857c1fb80115d4eb4b2eb8de9fcef6af8aa622141e7a4e8aff311e79f771871363eecfe4ae7072fe  org.freedesktop.login1
+78a23dbbcf2c463ab2da9e63d5d49f34729e90c1e28b3cbe25ba5ca50f9cb0e007d7d351dff9e6e3f10e978ef3737815360a0915922b8f5d8d73f6eb657288b1  org.freedesktop.login1
 9515d817859233772ee0413ab1c125008077b3aadfa1e504e405b080af49a499b6c1a129d3ad9137859109f1b24e293af0b47343d30fc2b0f4b9737a09c092fb  org.freedesktop.login1.service
 3a12c8e41fef9a5594d693edcf6c9e92a69663ba8e72fd9b04bbc03e2485c3c93ac2b22c84aaaac5475883bfffdf01fca0e4a538ae61737e32b1a94fe41c07ab  elogind-stop
 "

@@ -7,7 +7,7 @@
 # System-wide flatpak installs go through this helper.
 pkgname=flatpak-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for the flatpak system helper"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -30,6 +30,6 @@ package() {
 }
 
 sha512sums="
-50f95f77b4b9224d86fbf3db7a503f7bf27172bbb6ac89341e7131184e72e653573db234869e25f5beb21fbd998fba281e615b5c0eb13231dc13fe216097ad55  org.freedesktop.Flatpak.SystemHelper
+f0d746dd580ae20bd8c1f5c257531bc5267f921dff1f70f8689c7f3cb942afc522af90f0b8509786361dd94bb0f0fa21cf6f2d01d0cda6462e1431b5501c14a9  org.freedesktop.Flatpak.SystemHelper
 b917cc6122f7809229c2bcedeaed0daeb9a0a3453dc08aac574437e6680cb744844d25f52885313f8056272040a0507d644f22e81599498369cb1c0455c83f77  org.freedesktop.Flatpak.SystemHelper.service
 "

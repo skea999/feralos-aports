@@ -6,7 +6,7 @@
 # The wrapper/config keep their fwupd names (they are internal to the unit).
 pkgname=fwupd-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit service for fwupd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -31,7 +31,7 @@ package() {
 }
 
 sha512sums="
-478b17664123403d52089764435a97001eb8885dfd9d03de6420485eb28453c5f2c65a2dde70102f76aef472f8f3c59d8f46224987a01a4b2166cbaacd7a15b4  org.freedesktop.fwupd
+d72e20f4438b29b5dcf4e19425c6a9c67785a207bf41b3e0c58e474427ae454245a290bcbf6442063c6979bb3bc2c9974b96f02aad67c2f4992c80864c8f64a6  org.freedesktop.fwupd
 175d748ce17b22e20cd978fd89f3d2c70d0ca536f2f5abf7f6a376d4644db310f2fb04124df0737e68af3cb16d43ec8013137115b69829480fdbe0c777c498eb  fwupd.script
 9aa6b72e40971fb5f7e3e99e7ae8757099112514d91d32bd3efa5fbb5eb66c45e1f2819656171357faf7c63ddf940c4c324bae97816cacc44390611676b6dcd5  fwupd.conf
 242b4c030f4ef60f2424d24a15e83a7b9d2994c3eebea68a57e15bff91d86ef4ae4c13f8c29eede8132daf16029c7adea1980c82000ecc69097340f019a326ec  org.freedesktop.fwupd.service

@@ -7,7 +7,7 @@
 # launch helper's standard dirs) starts this unit through feralos-dbus-activate.
 pkgname=upower-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for upower"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -34,7 +34,7 @@ package() {
 }
 
 sha512sums="
-694825f03f6dc668de181f48e859a9cff42ed75209b8e5fb7d190f5d5012e17fc0d691ac5105326c2afe6769f85f0211ea76bd1cec35d89f4942c59014bc543f  org.freedesktop.UPower
+6cb2492d611e534d8d2c09f0b6560e0d05a42c2c7a5e5d1fd1cd41a2041e9897eb8e3728b3c8f12595fe00c9b6b51e86584083067e62d03dc140699d0f59ebc7  org.freedesktop.UPower
 68feafd223b7d8bf32bb6cecf027b7c2b0bafbd0b467d73b1e8ed2f996f5fa780f4c717b4dc81f08edc0fdac00dc737b3e6adac018ae03080ca21b73ad6d0fa8  org.freedesktop.UPower.script
 cbbd2d815c27ea9db33786a3123fe59d00a33624ea552af39bde2030f1fe9beb0e5cc9fbe5f435450a176d96b5a0fc816567b91af12f6a680a5400c2b2147a04  org.freedesktop.UPower.conf
 4a30e028a1200c5e539b1180aa9c7ffb09b6a10c8e4df10b9ccc290cbad3a8d09bea815042550f30cbde0a6fa24f83c3ff008ea82c04d0b2120d99f4794fa30c  org.freedesktop.UPower.service

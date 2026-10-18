@@ -7,7 +7,7 @@
 # into the launch helper's standard dirs).
 pkgname=power-profiles-daemon-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for power-profiles-daemon"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -33,7 +33,7 @@ package() {
 }
 
 sha512sums="
-e096f6fae456d16ed6442f7d86ed312bbddfa11868fe846cd07484c720584e95ca5a37cbbfe8c22209c8063a85846f0145736ba03e0869edcf5eb9387698ec1d  org.freedesktop.UPower.PowerProfiles
+645a726d346d65b4ec34664e5601d34f74a037f1b42f3dccc22dc0bebfb2f6b697138a99144149bfc7233e5d7b0fcc32ad3b38807c2b1c766bfd246a0b049e23  org.freedesktop.UPower.PowerProfiles
 e79522c2799172ca30352b86480f9c4d31a08424536fd453753991126f45f1a8d4aeb03b8ebcfa04dd5934f43e79ce507255aadeaaea141cd133cea352bc3b0e  org.freedesktop.UPower.PowerProfiles.service
 9c0bd6b3c489aaab7a6f6245d0a13a8d4618e69cc1e6b645ad6c62b7415a5b52403595170ac730a4990417164a8b4491f4c54d9d33506802dc3ebccf226aa99d  net.hadess.PowerProfiles.service
 "

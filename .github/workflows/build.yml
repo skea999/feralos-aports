@@ -16,7 +16,12 @@ jobs:
     # runner = GitHub Ubuntu VM; steps run INSIDE the Alpine container below.
     # alpine:latest = latest STABLE (matches installer's branch: latest-stable)
     runs-on: ubuntu-latest
-    container: public.ecr.aws/docker/library/alpine:latest
+    # alpine:latest = latest STABLE (matches installer's branch: latest-stable).
+    # Registry history: Docker Hub anonymous pulls hit the rate limit (3
+    # blocked runs), ECR Public then hit "Data limit exceeded" (3 more,
+    # 2026-10-18) — mirror.gcr.io is Google's unauthenticated Docker Hub
+    # mirror with generous limits.
+    container: mirror.gcr.io/library/alpine:latest
     steps:
       - name: Install toolchain
         run: apk add --no-cache alpine-sdk git
@@ -318,7 +323,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: [build, deploy]
     runs-on: ubuntu-latest
-    container: public.ecr.aws/docker/library/alpine:latest
+    # same registry rationale as the build job (see container comment above)
+    container: mirror.gcr.io/library/alpine:latest
     steps:
       - name: Checkout (package list)
         uses: actions/checkout@v4

@@ -80,3 +80,4 @@ environment secrets). Full explanation: `docs/CI.md`.
 - `docs/TOOLCHAIN.md` — GCC/aports decision record
 - `docs/REPO-SETUP.md` — how to set up the package repository on an Alpine system
 - `docs/SELF-HOSTING.md` — future port to self-hosted Gitea + native Alpine runner (proposal)
+- D-Bus activation + boot-oneshot patterns: see `DBUS-ACTIVATION.md`.

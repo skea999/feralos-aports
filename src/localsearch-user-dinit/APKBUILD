@@ -1,0 +1,59 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit services for localsearch (GNOME file indexer). Unit names =
+# canonical session D-Bus bus names (ADR-010); D-Bus activation is routed
+# through feralos-dbus-activate via overrides in /usr/local/share/dbus-1/services/.
+# Mapping (source-verified against GNOME/localsearch 3.9.0 meson + service
+# templates + src/indexer/tracker-main.c and Alpine v3.22 contents):
+#   org.freedesktop.LocalSearch3[.Control|.Writeback]  -> localsearch-3 /
+#       localsearch-control-3 / localsearch-writeback-3 (canonical units)
+#   org.freedesktop.Tracker3.Miner.Files[.Control] / Tracker3.Writeback
+#       -> legacy aliases, mapped to the same three units (the daemons claim
+#       both name families)
+#   localsearch-extractor-3 has no D-Bus name (spawned by the indexer) -> no
+#       unit and no activation file.
+pkgname=localsearch-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit services for localsearch (indexer + control + writeback)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit localsearch feralos-dbus-activate"
+makedepends=""
+source="org.freedesktop.LocalSearch3.user org.freedesktop.LocalSearch3.Control.user
+	org.freedesktop.LocalSearch3.Writeback.user
+	org.freedesktop.LocalSearch3.service org.freedesktop.Tracker3.Miner.Files.service
+	org.freedesktop.LocalSearch3.Control.service org.freedesktop.Tracker3.Miner.Files.Control.service
+	org.freedesktop.LocalSearch3.Writeback.service org.freedesktop.Tracker3.Writeback.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.freedesktop.LocalSearch3.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.LocalSearch3.user"
+	install -Dm644 "$srcdir/org.freedesktop.LocalSearch3.Control.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.LocalSearch3.Control.user"
+	install -Dm644 "$srcdir/org.freedesktop.LocalSearch3.Writeback.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.LocalSearch3.Writeback.user"
+	# D-Bus activation overrides: the effective Exec starts the dinit unit.
+	for s in org.freedesktop.LocalSearch3 org.freedesktop.Tracker3.Miner.Files \
+		org.freedesktop.LocalSearch3.Control org.freedesktop.Tracker3.Miner.Files.Control \
+		org.freedesktop.LocalSearch3.Writeback org.freedesktop.Tracker3.Writeback; do
+		install -Dm644 "$srcdir/$s.service" \
+			"$pkgdir/usr/local/share/dbus-1/services/$s.service"
+	done
+}
+
+sha512sums="
+4875e4acbe46de36ce14a5eb06c8a3859570cbccb18dc1491788235ae7be3c429d026162badab52f4c9dcf538abebd47e68adf485551b595cf496046f08dbdab  org.freedesktop.LocalSearch3.user
+226375f670fb641e8fc826ef00d081d2728d9cd9ee4c5b6e6a4a1ac977150237c91c598c67ee4911964b4b3760b96bf077db71c91b076bd399a24687683bad70  org.freedesktop.LocalSearch3.Control.user
+5c9854c18101dd7ecfb2c685d326a1891e216e2c75bd9d5a850e3ed0c1c226ad13d79bae0498d637f7e265a7b9ac60a3af8f978d728215ba617ea6bee2ae7519  org.freedesktop.LocalSearch3.Writeback.user
+47c0863da0efb327a9994d448ced1a30285870c1a2b40900272c02fb04bfeb9de79c8440ddb44fd3f1e873bde8fb571dfb3ce42be0f0020987e672ab79f22af1  org.freedesktop.LocalSearch3.service
+e50e5e69642eef3b62c755f65a77619d917d9d5842ff2224a4df498fb1a1ee53f16eda5cdeabad662aee0b5eaca655349703f1941e1b7f479201f307463dbd60  org.freedesktop.Tracker3.Miner.Files.service
+49053ebfe95b2f2f655db5bb6d52573978b844760968da09bac4a921363ee67bdd2ace37794e2ebaabc7889553563b3f69ab90907012aea09057f5caeb67abb3  org.freedesktop.LocalSearch3.Control.service
+98b3194109a65a1d92de6ecf3f8ee0d368d225a9e1a4782d6c8c50016c7d612d6cd4a8c97958d50393f5edc02a90a14390a14c20d0d513db577399f61d3253ce  org.freedesktop.Tracker3.Miner.Files.Control.service
+9922a17ce28b9e5c6d70fccd042a2bd73aef83e3e16bab3e0721d0d97292227965317e8665ce08c99a284e0e04ba0c12ba29a0bee5046d9be842019b088e813e  org.freedesktop.LocalSearch3.Writeback.service
+595b18989d2838c07a2c7161788be5a3120fc182aad1369078e39b2b43065124180824bf96ca5f509eb42bb34d9da638c97ec83efb0bb43c9cd1c5bf75429c5d  org.freedesktop.Tracker3.Writeback.service
+"

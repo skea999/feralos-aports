@@ -1,0 +1,11 @@
+# dinit user service: kwalletd6 (org.kde.kwalletd6)
+# KDE wallet daemon (KF6). Unit name = canonical D-Bus bus name (ADR-010);
+# D-Bus activation is routed through
+# /usr/local/share/dbus-1/services/org.kde.kwalletd6.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.kde.kwalletd6.log
+command = /usr/bin/kwalletd6
+working-dir = $HOME
+depends-on = dbus.user

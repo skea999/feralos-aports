@@ -1,0 +1,31 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for the at-spi accessibility bus. Unit name = canonical
+# session D-Bus bus name (ADR-010); D-Bus activation is routed through
+# feralos-dbus-activate via an override in /usr/local/share/dbus-1/services/.
+pkgname=at-spi2-core-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for at-spi2-core (accessibility bus)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit at-spi2-core feralos-dbus-activate"
+makedepends=""
+source="org.a11y.Bus.user org.a11y.Bus.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.a11y.Bus.user" \
+		"$pkgdir/etc/dinit.d/user/org.a11y.Bus.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.a11y.Bus.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.a11y.Bus.service"
+}
+
+sha512sums="
+957e127f0a0650c917bd9187e1c122e62ac15a6fe92e1bc286a764d9a0b0e472ed2abfc5c7f7506f5c091d95a540002a318cf50cf5bc16ca11a711af4fdee9dc  org.a11y.Bus.user
+f6e2c080d81644d64db02ba724fdf60e73836dbe542c2c082651db8186596bde000debfa1784ffa083968a9876b338f0fdbb8c5f888245e46b84833a8c4f199e  org.a11y.Bus.service
+"

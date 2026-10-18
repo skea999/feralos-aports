@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=ca.desrt.dconf
+Exec=/usr/libexec/feralos/dbus-activate ca.desrt.dconf.user -- /usr/libexec/dconf-service

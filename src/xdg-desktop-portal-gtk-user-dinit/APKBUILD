@@ -1,0 +1,31 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for xdg-desktop-portal-gtk. Unit name = canonical
+# session D-Bus bus name (ADR-010); D-Bus activation is routed through
+# feralos-dbus-activate via an override in /usr/local/share/dbus-1/services/.
+pkgname=xdg-desktop-portal-gtk-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for xdg-desktop-portal-gtk"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit xdg-desktop-portal-gtk feralos-dbus-activate"
+makedepends=""
+source="org.freedesktop.impl.portal.desktop.gtk.user org.freedesktop.impl.portal.desktop.gtk.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.gtk.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.desktop.gtk.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.gtk.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.gtk.service"
+}
+
+sha512sums="
+4c649507f9b50c4eaae937fcae6e2456ab1bcbd97889ea01bb4b7427c26cbf282d2278eb077a666feedc75095dc6409b2b43155805a6eba54d5f5d049bdde021  org.freedesktop.impl.portal.desktop.gtk.user
+014a704988469cd03c3eb4b514562fc2353ae5dbc4a5cb421d6c42085aa4947ac72aef3a93a8af649d8db717fa143f22b2de08c914b41b5c1cbd6c6126fd634c  org.freedesktop.impl.portal.desktop.gtk.service
+"

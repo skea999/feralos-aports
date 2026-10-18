@@ -1,22 +1,31 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
+# User dinit services for oo7 (Secret Service daemon + portal).
+# Unit names = canonical session D-Bus bus names (ADR-010); D-Bus activation
+# is routed through feralos-dbus-activate via overrides in
+# /usr/local/share/dbus-1/services/. The portal's real bus name
+# (org.freedesktop.impl.portal.desktop.oo7, verified in the oo7 portal source)
+# is an alias activation file mapped to the same unit.
 pkgname=oo7-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="User dinit services for oo7 (Secret Service daemon + portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
-depends="dinit oo7 oo7-portal dbus-user-dinit"
+depends="dinit oo7 oo7-portal dbus-user-dinit feralos-dbus-activate"
 makedepends=""
-source="secrets.user oo7-portal.user secrets secrets.conf oo7-daemon"
+source="secrets.user org.freedesktop.impl.portal.Secret.user secrets secrets.conf
+	oo7-daemon org.freedesktop.impl.portal.Secret.service
+	org.freedesktop.impl.portal.desktop.oo7.service"
 
 build() { return 0; }
 check() { return 0; }
 
 package() {
 	install -Dm644 "$srcdir/secrets.user" "$pkgdir/etc/dinit.d/user/secrets.user"
-	install -Dm644 "$srcdir/oo7-portal.user" "$pkgdir/etc/dinit.d/user/oo7-portal.user"
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.Secret.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.Secret.user"
 	# ADR-008: service -> wrapper -> config (user-editable, apk-protected).
 	install -Dm755 "$srcdir/secrets" "$pkgdir/usr/libexec/oo7-user-dinit/secrets"
 	install -Dm644 "$srcdir/secrets.conf" "$pkgdir/etc/dinit.d/config/secrets.conf"
@@ -25,12 +34,19 @@ package() {
 	# script header). Placed at /usr/bin because that is the path the
 	# upstream PAM module hardcodes.
 	install -Dm755 "$srcdir/oo7-daemon" "$pkgdir/usr/bin/oo7-daemon"
+	# D-Bus activation overrides: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.Secret.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.freedesktop.impl.portal.Secret.service"
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.oo7.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.oo7.service"
 }
 
 sha512sums="
 0b8dd252da772e2f1736283aac24afc5d7f4c5b96ee382724d0459fc03d47e03d7dc896ce35ca902d427e9e4a7ddfa76c11fdd2ae1e941f38aab3d87b742c2ba  secrets.user
-fd3a258907c53f1b18249d69588d802a7a5b89266e0131c4f3cf6d0beed5e4db281b78651f31be352ee00a4702560c442df5f7538a101ff69181a5b985da6a19  oo7-portal.user
+662970e39416cbfd93d49e3bedf19763d5c799dd3437330e1b4515b41f18b587f23c12888f4b2da05662dd871cdbd2e49864e19f461272585e104c8883e7cdaa  org.freedesktop.impl.portal.Secret.user
 8fc2663c10171a8f1fa8aea43e426af6a4bb27b752891e697f5738e8152d573a66f92d28ad9acc5f25a419d0ede59b300215e346fe540049898e98cb55e1760e  secrets
 1c7b400e3fa31f10dcb1c397e5bc2ea311c609d503d949a4318a038caec66bfa3fcd35d175decef5881fd573fd24ada522242cfe44a8d4e5d39c0ead3fbde7c6  secrets.conf
 29368c33acbce668318022a2af45aca8babf41bdc5e6e6147a1961f1f3e773ca2b18947ceff520130d2f68546d10027fceb7ff7f346d0d318b61a55a866905b6  oo7-daemon
+366b17bd091c67ac4bba48fa25ebaf1d4e9b7835ce4bfc3e866bfe418d32574df95ee87e8d46bfc9695c7e9daec9be8a5d95aa9565195513b192686d469ba67e  org.freedesktop.impl.portal.Secret.service
+f0a06f98e2abc2bfc7e61260bcd3492e35d472ac9799c06f90db5ef7db9e6600cf89e516c28ccc19e247917fa6aa1dc69e24850e717b2f44f3714b99ae11907c  org.freedesktop.impl.portal.desktop.oo7.service
 "

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.kded6
+Exec=/usr/libexec/feralos/dbus-activate org.kde.kded6.user -- /usr/bin/kded6

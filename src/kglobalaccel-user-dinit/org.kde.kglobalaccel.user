@@ -1,0 +1,16 @@
+# dinit user service: kglobalacceld (org.kde.kglobalaccel)
+# KDE global shortcuts daemon. Unit name = canonical D-Bus bus name
+# (ADR-010); D-Bus activation is routed through
+# /usr/local/share/dbus-1/services/org.kde.kglobalaccel.service.
+# Alpine v3.22 facts (pkgs.alpinelinux.org contents): the daemon binary is
+# /usr/lib/libexec/kglobalacceld and ships in the kglobalacceld package (the
+# kglobalaccel package carries only the framework library); upstream installs
+# no D-Bus activation file (only a systemd user unit), so this override is the
+# only activation route.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.kde.kglobalaccel.log
+command = /usr/lib/libexec/kglobalacceld
+working-dir = $HOME
+depends-on = dbus.user

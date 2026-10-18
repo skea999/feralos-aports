@@ -1,0 +1,11 @@
+# dinit user service: xdg-desktop-portal-gnome (org.freedesktop.impl.portal.desktop.gnome)
+# GNOME portal backend. Unit name = canonical D-Bus bus name (ADR-010);
+# D-Bus activation is routed through
+# /usr/local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.gnome.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.freedesktop.impl.portal.desktop.gnome.log
+command = /usr/libexec/xdg-desktop-portal-gnome
+working-dir = $HOME
+depends-on = dbus.user

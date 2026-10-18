@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.portal.Desktop
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.portal.Desktop.user -- /usr/libexec/xdg-desktop-portal

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.a11y.Bus
+Exec=/usr/libexec/feralos/dbus-activate org.a11y.Bus.user -- /usr/libexec/at-spi-bus-launcher

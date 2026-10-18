@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.Tracker3.Miner.Files
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.LocalSearch3.user -- /usr/libexec/localsearch-3

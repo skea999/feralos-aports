@@ -1,0 +1,35 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for kglobalaccel. Unit name = canonical session D-Bus
+# bus name (ADR-010); D-Bus activation is routed through feralos-dbus-activate
+# via an override in /usr/local/share/dbus-1/services/.
+# Verified on Alpine v3.22 (pkgs.alpinelinux.org contents): the daemon binary
+# /usr/lib/libexec/kglobalacceld ships in the kglobalacceld package — the
+# kglobalaccel package contains only the framework library, hence the
+# dependency adaptation.
+pkgname=kglobalaccel-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for kglobalaccel"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit kglobalacceld feralos-dbus-activate"
+makedepends=""
+source="org.kde.kglobalaccel.user org.kde.kglobalaccel.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.kglobalaccel.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.kglobalaccel.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.kglobalaccel.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.kde.kglobalaccel.service"
+}
+
+sha512sums="
+d12d92b4d9274d93c5dc9e8992482c383656e957d5c67e84c2cd98c6538da03602a69236a871550630642c1b80813c48810010195540d37bc6fec0f567b42d39  org.kde.kglobalaccel.user
+a0d03bac4601360e9830efca49986e997128e25589b20c6ccb0e2ea3e7400bcc0ca960a985f2093a08a0a3dd56c73d60af8a079b6544c59dedf07cf60075e02d  org.kde.kglobalaccel.service
+"

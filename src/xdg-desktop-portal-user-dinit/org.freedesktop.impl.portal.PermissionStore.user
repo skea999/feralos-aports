@@ -1,0 +1,11 @@
+# dinit user service: xdg-permission-store (org.freedesktop.impl.portal.PermissionStore)
+# Permission store backend; the document portal depends on its D-Bus name.
+# Unit name = canonical D-Bus bus name (ADR-010); D-Bus activation is routed
+# through /usr/local/share/dbus-1/services/org.freedesktop.impl.portal.PermissionStore.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.freedesktop.impl.portal.PermissionStore.log
+command = /usr/libexec/xdg-permission-store
+working-dir = $HOME
+depends-on = dbus.user

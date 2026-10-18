@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.flatpak.Authenticator.Oci
+Exec=/usr/libexec/feralos/dbus-activate org.flatpak.Authenticator.Oci.user -- /usr/libexec/flatpak-oci-authenticator

@@ -1,0 +1,13 @@
+# dinit user service: localsearch writeback (org.freedesktop.LocalSearch3.Writeback)
+# Metadata writeback service. Unit name = canonical D-Bus bus name (ADR-010);
+# D-Bus activation is routed through
+# /usr/local/share/dbus-1/services/org.freedesktop.LocalSearch3.Writeback.service.
+# The legacy org.freedesktop.Tracker3.Writeback activation file maps to this
+# same unit.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.freedesktop.LocalSearch3.Writeback.log
+command = /usr/libexec/localsearch-writeback-3
+working-dir = $HOME
+depends-on = dbus.user

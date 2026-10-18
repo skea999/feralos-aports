@@ -1,0 +1,11 @@
+# dinit user service: flatpak OCI authenticator (org.flatpak.Authenticator.Oci)
+# OCI authenticator for flatpak. Unit name = canonical D-Bus bus name
+# (ADR-010); D-Bus activation is routed through
+# /usr/local/share/dbus-1/services/org.flatpak.Authenticator.Oci.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.flatpak.Authenticator.Oci.log
+command = /usr/libexec/flatpak-oci-authenticator
+working-dir = $HOME
+depends-on = dbus.user

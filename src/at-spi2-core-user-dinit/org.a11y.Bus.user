@@ -1,0 +1,12 @@
+# dinit user service: at-spi bus launcher (org.a11y.Bus)
+# Launches the accessibility bus and manages the org.a11y.atspi.Registry
+# accessibility bus. Unit name = canonical D-Bus bus name (ADR-010); D-Bus
+# activation is routed through
+# /usr/local/share/dbus-1/services/org.a11y.Bus.service.
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.a11y.Bus.log
+command = /usr/libexec/at-spi-bus-launcher
+working-dir = $HOME
+depends-on = dbus.user

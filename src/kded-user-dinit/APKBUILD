@@ -1,0 +1,31 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for kded. Unit name = canonical session D-Bus bus name
+# (ADR-010); D-Bus activation is routed through feralos-dbus-activate via an
+# override in /usr/local/share/dbus-1/services/.
+pkgname=kded-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for kded"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit kded feralos-dbus-activate"
+makedepends=""
+source="org.kde.kded6.user org.kde.kded6.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.kded6.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.kded6.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.kded6.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.kde.kded6.service"
+}
+
+sha512sums="
+aa7101c19ab6769b888c641bd45d80d6ffe4b5c250895a37a83afefb8ec3ee6600afeef45989b14e215c1ac4fa61ff4f9ee6750b5c160c61db3ae96106e74823  org.kde.kded6.user
+31232d095dfab8d1e4094d73d84cc6883fc57b0d7508749ee7b74d1e3904446a83d9128c9f7feb24c75a9ad5fdee0603ae69d7b06f200b3700ac9b2da2eaecd2  org.kde.kded6.service
+"

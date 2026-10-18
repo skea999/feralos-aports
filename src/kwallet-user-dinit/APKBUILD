@@ -1,0 +1,37 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for kwallet. Unit name = canonical session D-Bus bus name
+# (ADR-010); D-Bus activation is routed through feralos-dbus-activate via
+# overrides in /usr/local/share/dbus-1/services/. The legacy
+# org.kde.kwalletd5 alias maps to the SAME unit: Alpine's kwallet package
+# ships no kwalletd5 binary and upstream's own kwalletd5 compat service file
+# execs kwalletd6 too.
+pkgname=kwallet-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for kwallet (kwalletd6 + kwalletd5 alias)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit kwallet feralos-dbus-activate"
+makedepends=""
+source="org.kde.kwalletd6.user org.kde.kwalletd6.service org.kde.kwalletd5.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.kwalletd6.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.kwalletd6.user"
+	# D-Bus activation overrides: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.kwalletd6.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.kde.kwalletd6.service"
+	install -Dm644 "$srcdir/org.kde.kwalletd5.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.kde.kwalletd5.service"
+}
+
+sha512sums="
+ffcedb51dc11daed2c052c7bd7f61010b86effd80eb728a4b7c488756ec5dc3be021c99c1da6f42c5c5a9ec73d871ad74e578759b16ecbde5777550da6c897e6  org.kde.kwalletd6.user
+d52d47349f6f97a00319fe916b39bb31317fb08f461f8b8d6e62fbfff4080100b1159b05c3ceefb9fb1a333c8f83139d096e236c020ac269a7a14f3c80dd67c6  org.kde.kwalletd6.service
+f9f0dc9d09a808c118f529aad244eed47f4fe947bf50a5c16e8367294973cfb6f958e53a97382fbe426a426c4041e5c2f9be0e7424610895b62b90dc0ca74caf  org.kde.kwalletd5.service
+"

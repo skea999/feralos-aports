@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.Flatpak
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.Flatpak.user -- /usr/libexec/flatpak-session-helper

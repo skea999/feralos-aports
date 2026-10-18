@@ -1,11 +1,14 @@
-# dinit service: xdg-document-portal (user session)
+# dinit user service: xdg-document-portal (org.freedesktop.portal.Documents)
 # FUSE-backed document portal; exposes files to sandboxed apps.
+# Unit name = canonical D-Bus bus name (ADR-010); D-Bus activation is routed
+# through /usr/local/share/dbus-1/services/org.freedesktop.portal.Documents.service.
 # portal-order gate: do not start until the permission store owns its
 # D-Bus name — losing the name race to a D-Bus-activated twin makes the
 # supervised instance exit 20 (see /usr/lib/dinit/portal-order header).
 type = process
 smooth-recovery = true
 load-options = sub-vars
-logfile = $HOME/.local/share/dinit/xdg-document-portal.log
+logfile = $HOME/.local/share/dinit/org.freedesktop.portal.Documents.log
 command = /usr/lib/dinit/portal-order org.freedesktop.impl.portal.PermissionStore -- /usr/libexec/xdg-document-portal
+working-dir = $HOME
 depends-on = dbus.user

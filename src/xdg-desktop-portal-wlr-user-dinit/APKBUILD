@@ -1,0 +1,31 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for xdg-desktop-portal-wlr. Unit name = canonical
+# session D-Bus bus name (ADR-010); D-Bus activation is routed through
+# feralos-dbus-activate via an override in /usr/local/share/dbus-1/services/.
+pkgname=xdg-desktop-portal-wlr-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for xdg-desktop-portal-wlr"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit xdg-desktop-portal-wlr feralos-dbus-activate"
+makedepends=""
+source="org.freedesktop.impl.portal.desktop.wlr.user org.freedesktop.impl.portal.desktop.wlr.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.wlr.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.desktop.wlr.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.wlr.service" \
+		"$pkgdir/usr/local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.wlr.service"
+}
+
+sha512sums="
+e916621caf8c850384b0f839fbac188c1672b50125723f31a629c00848d8b74af8c02a2c9b1f332930fa5b8d7ee6e1797248842c645bb2dd63d8b5221ad9e0bf  org.freedesktop.impl.portal.desktop.wlr.user
+8e516f71cacbfdd3ed4d1197b033852004e2e4716e1bcfb5db98ab0a9a487c464baf9cac84558d77f579fe5a898226b55e4b66ca8c49695019e90d424c63d0c6  org.freedesktop.impl.portal.desktop.wlr.service
+"

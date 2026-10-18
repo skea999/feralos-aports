@@ -1,8 +1,0 @@
-# dinit service: xdg-permission-store (user session)
-# Permission store backend; the document portal depends on its D-Bus name.
-type = process
-smooth-recovery = true
-load-options = sub-vars
-logfile = $HOME/.local/share/dinit/xdg-permission-store.log
-command = /usr/libexec/xdg-permission-store
-depends-on = dbus.user

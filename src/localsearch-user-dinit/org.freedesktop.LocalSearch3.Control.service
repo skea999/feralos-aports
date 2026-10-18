@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.LocalSearch3.Control
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.LocalSearch3.Control.user -- /usr/libexec/localsearch-control-3

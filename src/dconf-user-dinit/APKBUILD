@@ -2,10 +2,10 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit service for dconf. Unit name = canonical session D-Bus bus name
 # (ADR-010); D-Bus activation is routed through feralos-dbus-activate via an
-# override in /usr/local/share/dbus-1/services/.
+# override in /usr/share/feralos/dbus-services/.
 pkgname=dconf-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit service for dconf"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -22,7 +22,7 @@ package() {
 		"$pkgdir/etc/dinit.d/user/ca.desrt.dconf.user"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/ca.desrt.dconf.service" \
-		"$pkgdir/usr/local/share/dbus-1/services/ca.desrt.dconf.service"
+		"$pkgdir/usr/share/feralos/dbus-services/ca.desrt.dconf.service"
 }
 
 sha512sums="

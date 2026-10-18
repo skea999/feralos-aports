@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit services for localsearch (GNOME file indexer). Unit names =
 # canonical session D-Bus bus names (ADR-010); D-Bus activation is routed
-# through feralos-dbus-activate via overrides in /usr/local/share/dbus-1/services/.
+# through feralos-dbus-activate via overrides in /usr/share/feralos/dbus-services/.
 # Mapping (source-verified against GNOME/localsearch 3.9.0 meson + service
 # templates + src/indexer/tracker-main.c and Alpine v3.22 contents):
 #   org.freedesktop.LocalSearch3[.Control|.Writeback]  -> localsearch-3 /
@@ -14,7 +14,7 @@
 #       unit and no activation file.
 pkgname=localsearch-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit services for localsearch (indexer + control + writeback)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -42,7 +42,7 @@ package() {
 		org.freedesktop.LocalSearch3.Control org.freedesktop.Tracker3.Miner.Files.Control \
 		org.freedesktop.LocalSearch3.Writeback org.freedesktop.Tracker3.Writeback; do
 		install -Dm644 "$srcdir/$s.service" \
-			"$pkgdir/usr/local/share/dbus-1/services/$s.service"
+			"$pkgdir/usr/share/feralos/dbus-services/$s.service"
 	done
 }
 

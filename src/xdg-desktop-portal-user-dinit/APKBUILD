@@ -3,11 +3,11 @@
 # User dinit services for xdg-desktop-portal (frontend + document portal +
 # permission store). Unit names = canonical session D-Bus bus names
 # (ADR-010). D-Bus activation is routed through feralos-dbus-activate via
-# overrides in /usr/local/share/dbus-1/services/ (higher precedence than the
-# upstream /usr/share files).
+# overrides staged in /usr/share/feralos/dbus-services/ and materialized by
+# dbus-session into the highest-precedence session servicedir.
 pkgname=xdg-desktop-portal-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="User dinit services for xdg-desktop-portal (desktop + document portal + permission store)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -32,11 +32,11 @@ package() {
 	install -Dm755 "$srcdir/portal-order" "$pkgdir/usr/lib/dinit/portal-order"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.portal.Desktop.service" \
-		"$pkgdir/usr/local/share/dbus-1/services/org.freedesktop.portal.Desktop.service"
+		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.portal.Desktop.service"
 	install -Dm644 "$srcdir/org.freedesktop.portal.Documents.service" \
-		"$pkgdir/usr/local/share/dbus-1/services/org.freedesktop.portal.Documents.service"
+		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.portal.Documents.service"
 	install -Dm644 "$srcdir/org.freedesktop.impl.portal.PermissionStore.service" \
-		"$pkgdir/usr/local/share/dbus-1/services/org.freedesktop.impl.portal.PermissionStore.service"
+		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.impl.portal.PermissionStore.service"
 }
 
 sha512sums="

@@ -5,4 +5,17 @@
 # environment (dinitctl setenv) so dependent services see it too.
 export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/`id -u`/bus"
 dinitctl setenv DBUS_SESSION_BUS_ADDRESS || :
+# ADR-010: materialize the FeralOS D-Bus activation overrides into the
+# highest-precedence session servicedir (strict naming: <bus name>.service).
+# Must happen before dbus-daemon starts (this directory is read at startup
+# and is not monitored). Stale *.service files from previous sessions are
+# removed first.
+if [ -d /usr/share/feralos/dbus-services ]; then
+    mkdir -p "$XDG_RUNTIME_DIR/dbus-1/services"
+    rm -f "$XDG_RUNTIME_DIR"/dbus-1/services/*.service
+    for f in /usr/share/feralos/dbus-services/*.service; do
+        [ -e "$f" ] || continue
+        cp -f "$f" "$XDG_RUNTIME_DIR/dbus-1/services/"
+    done
+fi
 exec dbus-daemon --session --address="$DBUS_SESSION_BUS_ADDRESS" "$@"

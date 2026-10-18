@@ -2,11 +2,11 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit service for signond. Unit name = canonical session D-Bus bus name
 # (ADR-010); D-Bus activation is routed through feralos-dbus-activate via
-# overrides in /usr/local/share/dbus-1/services/. The com.nokia.SingleSignOn.Backup
+# overrides in /usr/share/feralos/dbus-services/. The com.nokia.SingleSignOn.Backup
 # alias maps to the SAME unit (one daemon serves both names).
 pkgname=signond-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit service for signond (+ backup alias)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -24,9 +24,9 @@ package() {
 		"$pkgdir/etc/dinit.d/user/com.google.code.AccountsSSO.SingleSignOn.user"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/com.google.code.AccountsSSO.SingleSignOn.service" \
-		"$pkgdir/usr/local/share/dbus-1/services/com.google.code.AccountsSSO.SingleSignOn.service"
+		"$pkgdir/usr/share/feralos/dbus-services/com.google.code.AccountsSSO.SingleSignOn.service"
 	install -Dm644 "$srcdir/com.nokia.SingleSignOn.Backup.service" \
-		"$pkgdir/usr/local/share/dbus-1/services/com.nokia.SingleSignOn.Backup.service"
+		"$pkgdir/usr/share/feralos/dbus-services/com.nokia.SingleSignOn.Backup.service"
 }
 
 sha512sums="

@@ -1,0 +1,15 @@
+# dinit user service: oo7-portal — Secret portal backend (org.freedesktop.impl.portal.desktop.oo7)
+# Backend for the Secret portal; zbus connects to the session bus at runtime.
+# Unit name = the portal's real well-known bus name (verified in the oo7 portal
+# source: PORTAL_NAME const + meson dbus_name). D-Bus activation is routed to
+# this unit via /usr/local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.oo7.service.
+# NOTE: org.freedesktop.impl.portal.Secret is the portal backend INTERFACE,
+# not a bus name — an activation file under that name can never fire (the
+# former override was dead and has been removed).
+type = process
+smooth-recovery = true
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.freedesktop.impl.portal.desktop.oo7.log
+command = /usr/libexec/oo7-portal
+working-dir = $HOME
+depends-on = dbus.user

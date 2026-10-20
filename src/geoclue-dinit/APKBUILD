@@ -9,7 +9,7 @@
 # every activation target has a package-shipped unit.
 pkgname=geoclue-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for geoclue (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -30,6 +30,6 @@ package() {
 }
 
 sha512sums="
-17cee8bdad958acf7989ac594d3755818b002921ba33391fd8255235c35e4c7c43aaf792c9b6dcc09f38abac44effbaa98d301cffcffaef38f434adf66d5870a  org.freedesktop.GeoClue2
+f6e003d48e32c33483416e251a81ee23c5d604ba7345e9be8927d7c8e745b37130b8bb3ad8316486318fb81b9dff901534a455e78417d303bfb4900f108d552c  org.freedesktop.GeoClue2
 f38dc18748512f10ae20b65c9d3758f71dc1f7a6d6962b7ca1d2c9a257bcc2376c4efcfb1dd221524e9cdf757d3c253694f33b9187bc4dd6bd244de3f575101d  org.freedesktop.GeoClue2.service
 "

@@ -11,7 +11,7 @@
 # package-shipped unit.
 pkgname=fprintd-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for fprintd (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -32,6 +32,6 @@ package() {
 }
 
 sha512sums="
-b04553d5a5892893195d2cc2ee9d5acaaf022d60ecb730caed280069aa5ceb57e785bcd30b9127457bf5754140785d5e88def40833f193f6a6848a6cde7a5adc  net.reactivated.Fprint
+58aa8c0aba0398cdddbe0806f26032d3c6f58c2a35bb8d89ffd545a0934467dc2b6db59979d03e0292f6e34bf550c9ef353508fc293406515bd1b1855e2a477c  net.reactivated.Fprint
 ff5dcaa96b9dc80674b838a06ebf7ce20900b7cc8d305a3589717365de2aef9358803503002db86597e9789e053411387553708432a0823b662a4044782759ff  net.reactivated.Fprint.service
 "

@@ -2,7 +2,8 @@
 # org.gnome.evolution.dataserver.Calendar8 (ADR-010). Transitional unit.
 type = process
 command = /usr/libexec/evolution-calendar-factory
-smooth-recovery = true
+# Idle-exit daemon: when it exits the unit stops (activation restarts it); do NOT respawn.
+smooth-recovery = false
 restart = false
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.gnome.evolution.dataserver.Calendar8.log

@@ -5,7 +5,8 @@
 type = process
 command = /usr/libexec/geoclue
 run-as = geoclue
-smooth-recovery = true
+# Idle-exit daemon: when it exits the unit stops (activation restarts it); do NOT respawn.
+smooth-recovery = false
 restart = false
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.GeoClue2.log

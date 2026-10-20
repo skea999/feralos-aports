@@ -220,7 +220,12 @@ jobs:
           # polkit base vs polkit-elogind are mutually exclusive variants:
           # keep base (polkit-dinit + quickshell depend on it), skip the
           # elogind variant artifacts (isolated smoke covers them)
-          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind polkit-elogind-dev polkit-elogind-libs polkit-elogind-dinit"
+          # gnome-keyring-user-dinit (niri secrets set) vs oo7-user-dinit
+          # (niriWayle secrets set): both ship the org.freedesktop.secrets
+          # unit/override and gnome-keyring conflicts with oo7-server on
+          # usr/share/dbus-1/services/org.freedesktop.secrets.service —
+          # keep oo7 (flagship), skip the keyring variant artifacts
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind polkit-elogind-dev polkit-elogind-libs polkit-elogind-dinit gnome-keyring-user-dinit"
           for apkfile in ~/packages/*/x86_64/*.apk; do
             [ -f "$apkfile" ] || continue
             name=$(basename "$apkfile" | sed -E 's/-[0-9][^-]*-r[0-9]+\.apk$//')
@@ -344,9 +349,12 @@ jobs:
           # packages ship cmd:incusd so they can never coexist on one
           # machine. polkit-elogind-dinit pulls the elogind polkit variant,
           # mutually exclusive with the base `polkit` installed by the
-          # polkit dir. The build job smoke-installs each variant standalone;
+          # polkit dir. gnome-keyring-user-dinit (niri secrets set) conflicts
+          # with oo7-user-dinit (niriWayle secrets set): same unit/override
+          # names, and gnome-keyring vs oo7-server on the secrets activation
+          # file. The build job smoke-installs each variant standalone;
           # here (one simulated machine) we install the remaining packages.
-          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind-dinit"
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind-dinit gnome-keyring-user-dinit"
           for d in src/*/APKBUILD; do
             pkg=$(basename "$(dirname "$d")")
             [ "$pkg" = feralos-keyring ] && continue

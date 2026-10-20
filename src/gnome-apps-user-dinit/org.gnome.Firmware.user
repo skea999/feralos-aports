@@ -1,0 +1,10 @@
+# feralos gnome-apps-user-dinit: D-Bus activation target for org.gnome.Firmware
+# (ADR-010). Transitional unit. GUI app in GApplication service mode.
+type = process
+command = /usr/bin/gnome-firmware --gapplication-service
+smooth-recovery = false
+restart = false
+working-dir = $HOME
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.Firmware.log
+depends-on = dbus.user

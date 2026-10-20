@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.gnome.Firmware
+Exec=/usr/libexec/feralos/dbus-activate org.gnome.Firmware.user -- /usr/bin/gnome-firmware --gapplication-service

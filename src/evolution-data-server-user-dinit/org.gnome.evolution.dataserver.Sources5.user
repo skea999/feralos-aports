@@ -1,0 +1,10 @@
+# feralos evolution-data-server-user-dinit: D-Bus activation target for
+# org.gnome.evolution.dataserver.Sources5 (ADR-010). Transitional: drop when the
+# package (or dbus-broker ephemeral services) ships this unit itself.
+type = process
+command = /usr/libexec/evolution-source-registry
+smooth-recovery = true
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.evolution.dataserver.Sources5.log
+depends-on = dbus.user

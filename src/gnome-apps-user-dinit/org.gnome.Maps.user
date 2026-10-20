@@ -1,0 +1,10 @@
+# feralos gnome-apps-user-dinit: D-Bus activation target for org.gnome.Maps
+# (ADR-010). Transitional unit. GUI app (gjs wrapper in /usr/share/gnome-maps).
+type = process
+command = /usr/share/gnome-maps/org.gnome.Maps --gapplication-service
+smooth-recovery = false
+restart = false
+working-dir = $HOME
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.Maps.log
+depends-on = dbus.user

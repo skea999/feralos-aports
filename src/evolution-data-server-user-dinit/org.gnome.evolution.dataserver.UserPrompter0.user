@@ -1,0 +1,10 @@
+# feralos evolution-data-server-user-dinit: D-Bus activation target for
+# org.gnome.evolution.dataserver.UserPrompter0 (ADR-010). Transitional unit.
+# GUI helper: transient, needs the session display env (shim forwards it).
+type = process
+command = /usr/libexec/evolution-user-prompter
+smooth-recovery = false
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.evolution.dataserver.UserPrompter0.log
+depends-on = dbus.user

@@ -1,0 +1,35 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# geoclue on the system bus. ADR-010: the D-Bus activation target
+# org.freedesktop.GeoClue2 routes through feralos-dbus-activate to a dinit
+# unit named after the bus name; the override is packaged in
+# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# launch helper's standard dirs). Transitional units: the harness check
+# dbus_activation_migration retires them once dbus-broker is installed and
+# every activation target has a package-shipped unit.
+pkgname=geoclue-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for geoclue (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate geoclue"
+makedepends=""
+source="org.freedesktop.GeoClue2 org.freedesktop.GeoClue2.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.freedesktop.GeoClue2" \
+		"$pkgdir/lib/dinit.d/org.freedesktop.GeoClue2"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.GeoClue2.service" \
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.GeoClue2.service"
+}
+
+sha512sums="
+17cee8bdad958acf7989ac594d3755818b002921ba33391fd8255235c35e4c7c43aaf792c9b6dcc09f38abac44effbaa98d301cffcffaef38f434adf66d5870a  org.freedesktop.GeoClue2
+f38dc18748512f10ae20b65c9d3758f71dc1f7a6d6962b7ca1d2c9a257bcc2376c4efcfb1dd221524e9cdf757d3c253694f33b9187bc4dd6bd244de3f575101d  org.freedesktop.GeoClue2.service
+"

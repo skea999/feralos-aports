@@ -1,0 +1,35 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# kcron's KAuth helper on the system bus. ADR-010: the D-Bus activation
+# target local.kcron.crontab routes through feralos-dbus-activate to a dinit
+# unit named after the bus name; the override is packaged in
+# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# launch helper's standard dirs). Transitional units: the harness check
+# dbus_activation_migration retires them once dbus-broker is installed and
+# every activation target has a package-shipped unit.
+pkgname=kcron-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for kcron's KAuth helper (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate kcron"
+makedepends=""
+source="local.kcron.crontab local.kcron.crontab.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/local.kcron.crontab" \
+		"$pkgdir/lib/dinit.d/local.kcron.crontab"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/local.kcron.crontab.service" \
+		"$pkgdir/usr/share/feralos/dbus-system-services/local.kcron.crontab.service"
+}
+
+sha512sums="
+29ee0544a910be99078a42d8d0692853db12e7551215e9060bd57117cfaff814620425e88398262e52ed5fe42b3823a26eb6fe6f576c73bc9c6255963dca84f0  local.kcron.crontab
+be5edf849e87d8dd19bd8210e8dfb4c7ca43b5d98887b0f82a9e78275e1f21088db6c14361f892490f0779bad9bf553bfa35c2b896dfa76e1263aeed8c7f7124  local.kcron.crontab.service
+"

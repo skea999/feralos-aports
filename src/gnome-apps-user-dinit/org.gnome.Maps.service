@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.gnome.Maps
+Exec=/usr/libexec/feralos/dbus-activate org.gnome.Maps.user -- /usr/share/gnome-maps/org.gnome.Maps --gapplication-service

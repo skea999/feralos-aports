@@ -1,0 +1,50 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# evolution-data-server factories on the session bus. ADR-010: the D-Bus
+# activation targets Sources5/AddressBook10/Calendar8/UserPrompter0 route
+# through feralos-dbus-activate to per-user dinit units named after the bus
+# names; the overrides are packaged in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=evolution-data-server-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit services for evolution-data-server (D-Bus activation targets)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate evolution-data-server"
+makedepends=""
+source="org.gnome.evolution.dataserver.Sources5.user
+	org.gnome.evolution.dataserver.Sources5.service
+	org.gnome.evolution.dataserver.AddressBook10.user
+	org.gnome.evolution.dataserver.AddressBook10.service
+	org.gnome.evolution.dataserver.Calendar8.user
+	org.gnome.evolution.dataserver.Calendar8.service
+	org.gnome.evolution.dataserver.UserPrompter0.user
+	org.gnome.evolution.dataserver.UserPrompter0.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for unit in Sources5 AddressBook10 Calendar8 UserPrompter0; do
+		install -Dm644 "$srcdir/org.gnome.evolution.dataserver.$unit.user" \
+			"$pkgdir/etc/dinit.d/user/org.gnome.evolution.dataserver.$unit.user"
+		install -Dm644 "$srcdir/org.gnome.evolution.dataserver.$unit.service" \
+			"$pkgdir/usr/share/feralos/dbus-services/org.gnome.evolution.dataserver.$unit.service"
+	done
+}
+
+sha512sums="
+f0b0db5b1af06fc38605f68fe5551d39a4c2dc70802a61ebac9fb49d44d7aff45f59d14c184a8a8d5fdfdaa7e28bf59e9093b4d9f3514fcdeaba25e9d0cc16a3  org.gnome.evolution.dataserver.Sources5.user
+92d5527f517b07499b00c9d704790865542307d642cf32423b8afbcc4275615bc219e84196fb13ef96af58d871ea934ae0af39a5bf7e20856a4e975c02a3fc09  org.gnome.evolution.dataserver.Sources5.service
+b6c416626392a81ee186d9032b398c2f391dbb959172bc24751dc02d4a6dd0fd11c95e17b9aaa75b4745e125fc7aa20240d576e615a8f31c3b98b7c10132ebbc  org.gnome.evolution.dataserver.AddressBook10.user
+76ef73ace3f0a665c28bac6786c3a5275c6db6af1a3c879e6dd4a17d7085477b513e3de33b421ad43e9d5ba898cd8c0f7bb87a7d9a09c65b5c083cecec779c66  org.gnome.evolution.dataserver.AddressBook10.service
+8194d17ff86b17a78b1d91ab31f3a03752d98a198f05fb7f2977f28464a0dc47ae5f5de9cae96e49d8bff5588da7f2d727c62cddb9d98c6376a2d0629cb8f850  org.gnome.evolution.dataserver.Calendar8.user
+e5f8393e0cbdf2334f5f1220da8a85386ec2db71c101c5656dadbf3de6d3c13b2dd48d7cd8e48fd03cb29cd5aea9a7b66f6f4c6fea1e442d1740dc91f18a7ff9  org.gnome.evolution.dataserver.Calendar8.service
+31fc6e3477444381058bdcbdda90169c9d68f84b607253be3b99c2395a558bd37b3cd10fe76b01989ac5f4d80cc3d31c1a2158822c483d638a84186e1c08d239  org.gnome.evolution.dataserver.UserPrompter0.user
+f0a014974810a4018881545c0f80aaf27a59f12a014f89095b29c1b17423dccfa35047a321434d08131df2b65691435fd11c07aae7b1f88a27ba19d4ef67e454  org.gnome.evolution.dataserver.UserPrompter0.service
+"

@@ -1,0 +1,11 @@
+# feralos udisks2-dinit: D-Bus activation target for org.freedesktop.UDisks2 (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships this
+# unit itself. Alpine path: /usr/libexec/udisks2/udisksd (NOT /usr/libexec/udisksd).
+type = process
+command = /usr/libexec/udisks2/udisksd
+run-as = root
+smooth-recovery = true
+restart = false
+log-type = file
+logfile = /var/log/dinit/org.freedesktop.UDisks2.log
+depends-on = dbus

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.gnome.evolution.dataserver.UserPrompter0
+Exec=/usr/libexec/feralos/dbus-activate org.gnome.evolution.dataserver.UserPrompter0.user -- /usr/libexec/evolution-user-prompter

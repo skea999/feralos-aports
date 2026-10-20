@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.freedesktop.GeoClue2
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.GeoClue2 -- /usr/libexec/geoclue
+User=root

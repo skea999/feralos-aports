@@ -1,0 +1,10 @@
+# feralos gnome-apps-user-dinit: D-Bus activation target for org.gnome.DiskUtility
+# (ADR-010). Transitional unit. GUI app in GApplication service mode.
+type = process
+command = /usr/bin/gnome-disks --gapplication-service
+smooth-recovery = false
+restart = false
+working-dir = $HOME
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.DiskUtility.log
+depends-on = dbus.user

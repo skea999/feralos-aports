@@ -1,0 +1,9 @@
+# feralos evolution-data-server-user-dinit: D-Bus activation target for
+# org.gnome.evolution.dataserver.AddressBook10 (ADR-010). Transitional unit.
+type = process
+command = /usr/libexec/evolution-addressbook-factory
+smooth-recovery = true
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.evolution.dataserver.AddressBook10.log
+depends-on = dbus.user

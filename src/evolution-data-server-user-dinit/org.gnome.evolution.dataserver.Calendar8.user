@@ -1,0 +1,9 @@
+# feralos evolution-data-server-user-dinit: D-Bus activation target for
+# org.gnome.evolution.dataserver.Calendar8 (ADR-010). Transitional unit.
+type = process
+command = /usr/libexec/evolution-calendar-factory
+smooth-recovery = true
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.evolution.dataserver.Calendar8.log
+depends-on = dbus.user

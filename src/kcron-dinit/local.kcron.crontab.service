@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=local.kcron.crontab
+Exec=/usr/libexec/feralos/dbus-activate local.kcron.crontab -- /usr/lib/libexec/kf6/kauth/kcron_helper
+User=root

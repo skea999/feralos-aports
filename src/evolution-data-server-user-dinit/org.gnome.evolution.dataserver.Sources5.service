@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.gnome.evolution.dataserver.Sources5
+Exec=/usr/libexec/feralos/dbus-activate org.gnome.evolution.dataserver.Sources5.user -- /usr/libexec/evolution-source-registry

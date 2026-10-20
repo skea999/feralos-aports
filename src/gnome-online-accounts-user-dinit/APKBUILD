@@ -1,0 +1,43 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# gnome-online-accounts on the session bus. ADR-010: the D-Bus activation
+# targets org.gnome.OnlineAccounts and org.gnome.Identity route through
+# feralos-dbus-activate to per-user dinit units named after the bus names;
+# the overrides are packaged in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=gnome-online-accounts-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for gnome-online-accounts (D-Bus activation targets)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate gnome-online-accounts"
+makedepends=""
+source="org.gnome.OnlineAccounts.user org.gnome.OnlineAccounts.service
+	org.gnome.Identity.user org.gnome.Identity.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.gnome.OnlineAccounts.user" \
+		"$pkgdir/etc/dinit.d/user/org.gnome.OnlineAccounts.user"
+	install -Dm644 "$srcdir/org.gnome.Identity.user" \
+		"$pkgdir/etc/dinit.d/user/org.gnome.Identity.user"
+	# D-Bus activation overrides: the effective Exec starts the dinit units.
+	install -Dm644 "$srcdir/org.gnome.OnlineAccounts.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.gnome.OnlineAccounts.service"
+	install -Dm644 "$srcdir/org.gnome.Identity.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.gnome.Identity.service"
+}
+
+sha512sums="
+dcf317228d8c9dabceb3f50ef3b1554fe6cfba362b95fc87b22898fd221ad2d8e93b0264e3f3d2d5bed421429e02282fa88f09226351b8a5440aa6c7a3f14ead  org.gnome.OnlineAccounts.user
+018d63b2c2669b5531a0164f0e1620b9051f44282416e42f126884b7aa7e92d7e29ae798e6d6713a72d782c97a212bd4326ab9cd22b487fe5bdec35e00b2eaf6  org.gnome.OnlineAccounts.service
+5245ea07f687df5c7705eb98eed3aa97d0df160204977da01796716557a427e4117598da8f47967309237c7f8ed4fdf13d6407cf8e7509e8c48abb802778c071  org.gnome.Identity.user
+f0fcf130611048f4a9690f4a2e9e46e5329cc06b0488a4bc1baffa22bc471ed2cc4cb4b693c99e55a3f6e5f30165da19fc0ee6f5dc7318a5670e3094a498720b  org.gnome.Identity.service
+"

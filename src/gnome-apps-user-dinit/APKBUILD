@@ -1,0 +1,46 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# GNOME app-launch activation targets on the session bus. ADR-010: the
+# D-Bus activation targets org.gnome.Calendar / DiskUtility / Firmware / Maps
+# route through feralos-dbus-activate to per-user dinit units named after
+# the bus names; the overrides are packaged in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=gnome-apps-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit services for GNOME app-launch activation targets"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate gnome-calendar gnome-disk-utility gnome-firmware gnome-maps"
+makedepends=""
+source="org.gnome.Calendar.user org.gnome.Calendar.service
+	org.gnome.DiskUtility.user org.gnome.DiskUtility.service
+	org.gnome.Firmware.user org.gnome.Firmware.service
+	org.gnome.Maps.user org.gnome.Maps.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for app in Calendar DiskUtility Firmware Maps; do
+		install -Dm644 "$srcdir/org.gnome.$app.user" \
+			"$pkgdir/etc/dinit.d/user/org.gnome.$app.user"
+		install -Dm644 "$srcdir/org.gnome.$app.service" \
+			"$pkgdir/usr/share/feralos/dbus-services/org.gnome.$app.service"
+	done
+}
+
+sha512sums="
+9e4a25e5882e7c3aec7fba86a1d62b33be0aee8d973f16f63b11772c49ada0bb32bc92ed373ef972a855e719f682486b0f704683441ecbf02cdaf71896c63556  org.gnome.Calendar.user
+759bcf039aa54fe23243841795c3ed8f7c3abef7b512c14fc40a8c59aa5878ed6978381e0c8f8fa09964beee9208438da893e3ed8fd98a1a0810fec4b34d7ce3  org.gnome.Calendar.service
+6fb4442bf0ec6e9191636f84b13286f6036e3026c848afaa1c58671ad4dc7be71b41a185d3cdaf1e30191c5879968f3c12eaa9879955050ac1eb5c2fb4e96b8a  org.gnome.DiskUtility.user
+015629c6d54548989f3f99b2fa1ac898bd2c688f68194865002d53bc62e7b723b0fa0d480fe9ae962b6165542dc52f1caaccd2a7246d4601290b049e23d2b5db  org.gnome.DiskUtility.service
+160c3896e5d8156614e33b4229255c15e31e370df9980c5c85a777a8a7ebd8809f7043058c16b111cc58542bc846186fde447fc04bed96d4b85dce418dca4c6d  org.gnome.Firmware.user
+67165e05fb1910d4fa079605c5b3428e6f2ee3f39c3ece269af96007fd1c2abc745620f3bd1f74ad920d02789dc0cd78010c0e2177654d4b20f90eefbc5f2116  org.gnome.Firmware.service
+f2164e5d516a245e71d092c555827915784d2f951d315585e63579d3375135c15f85b13efe6e372114144b73a87edf0437a12518a119c5f837b762ff4023b3e7  org.gnome.Maps.user
+644f0180f538c9005dfd42c0564925ff280b42da5995ec6077f0da462d185e85854cd858b0d880fd18262008bf337f95ad45f400d1756b5b1d83fcaf059c70b9  org.gnome.Maps.service
+"

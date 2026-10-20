@@ -1,0 +1,10 @@
+# feralos gnome-online-accounts-user-dinit: D-Bus activation target for
+# org.gnome.Identity (ADR-010). Separate binary from goa-daemon
+# (/usr/libexec/goa-identity-service) — no alias dedupe.
+type = process
+command = /usr/libexec/goa-identity-service
+smooth-recovery = true
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.Identity.log
+depends-on = dbus.user

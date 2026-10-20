@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.opensuse.CupsPkHelper.Mechanism
+Exec=/usr/libexec/feralos/dbus-activate org.opensuse.CupsPkHelper.Mechanism -- /usr/libexec/cups-pk-helper-mechanism
+User=root

@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.freedesktop.Avahi
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.Avahi -- /usr/sbin/avahi-daemon
+User=root

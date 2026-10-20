@@ -1,0 +1,37 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# fprintd on the system bus. ADR-010: the D-Bus activation target
+# net.reactivated.Fprint routes through feralos-dbus-activate to a dinit unit
+# named after the bus name; the override is packaged in
+# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# launch helper's standard dirs). Upstream Exec verified on Alpine 3.24:
+# /usr/libexec/fprintd (also filed as the flat daemon path, no subdir).
+# Transitional units: the harness check dbus_activation_migration retires them
+# once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=fprintd-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for fprintd (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate fprintd"
+makedepends=""
+source="net.reactivated.Fprint net.reactivated.Fprint.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/net.reactivated.Fprint" \
+		"$pkgdir/lib/dinit.d/net.reactivated.Fprint"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/net.reactivated.Fprint.service" \
+		"$pkgdir/usr/share/feralos/dbus-system-services/net.reactivated.Fprint.service"
+}
+
+sha512sums="
+b04553d5a5892893195d2cc2ee9d5acaaf022d60ecb730caed280069aa5ceb57e785bcd30b9127457bf5754140785d5e88def40833f193f6a6848a6cde7a5adc  net.reactivated.Fprint
+ff5dcaa96b9dc80674b838a06ebf7ce20900b7cc8d305a3589717365de2aef9358803503002db86597e9789e053411387553708432a0823b662a4044782759ff  net.reactivated.Fprint.service
+"

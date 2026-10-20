@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=net.reactivated.Fprint
+Exec=/usr/libexec/feralos/dbus-activate net.reactivated.Fprint -- /usr/libexec/fprintd
+User=root

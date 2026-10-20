@@ -1,0 +1,13 @@
+# feralos fprintd-dinit: D-Bus activation target for net.reactivated.Fprint (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships
+# this unit itself. fprintd exits after 30s of inactivity by default and
+# --no-timeout is deliberately NOT passed; smooth-recovery respawns the process,
+# so the unit only reaches STOPPED on explicit stop or restart-limit trip.
+type = process
+command = /usr/libexec/fprintd
+run-as = root
+smooth-recovery = true
+restart = false
+log-type = file
+logfile = /var/log/dinit/net.reactivated.Fprint.log
+depends-on = dbus

@@ -1,0 +1,37 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# bolt on the system bus. ADR-010: the D-Bus activation target
+# org.freedesktop.bolt routes through feralos-dbus-activate to a dinit unit
+# named after the bus name; the override is packaged in
+# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# launch helper's standard dirs). Upstream Exec verified on Alpine 3.24:
+# /usr/libexec/boltd.
+# Transitional units: the harness check dbus_activation_migration retires them
+# once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=bolt-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit service for bolt (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate bolt"
+makedepends=""
+source="org.freedesktop.bolt org.freedesktop.bolt.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.freedesktop.bolt" \
+		"$pkgdir/lib/dinit.d/org.freedesktop.bolt"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.bolt.service" \
+		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.bolt.service"
+}
+
+sha512sums="
+d9b23befafd534b6c60a4069b05974ed7fc7cac096a664af945a493285fda5e694c175f6178762e31740b827822e5f11fd53de63839914e70ede0f94d64af5cc  org.freedesktop.bolt
+2d509108859702783318bbef0d69dc560f3a360c6bd35c32961f51235348ba4ac5dda858522752d25de53c7bba0ae0ce8ff828da75f29e5e3e9e3e6e170d800a  org.freedesktop.bolt.service
+"

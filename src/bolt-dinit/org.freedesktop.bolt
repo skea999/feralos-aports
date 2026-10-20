@@ -1,0 +1,12 @@
+# feralos bolt-dinit: D-Bus activation target for org.freedesktop.bolt (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships
+# this unit itself. boltd is a resident daemon; activation-only — the unit is
+# started on the first bus activation and stays up until stopped.
+type = process
+command = /usr/libexec/boltd
+run-as = root
+smooth-recovery = true
+restart = false
+log-type = file
+logfile = /var/log/dinit/org.freedesktop.bolt.log
+depends-on = dbus

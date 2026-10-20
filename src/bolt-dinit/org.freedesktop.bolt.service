@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.freedesktop.bolt
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.bolt -- /usr/libexec/boltd
+User=root

@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.ktexteditor6.katetextbuffer
+Exec=/usr/libexec/feralos/dbus-activate org.kde.ktexteditor6.katetextbuffer -- /usr/lib/libexec/kf6/kauth/kauth_ktexteditor_helper
+User=root

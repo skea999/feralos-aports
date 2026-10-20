@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.ufw
+Exec=/usr/libexec/feralos/dbus-activate org.kde.ufw -- /usr/lib/libexec/kf6/kauth/kde_ufw_plugin_helper
+User=root

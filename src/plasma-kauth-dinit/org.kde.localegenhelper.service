@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.localegenhelper
+Exec=/usr/libexec/feralos/dbus-activate org.kde.localegenhelper -- /usr/bin/plasma-localegen-helper
+User=root

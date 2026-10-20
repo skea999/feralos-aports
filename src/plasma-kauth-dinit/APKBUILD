@@ -1,0 +1,92 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# KDE Plasma system-bus KAuth helper activation targets (kde DE). ADR-010: each
+# helper's upstream system-bus activation file routes through
+# feralos-dbus-activate to a dinit unit named after the bus name; the overrides
+# are packaged in /usr/share/feralos/dbus-system-services (materialized at boot
+# into the launch helper's standard dirs). Transitional units: the harness check
+# dbus_activation_migration retires them once dbus-broker is installed and
+# every activation target has a package-shipped unit.
+pkgname=plasma-kauth-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="dinit services for the KDE Plasma system-bus KAuth helper targets"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate discover-backend-apk plasma-workspace kdeplasma-addons plasma-desktop sddm-kcm plasma-disks kinfocenter libksysguard ktexteditor powerdevil plasma-firewall"
+makedepends=""
+source="org.kde.discover.alpineapkbackend org.kde.discover.alpineapkbackend.service
+	org.kde.fontinst org.kde.fontinst.service
+	org.kde.kameleonhelper org.kde.kameleonhelper.service
+	org.kde.kcontrol.kcmclock org.kde.kcontrol.kcmclock.service
+	org.kde.kcontrol.kcmsddm org.kde.kcontrol.kcmsddm.service
+	org.kde.kded.smart org.kde.kded.smart.service
+	org.kde.kinfocenter.dmidecode org.kde.kinfocenter.dmidecode.service
+	org.kde.ksysguard.processlisthelper org.kde.ksysguard.processlisthelper.service
+	org.kde.ktexteditor6.katetextbuffer org.kde.ktexteditor6.katetextbuffer.service
+	org.kde.localegenhelper org.kde.localegenhelper.service
+	org.kde.powerdevil.backlighthelper org.kde.powerdevil.backlighthelper.service
+	org.kde.powerdevil.chargethresholdhelper org.kde.powerdevil.chargethresholdhelper.service
+	org.kde.powerdevil.discretegpuhelper org.kde.powerdevil.discretegpuhelper.service
+	org.kde.powerdevil.wakeupsourcehelper org.kde.powerdevil.wakeupsourcehelper.service
+	org.kde.ufw org.kde.ufw.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for helper in org.kde.discover.alpineapkbackend \
+		org.kde.fontinst \
+		org.kde.kameleonhelper \
+		org.kde.kcontrol.kcmclock \
+		org.kde.kcontrol.kcmsddm \
+		org.kde.kded.smart \
+		org.kde.kinfocenter.dmidecode \
+		org.kde.ksysguard.processlisthelper \
+		org.kde.ktexteditor6.katetextbuffer \
+		org.kde.localegenhelper \
+		org.kde.powerdevil.backlighthelper \
+		org.kde.powerdevil.chargethresholdhelper \
+		org.kde.powerdevil.discretegpuhelper \
+		org.kde.powerdevil.wakeupsourcehelper \
+		org.kde.ufw; do
+		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
+		# D-Bus activation override: the effective Exec starts the dinit unit.
+		install -Dm644 "$srcdir/$helper.service" \
+			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+	done
+}
+
+sha512sums="
+e7c2ac6bb375b9c4d8246e8d75e6888b4278a22a0864350a4b15c695433dacb1a888f4b48655b1bad43467545ccd96742cbdc8d052cc32f6b4cf03e970c1638a  org.kde.discover.alpineapkbackend
+f84ac42d64377cbdbbd0b953d4f63d9f1389c9a0223ce9e1d415461cd1c23ad086436bf605bb38f425e8e13fc4fb3748cfd7d2571c8a2cd8f9d35731ed1b4aab  org.kde.discover.alpineapkbackend.service
+d4b8191aaea327dbe9fc8b8c758ce4de778adcb4a351a4d8d5377c0cac2829ccefc034af0999bb41b232c26b2f006c3f87f16f0fe98c3e583e3e0fd216f1cbe3  org.kde.fontinst
+5f97cd378ee169dc889f940a5c1f4c82a046824a95ab07726705b715583063c407c1fb3fa646536a390db6079cc5ae0c51284c7c3a0429b8b0d76b0e4067bc5a  org.kde.fontinst.service
+5605692ef6416d9bf3d118a767c844e0131bb6a4a4d646c193ee5895bc482f7824afb093234f7df061bec0f84359b95ce3f0791f7df6d51970da59ad4a658f33  org.kde.kameleonhelper
+8b40de876d3578e565f2393c38307260bf4effadd163b784eb38f473b5281314c5c52a909857fc882a04ab2fab25c246c584d6c82fdbb73ed41c03fc6e318a04  org.kde.kameleonhelper.service
+13690da80c634d6b001afd85fbffb2bf1e76147f119ade03ae5da6eb2811d611e02f07928abc29b87b24f6c96786798442929f03341511ae85a633dd0601dfad  org.kde.kcontrol.kcmclock
+aedfa29dbf6e9cb0cfdac5fdace48c6a96fae03859c2c845fd9b5f72747f421bfbcc1f7cdc5bade1bcde347562cc98d7dfe884950022dcfe00cd58c7af3b03f3  org.kde.kcontrol.kcmclock.service
+5ed0e3f311cf70d786b0d9a88650e6f724dcd593bfe3dc31742ca96be85cbe7dfc1719c8715fa1bfc61917673b2ae39f6a0e09723aaa76eafaf834a3c1141cef  org.kde.kcontrol.kcmsddm
+e9761e56dbf2d6936aa5b81db6aaaad91a215063b8b0b3ddb10e573d94da2ddbc126bde2a3421f724d07bf8118e102c6d953a6e325312cd1afbaf6398f48d7c8  org.kde.kcontrol.kcmsddm.service
+79e302e46d62e590b4a3173939c8cc14df809722dd2157a9c3c6a2046bcba1fc1ab26de8037db0a8e993f232e38dc339c40467d8fdd6d676d0ea4bb21922da36  org.kde.kded.smart
+260b98db4c2040b46ac150b5fb720fa0c8210f4d45a124b1eadbf727d80b4c5e3c973648e11a9ed67b2119fce1d3b58441dbe73680af79ddea4c6fdfec4167bf  org.kde.kded.smart.service
+50bd58d0051abdda61cfe075a20ae9e945dfe3efffd7db709b33f24a5abe6aa7e5af70bbafbaa8ccf403dd79b7d1f175863d286d1950db6e8953b401e08220e3  org.kde.kinfocenter.dmidecode
+f1138a7a5f9aa36af9fee3241731f0127a06183aeebe4b854f2a438d6f7ce860fa996f020aee20829ecb69abce3d284ef0f5fd6897a7bf0f2da9a3a3a0617fe0  org.kde.kinfocenter.dmidecode.service
+b9b15c1dfccbb6051a477ad91ed6a3c980a69a229ce8b4ce5be68a3dd1382668cb41421ce614a0fbfa87e5d74fd2f9904925424488a6acc03396754d15493f20  org.kde.ksysguard.processlisthelper
+f8efc7b2b65036dd64db3da04ecd8f1001d38047907b4a888b681828ee11a4ddc9f075aa7d0101b042825d3421ffe66a421bf7f44a605caff1800dbced7a5d72  org.kde.ksysguard.processlisthelper.service
+9c7d5697add0f75c81032f82b67e4eb3134f62c4a5ab8f003700ea79745b8e7fc4d85f33ab9c33dcf86edaf4b0fe069d4ad7638b837c4081545bc23ff872861b  org.kde.ktexteditor6.katetextbuffer
+370bdb036c297076b2ef6a89b08a6e36bb72a9478f21040efd5bcec637d7d2a1962f7bf945e3f285d32d9c767491d38a2a0d01c628ff84a32d67b85fefd945ac  org.kde.ktexteditor6.katetextbuffer.service
+9946e1a4daf181ab87abbb0add0a7baf91959e8f365c2044d11c5608b618492dfd74d7cdfd84c4ef2e8f97f15c37e63be80c6ac080cd706dd2bc7d8311c707bf  org.kde.localegenhelper
+0beea3740deaf57debb7adaa9f0e00e043524153019d1a61e049968808ad1e7bdb0590d9af09c5ac3d12372338dfa415cf20aec2813e27e0e7466b7bfd0d2d4d  org.kde.localegenhelper.service
+8bf395c5e9551722c390b99b56a72de4ef1fdd0637c1f0184fff7d56f186e82f91a18176553ec3652f517d74dca9daeafa33ddd4d604e5a64a5188eebf390adb  org.kde.powerdevil.backlighthelper
+588bc7787418c2fc992f99733ab3a18bac413a491aaa2dcdfb18d2f573a575ff4e8131aedb4dce36c31fcb092d273dd740330c573d771809c17baa933316eb48  org.kde.powerdevil.backlighthelper.service
+2b2ab69e71d27dbef922cf652e1d3eb2cbaed37c8584c26afd9d350b5760fb9918b9cd089336194b0e21a60250acacc175f67143891cdef122fbd22e36b4aea9  org.kde.powerdevil.chargethresholdhelper
+b72b9f79a6e2344f9ff0b0cba37677e435b1bf3c8423d79b2c30a266c21b70a9a17ecccad812abdf9e43ed33a6675bdb2b6e3360f7d9dcbe5f8d684a153481ce  org.kde.powerdevil.chargethresholdhelper.service
+2468bce526131660414b0dcfad674d4a5957fb0cf176e2914605005885233320a767f85aaec0c8a2ff5d8f6e4ea09db62b41a314432a21747df6bdea8a97e16e  org.kde.powerdevil.discretegpuhelper
+d6caebb830c3c5a6380f81b1205bfea441cf36eadd50072b5f9c79a18251c1a3480c53a9173ba25d9aa5cc65f6681c1b1c771c40d4e9837d47e42188695cb17f  org.kde.powerdevil.discretegpuhelper.service
+5c12ccbfb7795ef9a538cf6495c5e218a82660745e9b5045452debd90a5133fb4d95a86e6393708e70bd9e0b56a23f094143fba5f488ebe7b5727592725e9f67  org.kde.powerdevil.wakeupsourcehelper
+cbe99102b9f487e199cd10e1c472b3cb799e7cd1f609750c4698b6a0d8a5f62bd9e9298467906a2707f73257572799e7434d89e66fecc36e5531e2589a01a049  org.kde.powerdevil.wakeupsourcehelper.service
+b30337f75bb7485b34f62fa0f6a0992d6946764b2fec19ce578fe4222d5763116a1f431a133ea6f32875cd1c67464b66b0a2bc95c73fb46d1592d4fdbdb8a6c0  org.kde.ufw
+e332d7ab09deb5f7dcae8497ca3838e9b9d0b51ddbdb4519c734f2c5795915cd157f598f75b5c13e4d76172107a5721eace8a76d2d93085e85c3b25dd937ec8e  org.kde.ufw.service
+"

@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.powerdevil.chargethresholdhelper
+Exec=/usr/libexec/feralos/dbus-activate org.kde.powerdevil.chargethresholdhelper -- /usr/lib/libexec/kf6/kauth/chargethresholdhelper
+User=root

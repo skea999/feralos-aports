@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.kameleonhelper
+Exec=/usr/libexec/feralos/dbus-activate org.kde.kameleonhelper -- /usr/lib/libexec/kf6/kauth/kameleonhelper
+User=root

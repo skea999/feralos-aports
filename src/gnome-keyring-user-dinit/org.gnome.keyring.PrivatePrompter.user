@@ -1,0 +1,10 @@
+# feralos gnome-keyring-user-dinit: D-Bus activation target for the gcr
+# prompter (org.gnome.keyring.PrivatePrompter; alias ...SystemPrompter)
+# (ADR-010). Transitional unit; GUI prompt, transient.
+type = process
+command = /usr/libexec/gcr-prompter
+smooth-recovery = false
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.keyring.PrivatePrompter.log
+depends-on = dbus.user

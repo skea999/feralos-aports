@@ -1,0 +1,57 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# gnome-keyring/seahorse activation targets on the session bus (niri DE).
+# ADR-010: the secret service (org.freedesktop.secrets plus the org.gnome.keyring
+# and org.freedesktop.impl.portal.Secret aliases) routes through
+# feralos-dbus-activate to the per-user dinit unit org.freedesktop.secrets.user;
+# the gcr prompter and seahorse get their own units. The overrides are packaged
+# in /usr/share/feralos/dbus-services (materialized at login into
+# $XDG_RUNTIME_DIR/dbus-1/services). Transitional units: the harness check
+# dbus_activation_migration retires them once dbus-broker is installed and
+# every activation target has a package-shipped unit.
+pkgname=gnome-keyring-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit services for gnome-keyring/seahorse activation targets"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate gnome-keyring gcr seahorse"
+makedepends=""
+source="org.freedesktop.secrets.user org.freedesktop.secrets.service
+	org.freedesktop.impl.portal.Secret.service org.gnome.keyring.service
+	org.gnome.keyring.PrivatePrompter.user org.gnome.keyring.PrivatePrompter.service
+	org.gnome.keyring.SystemPrompter.service
+	org.gnome.seahorse.Application.user org.gnome.seahorse.Application.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for unit in org.freedesktop.secrets.user \
+		org.gnome.keyring.PrivatePrompter.user \
+		org.gnome.seahorse.Application.user; do
+		install -Dm644 "$srcdir/$unit" "$pkgdir/etc/dinit.d/user/$unit"
+	done
+	# D-Bus activation overrides: the effective Exec starts the dinit units.
+	for svc in org.freedesktop.secrets.service \
+		org.freedesktop.impl.portal.Secret.service org.gnome.keyring.service \
+		org.gnome.keyring.PrivatePrompter.service \
+		org.gnome.keyring.SystemPrompter.service \
+		org.gnome.seahorse.Application.service; do
+		install -Dm644 "$srcdir/$svc" \
+			"$pkgdir/usr/share/feralos/dbus-services/$svc"
+	done
+}
+
+sha512sums="
+13b142a2456de6293b37f27f07556ad833d8101485da53724c597837e17d647a6ca8dbbf694aa63134320340158d2abe86edd89ce36547ea1701c07450824a6f  org.freedesktop.secrets.user
+fb91625afaf16628b9234c7a4e7f7117050155f5c0ded03ccabc7ca2f84e4095762507102b6436d352a50a4362d1ed5c5814d85df37b5bb85c02eb09f87bf7b4  org.freedesktop.secrets.service
+042e9cb5b0ba6222abc8fabb687d02ed1609147b992a999134b5dc0fa9367f862a0c4f4695213193f60df42a8d18d567df6f9b5b9bd1903e638b4f78779240b6  org.freedesktop.impl.portal.Secret.service
+98fd9840dc5d28321a87f2c9ff9ff0917e6990d73ae3d9df680cc04f14e88688c2db221e8d2b3b966b700183b7b58b71e31c7e5ceb86c91bb3612a97f6c1a12f  org.gnome.keyring.service
+6fe793d27884e20e3696a463b41ec5ad7b4befbe8312de81e91356928518919f16392e1c3bbe9c3ca5e0836d43dd0ee2e8a9c7152f50c8b16015b3c4d5394af5  org.gnome.keyring.PrivatePrompter.user
+b6b89007102194c58dd5d0aa520ff78e1b55620ce99dcc69cff3f9e72c488a3387d98cbb5a47dcd069f8a7ea4960418a176ebe9c94975e191392147ef5341ef5  org.gnome.keyring.PrivatePrompter.service
+16ab41ef52df98f0ceed8b9f7070e9875ea7f8733da72a616a78b290851e27b328610f28df25d69a808fb1538985c0c6cb0394304d0237b480d16db9adcbfa38  org.gnome.keyring.SystemPrompter.service
+b77f305eb60420b0e709efeba4d99b8302674bc64eee759ac1094e0cee5ae514f5ed1a25327364429f0e1296824d32fbd5648f2fe321ca1062f4f9912c54f36d  org.gnome.seahorse.Application.user
+82a1325fce71df447dd3518023e5dc19568c92f305e79b0d52a1a1706488f713d3d1856076dfcb66dd22db8f151fcaf80e35e99d88fbc6799998c3ddc1e1f302  org.gnome.seahorse.Application.service
+"

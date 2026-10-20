@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.ksysguard.processlisthelper
+Exec=/usr/libexec/feralos/dbus-activate org.kde.ksysguard.processlisthelper -- /usr/lib/libexec/kf6/kauth/ksysguardprocesslist_helper
+User=root

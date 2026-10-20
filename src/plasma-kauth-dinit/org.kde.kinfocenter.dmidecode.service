@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.kinfocenter.dmidecode
+Exec=/usr/libexec/feralos/dbus-activate org.kde.kinfocenter.dmidecode -- /usr/lib/libexec/kf6/kauth/kinfocenter-dmidecode-helper
+User=root

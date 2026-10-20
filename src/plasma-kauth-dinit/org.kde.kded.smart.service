@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.kded.smart
+Exec=/usr/libexec/feralos/dbus-activate org.kde.kded.smart -- /usr/lib/libexec/kf6/kauth/kded-smart-helper
+User=root

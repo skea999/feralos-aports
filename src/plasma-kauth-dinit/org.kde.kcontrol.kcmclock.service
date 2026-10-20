@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.kcontrol.kcmclock
+Exec=/usr/libexec/feralos/dbus-activate org.kde.kcontrol.kcmclock -- /usr/lib/libexec/kf6/kauth/kcmdatetimehelper
+User=root

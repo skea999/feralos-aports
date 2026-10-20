@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.powerdevil.wakeupsourcehelper
+Exec=/usr/libexec/feralos/dbus-activate org.kde.powerdevil.wakeupsourcehelper -- /usr/lib/libexec/kf6/kauth/wakeupsourcehelper
+User=root

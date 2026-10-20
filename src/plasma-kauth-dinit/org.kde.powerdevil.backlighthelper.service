@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.kde.powerdevil.backlighthelper
+Exec=/usr/libexec/feralos/dbus-activate org.kde.powerdevil.backlighthelper -- /usr/lib/libexec/kf6/kauth/backlighthelper
+User=root

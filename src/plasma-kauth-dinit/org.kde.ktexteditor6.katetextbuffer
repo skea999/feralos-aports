@@ -1,0 +1,11 @@
+# feralos plasma-kauth-dinit: D-Bus activation target for org.kde.ktexteditor6.katetextbuffer (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships
+# this unit itself. KAuth per-request helper: short-lived, no smooth-recovery.
+type = process
+command = /usr/lib/libexec/kf6/kauth/kauth_ktexteditor_helper
+run-as = root
+smooth-recovery = false
+restart = false
+log-type = file
+logfile = /var/log/dinit/org.kde.ktexteditor6.katetextbuffer.log
+depends-on = dbus

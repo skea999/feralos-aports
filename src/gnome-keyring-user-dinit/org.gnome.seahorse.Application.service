@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.gnome.seahorse.Application
+Exec=/usr/libexec/feralos/dbus-activate org.gnome.seahorse.Application.user -- /usr/bin/seahorse --gapplication-service

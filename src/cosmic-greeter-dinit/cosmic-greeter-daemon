@@ -1,0 +1,9 @@
+# feralos cosmic-greeter-dinit: com.system76.CosmicGreeter config/theme
+# daemon (Alpine OpenRC: cosmic-greeter-daemon).
+type = process
+smooth-recovery = true
+log-type = file
+logfile = /var/log/dinit/cosmic-greeter-daemon.log
+command = /usr/bin/cosmic-greeter-daemon
+depends-on = dbus
+depends-on = seatd

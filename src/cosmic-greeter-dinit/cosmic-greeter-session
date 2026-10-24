@@ -1,0 +1,13 @@
+#!/bin/sh
+# feralos cosmic-greeter-session: ensure the greetd greeter user and runtime
+# dirs exist, then exec greetd with the FeralOS config (VT 7: VT1 is getty).
+set -e
+if ! getent group cosmic-greeter >/dev/null 2>&1; then addgroup -S cosmic-greeter; fi
+if ! getent passwd cosmic-greeter >/dev/null 2>&1; then
+    adduser -S -D -H -G cosmic-greeter -s /sbin/nologin -h /var/lib/cosmic-greeter cosmic-greeter
+fi
+mkdir -p /var/lib/cosmic-greeter /run/cosmic-greeter
+chown cosmic-greeter:cosmic-greeter /var/lib/cosmic-greeter
+chmod 0750 /var/lib/cosmic-greeter
+chmod 0755 /run/cosmic-greeter
+exec /usr/sbin/greetd --config /etc/greetd/feralos-cosmic-greeter.toml

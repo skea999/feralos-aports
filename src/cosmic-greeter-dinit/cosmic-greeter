@@ -1,7 +1,13 @@
+# feralos cosmic-greeter-dinit: greetd frontend for the COSMIC session.
+# greetd (not the greeter binary itself) owns PAM/VT/session handling;
+# wrapper ensures the greeter user + runtime dirs, then execs greetd with the
+# FeralOS config (VT 7 — VT1 belongs to getty@tty1).
 type = process
 smooth-recovery = true
 log-type = file
 logfile = /var/log/dinit/cosmic-greeter.log
-command = /usr/bin/cosmic-greeter
+command = /usr/libexec/feralos/cosmic-greeter-session
 depends-on = login.target
+depends-on = dbus
 depends-on = seatd
+depends-on = cosmic-greeter-daemon

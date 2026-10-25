@@ -9,15 +9,14 @@
 # every activation target has a package-shipped unit.
 pkgname=avahi-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit service for avahi"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit avahi feralos-dbus-activate"
 makedepends=""
-source="avahi avahi.script avahi.conf
-	org.freedesktop.Avahi
+source="org.freedesktop.Avahi
 	org.freedesktop.Avahi.service"
 
 build() { return 0; }
@@ -25,9 +24,6 @@ check() { return 0; }
 
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
-	install -Dm644 "$srcdir/avahi" "$pkgdir/lib/dinit.d/avahi"
-	install -Dm755 "$srcdir/avahi.script" "$pkgdir/usr/lib/dinit/avahi"
-	install -Dm644 "$srcdir/avahi.conf" "$pkgdir/etc/dinit.d/config/avahi.conf"
 	# D-Bus activation target (canonical bus name) + override.
 	install -Dm644 "$srcdir/org.freedesktop.Avahi" \
 		"$pkgdir/lib/dinit.d/org.freedesktop.Avahi"
@@ -36,9 +32,6 @@ package() {
 }
 
 sha512sums="
-130da8bff51d193674da39c1528b0475d1cacb091f227c001168defa82001f504045b267493c2e5b99ebae3e4430b0d3c1b19045ac5bfdcb681a04294126b8f6  avahi
-f8422b3ffb76c97635c98a093daa52daa151ffbc98324d24b48ece022b8a4d3f617d7f1ce4bd35f840129bbcd6e62066d03d7e23f1e33a53ffd9c8710a6530c7  avahi.script
-138619641cf293dd918570949993f6b539585f31ed2fd2e66bef2fb7f28d08a27a0f58d1dab130ff8907ac0040d117e003b69b1dc94559698ec7c9fd91a31f07  avahi.conf
 ec0236a57ea92ee968087073e7a0b4cc514ff461e8150cd507bcd59ce5f4106f673e43ca05d77078f8ade7a703805de1acfdf09b9cd0654adea17cc26d80d6cb  org.freedesktop.Avahi
 b7da2fef1256a052587e3b8d4c4934fa3fc812c30ad25b174f1b6277efae6ac0800e45438e030177ac18bae62c4f5f1a8ff4cd32a07ddd693ef18330d5cedb29  org.freedesktop.Avahi.service
 "

@@ -1,18 +1,21 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
-# Unit name = system bus name. D-Bus activation (.service override packaged
-# in /usr/share/feralos/dbus-system-services, materialized at boot into the
-# launch helper's standard dirs) starts this unit through feralos-dbus-activate.
+# Unit name = the OpenRC initd name (polkit, ADR-010 R1 amendment):
+# explicitly-activated system services carry the initd name; the D-Bus
+# activation override (bus name org.freedesktop.PolicyKit1) is packaged in
+# /usr/share/feralos/dbus-system-services, materialized at boot into the
+# launch helper's standard dirs, and starts this unit through
+# feralos-dbus-activate.
 pkgname=polkit-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit service for polkit"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit polkit feralos-dbus-activate"
 makedepends=""
-source="org.freedesktop.PolicyKit1
+source="polkit
 	org.freedesktop.PolicyKit1.service"
 
 build() { return 0; }
@@ -20,14 +23,14 @@ check() { return 0; }
 
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
-	install -Dm644 "$srcdir/org.freedesktop.PolicyKit1" \
-		"$pkgdir/lib/dinit.d/org.freedesktop.PolicyKit1"
+	install -Dm644 "$srcdir/polkit" \
+		"$pkgdir/lib/dinit.d/polkit"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.PolicyKit1.service" \
 		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.PolicyKit1.service"
 }
 
 sha512sums="
-81ce5d149cb234476bec1b94e7be406d64a4b501bdb3f913a01475304582cf583d3a1cfb243c433bb97fe2453eee44eb598f23de88b2fa60da87e1bc5b0fa0b1  org.freedesktop.PolicyKit1
-4aafa824966eabee2d5266533432220431f8eef2459defa9499e10d7c4a564f5347225181a8e65e092beaed280a07205feff38e40f888e19d5ca9dc6ee4424bc  org.freedesktop.PolicyKit1.service
+422d9573b4833d7096bb4e93d408099b7f8c3d924bf2de902e0f0979edcd9b9936c47761b3f4b9462e58f38df3cc27e9a4ee7551b6e7c25d6ed9b0da4a7c2f83  polkit
+82d48cf7beb613032817ba14204eedccad2990edf0d24ef85f05d5c60e6b6545bd2984fd7404a3edfc0c447794f0d4a3bb87e707036e6593b473c367c76e1e32  org.freedesktop.PolicyKit1.service
 "

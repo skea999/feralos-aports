@@ -1,4 +1,4 @@
 [D-BUS Service]
 Name=org.bluez
-Exec=/usr/libexec/feralos/dbus-activate org.bluez -- /usr/lib/bluetooth/bluetoothd
+Exec=/usr/libexec/feralos/dbus-activate bluetooth -- /usr/lib/bluetooth/bluetoothd
 User=root

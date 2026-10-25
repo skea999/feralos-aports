@@ -1,20 +1,22 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
 # dinit service for elogind (depends-on dbus, shutdown stop guard).
-# Unit name = canonical system D-Bus bus name (org.freedesktop.login1,
-# ADR-010); D-Bus activation is routed through feralos-dbus-activate via the
-# override packaged in /usr/share/feralos/dbus-system-services (materialized
-# at boot into the launch helper's standard dirs).
+# Unit name = the OpenRC initd name (elogind, ADR-010 R1 amendment):
+# explicitly-activated system services carry the initd name; the D-Bus
+# override keeps the bus name (org.freedesktop.login1) and aliases onto this
+# unit. Activation is routed through feralos-dbus-activate via the override
+# packaged in /usr/share/feralos/dbus-system-services (materialized at boot
+# into the launch helper's standard dirs).
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=10
+pkgrel=11
 pkgdesc="dinit service for elogind (depends-on dbus, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit elogind dbus dbus-wait-for-dinit feralos-dbus-activate"
 makedepends=""
-source="org.freedesktop.login1
+source="elogind
 	org.freedesktop.login1.service
 	elogind-stop"
 
@@ -23,8 +25,8 @@ check() { return 0; }
 
 package() {
 	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
-	install -Dm644 "$srcdir/org.freedesktop.login1" \
-		"$pkgdir/lib/dinit.d/org.freedesktop.login1"
+	install -Dm644 "$srcdir/elogind" \
+		"$pkgdir/lib/dinit.d/elogind"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.login1.service" \
 		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.login1.service"
@@ -35,7 +37,7 @@ package() {
 }
 
 sha512sums="
-78a23dbbcf2c463ab2da9e63d5d49f34729e90c1e28b3cbe25ba5ca50f9cb0e007d7d351dff9e6e3f10e978ef3737815360a0915922b8f5d8d73f6eb657288b1  org.freedesktop.login1
-9515d817859233772ee0413ab1c125008077b3aadfa1e504e405b080af49a499b6c1a129d3ad9137859109f1b24e293af0b47343d30fc2b0f4b9737a09c092fb  org.freedesktop.login1.service
+2f0f6b3fb58bd1af05cc6717cb73ef3193ac7362114c86c7b6bd59789e38d0deacef06f8b3d7d31dbace1d506f5dc999128c127092c3f710ee77c68eb00556c0  elogind
+f4fb6e118fc6afc1269b0dc5f815554955febbefbb5c18f3215cb1f28455344d98bb30069ed69d6d9f8d045509a6809c22ff9ee39b8fb154e5ef4b5d1a4095c7  org.freedesktop.login1.service
 3a12c8e41fef9a5594d693edcf6c9e92a69663ba8e72fd9b04bbc03e2485c3c93ac2b22c84aaaac5475883bfffdf01fca0e4a538ae61737e32b1a94fe41c07ab  elogind-stop
 "

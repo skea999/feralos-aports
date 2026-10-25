@@ -1,5 +1,6 @@
 # dinit service: polkit (auto-generated from Alpine openrc polkit)
-# Unit name = system bus name: D-Bus activation is routed through
+# Unit name = the OpenRC initd name (polkit, ADR-010 R1 amendment):
+# D-Bus activation is routed through
 # /usr/share/feralos/dbus-system-services/org.freedesktop.PolicyKit1.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup), whose Exec starts this unit (ADR-010).
@@ -7,7 +8,7 @@ type = process
 depends-on = dbus
 smooth-recovery = true
 log-type = file
-logfile = /var/log/dinit/org.freedesktop.PolicyKit1.log
+logfile = /var/log/dinit/polkit.log
 command = /usr/lib/polkit-1/polkitd ${POLKIT_OPTS:---no-debug}
 depends-on = local.target
 before = login.target

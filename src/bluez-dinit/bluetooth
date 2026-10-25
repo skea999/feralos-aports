@@ -1,5 +1,5 @@
 # dinit service: bluetoothd (system daemon)
-# Unit name = canonical system D-Bus bus name (org.bluez, ADR-010):
+# Unit name = the OpenRC initd name (bluetooth, ADR-010 R1 amendment):
 # D-Bus activation is routed through feralos-dbus-activate via the override
 # packaged in /usr/share/feralos/dbus-system-services/org.bluez.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by

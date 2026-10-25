@@ -1,7 +1,7 @@
 # FeralOS: base-only PAM stack for cosmic-greeter. Alpine's vendored file
 # requires pam_gnome_keyring (not shipped on FeralOS). base-session's optional
 # pam_rundir (pam-rundir package) creates XDG_RUNTIME_DIR — FeralOS COSMIC
-# uses elogind (dinit dep: the org.freedesktop.login1 unit).
+# uses elogind (dinit dep: the elogind unit, ADR-010 R1 naming).
 auth include base-auth
 account include base-account
 password include base-password

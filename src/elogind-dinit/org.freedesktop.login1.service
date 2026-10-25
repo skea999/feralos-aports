@@ -1,4 +1,4 @@
 [D-BUS Service]
 Name=org.freedesktop.login1
-Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.login1 -- /usr/libexec/elogind/elogind
+Exec=/usr/libexec/feralos/dbus-activate elogind -- /usr/libexec/elogind/elogind
 User=root

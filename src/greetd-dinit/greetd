@@ -6,4 +6,4 @@ command = /usr/lib/dinit/greetd
 env-file = /etc/dinit.d/config/greetd.conf
 smooth-recovery = true
 depends-on = login.target
-depends-on = org.freedesktop.login1
+depends-on = elogind

@@ -1,0 +1,38 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for system-config-printer. Unit name = canonical session
+# D-Bus bus name (ADR-010); D-Bus activation is routed through
+# feralos-dbus-activate via an override in /usr/share/feralos/dbus-services/.
+# Verified on Alpine 3.24: upstream activation Exec = /usr/bin/scp-dbus-service,
+# a POSIX-sh wrapper that execs the Python service; the wrapper ships in
+# system-config-printer-common, hence the dependency.
+# Transitional unit: the harness check dbus_activation_migration retires it
+# once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=system-config-printer-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for system-config-printer (Config.Printing activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate system-config-printer-common"
+makedepends=""
+source="org.fedoraproject.Config.Printing.user
+	org.fedoraproject.Config.Printing.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.fedoraproject.Config.Printing.user" \
+		"$pkgdir/etc/dinit.d/user/org.fedoraproject.Config.Printing.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.fedoraproject.Config.Printing.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.fedoraproject.Config.Printing.service"
+}
+
+sha512sums="
+fa1332b7f1d0b1191f96330c1055abc30ea68bdabb47e940adee1b98b29904c2ac8cbc1d182b62e35de01e22875a0d3aa7c33718df0a701a460c1613c6dcae9a  org.fedoraproject.Config.Printing.user
+b42f48e05489d2e2e15dc2a8cbcf08c5f04e8b6e1c3dc5459aaefe96299ccab89bf2e12c0bf96b01c1b2dbc45c4a03b8471d04fccaa064c7441b8d8a404353db  org.fedoraproject.Config.Printing.service
+"

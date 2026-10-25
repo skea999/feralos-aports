@@ -1,0 +1,12 @@
+# feralos system-config-printer-user-dinit: D-Bus activation target for
+# org.fedoraproject.Config.Printing (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships
+# this unit itself.
+# /usr/bin/scp-dbus-service is a POSIX-sh wrapper (execs the Python service).
+type = process
+command = /usr/bin/scp-dbus-service
+smooth-recovery = true
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.fedoraproject.Config.Printing.log
+depends-on = dbus.user

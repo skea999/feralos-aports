@@ -1,0 +1,12 @@
+# feralos plasma-workspace-user-dinit: D-Bus activation target for
+# org.freedesktop.Notifications (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships
+# this unit itself.
+# Transient waiter: short-lived, no smooth-recovery.
+type = process
+command = /usr/bin/plasma_waitforname org.freedesktop.Notifications
+smooth-recovery = false
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.freedesktop.Notifications.log
+depends-on = dbus.user

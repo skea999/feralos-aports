@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.NightTime
+Exec=/usr/libexec/feralos/dbus-activate org.kde.NightTime.user -- /usr/lib/libexec/knighttimed

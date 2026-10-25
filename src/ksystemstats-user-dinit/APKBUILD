@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# KSystemStats daemon on the session bus (ADR-010). The D-Bus activation target
+# org.kde.ksystemstats1 routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=ksystemstats-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for org.kde.ksystemstats1 (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate ksystemstats"
+makedepends=""
+source="org.kde.ksystemstats1.user org.kde.ksystemstats1.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.ksystemstats1.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.ksystemstats1.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.ksystemstats1.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.kde.ksystemstats1.service"
+}
+sha512sums="
+f181d414d510a11366e40e7137748a661f74c9613069c72949e307bbf35628e53882a63800c2340750b618b7cd42fe0aaf5aaffae7214572124a562d91547403  org.kde.ksystemstats1.user
+8fd200af53a6e56c147c780d3706d06939409e65f44c20826ac21960e99521f3eda1ce3d80803c162b245946901b0b4fbb544768325ce4ad9b21abe30c5db5a0  org.kde.ksystemstats1.service
+"

@@ -1,0 +1,38 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# Materializes the FeralOS session D-Bus activation overrides into
+# $XDG_RUNTIME_DIR/dbus-1/services at user-dinit boot. Covers DEs whose
+# session bus is started by the desktop itself (plasma / cosmic-session run
+# dbus-run-session, which reads the same servicedir; dbus-daemon also watches
+# it live). niri/niriWayle materialize via the dbus-session wrapper
+# (dbus-user-dinit) instead — this unit is inert there (dir already populated;
+# plain copy). boot.d link shipped by the package: runs on every user-dinit
+# boot, both inits (the user-dinit stack is turnstile-spawned either way).
+pkgname=dbus-session-materializer-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="materialize FeralOS session D-Bus activation overrides at user-dinit boot"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="dinit"
+makedepends=""
+source="dbus-session-materializer.user dbus-session-materialize"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/dbus-session-materializer.user" \
+		"$pkgdir/etc/dinit.d/user/dbus-session-materializer.user"
+	install -Dm755 "$srcdir/dbus-session-materialize" \
+		"$pkgdir/usr/libexec/feralos/dbus-session-materialize"
+	# boot.d link: the materializer runs at EVERY user-dinit boot.
+	install -d "$pkgdir"/usr/lib/dinit.d/user/boot.d
+	ln -sf /etc/dinit.d/user/dbus-session-materializer.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/dbus-session-materializer.user
+}
+sha512sums="
+3a3d3631882ed3cb8431405607377a92fc45bca322bfe0cdb42479b7e069229a8601cdb219898eb6d33d8b76c690161040e758dd3b36180cf7b6789d50270cc7  dbus-session-materializer.user
+2ae3bb198193cce931743a006871f965eded6cf31388016e0ca9caf09ac74ed135f4e8694d868aabbd32d0ac9cccb15eb206cfe5a7ca1c276a20d71a9b70968f  dbus-session-materialize
+"

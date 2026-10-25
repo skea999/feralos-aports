@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# xdg-desktop-portal-cosmic backend (cosmic DE) (ADR-010). The D-Bus activation target
+# org.freedesktop.impl.portal.desktop.cosmic routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=xdg-desktop-portal-cosmic-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for org.freedesktop.impl.portal.desktop.cosmic (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate xdg-desktop-portal-cosmic"
+makedepends=""
+source="org.freedesktop.impl.portal.desktop.cosmic.user org.freedesktop.impl.portal.desktop.cosmic.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.cosmic.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.desktop.cosmic.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.cosmic.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.impl.portal.desktop.cosmic.service"
+}
+sha512sums="
+d25f167a3e2c82ef9979bddac6cbdd98ac577e73c858072bc87e1161e872693469701cd75cdb935d35163bbd8194a7a54bca7d54c5bc738488e43dbe4ac38f99  org.freedesktop.impl.portal.desktop.cosmic.user
+9db4f88ec2fdabad91b1f818ffea2785750a4c9640fc7b9d9e92b28953c55a62f83f7959d27f48bf5d1b4d8f5d8385dc4809df1413bca6d6ce57018e782addc4  org.freedesktop.impl.portal.desktop.cosmic.service
+"

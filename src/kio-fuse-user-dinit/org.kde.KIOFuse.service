@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.KIOFuse
+Exec=/usr/libexec/feralos/dbus-activate org.kde.KIOFuse.user -- /usr/lib/libexec/kio-fuse -f

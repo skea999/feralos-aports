@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.KSplash
+Exec=/usr/libexec/feralos/dbus-activate org.kde.KSplash.user -- /usr/bin/plasma_waitforname org.kde.KSplash

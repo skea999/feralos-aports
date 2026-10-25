@@ -1,0 +1,9 @@
+# feralos dbus-session-materializer-user-dinit: materialize the FeralOS session
+# overrides into $XDG_RUNTIME_DIR/dbus-1/services at user-dinit boot — covers
+# DEs whose session bus is started by the desktop itself (plasma/
+# cosmic-session dbus-run-session read the same servicedir; dbus-daemon also
+# watches it live). niri/niriWayle use the dbus-session wrapper instead.
+type = scripted
+command = /usr/libexec/feralos/dbus-session-materialize
+restart = false
+load-options = sub-vars

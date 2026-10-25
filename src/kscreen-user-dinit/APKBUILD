@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# KScreen OSD service on the session bus (ADR-010). The D-Bus activation target
+# org.kde.kscreen.osdService routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=kscreen-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for org.kde.kscreen.osdService (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate kscreen"
+makedepends=""
+source="org.kde.kscreen.osdService.user org.kde.kscreen.osdService.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.kscreen.osdService.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.kscreen.osdService.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.kscreen.osdService.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.kde.kscreen.osdService.service"
+}
+sha512sums="
+8f0dd6859db8572e6e45ac43c7a7a6c0781b42070344efec8f3b6d8d997640f7ed618d8507c8537718995e0f71db1b8bac4fad649109534411bef1461b6627c2  org.kde.kscreen.osdService.user
+eb75e50a55647a1d323216e30473463d5fadae4ce055eb6f263622f0807b8c7e7fb7a506b41b844e084512eb7b19341611eb48ada9487dd99d919dbb13e89544  org.kde.kscreen.osdService.service
+"

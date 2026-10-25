@@ -1,0 +1,57 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# KDE Plasma session-bus activation targets (kde DE). ADR-010: each target
+# routes through feralos-dbus-activate to a per-user dinit unit named after
+# the bus name; the overrides ship in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=plasma-workspace-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit services for the plasma-workspace session activation targets"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate plasma-workspace"
+makedepends=""
+source="org.kde.KSplash.user org.kde.KSplash.service
+	org.kde.LogoutPrompt.user org.kde.LogoutPrompt.service
+	org.kde.Shutdown.user org.kde.Shutdown.service
+	org.kde.fontinst.user org.kde.fontinst.service
+	org.freedesktop.Notifications.user org.freedesktop.Notifications.service
+	org.kde.krunner.user org.kde.krunner.service
+	org.kde.runners.baloo.user org.kde.runners.baloo.service
+	org.kde.secretprompter.user org.kde.secretprompter.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for s in org.kde.KSplash org.kde.LogoutPrompt org.kde.Shutdown \
+		org.kde.fontinst org.freedesktop.Notifications org.kde.krunner \
+		org.kde.runners.baloo org.kde.secretprompter; do
+		install -Dm644 "$srcdir/$s.user" "$pkgdir/etc/dinit.d/user/$s.user"
+		install -Dm644 "$srcdir/$s.service" \
+			"$pkgdir/usr/share/feralos/dbus-services/$s.service"
+	done
+}
+sha512sums="
+341410388cf11ee4be11dcd8261d3c238fdb8e40a4f3bf8d1ab6cc64adf8875fbab57a7b1ecb2c8718d293935d3a9bff737af3593301def70dc3f6300d497284  org.kde.KSplash.user
+bce80129b4b5f92b0781087eab460d8c57be03c2fdac7c05e5c6a306de12656a51932fcb32a16699e18a40bf5e0ed98f60f53f6ba7fe6fbb7a600542f0d9a74d  org.kde.KSplash.service
+fdcddacdac71fdb6560a51c4deb628c83b4a0759760a98642e877b297715fabfe1a7c8bd6e2d0e8bdbb20643920506c8756911df62b04a64b4d8ffae972e851d  org.kde.LogoutPrompt.user
+e9d6f2ba246d86c59e8cc5fb49af96c19b73d0c8838d7c6035f9600486caed142024cb2f620b5164f7d301061a590a6f80653a45678185789babdbef584fbe0f  org.kde.LogoutPrompt.service
+fd64996441e23a089cf71f3e9953d8c252e5cab236c156152b236846b506171cb4641d047f73313c34656437e78f7321bbedd2b9a1c0de1b56268f0c10e5696f  org.kde.Shutdown.user
+df415ddcd2c9952295145a0f21385710288ab96bb607504ece56ca517f4680ccd3760d32e61badf5b141dfdd0961b5d2dea1ec945f3bebe2a333eb1d90549f19  org.kde.Shutdown.service
+140d750d5391a89c4e06ae472113f19b21698e25709fa385e1404b3b4d19e05994c44e54a5f6210fa17b58032b902e61eb2dc8c37ed867fc3dff15e1f11ff449  org.kde.fontinst.user
+800116facaa05f0e71205427ffc6503972f03b42443db2e0d40f1ecc3132c8737e06965161904e1e38aada27fc3f10ec986fe6edea03e5e049d8a8c05eed3991  org.kde.fontinst.service
+337567a1f6cde34089e517f90ec51ab03dba36fb8d2d4d03c88c87e91a774ae0abe4c90db8adea93e7e19755455e64e87bdc29d1455f5578457a6b922098cb92  org.freedesktop.Notifications.user
+ecd8f1c8f25f2d17bbbbf9adde7ce07591c2fec683b683c9daa45022aa448d306b382a3601b08b6da92111d563f9c2658481c05e402e95f4aded064639bd3113  org.freedesktop.Notifications.service
+694446261d62280088440a8482d87a382e4ed90ab789e6a0cb2495b8c9c7478efdc3341fea15a57a2342c3ab23ce7517c24251eb163abf549760801489195d25  org.kde.krunner.user
+5ddc107bb24d22370cc3eab28728f2b07428ef46ca405cc052a38ea648698722d1281ec1ab1c07ddfcc4e61ec4bf4b9465596f7939fded1001ecf4329db8b6d7  org.kde.krunner.service
+acf295b46f676199a243d27233dcc78475bcf3acc10806bf5a8b31432e103043d6db844d40b30596c6f8c313b75044df2fa1b73a5f3bf5beed2c8feffc719d65  org.kde.runners.baloo.user
+9f9dcdf1fd9ccd293e161f86e2bbae6aa60fd50bc2633f83cbd4be05564df3beaf6ed7c55f7e0bf49e08d15eb95b6483e99798882ce69a67b57036e8e337fee0  org.kde.runners.baloo.service
+190cecd190d59d4be9e5e19ac4da6e217ba89f39323a83b56bab8c5eb1a5c95098be72c0c67fbea988da20eff90481b8a52e9005269d6798a3044b88e1336729  org.kde.secretprompter.user
+09a82eacab87b73766add4fb1795b7b6f63a2e099405e456bcc2bab594551c77f7203e31da64f4ef72ca405134805d066f1e088cd3a70d676d88476a7b91d7aa  org.kde.secretprompter.service
+"

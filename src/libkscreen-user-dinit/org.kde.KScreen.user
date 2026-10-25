@@ -1,0 +1,11 @@
+# feralos libkscreen-user-dinit: D-Bus activation target for
+# org.kde.KScreen (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships
+# this unit itself.
+type = process
+command = /usr/lib/libexec/kf6/kscreen_backend_launcher
+smooth-recovery = true
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.kde.KScreen.log
+depends-on = dbus.user

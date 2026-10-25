@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# KScreen backend launcher on the session bus (ADR-010). The D-Bus activation target
+# org.kde.KScreen routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=libkscreen-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for org.kde.KScreen (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate libkscreen"
+makedepends=""
+source="org.kde.KScreen.user org.kde.KScreen.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.KScreen.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.KScreen.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.KScreen.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.kde.KScreen.service"
+}
+sha512sums="
+928eef562a58deb18882286db061fc81fe028270780c2cc81d57902698a6cb678a371ccefc00fd962e39118b84e54ba194d6a68588da8c3aa21cc752d765ec2d  org.kde.KScreen.user
+38f9c2274f102fb7c15f66cc072dd41aae269a31a991ff936a211d82f38dfaab50b92a01a69c8412c606cc8f84e474b22acb1e304d6ac85cf4269436623f5ca8  org.kde.KScreen.service
+"

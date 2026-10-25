@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.LogoutPrompt
+Exec=/usr/libexec/feralos/dbus-activate org.kde.LogoutPrompt.user -- /usr/lib/libexec/ksmserver-logout-greeter

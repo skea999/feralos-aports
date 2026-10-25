@@ -1,0 +1,11 @@
+# feralos plasma-workspace-user-dinit: D-Bus activation target for
+# org.kde.runners.baloo (ADR-010).
+# Transitional: drop when the package (or dbus-broker ephemeral services) ships
+# this unit itself.
+type = process
+command = /usr/lib/libexec/baloorunner
+smooth-recovery = true
+restart = false
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.kde.runners.baloo.log
+depends-on = dbus.user

@@ -1,0 +1,45 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# kio5 (KF5 legacy stack) on the session bus (kde DE). ADR-010: all four bus
+# names (org.kde.kiod5, kioexecd, kpasswdserver, kssld5) are served by the
+# SAME binary — /usr/lib/libexec/kf5/kiod5 — because the auxiliary daemons
+# are plugins loaded by kiod5; ONE unit (org.kde.kiod5.user) + four override
+# aliases. Overrides ship in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+# NOT covered: org.kde.kcookiejar5 — its upstream activation file Execs
+# /usr/bin/kded5, which does not exist on Alpine 3.24 (broken upstream); a
+# unit would advertise a target that cannot start.
+pkgname=kio5-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for kio5 (kiod5 + kioexecd/kpasswdserver/kssld5 aliases)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate kio5"
+makedepends=""
+source="org.kde.kiod5.user
+	org.kde.kiod5.service org.kde.kioexecd.service
+	org.kde.kpasswdserver.service org.kde.kssld5.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.kiod5.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.kiod5.user"
+	for s in org.kde.kiod5 org.kde.kioexecd org.kde.kpasswdserver org.kde.kssld5; do
+		install -Dm644 "$srcdir/$s.service" \
+			"$pkgdir/usr/share/feralos/dbus-services/$s.service"
+	done
+}
+sha512sums="
+f96eab65767b28bdd0944cefac70ffbe3388e819042254148b5a90684b232bc5a225e0a127f1a8a35ed80b3531e06b6f833126f21ce2c956a9b1d293ac78d452  org.kde.kiod5.user
+ebb273ddd41a6de2c35d9849d2bd80ba37c31e8948cc1f94464625d9e1129c065bbc71cdac2213743a6a5474b3a6a8cd19c34b20c147da2a336bf3792330a1aa  org.kde.kiod5.service
+5543eb71a866d0c6fc27b912c9fb2d6d994eef38da8dd36f526a71eb6a9e522a3dbb58408e6a6deb3eca2d551eacad10aa87c65408db283cfb066f4c95ed87b6  org.kde.kioexecd.service
+db7cc213d489ad5bedb27c9fb5e6ee252d555bc0e511059a716ff9a7b5544289a9e8129aba01029fc883add6fc8c261b306efbd111f3713085dc7aa71dfa37bf  org.kde.kpasswdserver.service
+d38d67e81c19a701e0ada4503cda980adca6894be3cc608a08a1dda5c4ee0d5c28504020e0fef3bff027a30034ad04a16222ee6126d044b1edb52e945c8cddcf  org.kde.kssld5.service
+"

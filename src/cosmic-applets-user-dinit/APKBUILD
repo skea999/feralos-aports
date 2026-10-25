@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# COSMIC status notifier watcher (cosmic DE) (ADR-010). The D-Bus activation target
+# com.system76.CosmicStatusNotifierWatcher routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=cosmic-applets-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for com.system76.CosmicStatusNotifierWatcher (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate cosmic-applets"
+makedepends=""
+source="com.system76.CosmicStatusNotifierWatcher.user com.system76.CosmicStatusNotifierWatcher.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/com.system76.CosmicStatusNotifierWatcher.user" \
+		"$pkgdir/etc/dinit.d/user/com.system76.CosmicStatusNotifierWatcher.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/com.system76.CosmicStatusNotifierWatcher.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/com.system76.CosmicStatusNotifierWatcher.service"
+}
+sha512sums="
+be2432c3a5dd5628ef917f06088fcac428c019e1b15855d487f8d35a799024686cc44ade60056f582b26403a01263a2ca26ecab5afbe9d997c04d85fdce12d41  com.system76.CosmicStatusNotifierWatcher.user
+74e950be913f6b7f437876a8cad31f65269ce8c22595a52e56b63921e94918ed2d7064da7ceb5c6d41f6b98d72a906cd7bdb944e6e450b484dd29f10ee4868ea  com.system76.CosmicStatusNotifierWatcher.service
+"

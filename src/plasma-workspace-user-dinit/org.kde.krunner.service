@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.krunner
+Exec=/usr/libexec/feralos/dbus-activate org.kde.krunner.user -- /usr/bin/krunner --daemon

@@ -1,0 +1,10 @@
+#!/bin/sh
+# feralos: copy the session overrides into the user runtime servicedir.
+# dbus-daemon watches the dir and picks up files that appear after bus start.
+set -e
+[ -n "${XDG_RUNTIME_DIR:-}" ] || exit 0
+mkdir -p "$XDG_RUNTIME_DIR/dbus-1/services"
+for f in /usr/share/feralos/dbus-services/*.service; do
+    [ -e "$f" ] || continue
+    cp -f "$f" "$XDG_RUNTIME_DIR/dbus-1/services/${f##*/}"
+done

@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# xdg-desktop-portal-kde backend on the session bus (ADR-010). The D-Bus activation target
+# org.freedesktop.impl.portal.desktop.kde routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=xdg-desktop-portal-kde-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for org.freedesktop.impl.portal.desktop.kde (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate xdg-desktop-portal-kde"
+makedepends=""
+source="org.freedesktop.impl.portal.desktop.kde.user org.freedesktop.impl.portal.desktop.kde.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.kde.user" \
+		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.desktop.kde.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.kde.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.impl.portal.desktop.kde.service"
+}
+sha512sums="
+6d530ea665affb981fda79d8f591c4b4f1d1cb8518c63ec43a724526519e4aca704c73ed724cedec243338b735d25c17086b95d56bb505cd7209f79506a8d67c  org.freedesktop.impl.portal.desktop.kde.user
+617a961c3a49c12b4d3d6d401f0a408487bd79574f73c4930811e1eaac3d1684b5d0f82dda780fabbf2e37f924c4c20e445abe97bf0323be3b30915e0822f9aa  org.freedesktop.impl.portal.desktop.kde.service
+"

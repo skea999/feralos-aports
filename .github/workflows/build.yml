@@ -225,7 +225,10 @@ jobs:
           # unit/override and gnome-keyring conflicts with oo7-server on
           # usr/share/dbus-1/services/org.freedesktop.secrets.service —
           # keep oo7 (flagship), skip the keyring variant artifacts
-          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind polkit-elogind-dev polkit-elogind-libs polkit-elogind-dinit gnome-keyring-user-dinit"
+          # dolphin-user-dinit (kde set) vs nautilus-user-dinit (niri set):
+          # both ship the org.freedesktop.FileManager1 activation override —
+          # mutually exclusive DE variants, keep nautilus here
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind polkit-elogind-dev polkit-elogind-libs polkit-elogind-dinit gnome-keyring-user-dinit dolphin-user-dinit"
           for apkfile in ~/packages/*/x86_64/*.apk; do
             [ -f "$apkfile" ] || continue
             name=$(basename "$apkfile" | sed -E 's/-[0-9][^-]*-r[0-9]+\.apk$//')
@@ -352,9 +355,11 @@ jobs:
           # polkit dir. gnome-keyring-user-dinit (niri secrets set) conflicts
           # with oo7-user-dinit (niriWayle secrets set): same unit/override
           # names, and gnome-keyring vs oo7-server on the secrets activation
-          # file. The build job smoke-installs each variant standalone;
+          # file. dolphin-user-dinit (kde set) conflicts with
+          # nautilus-user-dinit (niri set) on org.freedesktop.FileManager1.
+          # The build job smoke-installs each variant standalone;
           # here (one simulated machine) we install the remaining packages.
-          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind-dinit gnome-keyring-user-dinit"
+          skip_pkgs="incus-dinit incus-feature-agent-dinit incus-feature-user-dinit polkit-elogind-dinit gnome-keyring-user-dinit dolphin-user-dinit"
           for d in src/*/APKBUILD; do
             pkg=$(basename "$(dirname "$d")")
             [ "$pkg" = feralos-keyring ] && continue

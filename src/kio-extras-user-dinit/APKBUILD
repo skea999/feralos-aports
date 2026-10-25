@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# kio-extras on the session bus (kde DE). ADR-010: the org.kde.kmtpd5
+# activation target (MTP kiod module) is served by the SAME kiod6 daemon as
+# the org.kde.kiod6 bus name, so the override is an ALIAS to the existing
+# org.kde.kiod6.user unit from kio-user-dinit — no unit of its own. Ships the
+# override only (dbus-services dir, materialized at login into
+# $XDG_RUNTIME_DIR/dbus-1/services).
+pkgname=kio-extras-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="D-Bus activation alias: org.kde.kmtpd5 -> org.kde.kiod6.user"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate kio-extras kio-user-dinit"
+makedepends=""
+source="org.kde.kmtpd5.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# D-Bus activation override (alias to the kio-user-dinit kiod6 unit).
+	install -Dm644 "$srcdir/org.kde.kmtpd5.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.kde.kmtpd5.service"
+}
+sha512sums="
+9ec30c475b139f64ca48a4598c16c117d36162ff5e322c5cd4efcf0342049d788efe1b3a394824527999d0234381a387417996eba42665e877537e3d28ceb98a  org.kde.kmtpd5.service
+"

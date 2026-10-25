@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# KDE night color/time daemon on the session bus (ADR-010). The D-Bus activation target
+# org.kde.NightTime routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=knighttime-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for org.kde.NightTime (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate knighttime"
+makedepends=""
+source="org.kde.NightTime.user org.kde.NightTime.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.NightTime.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.NightTime.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.NightTime.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.kde.NightTime.service"
+}
+sha512sums="
+843b39fce53886bb2e98741c79db1a56d66e4a45d3318db9c7a2c79cc4936505f3c999688701654accd4f103140c3a26114f7cbafbf5383d734a87d6f8051645  org.kde.NightTime.user
+437cd0022f2abc2dc5e99c3f011909ac9b972c901ffb4d0654ea502d249114ef9e2d88f3ed3b513b1e95bf556f091a3b0f904906ca599b63a668d66698071f6e  org.kde.NightTime.service
+"

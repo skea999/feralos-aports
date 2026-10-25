@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.fontinst
+Exec=/usr/libexec/feralos/dbus-activate org.kde.fontinst.user -- /usr/lib/libexec/kf6/kauth/fontinst

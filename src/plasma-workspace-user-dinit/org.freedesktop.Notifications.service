@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.Notifications
+Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.Notifications.user -- /usr/bin/plasma_waitforname org.freedesktop.Notifications

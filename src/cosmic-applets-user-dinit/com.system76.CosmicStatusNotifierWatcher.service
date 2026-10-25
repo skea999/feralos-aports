@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.system76.CosmicStatusNotifierWatcher
+Exec=/usr/libexec/feralos/dbus-activate com.system76.CosmicStatusNotifierWatcher.user -- /usr/bin/cosmic-applet-status-area --status-notifier-watcher

@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# KDE activity manager on the session bus (ADR-010). The D-Bus activation target
+# org.kde.ActivityManager routes through feralos-dbus-activate to a per-user dinit unit named
+# after the bus name; the override ships in /usr/share/feralos/dbus-services
+# (materialized at login into $XDG_RUNTIME_DIR/dbus-1/services).
+# Transitional units: the harness check dbus_activation_migration retires
+# them once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=kactivitymanagerd-user-dinit
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="user dinit service for org.kde.ActivityManager (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate kactivitymanagerd"
+makedepends=""
+source="org.kde.ActivityManager.user org.kde.ActivityManager.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.kde.ActivityManager.user" \
+		"$pkgdir/etc/dinit.d/user/org.kde.ActivityManager.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.kde.ActivityManager.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.kde.ActivityManager.service"
+}
+sha512sums="
+6894cb4b44ef1b9761abc1cbc652701770212412042724cb6224218c63e51f24a930853d4b519d53458790b6259fdf752ac55959f28b42692c397e84284b7cfb  org.kde.ActivityManager.user
+508d12604791b2326b039e658adcd62ad20857713f7bebbcbe29079c7199f9480b683d76c6e87d35410e28dedb20197fdeac3c9e998a64ed32177f812b9f0d2b  org.kde.ActivityManager.service
+"

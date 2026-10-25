@@ -1,0 +1,36 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for playerctld. Unit name = canonical session D-Bus bus
+# name (ADR-010); D-Bus activation is routed through feralos-dbus-activate via
+# an override in /usr/share/feralos/dbus-services/.
+# Verified on Alpine 3.24: upstream activation Exec = /usr/bin/playerctld;
+# the binary ships in playerctl, hence the dependency.
+# Transitional unit: the harness check dbus_activation_migration retires it
+# once dbus-broker is installed and every activation target has a
+# package-shipped unit.
+pkgname=playerctld-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="User dinit service for playerctld (org.mpris.MediaPlayer2.playerctld activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate playerctl"
+makedepends=""
+source="org.mpris.MediaPlayer2.playerctld.user org.mpris.MediaPlayer2.playerctld.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/org.mpris.MediaPlayer2.playerctld.user" \
+		"$pkgdir/etc/dinit.d/user/org.mpris.MediaPlayer2.playerctld.user"
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.mpris.MediaPlayer2.playerctld.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.mpris.MediaPlayer2.playerctld.service"
+}
+
+sha512sums="
+a2a01c3994d81fe6136f0920b0894c70a7b6f530cc24e64791dd90ff8e350cb7a50d603dfd7c9c1f683ef8cb3456ca0171523d5710008bc525d64d0f21c61bc7  org.mpris.MediaPlayer2.playerctld.user
+757546111a03731bdbfa18706939ec11af864a1e50092b21b92681eef79a0225f9e0ed8915dfe372d5f094a26e57de3aaabd3bb65670445b37e1d5bc812b5c61  org.mpris.MediaPlayer2.playerctld.service
+"

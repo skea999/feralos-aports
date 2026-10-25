@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.freedesktop.IBus
-Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.IBus.user -- /usr/bin/ibus-daemon --replace --panel disable --xim

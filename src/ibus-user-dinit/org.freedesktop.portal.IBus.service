@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.freedesktop.portal.IBus
-Exec=/usr/libexec/feralos/dbus-activate org.freedesktop.portal.IBus.user -- /usr/lib/ibus/ibus-portal

@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.fedoraproject.Config.Printing
-Exec=/usr/libexec/feralos/dbus-activate org.fedoraproject.Config.Printing.user -- /usr/bin/scp-dbus-service

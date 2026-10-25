@@ -6,4 +6,4 @@ log-type = file
 logfile = /var/log/dinit/cosmic-greeter-daemon.log
 command = /usr/bin/cosmic-greeter-daemon
 depends-on = dbus
-depends-on = elogind
+depends-on = org.freedesktop.login1

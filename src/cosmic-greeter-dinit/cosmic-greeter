@@ -9,5 +9,5 @@ logfile = /var/log/dinit/cosmic-greeter.log
 command = /usr/libexec/feralos/cosmic-greeter-session
 depends-on = login.target
 depends-on = dbus
-depends-on = elogind
+depends-on = org.freedesktop.login1
 depends-on = cosmic-greeter-daemon

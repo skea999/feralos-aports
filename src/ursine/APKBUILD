@@ -19,7 +19,7 @@
 # plus the -crt-static rustflag that makes -lpam resolve on musl).
 pkgname=ursine
 pkgver=0.19.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
 url="https://github.com/skea999/ursine"
 arch="x86_64"
@@ -81,7 +81,7 @@ package() {
 sha512sums="
 a028d0d149ac9927cb2e71b8717137a35173f609ad83a44088e7816061baf4213d14165fa1fe0ec87ef2b21085a5a550d497c937684cced12a92d0613ca17cf9  ursine-v0.19.0.tar.gz
 b6c66949774b336891e899a9e111a24cd54e56b1899585dcc19fe41b4adfc47cdd9413a70c01c2cc278ea4b7ae444e50c96943fcb419238058ad5b1feba3c289  ursine.pam
-d01123c57c61573c9f4282a5252c88123419e34bb87727451afe50eb8707a61faaee49fe6ec95f19152bfed47bdad91f5969f881fa9b01d9af1d6c306a259578  ursined.dinit
+0a123e54bc4dbbdc4b2ed8b07ab8a38d504579328592324b1ab193ab2017bb6edaada1e85c11a205f6f0134cef8aa56bac8263aa5fc9cdb9e414fdba7dcf9077  ursined.dinit
 fbbd35f97864c73b98a3deb14e74fb098f92d6cc3f72fc28c5f08aa446865a1afe38751a9ff67e750c9feb463cee5eeb94d4d08a616675f83c4524bae3f04b03  ursined.script
 d4f215b2302f2c12f122a55551431d85185ac7cadfda37e04dfca9a95eca14deb3a6925bc494453036f07fa8da8ad77949a7fdbb94117f90b99727c270d05f6f  ursined.conf
 06bd2b4a306c4c312005c3bd763152e50f6673528e728f175e5d10faa49bfe0c7f6ec618296f23b1a93a6ff751706166e34649d5b20271985e28d08b6ed11bdd  ursined.initd

@@ -1,0 +1,88 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# ursine: FeralOS control center — ursined (root daemon, PAM auth, Unix
+# socket) + ursine (libcosmic GUI client). Absent from Alpine. Rust/cargo
+# workspace package (matugen pattern: fetch --locked + build --frozen).
+#
+# --features pam is MANDATORY: the daemon must use the real PAM
+# authenticator (pam-client -> libpam); the FeralOS installer refuses the
+# default stub auth. Do NOT drop the flag.
+#
+# libcosmic is a git dependency (pop-os/libcosmic, pinned rev) -> git in
+# makedepends. The package only SHIPS the service assets (dinit unit +
+# ADR-008 wrapper + conf, OpenRC initd, pam.d file) — enablement is done
+# by the FeralOS installer services map, never by the package itself
+# (post-install only creates the config/log dirs).
+#
+# Extracted dir = ursine-$pkgver (GitHub strips the leading v of the tag),
+# no builddir override needed. Binaries land in artifacts/target/release/
+# (the repo's .cargo/config.toml sets build.target-dir = artifacts/target,
+# plus the -crt-static rustflag that makes -lpam resolve on musl).
+pkgname=ursine
+pkgver=0.19.0
+pkgrel=0
+pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
+url="https://github.com/skea999/ursine"
+arch="x86_64"
+license="ISC"
+makedepends="cargo git linux-pam-dev libxkbcommon-dev"
+# runtime shared libs (libpam, libgcc, ...) are picked up automatically as
+# so: dependencies by abuild's ELF tracing — no explicit depends needed.
+depends=""
+# config/log dirs created at install time (mode 0750), not packaged dirs
+install="ursine.post-install"
+source="https://github.com/skea999/ursine/archive/refs/tags/v$pkgver/ursine-v$pkgver.tar.gz
+	ursine.pam
+	ursined.dinit
+	ursined.script
+	ursined.conf
+	ursined.initd
+"
+
+prepare() {
+	default_prepare
+	cargo fetch --target="$CTARGET" --locked
+}
+
+build() {
+	cargo build --frozen --release --features pam
+}
+
+check() {
+	cargo test --frozen --release --features pam
+}
+
+package() {
+	install -Dm755 artifacts/target/release/ursined "$pkgdir"/usr/sbin/ursined
+	install -Dm755 artifacts/target/release/ursine "$pkgdir"/usr/bin/ursine
+	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+
+	# PAM auth stack (auth + account via pam_unix)
+	install -Dm644 "$srcdir"/ursine.pam "$pkgdir"/etc/pam.d/ursine
+
+	# dinit: unit (FeralOS-clean, not the upstream @TOKEN@ template) +
+	# ADR-008 wrapper + config file. Enablement = installer services map.
+	install -Dm644 "$srcdir"/ursined.dinit "$pkgdir"/lib/dinit.d/ursined
+	install -Dm755 "$srcdir"/ursined.script "$pkgdir"/usr/lib/dinit/ursined
+	install -Dm644 "$srcdir"/ursined.conf \
+		"$pkgdir"/etc/dinit.d/config/ursined.conf
+
+	# OpenRC initd: upstream ships @PLACEHOLDER@ tokens (substituted by its
+	# install.sh) — substitute the FeralOS paths here and drop the stale
+	# "do not edit the tokens" comment (the shipped copy is already baked)
+	sed -e 's|@SBINDIR@|/usr/sbin|g' \
+		-e 's|@SYSCONFDIR@|/etc|g' \
+		-e 's|@LOCALSTATEDIR@|/var|g' \
+		-e '/^# Paths are substituted by install.sh/d' \
+		-e '/^# the repository copy\.$/d' \
+		"$srcdir"/ursined.initd > "$srcdir"/ursined.initd.feralos
+	install -Dm755 "$srcdir"/ursined.initd.feralos "$pkgdir"/etc/init.d/ursined
+}
+
+sha512sums="
+a028d0d149ac9927cb2e71b8717137a35173f609ad83a44088e7816061baf4213d14165fa1fe0ec87ef2b21085a5a550d497c937684cced12a92d0613ca17cf9  ursine-v0.19.0.tar.gz
+b6c66949774b336891e899a9e111a24cd54e56b1899585dcc19fe41b4adfc47cdd9413a70c01c2cc278ea4b7ae444e50c96943fcb419238058ad5b1feba3c289  ursine.pam
+d01123c57c61573c9f4282a5252c88123419e34bb87727451afe50eb8707a61faaee49fe6ec95f19152bfed47bdad91f5969f881fa9b01d9af1d6c306a259578  ursined.dinit
+fbbd35f97864c73b98a3deb14e74fb098f92d6cc3f72fc28c5f08aa446865a1afe38751a9ff67e750c9feb463cee5eeb94d4d08a616675f83c4524bae3f04b03  ursined.script
+d4f215b2302f2c12f122a55551431d85185ac7cadfda37e04dfca9a95eca14deb3a6925bc494453036f07fa8da8ad77949a7fdbb94117f90b99727c270d05f6f  ursined.conf
+06bd2b4a306c4c312005c3bd763152e50f6673528e728f175e5d10faa49bfe0c7f6ec618296f23b1a93a6ff751706166e34649d5b20271985e28d08b6ed11bdd  ursined.initd
+"

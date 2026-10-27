@@ -1,0 +1,4 @@
+#!/bin/sh
+# feralos ursined wrapper (ADR-008): config at /etc/ursine/config.toml
+[ -r /etc/dinit.d/config/ursined.conf ] && . /etc/dinit.d/config/ursined.conf
+exec /usr/sbin/ursined --config /etc/ursine/config.toml ${URSINED_OPTS}

@@ -1,0 +1,25 @@
+#!/sbin/openrc-run
+# shellcheck shell=sh disable=SC2034
+# Ursine control daemon (OpenRC).
+#
+# Paths are substituted by install.sh; do not edit the @PLACEHOLDER@ tokens in
+# the repository copy.
+
+description="Ursine control daemon"
+command="@SBINDIR@/ursined"
+command_args="--config @SYSCONFDIR@/ursine/config.toml"
+supervisor=supervise-daemon
+respawn_delay=2
+respawn_max=0
+output_log="@LOCALSTATEDIR@/log/ursine/ursined.log"
+error_log="@LOCALSTATEDIR@/log/ursine/ursined.log"
+
+depend() {
+  need localmount
+  after dbus
+  use logger
+}
+
+start_pre() {
+  checkpath --directory --mode 0750 --owner root:root "@LOCALSTATEDIR@/log/ursine"
+}

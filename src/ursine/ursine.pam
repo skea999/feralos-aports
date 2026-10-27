@@ -1,0 +1,12 @@
+#%PAM-1.0
+# Ursine authentication service.
+#
+# The daemon verifies a username/password pair and does not open a login
+# session, so only the auth and account stacks are needed. pam_unix checks the
+# system password database (/etc/shadow); no session, password or session
+# management is performed here.
+#
+# This file is security policy: keep it owned by root and writable only by
+# root. The installer installs it as root:root 0644.
+auth      required  pam_unix.so
+account   required  pam_unix.so

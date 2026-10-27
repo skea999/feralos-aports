@@ -1,0 +1,6 @@
+type = process
+command = /usr/lib/dinit/ursined
+logfile = /var/log/ursine/ursined.log
+env-file = /etc/dinit.d/config/ursined.conf
+smooth-recovery = true
+restart = false

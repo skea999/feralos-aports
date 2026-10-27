@@ -1,0 +1,7 @@
+#!/bin/sh
+# ursine post-install: create config + log dirs (0750). Not shipped as
+# package dirs — /etc/ursine is user-populated config, /var/log/ursine
+# holds runtime logs.
+mkdir -p /etc/ursine /var/log/ursine
+chmod 0750 /etc/ursine /var/log/ursine
+exit 0

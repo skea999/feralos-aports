@@ -1,11 +1,20 @@
+# dinit service: ursined (Ursine control daemon)
+#
+# FeralOS convention: the service file lives in the dinit service directory,
+# the command is a small wrapper under /usr/lib/dinit, and user-tunable flags
+# live in /etc/dinit.d/config/ursined.conf. Paths are substituted by
+# install.sh; do not edit the @PLACEHOLDER@ tokens in the repository copy.
+#
+# depends-on/before use the FeralOS (dinit-services) target names, matching
+# feralos-aports. The logfile lives in the /var/log fstab subvol: without
+# local.target the service opens the log before that mount and fails at boot.
+# Port to another dinit distribution by renaming or dropping these targets.
 type = process
-command = /usr/lib/dinit/ursined
-# logfile lives in the @var-log fstab subvol — must start AFTER the local
-# mounts (early-fs-fstab), else "opening log file: No such file or
-# directory" at boot (vector has the same pattern for /var/log).
-depends-on = local.target
-before = login.target
-logfile = /var/log/ursine/ursined.log
-env-file = /etc/dinit.d/config/ursined.conf
 smooth-recovery = true
 restart = false
+log-type = file
+logfile = @LOCALSTATEDIR@/log/ursine/ursined.log
+command = @LIBEXECDIR@/dinit/ursined
+env-file = @DINIT_CONFIG_DIR@/ursined.conf
+depends-on = local.target
+before = login.target

@@ -8,6 +8,8 @@
 # default stub auth. Do NOT drop the flag.
 #
 # libcosmic is a git dependency (pop-os/libcosmic, pinned rev) -> git in
+# makedepends. v0.22.1 adds cosmic-theme + cosmic-config from the SAME
+# pinned rev (pure-Rust; theming module's COSMIC target) — no new system
 # makedepends. The package only SHIPS the service assets (dinit unit +
 # ADR-008 wrapper + conf, OpenRC initd, pam.d file) — enablement is done
 # by the FeralOS installer services map, never by the package itself
@@ -18,8 +20,8 @@
 # (the repo's .cargo/config.toml sets build.target-dir = artifacts/target,
 # plus the -crt-static rustflag that makes -lpam resolve on musl).
 pkgname=ursine
-pkgver=0.19.0
-pkgrel=2
+pkgver=0.22.1
+pkgrel=3
 pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
 url="https://github.com/skea999/ursine"
 arch="x86_64"
@@ -108,7 +110,7 @@ package() {
 }
 
 sha512sums="
-a028d0d149ac9927cb2e71b8717137a35173f609ad83a44088e7816061baf4213d14165fa1fe0ec87ef2b21085a5a550d497c937684cced12a92d0613ca17cf9  ursine-v0.19.0.tar.gz
+30791e496e7c0fa1e96cf5d47613dc2d32eb142d36948a26cbe013eab16549bce47bbc18628679111a96769fbb97635c7b92448c5ed4cf7bf15234cb57200b90  ursine-v0.22.1.tar.gz
 b6c66949774b336891e899a9e111a24cd54e56b1899585dcc19fe41b4adfc47cdd9413a70c01c2cc278ea4b7ae444e50c96943fcb419238058ad5b1feba3c289  ursine.pam
 076dcc24d4a86ffb207668b08b1c908a2b8e874f9702293c7dd618a0c70753971fd82ef36e55cfa133cce243540a4a7fd02281bb17992778d4c1d9f7f58d67be  ursined.dinit
 0c579b35c886812e935848b66bb9951945e4cf13025ad52175ded5329ad4f3590f0980e2e111a3ede85dac7824eddeffc5ade5ae2140d2da99528fb21e36c705  ursined.script

@@ -10,17 +10,6 @@ pkgdesc="Dummy: satisfies util-linux-misc dependency (real pkg conflicts with uu
 url="https://github.com/skea999/feralos"
 arch="noarch"
 license="ISC"
-depends=""
-makedepends=""
-
-build() {
-	return 0
-}
-
-check() {
-	return 0
-}
-
-package() {
-	mkdir -p "$pkgdir"
-}
+build() { return 0; }
+check() { return 0; }
+package() { mkdir -p "$pkgdir"; }

@@ -1,0 +1,26 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# Dummy package: satisfies the util-linux-misc dependency of
+# incus-feature-vm without installing the real util-linux-misc
+# (which conflicts with uutils-coreutils-more providing /usr/bin/more).
+# Ships zero files — dependency satisfier only.
+pkgname=util-linux-misc
+pkgver=999.0.0
+pkgrel=0
+pkgdesc="Dummy: satisfies util-linux-misc dependency (real pkg conflicts with uutils more)"
+url="https://github.com/skea999/feralos"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+
+build() {
+	return 0
+}
+
+check() {
+	return 0
+}
+
+package() {
+	mkdir -p "$pkgdir"
+}

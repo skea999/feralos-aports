@@ -10,7 +10,7 @@
 # Build uses the DEFAULT cargo features = native iced GUI backend
 # (do NOT pass --no-default-features).
 pkgname=raffi
-pkgver=0.24.0
+pkgver=0.26.0
 pkgrel=0
 pkgdesc="Application launcher with YAML configuration (native iced GUI)"
 url="https://github.com/chmouel/raffi"
@@ -24,8 +24,8 @@ makedepends="cargo"
 # lists both packages explicitly (niriWayle).
 depends="hicolor-icon-theme"
 options="!check"
-# upstream tags: v0.24.0 (GitHub strips the leading v in the extracted dir:
-# raffi-0.24.0 = $pkgname-$pkgver, no builddir override needed)
+# upstream tags: v0.26.0 (GitHub strips the leading v in the extracted dir:
+# raffi-0.26.0 = $pkgname-$pkgver, no builddir override needed)
 source="https://github.com/chmouel/raffi/archive/refs/tags/v$pkgver/raffi-$pkgver.tar.gz"
 
 prepare() {
@@ -44,5 +44,5 @@ package() {
 }
 
 sha512sums="
-bc0d2fea956d6556c13d6a6334b1d757e7d0dedbfcbb18a6613900466ea7b860ceb7b0e9e0d8fe44b4d80b230a8975e722669fea9fcf5cbf80ae3063aacbc84c  raffi-0.24.0.tar.gz
+ 595d2c0488ccc2800c7206ca1f57867d9d2f49c9720819e5b0afe63d4dbf0dabcc80cad566818ea08813180198d25eb59c9e26ba85441c0ee44d27a73ed670e1  raffi-0.26.0.tar.gz
 "

@@ -1,0 +1,26 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# Toggle script for raffi launcher: close the running raffi window via
+# niri IPC, or spawn a new detached instance if not running. Wired into
+# both the Wayle bar custom module and the niri Mod+D bind.
+pkgname=raffi-toggle
+pkgver=1.0.0
+pkgrel=0
+pkgdesc="Toggle raffi launcher: close-if-open, spawn-if-not (niri IPC)"
+url="https://github.com/skea999/feralos"
+arch="noarch"
+license="ISC"
+depends="raffi jq niri"
+
+source="raffi-toggle.sh"
+
+build() { return 0; }
+
+check() { return 0; }
+
+package() {
+	install -Dm755 "$srcdir"/raffi-toggle.sh "$pkgdir"/usr/local/bin/raffi-toggle
+}
+
+sha512sums="
+43fbfac1c6cd54226b0ca19aa95d399ed450ac2dcc22449bb5368aa788b33eb99b46fa2eafc98a499c50e0d12a794766d4b8cc2d69b47becfab0c8c79db55325  raffi-toggle.sh
+"

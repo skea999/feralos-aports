@@ -18,7 +18,9 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm755 "$srcdir"/raffi-toggle.sh "$pkgdir"/usr/local/bin/raffi-toggle
+	# /usr/bin, NOT /usr/local/bin — abuild postcheck forbids /usr/local
+	# in packages ("Packages must not put anything under /usr/local").
+	install -Dm755 "$srcdir"/raffi-toggle.sh "$pkgdir"/usr/bin/raffi-toggle
 }
 
 sha512sums="

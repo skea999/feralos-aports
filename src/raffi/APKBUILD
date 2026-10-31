@@ -11,13 +11,18 @@
 # (do NOT pass --no-default-features).
 pkgname=raffi
 pkgver=0.24.0
-pkgrel=1
+pkgrel=0
 pkgdesc="Application launcher with YAML configuration (native iced GUI)"
 url="https://github.com/chmouel/raffi"
 arch="all"
 license="Apache-2.0"
 makedepends="cargo"
-depends="hicolor-icon-theme raffi-toggle"
+# NOTE: raffi does NOT depend on raffi-toggle (one-way raffi-toggle ->
+# raffi): raffi -> raffi-toggle -> raffi would be a build-order cycle —
+# raffi builds first (alphabetical) and its build env would need
+# raffi-toggle, whose own dep raffi is mid-rebuild. The FeralOS installer
+# lists both packages explicitly (niriWayle).
+depends="hicolor-icon-theme"
 options="!check"
 # upstream tags: v0.24.0 (GitHub strips the leading v in the extracted dir:
 # raffi-0.24.0 = $pkgname-$pkgver, no builddir override needed)

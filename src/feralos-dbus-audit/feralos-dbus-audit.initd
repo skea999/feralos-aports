@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+# feralos-dbus-audit — ADR-010 supervision audit at boot (OpenRC fallback):
+# report to /var/log/feralos-dbus-audit.log (see feralos
+# docs/architecture/dbus-activation.md "Supervision audit").
+description="FeralOS D-Bus supervision audit (boot report)"
+
+depend() {
+	after localmount
+}
+
+start() {
+	ebegin "Running FeralOS D-Bus supervision audit"
+	/usr/libexec/feralos/feralos-dbus-audit --log-file /var/log/feralos-dbus-audit.log
+	eend $?
+}

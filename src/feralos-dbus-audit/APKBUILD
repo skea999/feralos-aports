@@ -1,0 +1,75 @@
+# Maintainer: FeralOS <dev@feralos.org>
+# feralos-dbus-audit: ADR-010 supervision audit — the FIRST package built
+# from the feralos repository itself (standalone Go binary under
+# src/firstBoot/dbus-audit). Rule (feralos docs/adr/ADR-010): every D-Bus
+# activation starts a dinit unit — the audit scans
+# /usr/share/dbus-1/services/*.service, verifies a user unit exists for
+# each target (canonical bus name OR service name convention), falls back
+# to apk add of the matching *-user-dinit package, checks the core session
+# infra boot.d links and reports the user's materialized session overrides.
+# Runs install-time (installer, chroot tail), boot-time (the oneshot units
+# shipped here) and manually (CLI). Exit 1 = aports gap.
+pkgname=feralos-dbus-audit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS D-Bus supervision audit (ADR-010): activation targets must be dinit units"
+url="https://github.com/skea999/feralos"
+arch="all"
+license="ISC"
+# source = the feralos git repo at the commit this package was cut from
+# (GitHub strips the sha in the extracted dir: feralos-<sha>)
+_commit=2742c19ef04c2313985424143f749c8fc662994e
+source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/feralos/archive/$_commit/feralos-$_commit.tar.gz
+	feralos-dbus-audit.dinit
+	feralos-dbus-audit.initd"
+builddir="$srcdir/feralos-$_commit"
+makedepends="go"
+# dinit per the feralos-dbus-activate precedent (the oneshot unit is only
+# consumed under dinit; OpenRC keeps its own initd in this package)
+depends="dinit"
+# go build may need the network for module/toolchain resolution (abuild
+# warns without it); go mod download in prepare() pins the module graph
+options="net"
+
+prepare() {
+	default_prepare
+	# module deps of the imported utils/shell package (yaml/term/x/sys):
+	# download once in prepare (network convention), build stays --mod=readonly
+	cd "$builddir"/src
+	export GOPATH="$srcdir/gopath"
+	export GOCACHE="$srcdir/gocache"
+	go mod download
+}
+
+build() {
+	cd "$builddir"/src/firstBoot/dbus-audit
+	export GOPATH="$srcdir/gopath"
+	export GOCACHE="$srcdir/gocache"
+	export CGO_ENABLED=0
+	go build -trimpath -o "$srcdir"/feralos-dbus-audit .
+}
+
+check() {
+	# NOT the real scan: the shared-root smoke installs land arbitrary
+	# activation files with no units — a scan here would be
+	# nondeterministic. The --help probe proves the binary executes and
+	# the flags are wired (flag pkg prints usage and exits 2 — grep on the
+	# pipeline carries the result).
+	"$srcdir"/feralos-dbus-audit --help 2>&1 | grep -q log-file
+}
+
+package() {
+	install -Dm755 "$srcdir"/feralos-dbus-audit "$pkgdir"/usr/libexec/feralos/feralos-dbus-audit
+	install -Dm644 "$builddir"/LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+	# boot oneshot (dinit): report to /var/log (the @var-log subvol —
+	# hence depends-on local.target, the ursined lesson) before login.
+	install -Dm644 "$srcdir"/feralos-dbus-audit.dinit "$pkgdir"/lib/dinit.d/feralos-dbus-audit
+	# boot oneshot (OpenRC fallback)
+	install -Dm755 "$srcdir"/feralos-dbus-audit.initd "$pkgdir"/etc/init.d/feralos-dbus-audit
+}
+
+sha512sums="
+cfae792b4788f95a72c68c29c84bd343a245fd6bcc2b4b44c6d490307039b22fe9ef624e4d82e305aec654c0c426227968708b3f308f975fb4b69e296017fd68  feralos-dbus-audit-0.1.0.tar.gz
+10073e1dda371c2f7dd6e305cf43581275918e31eff48b720105d986c338e11cf8abf956d376a964c10473c6ba7a3f06fff72e62c9f110263e6e0cabd6167043  feralos-dbus-audit.dinit
+449a7225086c25a80d8f38d00450aed0e25ef14c1bdd72f5ef1777567fe57ae52175d59b15a134d6d6b8253bb61ae0439e1b235bb4eb35401a9092f6a520295d  feralos-dbus-audit.initd
+"

@@ -1,0 +1,11 @@
+# feralos-dbus-audit — ADR-010 supervision audit at boot: re-runs the
+# activation-target audit and writes the report to /var/log
+# (see feralos docs/architecture/dbus-activation.md "Supervision audit").
+# /var/log is the @var-log fstab subvol → depends-on local.target
+# (the ursined lesson: a logfile under a dedicated subvol must wait for
+# the local chain to mount it); the report must exist before login.
+type = scripted
+command = /usr/libexec/feralos/feralos-dbus-audit --log-file /var/log/feralos-dbus-audit.log
+depends-on = local.target
+before = login.target
+restart = false

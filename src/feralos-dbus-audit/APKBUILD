@@ -1,24 +1,27 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # feralos-dbus-audit: ADR-010 supervision audit — the FIRST package built
 # from the feralos repository itself (standalone Go binary under
-# src/firstBoot/dbus-audit). Rule (feralos docs/adr/ADR-010): every D-Bus
-# activation starts a dinit unit — the audit scans
-# /usr/share/dbus-1/services/*.service, verifies a user unit exists for
-# each target (canonical bus name OR service name convention), falls back
-# to apk add of the matching *-user-dinit package, checks the core session
-# infra boot.d links and reports the user's materialized session overrides.
-# Runs install-time (installer, chroot tail), boot-time (the oneshot units
-# shipped here) and manually (CLI). Exit 1 = aports gap.
+# src/firstBoot/dbus-audit). Rule (feralos docs/adr/ADR-010, R1b): the
+# audit AUTO-INSTALLS the supervision packages — it scans BOTH activation
+# inventories (session /usr/share/dbus-1/services and system
+# /usr/share/dbus-1/system-services), checks the unit for every target
+# (bus-name + binary-name conventions, plus the packaged FeralOS overrides
+# that alias the bus name onto the unit, e.g. org.freedesktop.login1 ->
+# elogind) and apk-adds the daemon-named counterpart
+# (<who-owns-Exec>-user-dinit / -dinit, then the bus name which resolves
+# provides= aliases). MISS + exit 1 = aports gap. Runs install-time
+# (installer, chroot step 8a), boot-time (the oneshot units shipped here)
+# and manually (CLI).
 pkgname=feralos-dbus-audit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS D-Bus supervision audit (ADR-010): activation targets must be dinit units"
 url="https://github.com/skea999/feralos"
 arch="all"
 license="ISC"
 # source = the feralos git repo at the commit this package was cut from
 # (GitHub strips the sha in the extracted dir: feralos-<sha>)
-_commit=2742c19ef04c2313985424143f749c8fc662994e
+_commit=4af4f2c040803b5585daf310de8faff85795dae9
 source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/feralos/archive/$_commit/feralos-$_commit.tar.gz
 	feralos-dbus-audit.dinit
 	feralos-dbus-audit.initd"
@@ -69,7 +72,7 @@ package() {
 }
 
 sha512sums="
-cfae792b4788f95a72c68c29c84bd343a245fd6bcc2b4b44c6d490307039b22fe9ef624e4d82e305aec654c0c426227968708b3f308f975fb4b69e296017fd68  feralos-dbus-audit-0.1.0.tar.gz
+6718bc1f44e1f3f71ddc70fd02dd66dfdcb63cf07e8cabf1c1d215f493de17806188ecd53d068e1c2fc6d5ac7c68d9f45d954bd36ab73f9efdefed45652472ca  feralos-dbus-audit-0.1.0.tar.gz
 10073e1dda371c2f7dd6e305cf43581275918e31eff48b720105d986c338e11cf8abf956d376a964c10473c6ba7a3f06fff72e62c9f110263e6e0cabd6167043  feralos-dbus-audit.dinit
 449a7225086c25a80d8f38d00450aed0e25ef14c1bdd72f5ef1777567fe57ae52175d59b15a134d6d6b8253bb61ae0439e1b235bb4eb35401a9092f6a520295d  feralos-dbus-audit.initd
 "

@@ -10,7 +10,7 @@
 # package-shipped unit.
 pkgname=gnome-apps-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="user dinit services for GNOME app-launch activation targets"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,7 +20,8 @@ depends="feralos-dbus-activate gnome-calendar gnome-disk-utility gnome-firmware 
 # (candidate 1 = <owner-of-Exec>-user-dinit: each activation file's Exec
 # binary belongs to a DIFFERENT apk package, so the audit tries these four
 # names; apk providers resolution maps them onto this single package).
-provides="gnome-calendar-user-dinit gnome-disk-utility-user-dinit gnome-firmware-user-dinit gnome-maps-user-dinit"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+provides="gnome-calendar-user-dinit=$pkgver-r$pkgrel gnome-disk-utility-user-dinit=$pkgver-r$pkgrel gnome-firmware-user-dinit=$pkgver-r$pkgrel gnome-maps-user-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="org.gnome.Calendar.user org.gnome.Calendar.service
 	org.gnome.DiskUtility.user org.gnome.DiskUtility.service

@@ -9,7 +9,7 @@
 # package map to the same binary.
 pkgname=signon-ui-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="User dinit services for signon-ui (webcredentials + singlesignonui)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -20,7 +20,8 @@ depends="dinit signon-ui feralos-dbus-activate"
 # have Exec=/bin/sh wrappers, so who-owns yields busybox (useless) and the
 # audit falls back to the bus names; apk providers resolution maps them
 # onto this single package.
-provides="com.canonical.indicators.webcredentials-user-dinit com.nokia.singlesignonui-user-dinit"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+provides="com.canonical.indicators.webcredentials-user-dinit=$pkgver-r$pkgrel com.nokia.singlesignonui-user-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="com.canonical.indicators.webcredentials.user
 	com.nokia.singlesignonui.user

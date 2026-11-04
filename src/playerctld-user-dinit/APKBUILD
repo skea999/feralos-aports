@@ -10,12 +10,14 @@
 # package-shipped unit.
 pkgname=playerctld-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit service for playerctld (org.mpris.MediaPlayer2.playerctld activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="feralos-dbus-activate playerctl"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+provides="playerctl-user-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="org.mpris.MediaPlayer2.playerctld.user org.mpris.MediaPlayer2.playerctld.service"
 

@@ -9,12 +9,28 @@
 # every activation target has a package-shipped unit.
 pkgname=plasma-kauth-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit services for the KDE Plasma system-bus KAuth helper targets"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="feralos-dbus-activate discover-backend-apk plasma-workspace kdeplasma-addons plasma-desktop sddm-kcm plasma-disks kinfocenter libksysguard ktexteditor powerdevil plasma-firewall"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+provides="org.kde.discover.alpineapkbackend-dinit=$pkgver-r$pkgrel
+	org.kde.fontinst-dinit=$pkgver-r$pkgrel
+	org.kde.kameleonhelper-dinit=$pkgver-r$pkgrel
+	org.kde.kcontrol.kcmclock-dinit=$pkgver-r$pkgrel
+	org.kde.kcontrol.kcmsddm-dinit=$pkgver-r$pkgrel
+	org.kde.kded.smart-dinit=$pkgver-r$pkgrel
+	org.kde.kinfocenter.dmidecode-dinit=$pkgver-r$pkgrel
+	org.kde.ksysguard.processlisthelper-dinit=$pkgver-r$pkgrel
+	org.kde.ktexteditor6.katetextbuffer-dinit=$pkgver-r$pkgrel
+	org.kde.localegenhelper-dinit=$pkgver-r$pkgrel
+	org.kde.powerdevil.backlighthelper-dinit=$pkgver-r$pkgrel
+	org.kde.powerdevil.chargethresholdhelper-dinit=$pkgver-r$pkgrel
+	org.kde.powerdevil.discretegpuhelper-dinit=$pkgver-r$pkgrel
+	org.kde.powerdevil.wakeupsourcehelper-dinit=$pkgver-r$pkgrel
+	org.kde.ufw-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="org.kde.discover.alpineapkbackend org.kde.discover.alpineapkbackend.service
 	org.kde.fontinst org.kde.fontinst.service

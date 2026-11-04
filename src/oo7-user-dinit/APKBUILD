@@ -14,12 +14,14 @@
 # explicit depends entry.
 pkgname=oo7-user-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="User dinit services for oo7 (Secret Service daemon + portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="dinit oo7 oo7-server oo7-portal dbus-user-dinit feralos-dbus-activate"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+provides="oo7-server-user-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="org.freedesktop.secrets.user org.freedesktop.impl.portal.desktop.oo7.user
 	secrets secrets.conf

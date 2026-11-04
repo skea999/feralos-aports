@@ -9,12 +9,16 @@
 # service dir).
 pkgname=bluez-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit services for bluetoothd and bluetooth-meshd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit bluez dbus-wait-for-dinit feralos-dbus-activate"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+# Upstream activation files are Exec=/bin/false traps; the audit falls back to
+# bus-name-only identity and apk add resolves the supervision package via provides.
+provides="org.bluez-dinit=$pkgver-r$pkgrel org.bluez.mesh-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="bluetooth org.bluez.mesh
 	org.bluez.service org.bluez.mesh.service"

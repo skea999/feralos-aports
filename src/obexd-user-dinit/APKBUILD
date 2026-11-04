@@ -11,12 +11,14 @@
 # package-shipped unit.
 pkgname=obexd-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit service for obexd (org.bluez.obex activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="feralos-dbus-activate obexd-enhanced"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+provides="org.bluez.obex-user-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="org.bluez.obex.user org.bluez.obex.service"
 

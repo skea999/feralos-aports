@@ -9,12 +9,16 @@
 # every activation target has a package-shipped unit.
 pkgname=avahi-dinit
 pkgver=0.1.0
-pkgrel=8
+pkgrel=9
 pkgdesc="dinit service for avahi"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit avahi feralos-dbus-activate"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+# Upstream activation file is an Exec=/bin/false trap; the audit falls back to
+# bus-name-only identity and apk add resolves the supervision package via provides.
+provides="org.freedesktop.Avahi-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="org.freedesktop.Avahi
 	org.freedesktop.Avahi.service"

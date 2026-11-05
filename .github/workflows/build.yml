@@ -94,21 +94,36 @@ jobs:
               esac
             done
             echo "seeded published apks: $(ls "$REPO" | wc -l)"
-            # prune RETIRED packages: a seeded apk whose package dir no
-            # longer exists in src/ is retired — its stale apk must not
+            # prune RETIRED packages: a seeded apk whose name is produced
+            # by NO APKBUILD in src/ is retired — its stale apk must not
             # survive into REPODEST. The smoke-install step installs
             # EVERY apk in the repo, and a stale retired apk FAILS
             # against any new package that takes over its files (e.g.
             # kio-extras-user-dinit vs kio-user-dinit both shipping
             # org.kde.kmtpd5.service: "trying to overwrite ... owned
             # by ..."); it would also be republished to Pages forever.
+            # Expected set = every pkgname + subpackage (strip the
+            # "name:splitfunc" suffix); subpackage apks have NO
+            # src/<name> dir — naive dir-matching wrongly prunes them
+            # (polkit-noelogind-libs, polkit-common, cli11-dev,
+            # *-doc/-lang/-openrc …), which broke the polkit pins.
+            expected=" "
+            for d in src/*/APKBUILD; do
+              [ -e "$d" ] || continue
+              names=$( ( cd "$(dirname "$d")" && . ./APKBUILD >/dev/null 2>&1 \
+                && printf '%s\n%s\n' "$pkgname" "${subpackages:-}" ) ) || names=""
+              for n in $names; do
+                n=${n%%:*}
+                [ -n "$n" ] && expected="$expected$n "
+              done
+            done
             for apkfile in "$REPO"/*.apk; do
               [ -f "$apkfile" ] || continue
               pkg=$(basename "$apkfile" | sed -E 's/-[0-9][^-]*-r[0-9]+\.apk$//')
-              if [ ! -d "src/$pkg" ]; then
+              case "$expected" in *" $pkg "*);; *)
                 echo "prune retired package: $pkg"
-                rm -f "$apkfile"
-              fi
+                rm -f "$apkfile";;
+              esac
             done
           else
             echo "no published index yet (first run) — building everything"

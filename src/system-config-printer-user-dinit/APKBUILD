@@ -11,12 +11,19 @@
 # package-shipped unit.
 pkgname=system-config-printer-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit service for system-config-printer (Config.Printing activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="MIT"
 depends="feralos-dbus-activate system-config-printer-common"
+# VERSIONED provides are REQUIRED: unversioned provides are virtual and apk add <alias> refuses the provider.
+# The two names below cover the audit's candidate chain for the
+# org.fedoraproject.Config.Printing target: who-owns(/usr/bin/scp-dbus-service)
+# = system-config-printer-common-user-dinit, bus = org.fedoraproject.Config.Printing-user-dinit
+# (audit run 2026-11-05T21-59-48Z tried both before MISSing — the package
+# itself resolves neither name without these aliases).
+provides="system-config-printer-common-user-dinit=$pkgver-r$pkgrel org.fedoraproject.Config.Printing-user-dinit=$pkgver-r$pkgrel"
 makedepends=""
 source="org.fedoraproject.Config.Printing.user
 	org.fedoraproject.Config.Printing.service"

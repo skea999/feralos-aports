@@ -16,14 +16,14 @@
 # and manually (CLI).
 pkgname=feralos-dbus-audit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="FeralOS D-Bus supervision audit (ADR-010): activation targets must be dinit units"
 url="https://github.com/skea999/feralos"
 arch="all"
 license="ISC"
 # source = the feralos git repo at the commit this package was cut from
 # (GitHub strips the sha in the extracted dir: feralos-<sha>)
-_commit=ef3478a37f5ff234fdb79f4d6792a57777c20696
+_commit=f33e8bd7709ce382acf9be6a1443c5cc2288e02e
 source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/feralos/archive/$_commit/feralos-$_commit.tar.gz
 	feralos-dbus-audit.dinit
 	feralos-dbus-audit.initd"
@@ -74,7 +74,7 @@ package() {
 }
 
 sha512sums="
-952b572dd05d041debceb0199040abdd91fd9b7e2af7b16c32f7331acbaaa731c19b102044ac9f0b14ad9112f517776dd7400085405275c96d739962a3579867  feralos-dbus-audit-0.1.0.tar.gz
+ f3b973f9bb8d9508ae6ffa0ff9bc802d463d404b0fe73c8bed690b8ac47b609ff9b3a2002efc080a122a20900658d9bc96bab4465d8b97e6baad7869461e44ae  feralos-dbus-audit-0.1.0.tar.gz
 4b2b6eb566a1fdba0923adf8690360ac40fbcd41831070744455595eba84e89026c75df5a1b7aad7033eb019f2324a868f3c205890d01640230a77b7b6cbc18d  feralos-dbus-audit.dinit
 449a7225086c25a80d8f38d00450aed0e25ef14c1bdd72f5ef1777567fe57ae52175d59b15a134d6d6b8253bb61ae0439e1b235bb4eb35401a9092f6a520295d  feralos-dbus-audit.initd
 "

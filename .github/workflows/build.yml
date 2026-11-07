@@ -251,7 +251,7 @@ jobs:
           # polkit base vs polkit-elogind are mutually exclusive variants:
           # keep base (polkit-dinit + quickshell depend on it), skip the
           # elogind variant artifacts (isolated smoke covers them)
-          # gnome-keyring-user-dinit (niri secrets set) vs oo7-user-dinit
+          # gnome-keyring-user-dinit (niri secrets set) vs oo7-server-user-dinit
           # (niriWayle secrets set): both ship the org.freedesktop.secrets
           # unit/override and gnome-keyring conflicts with oo7-server on
           # usr/share/dbus-1/services/org.freedesktop.secrets.service —
@@ -384,7 +384,7 @@ jobs:
           # machine. polkit-elogind-dinit pulls the elogind polkit variant,
           # mutually exclusive with the base `polkit` installed by the
           # polkit dir. gnome-keyring-user-dinit (niri secrets set) conflicts
-          # with oo7-user-dinit (niriWayle secrets set): same unit/override
+          # with oo7-server-user-dinit (niriWayle secrets set): same unit/override
           # names, and gnome-keyring vs oo7-server on the secrets activation
           # file. dolphin-user-dinit (kde set) conflicts with
           # nautilus-user-dinit (niri set) on org.freedesktop.FileManager1.

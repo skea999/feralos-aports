@@ -1,0 +1,38 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit services for gnome-disk-utility (session D-Bus activation target, ADR-010).
+# The package is named after the owner of the activation Exec binary (apk
+# owner = gnome-disk-utility, R1b purity): the audit's who-owns candidate resolves the
+# package by its own name. Evidence (pkgs.alpinelinux.org file search,
+# v3.24 x86_64):
+#   org.gnome.DiskUtility  Exec /usr/bin/gnome-disks --gapplication-service -> gnome-disk-utility
+# D-Bus activation is routed through feralos-dbus-activate via the override
+# in /usr/share/feralos/dbus-services/ (materialized at login into
+# $XDG_RUNTIME_DIR/dbus-1/services).
+pkgname=gnome-disk-utility-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="user dinit services for gnome-disk-utility (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate gnome-disk-utility"
+makedepends=""
+source="org.gnome.DiskUtility.user
+	org.gnome.DiskUtility.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.gnome.DiskUtility.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.gnome.DiskUtility.service"
+	install -Dm644 "$srcdir/org.gnome.DiskUtility.user" \
+		"$pkgdir/etc/dinit.d/user/org.gnome.DiskUtility.user"
+}
+
+sha512sums="
+015629c6d54548989f3f99b2fa1ac898bd2c688f68194865002d53bc62e7b723b0fa0d480fe9ae962b6165542dc52f1caaccd2a7246d4601290b049e23d2b5db  org.gnome.DiskUtility.service
+3a361592e10255b74c7a8ee0b9b7ee46d0bada13e77a572f649b9e938e9d852658db44d6256a4eed065ccbc02046bc9e8696cced4f63bae023c5af22662f7db9  org.gnome.DiskUtility.user
+"

@@ -1,0 +1,38 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit services for gnome-firmware (session D-Bus activation target, ADR-010).
+# The package is named after the owner of the activation Exec binary (apk
+# owner = gnome-firmware, R1b purity): the audit's who-owns candidate resolves the
+# package by its own name. Evidence (pkgs.alpinelinux.org file search,
+# v3.24 x86_64):
+#   org.gnome.Firmware  Exec /usr/bin/gnome-firmware --gapplication-service -> gnome-firmware
+# D-Bus activation is routed through feralos-dbus-activate via the override
+# in /usr/share/feralos/dbus-services/ (materialized at login into
+# $XDG_RUNTIME_DIR/dbus-1/services).
+pkgname=gnome-firmware-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="user dinit services for gnome-firmware (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate gnome-firmware"
+makedepends=""
+source="org.gnome.Firmware.user
+	org.gnome.Firmware.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.gnome.Firmware.service" \
+		"$pkgdir/usr/share/feralos/dbus-services/org.gnome.Firmware.service"
+	install -Dm644 "$srcdir/org.gnome.Firmware.user" \
+		"$pkgdir/etc/dinit.d/user/org.gnome.Firmware.user"
+}
+
+sha512sums="
+67165e05fb1910d4fa079605c5b3428e6f2ee3f39c3ece269af96007fd1c2abc745620f3bd1f74ad920d02789dc0cd78010c0e2177654d4b20f90eefbc5f2116  org.gnome.Firmware.service
+419730eac55205c78ca6dbcc4b07463e676dc05465e0d594c07bd21c84667ee5e917d8779844f2731b9db466a60c8ca5455e953ebd2e472a9ae504da38a08164  org.gnome.Firmware.user
+"

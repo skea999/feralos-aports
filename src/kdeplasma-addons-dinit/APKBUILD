@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# System-bus dinit units for the KDE Plasma KAuth helper D-Bus activation
+# targets OWNED BY kdeplasma-addons (ADR-010, R1b purity: the supervision package is
+# named after the apk package owning each activation Exec binary).
+# Evidence (pkgs.alpinelinux.org file search):
+#   org.kde.kameleonhelper  Exec /usr/lib/libexec/kf6/kauth/kameleonhelper -> kdeplasma-addons
+# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# at boot into /usr/local/share/dbus-1/system-services via
+# dbus-services-setup: the launch helper resolves names only against the
+# standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
+pkgname=kdeplasma-addons-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit services for the kdeplasma-addons KAuth helper activation target"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate kdeplasma-addons"
+makedepends=""
+source="org.kde.kameleonhelper
+	org.kde.kameleonhelper.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for helper in org.kde.kameleonhelper ; do
+		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
+		# D-Bus activation override: the effective Exec starts the dinit unit.
+		install -Dm644 "$srcdir/$helper.service" \
+			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+	done
+}
+
+sha512sums="
+c7a5b5e6e7116c676800d4f9b9a1c54fc18f250382268521ec1951792645d75762c25b9218f5670d78d2be65178d5ae1add051f9510a28747dcc7a67039f5dd9  org.kde.kameleonhelper
+8b40de876d3578e565f2393c38307260bf4effadd163b784eb38f473b5281314c5c52a909857fc882a04ab2fab25c246c584d6c82fdbb73ed41c03fc6e318a04  org.kde.kameleonhelper.service
+"

@@ -1,0 +1,54 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# System-bus dinit units for the KDE Plasma KAuth helper D-Bus activation
+# targets OWNED BY powerdevil (ADR-010, R1b purity: the supervision package is
+# named after the apk package owning each activation Exec binary).
+# Evidence (pkgs.alpinelinux.org file search):
+#   org.kde.powerdevil.backlighthelper  Exec /usr/lib/libexec/kf6/kauth/backlighthelper -> powerdevil
+#   org.kde.powerdevil.chargethresholdhelper  Exec /usr/lib/libexec/kf6/kauth/chargethresholdhelper -> powerdevil
+#   org.kde.powerdevil.discretegpuhelper  Exec /usr/lib/libexec/kf6/kauth/discretegpuhelper -> powerdevil
+#   org.kde.powerdevil.wakeupsourcehelper  Exec /usr/lib/libexec/kf6/kauth/wakeupsourcehelper -> powerdevil
+# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# at boot into /usr/local/share/dbus-1/system-services via
+# dbus-services-setup: the launch helper resolves names only against the
+# standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
+pkgname=powerdevil-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit services for the powerdevil KAuth helper activation targets"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate powerdevil"
+makedepends=""
+source="org.kde.powerdevil.backlighthelper
+org.kde.powerdevil.chargethresholdhelper
+org.kde.powerdevil.discretegpuhelper
+org.kde.powerdevil.wakeupsourcehelper
+	org.kde.powerdevil.backlighthelper.service
+	org.kde.powerdevil.chargethresholdhelper.service
+	org.kde.powerdevil.discretegpuhelper.service
+	org.kde.powerdevil.wakeupsourcehelper.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for helper in org.kde.powerdevil.backlighthelper org.kde.powerdevil.chargethresholdhelper org.kde.powerdevil.discretegpuhelper org.kde.powerdevil.wakeupsourcehelper ; do
+		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
+		# D-Bus activation override: the effective Exec starts the dinit unit.
+		install -Dm644 "$srcdir/$helper.service" \
+			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+	done
+}
+
+sha512sums="
+c1a0544e9364ebce629e82d5ab4f47e0ca3608024cace2e3c2fd757ffe177ab6a2d3e2e9f5b1b95e282ff67c2b33d85842ded9c069e4003cf31bf8ef6c65dd14  org.kde.powerdevil.backlighthelper
+588bc7787418c2fc992f99733ab3a18bac413a491aaa2dcdfb18d2f573a575ff4e8131aedb4dce36c31fcb092d273dd740330c573d771809c17baa933316eb48  org.kde.powerdevil.backlighthelper.service
+e47ea7742f131ca12398e8a8addc0da423664217c7c6cf7128879ec5e246d96e500b07cf3404805dba7d06dcfbbe05f930e1793dfd63bbd06543d5cc6c6bb2b3  org.kde.powerdevil.chargethresholdhelper
+b72b9f79a6e2344f9ff0b0cba37677e435b1bf3c8423d79b2c30a266c21b70a9a17ecccad812abdf9e43ed33a6675bdb2b6e3360f7d9dcbe5f8d684a153481ce  org.kde.powerdevil.chargethresholdhelper.service
+c1a40d3b8004a97304c622089c9701ddbc7605515b04672ffe1f8df127e2c100412a04a68033e2de9f1f13ba751ef833965255fb77b4c1e9df3abb537f0dd2ba  org.kde.powerdevil.discretegpuhelper
+d6caebb830c3c5a6380f81b1205bfea441cf36eadd50072b5f9c79a18251c1a3480c53a9173ba25d9aa5cc65f6681c1b1c771c40d4e9837d47e42188695cb17f  org.kde.powerdevil.discretegpuhelper.service
+d770ad1dd5117dae4a64c9e508411322cd842b6aa5b7d76d7f997a8e1b60ec9528faf3c561c96a28fe4ac1f79a993d3835a5c8d606a098b77c84c43f0e8422af  org.kde.powerdevil.wakeupsourcehelper
+cbe99102b9f487e199cd10e1c472b3cb799e7cd1f609750c4698b6a0d8a5f62bd9e9298467906a2707f73257572799e7434d89e66fecc36e5531e2589a01a049  org.kde.powerdevil.wakeupsourcehelper.service
+"

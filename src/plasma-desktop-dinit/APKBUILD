@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# System-bus dinit units for the KDE Plasma KAuth helper D-Bus activation
+# targets OWNED BY plasma-desktop (ADR-010, R1b purity: the supervision package is
+# named after the apk package owning each activation Exec binary).
+# Evidence (pkgs.alpinelinux.org file search):
+#   org.kde.kcontrol.kcmclock  Exec /usr/lib/libexec/kf6/kauth/kcmdatetimehelper -> plasma-desktop
+# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# at boot into /usr/local/share/dbus-1/system-services via
+# dbus-services-setup: the launch helper resolves names only against the
+# standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
+pkgname=plasma-desktop-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit services for the plasma-desktop KAuth helper activation target"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate plasma-desktop"
+makedepends=""
+source="org.kde.kcontrol.kcmclock
+	org.kde.kcontrol.kcmclock.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for helper in org.kde.kcontrol.kcmclock ; do
+		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
+		# D-Bus activation override: the effective Exec starts the dinit unit.
+		install -Dm644 "$srcdir/$helper.service" \
+			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+	done
+}
+
+sha512sums="
+89af876b4e500f0e8fa1d1a89f96038825b4bb0c2332e2d100b438b70e07bf42dd83bd74b9e8a25dd3ed3bbdb73deab86066e779e763353c51c3a8be2b27c9bb  org.kde.kcontrol.kcmclock
+aedfa29dbf6e9cb0cfdac5fdace48c6a96fae03859c2c845fd9b5f72747f421bfbcc1f7cdc5bade1bcde347562cc98d7dfe884950022dcfe00cd58c7af3b03f3  org.kde.kcontrol.kcmclock.service
+"

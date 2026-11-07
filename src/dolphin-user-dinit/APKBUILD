@@ -9,7 +9,7 @@
 # (GNOME variant, unit org.gnome.Nautilus.user) — the two packages are
 # mutually exclusive DE variants (kde: dolphin; niri/niriWayle: nautilus) and
 # the CI shared-root install skips this package for that reason (same pattern
-# as gnome-keyring-user-dinit vs oo7-user-dinit on the secrets name).
+# as gnome-keyring-user-dinit vs oo7-server-user-dinit on the secrets name).
 # Transitional units: the harness check dbus_activation_migration retires
 # them once dbus-broker is installed and every activation target has a
 # package-shipped unit.

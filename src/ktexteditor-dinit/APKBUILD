@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# System-bus dinit units for the KDE Plasma KAuth helper D-Bus activation
+# targets OWNED BY ktexteditor (ADR-010, R1b purity: the supervision package is
+# named after the apk package owning each activation Exec binary).
+# Evidence (pkgs.alpinelinux.org file search):
+#   org.kde.ktexteditor6.katetextbuffer  Exec /usr/lib/libexec/kf6/kauth/kauth_ktexteditor_helper -> ktexteditor
+# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# at boot into /usr/local/share/dbus-1/system-services via
+# dbus-services-setup: the launch helper resolves names only against the
+# standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
+pkgname=ktexteditor-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit services for the ktexteditor KAuth helper activation target"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate ktexteditor"
+makedepends=""
+source="org.kde.ktexteditor6.katetextbuffer
+	org.kde.ktexteditor6.katetextbuffer.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for helper in org.kde.ktexteditor6.katetextbuffer ; do
+		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
+		# D-Bus activation override: the effective Exec starts the dinit unit.
+		install -Dm644 "$srcdir/$helper.service" \
+			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+	done
+}
+
+sha512sums="
+372456f5cb7b3134a502ceb48398ba8d0c84b128d0ca0af07255b8493c62f9e39af34dad18f3982dafa0f4299a9a480cca82a992e22cee5c27912f58cb17d5dc  org.kde.ktexteditor6.katetextbuffer
+370bdb036c297076b2ef6a89b08a6e36bb72a9478f21040efd5bcec637d7d2a1962f7bf945e3f285d32d9c767491d38a2a0d01c628ff84a32d67b85fefd945ac  org.kde.ktexteditor6.katetextbuffer.service
+"

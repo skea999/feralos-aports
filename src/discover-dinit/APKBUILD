@@ -1,0 +1,42 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# System-bus dinit units for the KDE Plasma KAuth helper D-Bus activation
+# targets OWNED BY discover (ADR-010, R1b purity: the supervision package is
+# named after the apk package owning each activation Exec binary).
+# Evidence (pkgs.alpinelinux.org file search):
+#   org.kde.discover.alpineapkbackend  Exec /usr/lib/libexec/kf6/kauth/alpineapk_kauth_helper -> discover
+# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# at boot into /usr/local/share/dbus-1/system-services via
+# dbus-services-setup: the launch helper resolves names only against the
+# standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
+pkgname=discover-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit services for the discover KAuth helper activation target"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate discover-backend-apk"
+# (discover-backend-apk = the apk-backend FLAVOR the FeralOS kde DE
+# installs — the same choice the former supervision monolith made;
+# the helper binary itself ships in the discover package)
+makedepends=""
+source="org.kde.discover.alpineapkbackend
+	org.kde.discover.alpineapkbackend.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	for helper in org.kde.discover.alpineapkbackend ; do
+		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
+		# D-Bus activation override: the effective Exec starts the dinit unit.
+		install -Dm644 "$srcdir/$helper.service" \
+			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+	done
+}
+
+sha512sums="
+b0c7cd6b0fa33b1a6753c32763882670a9955044ed1b388345e4b3e458fe463ce4ff4a200e63d01cccac1a460825f48a9f57eb20cc31feacc221774a754157b4  org.kde.discover.alpineapkbackend
+f84ac42d64377cbdbbd0b953d4f63d9f1389c9a0223ce9e1d415461cd1c23ad086436bf605bb38f425e8e13fc4fb3748cfd7d2571c8a2cd8f9d35731ed1b4aab  org.kde.discover.alpineapkbackend.service
+"

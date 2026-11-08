@@ -7,13 +7,13 @@
 # the feralos repository.
 # Ships dbus-services-setup (dinit unit + OpenRC initd, both before dbus):
 # it materializes the packaged system-bus overrides from
-# /usr/share/feralos/dbus-system-services into /usr/local/share/dbus-1/
+# /usr/share/dinit/dbus-system-services into /usr/local/share/dbus-1/
 # system-services — the setuid launch helper's trivial parser resolves names
 # only against the standard dirs, never the /etc override tree
 # (daemon-enumerated only, not helper-searched).
 pkgname=feralos-dbus-activate
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="FeralOS D-Bus activation shim: activation always starts a dinit service"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,15 +29,15 @@ build() { return 0; }
 check() { return 0; }
 
 package() {
-	install -Dm755 "$srcdir/dbus-activate" "$pkgdir/usr/libexec/feralos/dbus-activate"
-	install -Dm755 "$srcdir/dbus-system-services-setup" "$pkgdir/usr/libexec/feralos/dbus-system-services-setup"
+	install -Dm755 "$srcdir/dbus-activate" "$pkgdir/usr/libexec/dinit/dbus-activate"
+	install -Dm755 "$srcdir/dbus-system-services-setup" "$pkgdir/usr/libexec/dinit/dbus-system-services-setup"
 	install -Dm644 "$srcdir/dbus-services-setup" "$pkgdir/lib/dinit.d/dbus-services-setup"
 	install -Dm755 "$srcdir/dbus-services-setup.initd" "$pkgdir/etc/init.d/dbus-services-setup"
 }
 
 sha512sums="
-549a71410319abb4e0668557a512ac2c2367ac39972eeca5d5db0c1376d55e07217606768e3d5ddd37fa1e6fd0d442990b22c6d5c095d4d1ee81a32c08971ef6  dbus-activate
-15df5d926435b5bd48343fa3018707ea84deb7d070bd0cc833d1a5e070f3b749ec6c158f828a4c285eb669821a0fdadb1e94fb3b5ac3b8f47dbe8822447fe9cd  dbus-system-services-setup
-b585336326a7bc2775beb83fcc044ece94cc3d4b23683573caf3e6ecd7c1eb0ea974ceaccee5e530d77d23581b2277172ad26094b939c2d3b2f626fa6f1f93b0  dbus-services-setup
-a3553429ae1e34532ba8055c142a592e054b667bdd7fdc124875461055fed1fda30060617e90874eb321d968126fe0a33e8cb1d55d15c6d18da7348793bbd7f8  dbus-services-setup.initd
+462178ac267d5e68277a385d2a5d82004555b028ef1138bdcff8e890007d8fce09dd0afc439a45e8e1cf333b479a0b3a132fbcf50191deacc4cb9106ddd67e61  dbus-activate
+bbcac7288d98d949da25bd1a9d7e89a7faa9b6c79be6e8907921b47864596adef23c2c2708c0d815180ef4dce61f3526f1fead5ddd82e6de2f63eb403f6fcb1c  dbus-system-services-setup
+a77d61f8373e1a6a5b0e7e8ddcf6e85ff072e007a57cd765b233d20d64007a6ace753511e501a45cac88423f60434b5516cb303fff6ce4b3406f44d70faea2ac  dbus-services-setup
+f869ade0d94c0c9a09e522e169a09e9e7c5fd6aa8142f604696b4cfe6d1fa68a7c0a60c90b55f03dd2c35f148fb094bc78692260c9d4ef3188d24728873a7fda  dbus-services-setup.initd
 "

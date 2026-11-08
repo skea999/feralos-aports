@@ -5,13 +5,13 @@
 # named after the apk package owning each activation Exec binary).
 # Evidence (pkgs.alpinelinux.org file search):
 #   org.kde.kcontrol.kcmsddm  Exec /usr/lib/libexec/kf6/kauth/kcmsddm_authhelper -> sddm-kcm
-# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# Overrides ship in /usr/share/dinit/dbus-system-services/ (materialized
 # at boot into /usr/local/share/dbus-1/system-services via
 # dbus-services-setup: the launch helper resolves names only against the
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=sddm-kcm-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit services for the sddm-kcm KAuth helper activation target"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,11 +29,11 @@ package() {
 		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
 		# D-Bus activation override: the effective Exec starts the dinit unit.
 		install -Dm644 "$srcdir/$helper.service" \
-			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+			"$pkgdir/usr/share/dinit/dbus-system-services/$helper.service"
 	done
 }
 
 sha512sums="
 02ee26c2c35ce83e0c97b23954ac8c625e3892afbd97a3633203632dd4c0db8cdc3bc674305b5c315c738d30698b164966c017e18001611be2d1e9678074e9fd  org.kde.kcontrol.kcmsddm
-e9761e56dbf2d6936aa5b81db6aaaad91a215063b8b0b3ddb10e573d94da2ddbc126bde2a3421f724d07bf8118e102c6d953a6e325312cd1afbaf6398f48d7c8  org.kde.kcontrol.kcmsddm.service
+0010414d58d15ab11c49540fdb4e70ebb6f0fa7c68bcd508ca4e6fa828ad8616c3e60f3af4bc9029f7cc9a02713f912b1ffae2bfa4b1d21e8ee55b179bb46a04  org.kde.kcontrol.kcmsddm.service
 "

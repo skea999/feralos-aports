@@ -3,7 +3,7 @@
 # explicitly-activated system services carry the initd name; the D-Bus
 # override keeps the bus name and aliases onto this unit. Activation is
 # routed through feralos-dbus-activate via the override packaged in
-# /usr/share/feralos/dbus-system-services/org.freedesktop.login1.service
+# /usr/share/dinit/dbus-system-services/org.freedesktop.login1.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup).
 # Sibling dinit units depend on `elogind`.

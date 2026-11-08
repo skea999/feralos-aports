@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit services for localsearch (GNOME file indexer). Unit names =
 # canonical session D-Bus bus names (ADR-010); D-Bus activation is routed
-# through feralos-dbus-activate via overrides in /usr/share/feralos/dbus-services/.
+# through feralos-dbus-activate via overrides in /usr/share/dinit/dbus-services/.
 # Mapping (source-verified against GNOME/localsearch 3.9.0 meson + service
 # templates + src/indexer/tracker-main.c and Alpine v3.22 contents):
 #   org.freedesktop.LocalSearch3[.Control|.Writeback]  -> localsearch-3 /
@@ -17,7 +17,7 @@
 #       contents — not in localsearch; tinysparql is a localsearch dep).
 pkgname=localsearch-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="User dinit services for localsearch (indexer + control + writeback)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -50,20 +50,20 @@ package() {
 		org.freedesktop.LocalSearch3.Writeback org.freedesktop.Tracker3.Writeback \
 		org.freedesktop.portal.Tracker; do
 		install -Dm644 "$srcdir/$s.service" \
-			"$pkgdir/usr/share/feralos/dbus-services/$s.service"
+			"$pkgdir/usr/share/dinit/dbus-services/$s.service"
 	done
 }
 
 sha512sums="
-0b3a255c5b1e29c9dc90f8a237d19e55c5ab3d03c36f7392195c05a8b46d0e7fa8bed726e7b9212655ce7b73fe624feb29c0c9e8b415b60f0fa98e5fb0e3a057  org.freedesktop.LocalSearch3.user
-b49e8c20400555ab811c473cc69b4cf18160deab89f5e38007407283e892bd00704d3ace999a616037907ab9d3d1904ee6fa513a408f6e5480b29467d3f0e585  org.freedesktop.LocalSearch3.Control.user
-5272dd29f6f1f0455217e6b196610182289c36e3630c8f1b6e7865716c26d288013bd36096d49e3e8aacf55822dbce6aaf971fe12edec486094dc30753885364  org.freedesktop.LocalSearch3.Writeback.user
-0e0e4b45e3da3c80cfef107f0e424f627052d68d960cc1297926a6ef59cf388e1125cb2973ee7cbf7588ceb93b035621391adea9086fc17043c503955269785c  org.freedesktop.portal.Tracker.user
-47c0863da0efb327a9994d448ced1a30285870c1a2b40900272c02fb04bfeb9de79c8440ddb44fd3f1e873bde8fb571dfb3ce42be0f0020987e672ab79f22af1  org.freedesktop.LocalSearch3.service
-e50e5e69642eef3b62c755f65a77619d917d9d5842ff2224a4df498fb1a1ee53f16eda5cdeabad662aee0b5eaca655349703f1941e1b7f479201f307463dbd60  org.freedesktop.Tracker3.Miner.Files.service
-49053ebfe95b2f2f655db5bb6d52573978b844760968da09bac4a921363ee67bdd2ace37794e2ebaabc7889553563b3f69ab90907012aea09057f5caeb67abb3  org.freedesktop.LocalSearch3.Control.service
-98b3194109a65a1d92de6ecf3f8ee0d368d225a9e1a4782d6c8c50016c7d612d6cd4a8c97958d50393f5edc02a90a14390a14c20d0d513db577399f61d3253ce  org.freedesktop.Tracker3.Miner.Files.Control.service
-9922a17ce28b9e5c6d70fccd042a2bd73aef83e3e16bab3e0721d0d97292227965317e8665ce08c99a284e0e04ba0c12ba29a0bee5046d9be842019b088e813e  org.freedesktop.LocalSearch3.Writeback.service
-595b18989d2838c07a2c7161788be5a3120fc182aad1369078e39b2b43065124180824bf96ca5f509eb42bb34d9da638c97ec83efb0bb43c9cd1c5bf75429c5d  org.freedesktop.Tracker3.Writeback.service
-8d712abe306f48e7e460f0a9e0ca807fca4aa60ba79b683854de379e1448ab184fe165df9e9a734d9f09a6025b6a1e1b22d45f10ce1b4c88601b29c98f02d2b9  org.freedesktop.portal.Tracker.service
+a3649bf66451e16d9fd2ff39c94b09f1ae0d0ea43aebd0fe0bbccdd3f6751acd1eec712521d9d0020482c40cc56c279c09769fcbd61b259cd885e440c26c9e59  org.freedesktop.LocalSearch3.user
+3e6e636621017f514adb477f35d60dd4a68ae23a98e92731e839f16102e84592c3a570f90b3e4849b71f039656bc35d9f778dcf592341c19f20069f1fc9ec810  org.freedesktop.LocalSearch3.Control.user
+df07e2356f3d8f19aafb8f72f847b638f78424c370fc2a2dc75e1fdb046f29f01e322e13f95b2fe9bc813b11490fdce09d1da880575f679fbbba5b36e97bbcb8  org.freedesktop.LocalSearch3.Writeback.user
+63e01501023fbd26998a67bfff9a4387f2f7c6581497d45c3917084b2e9890b47c41356dcde344de13c01b990389553c134f1c154ad140865ea05188b9ce08dc  org.freedesktop.portal.Tracker.user
+f82df082223d6cda052324e38ba37d217bd717b1dae50cf86ddfc0b674f5360a496cc2676a98cc09f06250fe73659801c02301e7fa6e88486844d6911b55ec0e  org.freedesktop.LocalSearch3.service
+333010d42987056ba87aac5157ad2d3e7e720a2612b82b5d4060609f84e352f169918abb461d5632c2e237febe6db374c60f6dbcf2fe614baf6239ac2696d3ce  org.freedesktop.Tracker3.Miner.Files.service
+1480cead1d52789139038151a405ab2abb9ede153de67c99bb6f2bf8da964f109a9eeb5d21964f5790d4e03b9ee696473509e223e6427931264f6a71312b2025  org.freedesktop.LocalSearch3.Control.service
+fde6276df60b2b52e6fcb170b2b6f7471acbdc7e49d180a2d977ace512d73c24e0d9c0ad2fde064a002a65ed178ab214980d2e7318739cd44e7cc696a51a6f9f  org.freedesktop.Tracker3.Miner.Files.Control.service
+694bb97966824b9c27770b6615c2d2b1978ac902d66c40f18f6a31a330a951dfd0f62aa7a8349808c16c3182b4b536531bab0cdf54dcc5b6174207aad8e58338  org.freedesktop.LocalSearch3.Writeback.service
+e1b0af46cfb80e45aceb741fd8bb82aae43b103fd26eb70a4e1baf4ce094c47cc4e37fc5a141823baf34f6b3f237d6d6911e30224ce88e2587d8c997be7f04ee  org.freedesktop.Tracker3.Writeback.service
+3253119c29e851f4bc4ff24332add0a75d5b0c6e3a7e03d9abfcf9aea48548c15844e870133e424263e60387cb5691fe1aa74d95ae253baf552afebcf035de59  org.freedesktop.portal.Tracker.service
 "

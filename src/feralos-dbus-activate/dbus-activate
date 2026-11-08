@@ -3,7 +3,7 @@
 #
 # Every FeralOS D-Bus-activatable daemon is a dinit service. The effective
 # .service file must carry:
-#   Exec=/usr/libexec/feralos/dbus-activate <unit> -- <upstream exec...>
+#   Exec=/usr/libexec/dinit/dbus-activate <unit> -- <upstream exec...>
 #
 # The shim forwards the D-Bus activation environment to dinit (single setenv
 # call), starts the unit (waits for it) and exits; dbus-daemon completes the

@@ -2,10 +2,10 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit services for the flatpak session stack. Unit names = canonical
 # session D-Bus bus names (ADR-010); D-Bus activation is routed through
-# feralos-dbus-activate via overrides in /usr/share/feralos/dbus-services/.
+# feralos-dbus-activate via overrides in /usr/share/dinit/dbus-services/.
 pkgname=flatpak-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="User dinit services for the flatpak session stack (session helper + portal + OCI authenticator)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -30,7 +30,7 @@ package() {
 	for s in org.freedesktop.Flatpak org.freedesktop.portal.Flatpak \
 		org.flatpak.Authenticator.Oci; do
 		install -Dm644 "$srcdir/$s.service" \
-			"$pkgdir/usr/share/feralos/dbus-services/$s.service"
+			"$pkgdir/usr/share/dinit/dbus-services/$s.service"
 	done
 }
 
@@ -38,7 +38,7 @@ sha512sums="
 a556d65ccd64b547bcc0610d858fac8187e7331e2673e9c001b40a6221b5639d4b3c89a9d3d5eff48b3d988f329d9cf59979fc682a5a1b3a33b983e00201047d  org.freedesktop.Flatpak.user
 9f9779af44b1b11764fc82574dd05c44b43a879ee9e39f9d24d54095591f410c34a7d636c78b7cb17e8ebda05b8bf1f693e3d4b7e3ebc1d75ba97ecfcaafe7b4  org.freedesktop.portal.Flatpak.user
 13f8be88f8ee33a52f11dfa67a67ff6eef792af8c7bfff254c4403208f08b761007799bf2711cb8c9d336ca88f2ce9f83c99187477eefaa238e0efdbd6af7673  org.flatpak.Authenticator.Oci.user
-f2cffcb3551cd1013a1250129d13e44b495d2858327b4b75ee97527406199733e2367850f2ab272bb1c1dd3b75881d0e4a0d24cf8e8fbe871c3b381040a8d523  org.freedesktop.Flatpak.service
-c1e59173f4e374c16bfd6c2b9c6bf52cc08936c5f7fbd3ed6a86b7823915706d157981840dd85ca354a48abe91f1f458ea8a00f790503c07e6663d2cbbf41e97  org.freedesktop.portal.Flatpak.service
-defd0db60f76cc602764930f774c19d3f87bdd094b5766b62b9070518d9cc9d81c50e819dc72f385525ae20c3441f69a6f9d43a0e305d3d79d8d7a12df0e12b2  org.flatpak.Authenticator.Oci.service
+5eb120f4a0e28a2439acaa792f0ed5a29060155f8f90db551571a06625885c583e04edf77be247d10e73605649559afd5aebc63ef8cee1d726a31f931f0f25cf  org.freedesktop.Flatpak.service
+d833f7b4f41ba4406eb16613c57366c42e03f981ae31594989788fcdecd4c3a50e4da616f6e8c4fe94d855c5333fc63d689b6e45b3ca2abd9bc8bc99d8976a0e  org.freedesktop.portal.Flatpak.service
+3a4534096e03d5c49e1baba944bce0a679d152c0fbc50b93e50050fcb4b488d56f03c43f69e007a37408d05711f1fe4ed47d7b380d7f546c7fdf2f0500011603  org.flatpak.Authenticator.Oci.service
 "

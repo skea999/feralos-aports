@@ -7,11 +7,11 @@
 # v3.24 x86_64):
 #   org.gnome.Maps  Exec /usr/share/gnome-maps/org.gnome.Maps --gapplication-service -> gnome-maps
 # D-Bus activation is routed through feralos-dbus-activate via the override
-# in /usr/share/feralos/dbus-services/ (materialized at login into
+# in /usr/share/dinit/dbus-services/ (materialized at login into
 # $XDG_RUNTIME_DIR/dbus-1/services).
 pkgname=gnome-maps-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="user dinit services for gnome-maps (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -27,12 +27,12 @@ check() { return 0; }
 package() {
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.gnome.Maps.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.gnome.Maps.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.gnome.Maps.service"
 	install -Dm644 "$srcdir/org.gnome.Maps.user" \
 		"$pkgdir/etc/dinit.d/user/org.gnome.Maps.user"
 }
 
 sha512sums="
 b561005d72b5416609e43670140a6685ce11853ea5c611cea56e31135383acfb33b2f85c78a3ca37b85a7abe7733810bf9031eaec423f714088019cca23285db  org.gnome.Maps.user
-644f0180f538c9005dfd42c0564925ff280b42da5995ec6077f0da462d185e85854cd858b0d880fd18262008bf337f95ad45f400d1756b5b1d83fcaf059c70b9  org.gnome.Maps.service
+d52a621d3161cf35286b66b650515fd1ce6b4ac85d79fafc6d96b6281bad33ed87b9f03152861c87cb9fa339c6d62b1b2c39dc1e06224af6f40b204842bdf846  org.gnome.Maps.service
 "

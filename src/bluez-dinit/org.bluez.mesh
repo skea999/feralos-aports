@@ -5,7 +5,7 @@
 # bluez APK contents, v3.24). Unit name = canonical system D-Bus bus name
 # (org.bluez.mesh, ADR-010): D-Bus activation is routed through
 # feralos-dbus-activate via the override packaged in
-# /usr/share/feralos/dbus-system-services/org.bluez.mesh.service (installed
+# /usr/share/dinit/dbus-system-services/org.bluez.mesh.service (installed
 # at boot into /usr/local/share/dbus-1/system-services by dbus-services-setup).
 type = process
 log-type = file

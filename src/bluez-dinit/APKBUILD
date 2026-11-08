@@ -4,12 +4,12 @@
 # name (ADR-010 R1 amendment); its D-Bus override keeps the bus name
 # (org.bluez) and aliases onto the unit. The org.bluez.mesh unit stays
 # bus-named per the rule. Activation is routed through feralos-dbus-activate
-# via overrides packaged in /usr/share/feralos/dbus-system-services
+# via overrides packaged in /usr/share/dinit/dbus-system-services
 # (materialized at boot into the launch helper's first eligible standard
 # service dir).
 pkgname=bluez-dinit
 pkgver=0.1.0
-pkgrel=8
+pkgrel=9
 pkgdesc="dinit services for bluetoothd and bluetooth-meshd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -31,14 +31,14 @@ package() {
 	install -Dm644 "$srcdir/org.bluez.mesh" "$pkgdir/lib/dinit.d/org.bluez.mesh"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.bluez.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.bluez.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.bluez.service"
 	install -Dm644 "$srcdir/org.bluez.mesh.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.bluez.mesh.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.bluez.mesh.service"
 }
 
 sha512sums="
-03830fd1357dc07cc757971a3edf53036ac1e1431d833a7364d00e05313eb1f62e3f28cc4e3a3ea098e2c96627a21b0b3e908083b95e7a794804021937945b9c  bluetooth
-12309cf76829043675d51cb91e736d668742f97e6758d5d985611a2f97405c73d90feb6b8cb774edb6f1f8c9d66cf16f64f3e25e9936515d8b97889d487b1879  org.bluez.mesh
-16405d95eeb6ada07838583992e59dd6c8823a5eb015b61221eb0f5970561814e6fed44a9c3ef2f6bde98ab22db106e817a7d32f785b8ac169a44cb61449a4a7  org.bluez.service
-8f3c0304f178038ca5341c718d669619a8f4a3cf0729b3d85a1a6d72e9db76c336cfbd7c0fe3e6f4adb2bff707685f80c45d936ebafefa0b9200efc5a058add6  org.bluez.mesh.service
+32ddcdc73b6bd822e482a0ffb6a0d5e6afbac97e3dcd4c762edab42379c5232d6616836aa6bc986746a3a5d68a7f22d3fd3d4660b03a12abdefbc3d5cf7bc2e3  bluetooth
+7921d8e3cee6452beed561f8b98bfedb22d57018aab5677a4ed6a982c881a47afafacde57efc948ad9ea0c3fe1bddf9cd4213b29dbacbaa43257d880da31bfac  org.bluez.mesh
+74c25e72b435794e952e2d99615d9da5007310db00232273d383d66b368a8b2ef6a45e99ddc04cb23a9e3e2361a71ae6b28f971220823e68b35c6e029dfac59e  org.bluez.service
+fa725f5ec2e654bba7fd64f81fb30ae8feedc3f63fd7f41b97b5f168938948ea7327e020becdc646d28002892d72c108775fceb19c78fc6060d5da066aa66f1a  org.bluez.mesh.service
 "

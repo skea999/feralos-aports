@@ -3,7 +3,7 @@
 # User dinit services for oo7 (Secret Service daemon + portal).
 # Unit names = canonical session D-Bus bus names (ADR-010); D-Bus activation
 # is routed through feralos-dbus-activate via the overrides in
-# /usr/share/feralos/dbus-services/. The portal unit carries the portal's real
+# /usr/share/dinit/dbus-services/. The portal unit carries the portal's real
 # bus name (org.freedesktop.impl.portal.desktop.oo7, verified in the oo7 portal
 # source: PORTAL_NAME const + meson dbus_name).
 # org.freedesktop.impl.portal.Secret is the portal backend INTERFACE, not a bus
@@ -14,7 +14,7 @@
 # explicit depends entry.
 pkgname=oo7-server-user-dinit
 pkgver=0.1.0
-pkgrel=8
+pkgrel=9
 pkgdesc="User dinit services for oo7 (Secret Service daemon + portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -52,17 +52,17 @@ package() {
 	install -Dm755 "$srcdir/oo7-daemon" "$pkgdir/usr/bin/oo7-daemon"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.secrets.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.secrets.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.secrets.service"
 	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.oo7.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.impl.portal.desktop.oo7.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.impl.portal.desktop.oo7.service"
 }
 
 sha512sums="
-be9cb7862ef6a694dec9cfe2579a49e89f85df9c399181761a23e5faa3c6482166e3cddee880b9f91f09326cde34664f63a100fd6079796f0bba2bc815071b89  org.freedesktop.secrets.user
-21f349f318b8ddcf5cf327e54ecf2f718c355b03e436efb14d478b2e631f880dd086c6ee10c7e952c49b1622355bd792f02c8040ec33efb741ce50cb4dd8f1b5  org.freedesktop.impl.portal.desktop.oo7.user
+ddc14e2e74f07d4a507ba5e250e585407f12e0ed0b06dba79d3ae47743b732dcd22b57a6bcf845ba54ec27cf84798fdc4d0a89bdf7d0c18156424525ef79aad2  org.freedesktop.secrets.user
+c58ca4f85b1cc57f354811cc98faf72597ed7234da20b442b6df2105d8f6be5257abc824fec0908489a39baa09dcf492d2cd2b84ec82869cf35713753166ec1d  org.freedesktop.impl.portal.desktop.oo7.user
 8fc2663c10171a8f1fa8aea43e426af6a4bb27b752891e697f5738e8152d573a66f92d28ad9acc5f25a419d0ede59b300215e346fe540049898e98cb55e1760e  secrets
 448d465321385f593c9e0e2bf1774dc86b241207e55a2c11bcfad2b76a0a74183bfc6114890585e1c1249c9a86f055b01c41e8e684895d12c2bb7d66f34ef717  secrets.conf
 e969d38ec85804822842b0ffc7a61993e080234f234d891ea91ac858edabe3cef1cd8d0ef9484a85213a97c78d73968ee4dd9ca3d77d690fd70aa711ce77b18c  oo7-daemon
-2a0812a4fedfba480259a94c2d72e7472279ac16e71a87555524353c30935eac831bc72789c1cf028a43114ccfe0ad3fb9b56adf9c8a20a8bac0293067c7f706  org.freedesktop.secrets.service
-c8d254be2ae8b53a91d385eaabca2c260b9d36f3d23e10ac9508d46eefc10c0c4ebca9f1dd23f48ef663176937c72ffd7bf3b088eb2a87945b9b2a35c00d7af1  org.freedesktop.impl.portal.desktop.oo7.service
+2c325df3bccdeed0763a613944ed0dc51c594948dfd9308120964b9dd2601259c3e70d10c61e532283ec6052e25edc4a23fcf738dc216ff60f31ef9c7bf76e32  org.freedesktop.secrets.service
+d3b442f9d4206d0a69b9c603d1ebe4f66229175d4a3d4752e732410c37588fbf9372ff3dcd3a2da9a20c470f4f2d53cf9dbe8e124031e805338a7e5a4f2800a9  org.freedesktop.impl.portal.desktop.oo7.service
 "

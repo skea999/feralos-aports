@@ -3,11 +3,11 @@
 # User dinit services for xdg-desktop-portal (frontend + document portal +
 # permission store). Unit names = canonical session D-Bus bus names
 # (ADR-010). D-Bus activation is routed through feralos-dbus-activate via
-# overrides staged in /usr/share/feralos/dbus-services/ and materialized by
+# overrides staged in /usr/share/dinit/dbus-services/ and materialized by
 # dbus-session into the highest-precedence session servicedir.
 pkgname=xdg-desktop-portal-user-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="User dinit services for xdg-desktop-portal (desktop + document portal + permission store)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -32,11 +32,11 @@ package() {
 	install -Dm755 "$srcdir/portal-order" "$pkgdir/usr/lib/dinit/portal-order"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.portal.Desktop.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.portal.Desktop.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.portal.Desktop.service"
 	install -Dm644 "$srcdir/org.freedesktop.portal.Documents.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.portal.Documents.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.portal.Documents.service"
 	install -Dm644 "$srcdir/org.freedesktop.impl.portal.PermissionStore.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.impl.portal.PermissionStore.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.impl.portal.PermissionStore.service"
 }
 
 sha512sums="
@@ -44,7 +44,7 @@ sha512sums="
 6d8ecc4ebdd7ceedb70cd57840a33923acbd63c41e398142181c1eaa38eb6d096cee0ea2680062f7c4e649f4e81c044ef0c65032f816455136724d2d5d179168  org.freedesktop.portal.Documents.user
 af9f2ce7bebe63275a7cc95c195fe7dee38d57c1270e049385acb204f32e65ba979d6b7d273d8cab30f3971b88c4ef04864152f79f004f43d936aaf8f36eef0a  org.freedesktop.impl.portal.PermissionStore.user
 571967a572949f61e229abd5623af8821c02e248c1174f5beb3bfa5519d16ae84fe4bf6455ba68aef049b1b69b7999122b560c31c0d9928e3556f665541a1f43  portal-order
-2c3c61e7b099102b1190c4eefb0437753b768d2f62cb5f0bdd40fc8377eccb4661ee4a89a7882cdcfd9ae9e26345e85ce36de98aabe649ef6c3136064c8fcb1f  org.freedesktop.portal.Desktop.service
-fa99ed67d2705cb009319a4818973883f457aac693bbafe4e4104785eeee58105a9c16458f3f70e905fcbf594a1bbb5b2943e3811bcd8e394da79731db92fbe7  org.freedesktop.portal.Documents.service
-0cedb33043f3c60372f8e0499b5361fa14fbcbafc2dada7757c1f99463bbe92e373ce33605511776138a9dd5e87325957946635887152fdce9f33c2775da3600  org.freedesktop.impl.portal.PermissionStore.service
+7c27520aee19850dc2be28b53433f108edac92ff77792acc0ad9541cb638226b35c18bd8f17b780d00f40b5ba8438805cb7b52cf9e40d18362c35455850355ac  org.freedesktop.portal.Desktop.service
+4bb206c146ca6f68bee20e8f41660b2a33c10d9817280a66a5c1ef5446a5aeb501880f2c9c79552155d6165691eaf9c8573864ea43af5667044bdcd9a27a9ece  org.freedesktop.portal.Documents.service
+a6796d831d0704f8c2dac112d105bb376085ef0e1fdcea545da7c2c09ae27be8bdfec9aabff94bf2503041b7d7c3bdbe47c148ec2d2668464e4b489826b485fb  org.freedesktop.impl.portal.PermissionStore.service
 "

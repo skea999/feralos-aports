@@ -1,7 +1,7 @@
 # dinit user service: kiod6 (org.kde.kiod6)
 # KIO daemon. Unit name = canonical session D-Bus bus name (ADR-010);
 # D-Bus activation is routed through
-# /usr/share/feralos/dbus-services/org.kde.kiod6.service.
+# /usr/share/dinit/dbus-services/org.kde.kiod6.service.
 type = process
 smooth-recovery = true
 load-options = sub-vars

@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit service for obexd. Unit name = canonical session D-Bus bus name
 # (ADR-010); D-Bus activation is routed through feralos-dbus-activate via an
-# override in /usr/share/feralos/dbus-services/.
+# override in /usr/share/dinit/dbus-services/.
 # Verified on Alpine 3.24: upstream activation Exec =
 # /usr/lib/bluetooth/obexd -n --capability=!/usr/bin/obex-capabilities; the
 # binary ships in obexd-enhanced, hence the dependency.
@@ -11,7 +11,7 @@
 # package-shipped unit.
 pkgname=obexd-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="User dinit service for obexd (org.bluez.obex activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -30,10 +30,10 @@ package() {
 		"$pkgdir/etc/dinit.d/user/org.bluez.obex.user"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.bluez.obex.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.bluez.obex.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.bluez.obex.service"
 }
 
 sha512sums="
 d69b364c926197a79a2483c1e1cfd7a3c4996add65dca219a60fe298f87ee4dbc0694bb3f73218e813efcd86db2ddd21aba0deb083bf82ac935ba4a57feede54  org.bluez.obex.user
-3cc9a46fec7fcde702f4187ca5456e3df122c3eb1745a1754cab7d5776a3db84aac5579488dc1cd4382c2ebab746fa17d76d2f9d56f67328d3c1754721c44609  org.bluez.obex.service
+b95f2a0dfab8bcf95df7c0006f88b8d7c39701bd5f198ba878c36e91eec361b1ffc7ae71cc539344c3a40a0120b3ce09a6e6ba23f8b58d3052b2ebfae2e053ea  org.bluez.obex.service
 "

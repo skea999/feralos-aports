@@ -8,7 +8,7 @@
 # NOT dms.user), dinit-monitor hold = greetd session lifetime.
 #
 # Depends on niri-user-dinit for: the niri user service + niri-shutdown,
-# the login-shell trick (/usr/libexec/feralos/login-shell, not in
+# the login-shell trick (/usr/libexec/login-shell, not in
 # /etc/shells) used by greetd's niri-session path, and the fixed
 # niri-session mechanism this script mirrors.
 #
@@ -19,7 +19,7 @@
 # same variables).
 pkgname=wayle-session
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Wayle session — niri compositor + Wayle shell session for FeralOS (user dinit services)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

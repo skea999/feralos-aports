@@ -5,7 +5,7 @@
 # the shipped org.gtk.GLib.PACRunner.service Exec).
 # Unit name = canonical session D-Bus bus name (ADR-010); D-Bus activation
 # is routed through
-# /usr/share/feralos/dbus-services/org.gtk.GLib.PACRunner.service.
+# /usr/share/dinit/dbus-services/org.gtk.GLib.PACRunner.service.
 type = process
 smooth-recovery = true
 load-options = sub-vars

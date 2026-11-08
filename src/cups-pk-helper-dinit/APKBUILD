@@ -3,13 +3,13 @@
 # cups-pk-helper on the system bus. ADR-010: the D-Bus activation target
 # org.opensuse.CupsPkHelper.Mechanism routes through feralos-dbus-activate
 # to a dinit unit named after the bus name; the override is packaged in
-# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# /usr/share/dinit/dbus-system-services (materialized at boot into the
 # launch helper's standard dirs). Transitional units: the harness check
 # dbus_activation_migration retires them once dbus-broker is installed and
 # every activation target has a package-shipped unit.
 pkgname=cups-pk-helper-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for cups-pk-helper (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -27,10 +27,10 @@ package() {
 		"$pkgdir/lib/dinit.d/org.opensuse.CupsPkHelper.Mechanism"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.opensuse.CupsPkHelper.Mechanism.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.opensuse.CupsPkHelper.Mechanism.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.opensuse.CupsPkHelper.Mechanism.service"
 }
 
 sha512sums="
 cced98c6f067f8e3f074ab66f01142ba3635dc1a99e4b2db9384c3af0e443692a4edcb11e76dbcdd9b15122bc11062e4d19c03f97ea23aa073641b7bb001d48e  org.opensuse.CupsPkHelper.Mechanism
-7032f9671478c5cad59ac616779c711efd9cc67b2383beadb3b190090551cf95676ce886f6b4b09ae467c833d37b1ce9cb54f22e96b8b4b7b0e27a369d8021f5  org.opensuse.CupsPkHelper.Mechanism.service
+6b90fb013b11549db12a2c8bf183b0667f24fd101bd994be36da8d2acbc5a8fd500357e7d86602aba4aba5fce99aa20193ba1c373f9dac44062ef5ec00cae2db  org.opensuse.CupsPkHelper.Mechanism.service
 "

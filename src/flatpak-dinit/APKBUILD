@@ -2,12 +2,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # Flatpak system helper on the system bus. The unit is named after the bus
 # name and D-Bus activation is routed through feralos-dbus-activate (ADR-010);
-# the override is packaged in /usr/share/feralos/dbus-system-services
+# the override is packaged in /usr/share/dinit/dbus-system-services
 # (materialized at boot into the launch helper's standard dirs).
 # System-wide flatpak installs go through this helper.
 pkgname=flatpak-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for the flatpak system helper"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -26,10 +26,10 @@ package() {
 		"$pkgdir/lib/dinit.d/org.freedesktop.Flatpak.SystemHelper"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.Flatpak.SystemHelper.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.Flatpak.SystemHelper.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.freedesktop.Flatpak.SystemHelper.service"
 }
 
 sha512sums="
-f0d746dd580ae20bd8c1f5c257531bc5267f921dff1f70f8689c7f3cb942afc522af90f0b8509786361dd94bb0f0fa21cf6f2d01d0cda6462e1431b5501c14a9  org.freedesktop.Flatpak.SystemHelper
-b917cc6122f7809229c2bcedeaed0daeb9a0a3453dc08aac574437e6680cb744844d25f52885313f8056272040a0507d644f22e81599498369cb1c0455c83f77  org.freedesktop.Flatpak.SystemHelper.service
+bfef4dc7fb4ae6e7cc73829bec9336e4731e09e1dbc2bf8f4df9211654a51054425505a89db14de502f4a5aeb3ecf84fae0d03cd4139e75b30ade608b7d507fa  org.freedesktop.Flatpak.SystemHelper
+3defe88f38bfaa09febb8a65b09216b508259504f739d38a29be5722fc9895e5277006777d7a13c8bd342d24cb1c23244dbac5688ac4a748154e0502a3b823ad  org.freedesktop.Flatpak.SystemHelper.service
 "

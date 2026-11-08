@@ -1,3 +1,3 @@
 [D-BUS Service]
 Name=org.kde.ActivityManager
-Exec=/usr/libexec/feralos/dbus-activate org.kde.ActivityManager.user -- /usr/lib/libexec/kactivitymanagerd
+Exec=/usr/libexec/dinit/dbus-activate org.kde.ActivityManager.user -- /usr/lib/libexec/kactivitymanagerd

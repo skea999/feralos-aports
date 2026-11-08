@@ -16,14 +16,14 @@
 # and manually (CLI).
 pkgname=feralos-dbus-audit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="FeralOS D-Bus supervision audit (ADR-010): activation targets must be dinit units"
 url="https://github.com/skea999/feralos"
 arch="all"
 license="ISC"
 # source = the feralos git repo at the commit this package was cut from
 # (GitHub strips the sha in the extracted dir: feralos-<sha>)
-_commit=f33e8bd7709ce382acf9be6a1443c5cc2288e02e
+_commit=bd9fef56122fb800104b8947c3b404764dae9d59
 source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/feralos/archive/$_commit/feralos-$_commit.tar.gz
 	feralos-dbus-audit.dinit
 	feralos-dbus-audit.initd"
@@ -64,7 +64,7 @@ check() {
 }
 
 package() {
-	install -Dm755 "$srcdir"/feralos-dbus-audit "$pkgdir"/usr/libexec/feralos/feralos-dbus-audit
+	install -Dm755 "$srcdir"/feralos-dbus-audit "$pkgdir"/usr/libexec/dinit/feralos-dbus-audit
 	install -Dm644 "$builddir"/LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
 	# boot oneshot (dinit): report to /var/log (the @var-log subvol —
 	# hence depends-on local.target, the ursined lesson) before login.
@@ -74,7 +74,7 @@ package() {
 }
 
 sha512sums="
- f3b973f9bb8d9508ae6ffa0ff9bc802d463d404b0fe73c8bed690b8ac47b609ff9b3a2002efc080a122a20900658d9bc96bab4465d8b97e6baad7869461e44ae  feralos-dbus-audit-0.1.0.tar.gz
-4b2b6eb566a1fdba0923adf8690360ac40fbcd41831070744455595eba84e89026c75df5a1b7aad7033eb019f2324a868f3c205890d01640230a77b7b6cbc18d  feralos-dbus-audit.dinit
-449a7225086c25a80d8f38d00450aed0e25ef14c1bdd72f5ef1777567fe57ae52175d59b15a134d6d6b8253bb61ae0439e1b235bb4eb35401a9092f6a520295d  feralos-dbus-audit.initd
+ac7a3093f4757d2a02ba4467fb40b3b607fdfbf5a146f9ef3af309f1ea27c9cc8359a992af45222640a82888fbc62d1206788ee4ac3ebe049f0068e0c0e66bdb  feralos-dbus-audit-0.1.0.tar.gz
+320717b127d8e619622547d5a21338ae2262eef950f400cbed2bfca73ebbbdf8305f8e0aa87d9c3481af525ef2ec99e820fb8c40c104cf350649b1d880a33011  feralos-dbus-audit.dinit
+15236b5955a0cf0cdf3a2ccab24dcbc9a6d6379238254ac848e4275ae56ed9d673baa428bf9f6275ad72d6601d2ab9914b3e0775f3ed7bd8dc76ddce994bf830  feralos-dbus-audit.initd
 "

@@ -5,13 +5,13 @@
 # named after the apk package owning each activation Exec binary).
 # Evidence (pkgs.alpinelinux.org file search):
 #   org.kde.kded.smart  Exec /usr/lib/libexec/kf6/kauth/kded-smart-helper -> plasma-disks
-# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# Overrides ship in /usr/share/dinit/dbus-system-services/ (materialized
 # at boot into /usr/local/share/dbus-1/system-services via
 # dbus-services-setup: the launch helper resolves names only against the
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=plasma-disks-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit services for the plasma-disks KAuth helper activation target"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,11 +29,11 @@ package() {
 		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
 		# D-Bus activation override: the effective Exec starts the dinit unit.
 		install -Dm644 "$srcdir/$helper.service" \
-			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+			"$pkgdir/usr/share/dinit/dbus-system-services/$helper.service"
 	done
 }
 
 sha512sums="
 93c3021021600fa3c66492341bde8bf20161dad4fa9543d111da3f99386103f5ddd487c4f3deac828a54ac7a7bb7afa4ef7f953c144af4e2b44d281405d87b48  org.kde.kded.smart
-260b98db4c2040b46ac150b5fb720fa0c8210f4d45a124b1eadbf727d80b4c5e3c973648e11a9ed67b2119fce1d3b58441dbe73680af79ddea4c6fdfec4167bf  org.kde.kded.smart.service
+eca48eb41d83472dab44421337833e3bfe25f13a58080e216f1f358811ab838cc0a7081a8758184e1fb68261c063ef1837aa29fc90161735adcfc4f4b8d798ed  org.kde.kded.smart.service
 "

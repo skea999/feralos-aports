@@ -2,12 +2,12 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit service for glib-networking's PACRunner. Unit name = canonical
 # session D-Bus bus name (ADR-010); D-Bus activation is routed through
-# feralos-dbus-activate via the override in /usr/share/feralos/dbus-services/.
+# feralos-dbus-activate via the override in /usr/share/dinit/dbus-services/.
 # Binary path source-verified in the Alpine glib-networking 2.80.1 APK
 # contents (/usr/libexec/glib-pacrunner).
 pkgname=glib-networking-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="User dinit service for glib-networking PACRunner"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -24,10 +24,10 @@ package() {
 		"$pkgdir/etc/dinit.d/user/org.gtk.GLib.PACRunner.user"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.gtk.GLib.PACRunner.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.gtk.GLib.PACRunner.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.gtk.GLib.PACRunner.service"
 }
 
 sha512sums="
-1b5b70bc4dfd008c135bb9b1671b5a680d85761b672d12b032854d33cb4a9e24d5b5ec82b590e86288fd0318e3db4a6c99837041a5c3714b4c5f64cf286ac3bc  org.gtk.GLib.PACRunner.user
-1ea35bb88859ad8b8b2cca8129bcd826a8a89b05070348f17478f332169b065e87aa2f57cd814f1f8f1a3bdd001bb2acaab79d7e798991e7a2552f056e652052  org.gtk.GLib.PACRunner.service
+b808729448f80573c71582f9a6827e2432184e6ace0970bbf62aa6de58fc07e8c6b3fd429cbedeb9a21d232f354f67ed6eb3683d564b44dd291e5ceda6a0e0af  org.gtk.GLib.PACRunner.user
+847a4b81d0257cb5ec9a9d67f9e76ac9922c3a5f99c113664ec11cb6a786963d159aa5f9d3c4a7fda334748b86e8023e82608dba4cd98de498f4694d77585179  org.gtk.GLib.PACRunner.service
 "

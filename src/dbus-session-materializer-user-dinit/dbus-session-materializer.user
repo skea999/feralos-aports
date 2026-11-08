@@ -4,6 +4,6 @@
 # cosmic-session dbus-run-session read the same servicedir; dbus-daemon also
 # watches it live). niri/niriWayle use the dbus-session wrapper instead.
 type = scripted
-command = /usr/libexec/feralos/dbus-session-materialize
+command = /usr/libexec/dinit/dbus-session-materialize
 restart = false
 load-options = sub-vars

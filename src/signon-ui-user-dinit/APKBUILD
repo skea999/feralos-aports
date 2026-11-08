@@ -2,14 +2,14 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # User dinit services for signon-ui. Unit names = canonical session D-Bus
 # bus names (ADR-010); D-Bus activation is routed through
-# feralos-dbus-activate via overrides in /usr/share/feralos/dbus-services/.
+# feralos-dbus-activate via overrides in /usr/share/dinit/dbus-services/.
 # SEPARATE package from signond-user-dinit: the binaries live in the
 # signon-ui package (/usr/bin/signon-ui — source-verified in the Alpine
 # signon-ui APK), not in signond; both activation files shipped by that
 # package map to the same binary.
 pkgname=signon-ui-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="User dinit services for signon-ui (webcredentials + singlesignonui)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -38,14 +38,14 @@ package() {
 		"$pkgdir/etc/dinit.d/user/com.nokia.singlesignonui.user"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/com.canonical.indicators.webcredentials.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/com.canonical.indicators.webcredentials.service"
+		"$pkgdir/usr/share/dinit/dbus-services/com.canonical.indicators.webcredentials.service"
 	install -Dm644 "$srcdir/com.nokia.singlesignonui.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/com.nokia.singlesignonui.service"
+		"$pkgdir/usr/share/dinit/dbus-services/com.nokia.singlesignonui.service"
 }
 
 sha512sums="
-37fedf5335eeef70cbc114cec1eb7c808fbf3a89258bb0d7a7d5777c13afb608ccc62d74b05bcf683f28831d5d7961870d6e0037df6b013143d5ff6d3a8e0a94  com.canonical.indicators.webcredentials.user
-59a9460e9ca5b8c8b3436a87dbabe6c56537c47bd13ee769f685d896688961a085f3dec79c141d1fdf04efec9a873b3473c7e75e0906232155715a87b07cdd8e  com.nokia.singlesignonui.user
-89eae2f8e6cfbb8786bc59f3a3bdde45c282583e3285eef3cac5e068d7a85dedad07e9d7dafd9c1542f5012ecdae4818e9fd9de8c3732d5613b3d6b77807445c  com.canonical.indicators.webcredentials.service
-6685b618fe7f0d260f85c22a6ab0f71b4469249e4771978ee6539969e873fe1c0e96002655af9e4a0d3b110685c35ff0bd641b5b95a2e13809109845a5cbf939  com.nokia.singlesignonui.service
+5d906a559fc555f46dabaa08f8a79f97edda16d3d81f0372b180368574a42045e56e8a11022fc6fa55a0160b7be4fea5e116d53986b835ae3fa03ed75214d49f  com.canonical.indicators.webcredentials.user
+f8b26e60c6165710ede955356fb358f0d82524374a916b218dadf6c1135cd430df1ad23a48d8e87448db14aea2ffb53aed7b647b635351d02c0a81f6a3211896  com.nokia.singlesignonui.user
+00f67ea72fe21a4a90bf54672392834784c242da99de19e000669eaa73e833837dbfe26db48aa5551655a98da9fcea19784ecd9cca2c2808752492cc8661c5db  com.canonical.indicators.webcredentials.service
+205a7bad33c0a9c9f263372b1058a750dcf568d1af7cc81c0611a131e8cdecb6696fc9749204d51b814ca5aa4bcc6b348c4c29a167e335938a71147f940f3661  com.nokia.singlesignonui.service
 "

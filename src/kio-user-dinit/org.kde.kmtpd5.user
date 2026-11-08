@@ -5,7 +5,7 @@
 # Exec=/usr/lib/libexec/kf6/kiod6 like all the kio org.kde.k*.service files;
 # the activation file + the mtpd5 module ship in kio-extras). Unit name =
 # canonical session D-Bus bus name (ADR-010); D-Bus activation is routed
-# through /usr/share/feralos/dbus-services/org.kde.kmtpd5.service.
+# through /usr/share/dinit/dbus-services/org.kde.kmtpd5.service.
 type = process
 smooth-recovery = true
 load-options = sub-vars

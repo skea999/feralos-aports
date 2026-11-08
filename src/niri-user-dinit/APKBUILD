@@ -19,7 +19,7 @@
 # component always outranks any Alpine version field-by-field.
 pkgname=niri-user-dinit
 pkgver=989.0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit user services for the niri compositor session"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -49,8 +49,8 @@ package() {
 	# manager when $SHELL is a valid /etc/shells entry, and greetd always
 	# sets SHELL (ash is in /etc/shells -> would trap). This symlink keeps a
 	# perfectly usable shell while failing that check. See README.md.
-	install -d "$pkgdir/usr/libexec/feralos"
-	ln -s /bin/ash "$pkgdir/usr/libexec/feralos/login-shell"
+	install -d "$pkgdir/usr/libexec"
+	ln -s /bin/ash "$pkgdir/usr/libexec/login-shell"
 }
 
 sha512sums="

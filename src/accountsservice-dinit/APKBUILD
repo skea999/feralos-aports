@@ -2,11 +2,11 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # AccountsService on the system bus. The unit is named after the bus name
 # and D-Bus activation is routed through feralos-dbus-activate (ADR-010);
-# the override is packaged in /usr/share/feralos/dbus-system-services
+# the override is packaged in /usr/share/dinit/dbus-system-services
 # (materialized at boot into the launch helper's standard dirs).
 pkgname=accountsservice-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for AccountsService"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -24,10 +24,10 @@ package() {
 		"$pkgdir/lib/dinit.d/org.freedesktop.Accounts"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.Accounts.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.Accounts.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.freedesktop.Accounts.service"
 }
 
 sha512sums="
-377f9f027a901575771d65d07a7b41345f5e03bc5ea884b4ca8a7144765cb8e2fb679047f9d0f3d7c6f8b467fcfeb5b2fa87d718d1830a45edb395e149fe18ea  org.freedesktop.Accounts
-dfdf29471a944dcf9fa9818f88e761c93acd84de83b51e173798a71aa326df6f0a822f2dad0c2f7047e3835bb27175a8141e60659df6ef82e9df1098523b221f  org.freedesktop.Accounts.service
+2a5208aaa6d44e089ed4966c5d30fb87dbd2a5bebc92ef78120366545c8708b9e8beb40cbe2333fa06ff6484e2d48b70e00b26d96187f9ffa094d0a0c73e6ad1  org.freedesktop.Accounts
+8c639fb971bfc7bfc901b755b71926e69e614393cb95c6206056a9a77cea8befba5213d322d9ffa4d7d28006d04cc346b83ea560dba3d7e6ee1e3fd67225b39d  org.freedesktop.Accounts.service
 "

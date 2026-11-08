@@ -7,11 +7,11 @@
 # v3.24 x86_64):
 #   org.gnome.Calendar  Exec /usr/bin/gnome-calendar --gapplication-service -> gnome-calendar
 # D-Bus activation is routed through feralos-dbus-activate via the override
-# in /usr/share/feralos/dbus-services/ (materialized at login into
+# in /usr/share/dinit/dbus-services/ (materialized at login into
 # $XDG_RUNTIME_DIR/dbus-1/services).
 pkgname=gnome-calendar-user-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="user dinit services for gnome-calendar (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -27,12 +27,12 @@ check() { return 0; }
 package() {
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.gnome.Calendar.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.gnome.Calendar.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.gnome.Calendar.service"
 	install -Dm644 "$srcdir/org.gnome.Calendar.user" \
 		"$pkgdir/etc/dinit.d/user/org.gnome.Calendar.user"
 }
 
 sha512sums="
 fa7001ee7374bae8cf95bede093b8c1c8768794e0118bc5b1bd62a96d21e5feb1217fc70a324c7cebb454d4ba5ff8b3374ca4813d3e6dca187f6cc44e8d1f5c1  org.gnome.Calendar.user
-759bcf039aa54fe23243841795c3ed8f7c3abef7b512c14fc40a8c59aa5878ed6978381e0c8f8fa09964beee9208438da893e3ed8fd98a1a0810fec4b34d7ce3  org.gnome.Calendar.service
+c4386cc564d395bd0b98e6790d5b2f2a20e5c8a07e32f230962a7b54c868751de83ffc6e2d7b9b6704f077c11d69e94e21d1b0ba0cac1f740791b2384542d7b5  org.gnome.Calendar.service
 "

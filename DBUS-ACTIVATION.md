@@ -27,10 +27,10 @@ with `Spawn.ServiceNotFound` (live-verified on dbus 1.16.2).
 
 abuild forbids packaging under `/usr/local`, so:
 
-- system overrides ship in `/usr/share/feralos/dbus-system-services/` and the
+- system overrides ship in `/usr/share/dinit/dbus-system-services/` and the
   `dbus-services-setup` oneshot (both inits, ordered before dbus) copies them
   into `/usr/local/share/dbus-1/system-services` at boot;
-- session overrides ship in `/usr/share/feralos/dbus-services/` and are
+- session overrides ship in `/usr/share/dinit/dbus-services/` and are
   materialized at login into `$XDG_RUNTIME_DIR/dbus-1/services` (no helper on
   the session bus — every servicedir is eligible).
 
@@ -43,13 +43,13 @@ abuild forbids packaging under `/usr/local`, so:
    ```ini
    [D-BUS Service]
    Name=<Name>
-   Exec=/usr/libexec/feralos/dbus-activate <Name> -- <upstream exec>
+   Exec=/usr/libexec/dinit/dbus-activate <Name> -- <upstream exec>
    User=root
    ```
 
    (`User=` is required by the helper.) Installed to
-   `/usr/share/feralos/dbus-system-services/` (system) or
-   `/usr/share/feralos/dbus-services/` (session) — NEVER
+   `/usr/share/dinit/dbus-system-services/` (system) or
+   `/usr/share/dinit/dbus-services/` (session) — NEVER
    `/etc/dbus-1/system-services`.
 3. Aliases: separate `<Alias>.service` files with the same Exec target unit.
 4. APKBUILD: `depends="feralos-dbus-activate"`, pkgrel bump, sha512sums
@@ -65,16 +65,16 @@ abuild forbids packaging under `/usr/local`, so:
 Shipped by `feralos-dbus-activate` — copy this shape for any boot task that
 must run before a consumer on BOTH inits:
 
-- script `/usr/libexec/feralos/<name>-setup`: POSIX sh, busybox-safe,
+- script `/usr/libexec/dinit/<name>-setup`: POSIX sh, busybox-safe,
   idempotent, self-healing, `exit 0` no-op, loud non-zero failure
   (reference: `src/feralos-dbus-activate/dbus-system-services-setup`)
 - dinit unit `/lib/dinit.d/<name>`: `type = scripted` /
-  `command = /usr/libexec/feralos/<name>-setup` / `before = <consumer>` /
+  `command = /usr/libexec/dinit/<name>-setup` / `before = <consumer>` /
   `depends-on = <consumer's dep, e.g. local.target>` / `restart = false`
   (reference: `src/feralos-dbus-activate/dbus-services-setup`)
 - OpenRC initd `/etc/init.d/<name>`: `openrc-run`,
   `depend() { before <consumer> }`,
-  `start() { ebegin ...; /usr/libexec/feralos/<name>-setup; eend $?; }`
+  `start() { ebegin ...; /usr/libexec/dinit/<name>-setup; eend $?; }`
   (reference: `src/feralos-dbus-activate/dbus-services-setup.initd`)
 - SAME name on both inits; enabled from the feralos installer via
   `defaultRunlevels.boot` (rc-update always + dinit boot.d).

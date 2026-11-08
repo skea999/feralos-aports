@@ -5,13 +5,13 @@
 # named after the apk package owning each activation Exec binary).
 # Evidence (pkgs.alpinelinux.org file search):
 #   org.kde.ksysguard.processlisthelper  Exec /usr/lib/libexec/kf6/kauth/ksysguardprocesslist_helper -> libksysguard
-# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# Overrides ship in /usr/share/dinit/dbus-system-services/ (materialized
 # at boot into /usr/local/share/dbus-1/system-services via
 # dbus-services-setup: the launch helper resolves names only against the
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=libksysguard-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit services for the libksysguard KAuth helper activation target"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,11 +29,11 @@ package() {
 		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
 		# D-Bus activation override: the effective Exec starts the dinit unit.
 		install -Dm644 "$srcdir/$helper.service" \
-			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+			"$pkgdir/usr/share/dinit/dbus-system-services/$helper.service"
 	done
 }
 
 sha512sums="
 6ccedfa44bc64d584f4880dd71a0ed1c543c796675a87b14ac33c704c477430ac4d313feffbc2c19ede0cd45b8542b6eba2776cdc9b2361b67b89b717dae3a65  org.kde.ksysguard.processlisthelper
-f8efc7b2b65036dd64db3da04ecd8f1001d38047907b4a888b681828ee11a4ddc9f075aa7d0101b042825d3421ffe66a421bf7f44a605caff1800dbced7a5d72  org.kde.ksysguard.processlisthelper.service
+04fa60fb785a91b23f15e8bc09111c6a3c0b7cb63aed2c08bb2206d0e6d6cd44ce1575f74e3987b208acd3de3d63ec90dacd87484dc53e8629966926cfbb21ac  org.kde.ksysguard.processlisthelper.service
 "

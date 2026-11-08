@@ -5,13 +5,13 @@
 # named after the apk package owning each activation Exec binary).
 # Evidence (pkgs.alpinelinux.org file search):
 #   org.kde.ufw  Exec /usr/lib/libexec/kf6/kauth/kde_ufw_plugin_helper -> plasma-firewall
-# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# Overrides ship in /usr/share/dinit/dbus-system-services/ (materialized
 # at boot into /usr/local/share/dbus-1/system-services via
 # dbus-services-setup: the launch helper resolves names only against the
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=plasma-firewall-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit services for the plasma-firewall KAuth helper activation target"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,11 +29,11 @@ package() {
 		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
 		# D-Bus activation override: the effective Exec starts the dinit unit.
 		install -Dm644 "$srcdir/$helper.service" \
-			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+			"$pkgdir/usr/share/dinit/dbus-system-services/$helper.service"
 	done
 }
 
 sha512sums="
 910a75ee559208606ba408f6b7b04c53947a23ec3c80fe7eb4d9b191297b3abc1fe500b77c86988ef4d1322aa00da2e6c7d6db0242d7f497e69262dc9930f309  org.kde.ufw
-e332d7ab09deb5f7dcae8497ca3838e9b9d0b51ddbdb4519c734f2c5795915cd157f598f75b5c13e4d76172107a5721eace8a76d2d93085e85c3b25dd937ec8e  org.kde.ufw.service
+f36f16283a2e7e28b2c8c4623e0d180368f27c375d074456f8e52eecde4cc6588327c0c36088fe2d2ff1f4f28fbea5c2551d2d2d5f74427ce1470199996128ce  org.kde.ufw.service
 "

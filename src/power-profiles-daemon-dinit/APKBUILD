@@ -3,11 +3,11 @@
 # power-profiles-daemon on the system bus. Alpine's PPD is D-Bus activated
 # (no init script by design): both bus names must route activation to the
 # dinit unit through feralos-dbus-activate (ADR-010); the overrides are
-# packaged in /usr/share/feralos/dbus-system-services (materialized at boot
+# packaged in /usr/share/dinit/dbus-system-services (materialized at boot
 # into the launch helper's standard dirs).
 pkgname=power-profiles-daemon-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for power-profiles-daemon"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -27,13 +27,13 @@ package() {
 		"$pkgdir/lib/dinit.d/org.freedesktop.UPower.PowerProfiles"
 	# D-Bus activation overrides (both names): the effective Exec starts the unit.
 	install -Dm644 "$srcdir/org.freedesktop.UPower.PowerProfiles.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.UPower.PowerProfiles.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.freedesktop.UPower.PowerProfiles.service"
 	install -Dm644 "$srcdir/net.hadess.PowerProfiles.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/net.hadess.PowerProfiles.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/net.hadess.PowerProfiles.service"
 }
 
 sha512sums="
-645a726d346d65b4ec34664e5601d34f74a037f1b42f3dccc22dc0bebfb2f6b697138a99144149bfc7233e5d7b0fcc32ad3b38807c2b1c766bfd246a0b049e23  org.freedesktop.UPower.PowerProfiles
-e79522c2799172ca30352b86480f9c4d31a08424536fd453753991126f45f1a8d4aeb03b8ebcfa04dd5934f43e79ce507255aadeaaea141cd133cea352bc3b0e  org.freedesktop.UPower.PowerProfiles.service
-9c0bd6b3c489aaab7a6f6245d0a13a8d4618e69cc1e6b645ad6c62b7415a5b52403595170ac730a4990417164a8b4491f4c54d9d33506802dc3ebccf226aa99d  net.hadess.PowerProfiles.service
+bea9003c757d57ee1360f8fe4c6b3483143397fe4819090f7a7479a277937a8fcf28a162f3466498737f9045492dabce56d53d79762c46e4d9ed817c857500da  org.freedesktop.UPower.PowerProfiles
+adcb0054304e74d52b463278ba9ea2b31240a5f0e1440a2cfd66c95addf10c7e38b508115e021c3934f464ba1f6144a0f688e4537c2201b836cfb8a3bd5eb5e2  org.freedesktop.UPower.PowerProfiles.service
+078a5dbac322fa550a7f7725baa06115d2e75f1f952984ed6290855a8ad0ebd5bd3f89d507f445da75a758f6d9a892e3fa57dd8f27cf7fcb9f0449431eeb5aaf  net.hadess.PowerProfiles.service
 "

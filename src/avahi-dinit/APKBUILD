@@ -3,13 +3,13 @@
 # avahi on the system bus. ADR-010: the D-Bus activation target
 # org.freedesktop.Avahi routes through feralos-dbus-activate to a dinit
 # unit named after the bus name; the override is packaged in
-# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# /usr/share/dinit/dbus-system-services (materialized at boot into the
 # launch helper's standard dirs). Transitional units: the harness check
 # dbus_activation_migration retires them once dbus-broker is installed and
 # every activation target has a package-shipped unit.
 pkgname=avahi-dinit
 pkgver=0.1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="dinit service for avahi"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -32,10 +32,10 @@ package() {
 	install -Dm644 "$srcdir/org.freedesktop.Avahi" \
 		"$pkgdir/lib/dinit.d/org.freedesktop.Avahi"
 	install -Dm644 "$srcdir/org.freedesktop.Avahi.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.Avahi.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.freedesktop.Avahi.service"
 }
 
 sha512sums="
 ec0236a57ea92ee968087073e7a0b4cc514ff461e8150cd507bcd59ce5f4106f673e43ca05d77078f8ade7a703805de1acfdf09b9cd0654adea17cc26d80d6cb  org.freedesktop.Avahi
-b7da2fef1256a052587e3b8d4c4934fa3fc812c30ad25b174f1b6277efae6ac0800e45438e030177ac18bae62c4f5f1a8ff4cd32a07ddd693ef18330d5cedb29  org.freedesktop.Avahi.service
+c2a427c33f963e6ce424b55e92d2af4891aec173336360de06b01e7bb529012908bcbeb24cafe8c8f3bb3373e6de02404659fd0b69e5eeff0fd0318b62c57553  org.freedesktop.Avahi.service
 "

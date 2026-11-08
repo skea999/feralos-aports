@@ -3,7 +3,7 @@
 # serves both names (source-verified in the Alpine signon-ui APK: both
 # shipped .service files exec signon-ui). Unit name = canonical session
 # D-Bus bus name (ADR-010); D-Bus activation is routed through
-# /usr/share/feralos/dbus-services/com.nokia.singlesignonui.service.
+# /usr/share/dinit/dbus-services/com.nokia.singlesignonui.service.
 type = process
 smooth-recovery = true
 load-options = sub-vars

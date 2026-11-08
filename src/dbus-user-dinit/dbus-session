@@ -10,10 +10,10 @@ dinitctl setenv DBUS_SESSION_BUS_ADDRESS || :
 # Must happen before dbus-daemon starts (this directory is read at startup
 # and is not monitored). Stale *.service files from previous sessions are
 # removed first.
-if [ -d /usr/share/feralos/dbus-services ]; then
+if [ -d /usr/share/dinit/dbus-services ]; then
     mkdir -p "$XDG_RUNTIME_DIR/dbus-1/services"
     rm -f "$XDG_RUNTIME_DIR"/dbus-1/services/*.service
-    for f in /usr/share/feralos/dbus-services/*.service; do
+    for f in /usr/share/dinit/dbus-services/*.service; do
         [ -e "$f" ] || continue
         cp -f "$f" "$XDG_RUNTIME_DIR/dbus-1/services/"
     done

@@ -10,6 +10,6 @@ depend() {
 
 start() {
 	ebegin "Running FeralOS D-Bus supervision audit"
-	/usr/libexec/feralos/feralos-dbus-audit --log-file /var/log/feralos-dbus-audit.log
+	/usr/libexec/dinit/feralos-dbus-audit --log-file /var/log/feralos-dbus-audit.log
 	eend $?
 }

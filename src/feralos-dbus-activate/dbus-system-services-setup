@@ -13,7 +13,7 @@
 # `dbus-services-setup`, both ordered before dbus). Copy-only, idempotent,
 # self-healing at every boot; stale files are pruned.
 
-src=/usr/share/feralos/dbus-system-services
+src=/usr/share/dinit/dbus-system-services
 dst=/usr/local/share/dbus-1/system-services
 
 [ -d "$src" ] || exit 0

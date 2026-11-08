@@ -3,7 +3,7 @@
 # (ADR-010; see feralos-dbus-activate and docs/architecture/dbus-activation.md
 # in the feralos repository).
 type = scripted
-command = /usr/libexec/feralos/dbus-system-services-setup
+command = /usr/libexec/dinit/dbus-system-services-setup
 depends-on = local.target
 before = dbus
 restart = false

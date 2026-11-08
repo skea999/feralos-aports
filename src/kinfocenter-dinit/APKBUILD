@@ -5,13 +5,13 @@
 # named after the apk package owning each activation Exec binary).
 # Evidence (pkgs.alpinelinux.org file search):
 #   org.kde.kinfocenter.dmidecode  Exec /usr/lib/libexec/kf6/kauth/kinfocenter-dmidecode-helper -> kinfocenter
-# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# Overrides ship in /usr/share/dinit/dbus-system-services/ (materialized
 # at boot into /usr/local/share/dbus-1/system-services via
 # dbus-services-setup: the launch helper resolves names only against the
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=kinfocenter-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit services for the kinfocenter KAuth helper activation target"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,11 +29,11 @@ package() {
 		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
 		# D-Bus activation override: the effective Exec starts the dinit unit.
 		install -Dm644 "$srcdir/$helper.service" \
-			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+			"$pkgdir/usr/share/dinit/dbus-system-services/$helper.service"
 	done
 }
 
 sha512sums="
 13a53a0b9d7719ecb871f756d4aeafbf6139c7103608ba8f60e84e9c6fc78474fd0639e9ab1d8eece9d1e41a546aa7a96897308de64659b9f859a40b04bce0b9  org.kde.kinfocenter.dmidecode
-f1138a7a5f9aa36af9fee3241731f0127a06183aeebe4b854f2a438d6f7ce860fa996f020aee20829ecb69abce3d284ef0f5fd6897a7bf0f2da9a3a3a0617fe0  org.kde.kinfocenter.dmidecode.service
+e965544f96241787dfc251cdb467b0ef64e9431d6e58a718dd3d931e5bf7a5df33427fd235d9c64fc3392ef2650057116ef35c62b2e31875b6962df55055bc0f  org.kde.kinfocenter.dmidecode.service
 "

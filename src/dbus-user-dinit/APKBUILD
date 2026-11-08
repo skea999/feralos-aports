@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dbus-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit user service for the D-Bus session bus"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -23,5 +23,5 @@ package() {
 
 sha512sums="
 1971aea5e891ca7ec68415417e000a4dacc2496d94ed60f6e76f4be8df098f7dc9c7fb3b3f9d88f2c5ef98303c58aaf60e5394597cda052a9b4eb2e7808e79c6  dbus.user
-0723457035542356b13374dcda2a2255ccae0fb0c6960e1175812bb9f17b5da61b84aa45ffb99eb0bc1ad6fadf77a402de741f17a46e1e8d737aec5449ad76be  dbus-session
+41b4f563b6e25580c56a843b25805ad0b4dab729cf3269ec64918fd18d7bf829a158cd0e7f3b4e924281ab82deb226730f59d2512b66fc49e7b4968ad4285e94  dbus-session
 "

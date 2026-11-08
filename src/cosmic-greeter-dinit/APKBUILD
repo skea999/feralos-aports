@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cosmic-greeter-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit service for cosmic-greeter (Alpine initd name: cosmic-greeter)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -24,7 +24,7 @@ package() {
 	# (VT 7, not Alpine's VT 1 which collides with getty@tty1).
 	install -Dm644 "$srcdir/cosmic-greeter" "$pkgdir/lib/dinit.d/cosmic-greeter"
 	install -Dm644 "$srcdir/cosmic-greeter-daemon" "$pkgdir/lib/dinit.d/cosmic-greeter-daemon"
-	install -Dm755 "$srcdir/cosmic-greeter-session" "$pkgdir/usr/libexec/feralos/cosmic-greeter-session"
+	install -Dm755 "$srcdir/cosmic-greeter-session" "$pkgdir/usr/libexec/dinit/cosmic-greeter-session"
 	install -Dm644 "$srcdir/feralos-cosmic-greeter.toml" "$pkgdir/etc/greetd/feralos-cosmic-greeter.toml"
 	# Base-only PAM stack: Alpine's vendored file requires pam_gnome_keyring
 	# (not shipped on FeralOS); base-session's optional pam_rundir creates
@@ -33,7 +33,7 @@ package() {
 }
 
 sha512sums="
-c60a63d3f7685c581754414b60d3eda724c2d9ab96456d3411c44a0bf9b4d5572033bff09822ba4f51110d803de31df62088f084fdb0be5699c7dad1d636725a  cosmic-greeter
+862a5af659d5a1decdb86353705741aafd0de6db3acdc248675f07246f363d4d738169cf0e0ed57c9e9d71c18c1673197b20ecd0afd317abd835955d8f5d0e21  cosmic-greeter
 8d30ed2dd3a244b9d6e982ff685bd228bfaf435a12af630cf09e14f191ae1823097bee4f314d6e4e319509b5c1d2b3cd0e1aced5bcaba4a019178c1ddf8b9eea  cosmic-greeter-daemon
 734f8eac7122d74606cf89e0bf68deeaae76ab428e8a09e3d69c51fd5cd19e7341565f7d0d066d2c74e07e070d0b5f52755f0fd91f3d1ebed1eba8f008aa016c  cosmic-greeter-session
 4787fa2f42ac04282753716934281c3eb3b38e1d258778165adc082fd2f7085ac15576d872e9a507a126aa890bdbdfc5e0922ae1b6b4813d4e43eb396c68ef78  feralos-cosmic-greeter.toml

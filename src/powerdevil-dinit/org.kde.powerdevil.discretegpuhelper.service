@@ -1,4 +1,4 @@
 [D-BUS Service]
 Name=org.kde.powerdevil.discretegpuhelper
-Exec=/usr/libexec/feralos/dbus-activate org.kde.powerdevil.discretegpuhelper -- /usr/lib/libexec/kf6/kauth/discretegpuhelper
+Exec=/usr/libexec/dinit/dbus-activate org.kde.powerdevil.discretegpuhelper -- /usr/lib/libexec/kf6/kauth/discretegpuhelper
 User=root

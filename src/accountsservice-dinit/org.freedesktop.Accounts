@@ -1,6 +1,6 @@
 # dinit service: AccountsService (system bus user/account queries)
 # Unit name = system bus name: D-Bus activation is routed through
-# /usr/share/feralos/dbus-system-services/org.freedesktop.Accounts.service
+# /usr/share/dinit/dbus-system-services/org.freedesktop.Accounts.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup), whose Exec starts this unit (ADR-010).
 type = process

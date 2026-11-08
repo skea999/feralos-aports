@@ -5,11 +5,11 @@
 # explicitly-activated system services carry the initd name; the D-Bus
 # override keeps the bus name (org.freedesktop.login1) and aliases onto this
 # unit. Activation is routed through feralos-dbus-activate via the override
-# packaged in /usr/share/feralos/dbus-system-services (materialized at boot
+# packaged in /usr/share/dinit/dbus-system-services (materialized at boot
 # into the launch helper's standard dirs).
 pkgname=elogind-dinit
 pkgver=0.1.0
-pkgrel=11
+pkgrel=12
 pkgdesc="dinit service for elogind (depends-on dbus, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,7 +29,7 @@ package() {
 		"$pkgdir/lib/dinit.d/elogind"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.login1.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.login1.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.freedesktop.login1.service"
 	# stop guard: pam_elogind (session tracker PAM stack) talks to elogind over
 	# the system bus while sessions close at shutdown — dinit runs stop-command
 	# INSTEAD of signalling the process (see elogind-stop header)
@@ -37,7 +37,7 @@ package() {
 }
 
 sha512sums="
-2f0f6b3fb58bd1af05cc6717cb73ef3193ac7362114c86c7b6bd59789e38d0deacef06f8b3d7d31dbace1d506f5dc999128c127092c3f710ee77c68eb00556c0  elogind
-f4fb6e118fc6afc1269b0dc5f815554955febbefbb5c18f3215cb1f28455344d98bb30069ed69d6d9f8d045509a6809c22ff9ee39b8fb154e5ef4b5d1a4095c7  org.freedesktop.login1.service
+376e49e3cb1cfaf338235d25f841deac21198492ae456497030d413533a5dc73cabd15a2409976512dc6aae67b57e481d6a614a4fa80041d4592929722ed2923  elogind
+b6ac31f4386986066163ffa4a1b7ddf2de232efd5439c42f0f85fc27c718899e23101f228bc0b5a8d643dc9ba7e0186deeef543c4bd9dc95ab049351fe97ac8c  org.freedesktop.login1.service
 3a12c8e41fef9a5594d693edcf6c9e92a69663ba8e72fd9b04bbc03e2485c3c93ac2b22c84aaaac5475883bfffdf01fca0e4a538ae61737e32b1a94fe41c07ab  elogind-stop
 "

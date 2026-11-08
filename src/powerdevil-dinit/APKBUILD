@@ -8,13 +8,13 @@
 #   org.kde.powerdevil.chargethresholdhelper  Exec /usr/lib/libexec/kf6/kauth/chargethresholdhelper -> powerdevil
 #   org.kde.powerdevil.discretegpuhelper  Exec /usr/lib/libexec/kf6/kauth/discretegpuhelper -> powerdevil
 #   org.kde.powerdevil.wakeupsourcehelper  Exec /usr/lib/libexec/kf6/kauth/wakeupsourcehelper -> powerdevil
-# Overrides ship in /usr/share/feralos/dbus-system-services/ (materialized
+# Overrides ship in /usr/share/dinit/dbus-system-services/ (materialized
 # at boot into /usr/local/share/dbus-1/system-services via
 # dbus-services-setup: the launch helper resolves names only against the
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=powerdevil-dinit
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="dinit services for the powerdevil KAuth helper activation targets"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -38,7 +38,7 @@ package() {
 		install -Dm644 "$srcdir/$helper" "$pkgdir/lib/dinit.d/$helper"
 		# D-Bus activation override: the effective Exec starts the dinit unit.
 		install -Dm644 "$srcdir/$helper.service" \
-			"$pkgdir/usr/share/feralos/dbus-system-services/$helper.service"
+			"$pkgdir/usr/share/dinit/dbus-system-services/$helper.service"
 	done
 }
 
@@ -47,8 +47,8 @@ c1a0544e9364ebce629e82d5ab4f47e0ca3608024cace2e3c2fd757ffe177ab6a2d3e2e9f5b1b95e
 e47ea7742f131ca12398e8a8addc0da423664217c7c6cf7128879ec5e246d96e500b07cf3404805dba7d06dcfbbe05f930e1793dfd63bbd06543d5cc6c6bb2b3  org.kde.powerdevil.chargethresholdhelper
 c1a40d3b8004a97304c622089c9701ddbc7605515b04672ffe1f8df127e2c100412a04a68033e2de9f1f13ba751ef833965255fb77b4c1e9df3abb537f0dd2ba  org.kde.powerdevil.discretegpuhelper
 d770ad1dd5117dae4a64c9e508411322cd842b6aa5b7d76d7f997a8e1b60ec9528faf3c561c96a28fe4ac1f79a993d3835a5c8d606a098b77c84c43f0e8422af  org.kde.powerdevil.wakeupsourcehelper
-588bc7787418c2fc992f99733ab3a18bac413a491aaa2dcdfb18d2f573a575ff4e8131aedb4dce36c31fcb092d273dd740330c573d771809c17baa933316eb48  org.kde.powerdevil.backlighthelper.service
-b72b9f79a6e2344f9ff0b0cba37677e435b1bf3c8423d79b2c30a266c21b70a9a17ecccad812abdf9e43ed33a6675bdb2b6e3360f7d9dcbe5f8d684a153481ce  org.kde.powerdevil.chargethresholdhelper.service
-d6caebb830c3c5a6380f81b1205bfea441cf36eadd50072b5f9c79a18251c1a3480c53a9173ba25d9aa5cc65f6681c1b1c771c40d4e9837d47e42188695cb17f  org.kde.powerdevil.discretegpuhelper.service
-cbe99102b9f487e199cd10e1c472b3cb799e7cd1f609750c4698b6a0d8a5f62bd9e9298467906a2707f73257572799e7434d89e66fecc36e5531e2589a01a049  org.kde.powerdevil.wakeupsourcehelper.service
+076f33f36023faa690d351c41f28c9cd2b4e1d3fd3240b51bc3a50c66d9cb7afd779851811f31e6d9c36230df20752ab040e710ecb7d6bf1bb182bb938777870  org.kde.powerdevil.backlighthelper.service
+ee74f7516f58f42a61632ee691d1ba807d06e63def9e5e2aef951f0fe371ed1fbaa354c031ddde035ace8ff9f4d72de135a0e969c798f1a71a374259881768ab  org.kde.powerdevil.chargethresholdhelper.service
+9252ee914715dd4dbb94a8547fdafd2387f22d69007734a38af25664b6876241b9862fe8ba513b42bc47c450ffb641a233c37d270894e32d825353f25423631f  org.kde.powerdevil.discretegpuhelper.service
+29e1e4cd7c2be46664118e45f7cd3d55bcae9f9e802a35a8c8dfd17f2581da38767616235134661558621d70749a84696080ab3efba3376747caf27a4429da0c  org.kde.powerdevil.wakeupsourcehelper.service
 "

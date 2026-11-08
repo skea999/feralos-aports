@@ -6,7 +6,7 @@
 # package, not localsearch; upstream GNOME/localsearch has no such service),
 # hence its own unit here. Unit name = canonical session D-Bus bus name
 # (ADR-010); D-Bus activation is routed through
-# /usr/share/feralos/dbus-services/org.freedesktop.portal.Tracker.service.
+# /usr/share/dinit/dbus-services/org.freedesktop.portal.Tracker.service.
 # tinysparql is a hard dependency of localsearch, so it is always present
 # when this package is installed.
 type = process

@@ -3,7 +3,7 @@
 # Dolphin file manager (org.freedesktop.FileManager1) on the session bus
 # (ADR-010). The D-Bus activation target routes through feralos-dbus-activate
 # to a per-user dinit unit named after the bus name; the override ships in
-# /usr/share/feralos/dbus-services (materialized at login into
+# /usr/share/dinit/dbus-services (materialized at login into
 # $XDG_RUNTIME_DIR/dbus-1/services).
 # VARIANT: org.freedesktop.FileManager1 is ALSO claimed by nautilus-user-dinit
 # (GNOME variant, unit org.gnome.Nautilus.user) — the two packages are
@@ -15,7 +15,7 @@
 # package-shipped unit.
 pkgname=dolphin-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="user dinit service for org.freedesktop.FileManager1 (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -32,9 +32,9 @@ package() {
 		"$pkgdir/etc/dinit.d/user/org.freedesktop.FileManager1.user"
 	# D-Bus activation override: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.FileManager1.service" \
-		"$pkgdir/usr/share/feralos/dbus-services/org.freedesktop.FileManager1.service"
+		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.FileManager1.service"
 }
 sha512sums="
 c5b9a04ccc76867328560327b9a35b4102ee5f0e915581b75a0a541a79045b8bf0ac909046154065bf8e69184dea3bd12b481d8e3d11ea471ab9edf19bb833db  org.freedesktop.FileManager1.user
-0d22977c5b13156aabad3991a69c668cccf87da4363ae51dce09e17e246a2bfd7c81867475fa3fcf25338265f47a64d7a5ff7326f77623418da4c470009d9d5e  org.freedesktop.FileManager1.service
+7a417431a404e8d18a1d0640db1a256e847b9c1b578ea24d2bf64d34d569d8b50f17b38a2765fb215af82ba8fe0a79f43d922e01a72822e17bad20b67f250272  org.freedesktop.FileManager1.service
 "

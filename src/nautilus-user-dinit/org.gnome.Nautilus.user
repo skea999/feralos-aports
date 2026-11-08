@@ -4,7 +4,7 @@
 # 50.1 APK: both org.gnome.Nautilus.service and org.freedesktop.FileManager1
 # carry Exec=/usr/bin/nautilus --gapplication-service).
 # Unit name = canonical session D-Bus bus name (ADR-010); D-Bus activation
-# is routed through /usr/share/feralos/dbus-services/org.gnome.Nautilus.service
+# is routed through /usr/share/dinit/dbus-services/org.gnome.Nautilus.service
 # and .../org.freedesktop.FileManager1.service — both map to this unit.
 type = process
 smooth-recovery = true

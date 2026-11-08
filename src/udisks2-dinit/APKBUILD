@@ -3,13 +3,13 @@
 # udisks2 on the system bus. ADR-010: the D-Bus activation target
 # org.freedesktop.UDisks2 routes through feralos-dbus-activate to a dinit
 # unit named after the bus name; the override is packaged in
-# /usr/share/feralos/dbus-system-services (materialized at boot into the
+# /usr/share/dinit/dbus-system-services (materialized at boot into the
 # launch helper's standard dirs). Transitional units: the harness check
 # dbus_activation_migration retires them once dbus-broker is installed and
 # every activation target has a package-shipped unit.
 pkgname=udisks2-dinit
 pkgver=0.1.0
-pkgrel=6
+pkgrel=7
 pkgdesc="dinit service for udisks2"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -28,10 +28,10 @@ package() {
 	install -Dm644 "$srcdir/org.freedesktop.UDisks2" \
 		"$pkgdir/lib/dinit.d/org.freedesktop.UDisks2"
 	install -Dm644 "$srcdir/org.freedesktop.UDisks2.service" \
-		"$pkgdir/usr/share/feralos/dbus-system-services/org.freedesktop.UDisks2.service"
+		"$pkgdir/usr/share/dinit/dbus-system-services/org.freedesktop.UDisks2.service"
 }
 
 sha512sums="
 12bd57fb405f7aa002025bb523f16d8f0a8a9408e68feac0003ff38522bd95f2bf0bfb1328f716c7d862e005b220c04fd98742711de2bb49818664b307ff938f  org.freedesktop.UDisks2
-8a4d552893152321f6bd304772dbc80e51e5a2e697955bf3f77ebabc91cc4ccdd0f4f4c1abb436b4294877278c71b527752623832e612de4aba63ae215b6be9e  org.freedesktop.UDisks2.service
+f6c6ff8f50c9000ea34ca30f399c159e3a404ef47caec6d1bd665240a12d892ed1bbe2c490ab7169e4c7b4ea86309db58bc793da8d6d9febc01a36d4aaf748ed  org.freedesktop.UDisks2.service
 "

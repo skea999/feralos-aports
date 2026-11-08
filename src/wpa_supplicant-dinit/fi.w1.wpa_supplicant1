@@ -2,7 +2,7 @@
 # Unit name = canonical system D-Bus bus name (fi.w1.wpa_supplicant1,
 # ADR-010): D-Bus activation is routed through feralos-dbus-activate via the
 # override packaged in
-# /usr/share/feralos/dbus-system-services/fi.w1.wpa_supplicant1.service
+# /usr/share/dinit/dbus-system-services/fi.w1.wpa_supplicant1.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup).
 # Command source-verified against Alpine main/wpa_supplicant (3.24-stable

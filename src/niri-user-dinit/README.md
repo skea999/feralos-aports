@@ -53,7 +53,7 @@ supervised by dinit.
 Fix: this package creates
 
 ```
-/usr/libexec/feralos/login-shell -> /bin/ash
+/usr/libexec/login-shell -> /bin/ash
 ```
 
 a fully functional shell at a path deliberately **not** listed in
@@ -79,6 +79,6 @@ Update procedure:
    files here (keep `dbus.user` as the dependency) and update `sha512sums`.
 2. Bump `pkgver` (989 series) / `pkgrel`; `abuild -Fr`; verify the apk contains
    `/etc/dinit.d/user/niri`, `/etc/dinit.d/user/niri-shutdown` and
-   `/usr/libexec/feralos/login-shell`.
+   `/usr/libexec/login-shell`.
 3. Syntax check: `dinit-check -d /etc/dinit.d/user niri` (relative-command
    warnings are expected, matching upstream).

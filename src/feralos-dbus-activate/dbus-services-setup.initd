@@ -10,6 +10,6 @@ depend() {
 
 start() {
 	ebegin "Materializing FeralOS system-bus D-Bus overrides"
-	/usr/libexec/feralos/dbus-system-services-setup
+	/usr/libexec/dinit/dbus-system-services-setup
 	eend $?
 }

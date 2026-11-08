@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.impl.portal.desktop.kde.service"
 }
 sha512sums="
-6d530ea665affb981fda79d8f591c4b4f1d1cb8518c63ec43a724526519e4aca704c73ed724cedec243338b735d25c17086b95d56bb505cd7209f79506a8d67c  org.freedesktop.impl.portal.desktop.kde.user
+dd9511db8912bd2add6197b4c4711cd89a8c675a1bbbbf789625125b5c1db7b6790bea6411f55c862616d770f50018e4cc8f82fc3e2925d87908e542fded18bc  org.freedesktop.impl.portal.desktop.kde.user
 92e78af594c55b0ab4bb88f897d4134a5918aa5af64336c96d88a0f7aa1978382dc56506d9bbd1bb62113d4c2346e81c4ae5dcce32cec80ba459a7638f24eb34  org.freedesktop.impl.portal.desktop.kde.service
 "

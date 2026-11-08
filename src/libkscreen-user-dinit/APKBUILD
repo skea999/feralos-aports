@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.kde.KScreen.service"
 }
 sha512sums="
-928eef562a58deb18882286db061fc81fe028270780c2cc81d57902698a6cb678a371ccefc00fd962e39118b84e54ba194d6a68588da8c3aa21cc752d765ec2d  org.kde.KScreen.user
+30dca57e5bf8fdd4a34c52b9d1e329f921093f115f39f9ee31fac02b12221d2f420dc21af9c2d5fc88e049782b527f38db321a34f8d2e45232c4e520375f8de0  org.kde.KScreen.user
 93e76695546f1450795c6ceeebb824cd7b03aeaede90d303d205ac3ffd19f0cc38c24eca8d62235c32041a16712c8add2b6c909c527c1545841d26fc769265f2  org.kde.KScreen.service
 "

@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.kde.kscreen.osdService.service"
 }
 sha512sums="
-8f0dd6859db8572e6e45ac43c7a7a6c0781b42070344efec8f3b6d8d997640f7ed618d8507c8537718995e0f71db1b8bac4fad649109534411bef1461b6627c2  org.kde.kscreen.osdService.user
+05b96e118607b04569a2bc6d3f85b7a9029ee42c508f562e3376c3a77d2de4c3f3b58232435d6528f89cbae93286cb8fce4823290e7d271b5670974cda0ca198  org.kde.kscreen.osdService.user
 3aa61711ca9a01bb1dd837c50106ec211fe00c7294af522ffd44fea117386321dbcdeba6e999f01c5fa439db0adbb30f44d11c66413ac6a3b87665a95fa725e9  org.kde.kscreen.osdService.service
 "

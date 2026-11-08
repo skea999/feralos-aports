@@ -26,6 +26,6 @@ package() {
 }
 
 sha512sums="
-e916621caf8c850384b0f839fbac188c1672b50125723f31a629c00848d8b74af8c02a2c9b1f332930fa5b8d7ee6e1797248842c645bb2dd63d8b5221ad9e0bf  org.freedesktop.impl.portal.desktop.wlr.user
+5f2be2f010b5ee9852a211f12c4c129e4869c57bb0a8a7ea717da09197af8998022d7c0f61fe290626d5568c7f19c362dd474e17d8ffbf11a1b59085b9589c93  org.freedesktop.impl.portal.desktop.wlr.user
 60351ead476c423fd83f306ee27a8f5e5e16f6185fd9febe6ef20ce8808579ed1213e41112ce2d48253b7011b69e15f895bba50bdb13b741997c2431c7a1231c  org.freedesktop.impl.portal.desktop.wlr.service
 "

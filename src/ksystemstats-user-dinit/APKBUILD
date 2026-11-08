@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.kde.ksystemstats1.service"
 }
 sha512sums="
-f181d414d510a11366e40e7137748a661f74c9613069c72949e307bbf35628e53882a63800c2340750b618b7cd42fe0aaf5aaffae7214572124a562d91547403  org.kde.ksystemstats1.user
+b8fabf87d695facc848dfe1bce37d2f5738d517ebc9737f0af9bc710b19442e09a8a85729946bd26425732ecfe5b57fea5f474287ebc1ab78b6cb9e5488dbc6d  org.kde.ksystemstats1.user
 52fb3ca8ce7a7ed9f59fdc347133e4d6c7667133eb3c95e5cb23b72f7b5ebd98550f5e15f3404a7ca2f4acbe2a44070fbe67cae8ebeba3b0214017b5d882efe7  org.kde.ksystemstats1.service
 "

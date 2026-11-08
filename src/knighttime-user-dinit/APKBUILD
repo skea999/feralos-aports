@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.kde.NightTime.service"
 }
 sha512sums="
-843b39fce53886bb2e98741c79db1a56d66e4a45d3318db9c7a2c79cc4936505f3c999688701654accd4f103140c3a26114f7cbafbf5383d734a87d6f8051645  org.kde.NightTime.user
+ee052eac668c54ef6e5cac2a26c5eed43380801a9bb5f28513e416909e7300bcfae9cc8e2e0599d2ca42c48b4ce644c9c5ad846b449a01eac8c3d5dbdc019ffc  org.kde.NightTime.user
 db0b1b48ff98c2bac1bf864b977f5b88d6a84d555c3b0ce2886a716a1ff81e1b9ced75f9dd8f2da710547fdda69e3fcaab465ed63e301aa219f66d364d829fff  org.kde.NightTime.service
 "

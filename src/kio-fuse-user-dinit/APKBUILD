@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.kde.KIOFuse.service"
 }
 sha512sums="
-2be4b9f095cddac73461f7e701e5ea09d18d1ca19a7198d32f71a2a15599ae696c73caca32c951eede37f1692c203437f0fbe09b0214db26d8184a4cbf10daf1  org.kde.KIOFuse.user
+adb5dfad8cf16315920ba313a3bed05eafb3edc0b504c80cef44d1218fdf3ec2a469ba05ef4887f8b3338e15b847972ef5fc0aa79556d994ef82ffcf1fbdf56b  org.kde.KIOFuse.user
 7e002e75683c9fc4005ec1fa78aec04938ae476f3d9a5c81d054d9f359c9d51fd366ab71896056b5d87d1afc3aadac53bf5577f68e627d049c6b6232ea7b88af  org.kde.KIOFuse.service
 "

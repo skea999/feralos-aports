@@ -26,6 +26,6 @@ package() {
 }
 
 sha512sums="
-4c649507f9b50c4eaae937fcae6e2456ab1bcbd97889ea01bb4b7427c26cbf282d2278eb077a666feedc75095dc6409b2b43155805a6eba54d5f5d049bdde021  org.freedesktop.impl.portal.desktop.gtk.user
+7011aa10c44637f7758e299514ef84d2139b696d1ec9dfc40fe7f8bf685f8558d562161406e9e42c25aac049074862761584024a70f3a8ad8e189280b1165f5f  org.freedesktop.impl.portal.desktop.gtk.user
 9a34a99f432df34af6c5f27fa2403828c9e3dc4471c0d385d8d1c3de0c16a537e9ad9ebcddc2d2c1d0012025120feb625a3e5b804b8c693f1e6cfe5e76057c67  org.freedesktop.impl.portal.desktop.gtk.service
 "

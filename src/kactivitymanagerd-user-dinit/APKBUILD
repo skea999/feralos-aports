@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.kde.ActivityManager.service"
 }
 sha512sums="
-6894cb4b44ef1b9761abc1cbc652701770212412042724cb6224218c63e51f24a930853d4b519d53458790b6259fdf752ac55959f28b42692c397e84284b7cfb  org.kde.ActivityManager.user
+438fc629236a8895dc35b698f9bcee50f2979321f841f6eb35da88f74bc92dca3f4cb24acbef219e0bbe7978dbba251a6474aba5889ce1011de17a678a0650cb  org.kde.ActivityManager.user
 ca24e97e487596b158e770add239b0bd12142c8062c10886be0c6410f22dbef908adbc69339edb9a460bca44b68faa1dd3fa980b53a16a3afb81ffe3b1d8d441  org.kde.ActivityManager.service
 "

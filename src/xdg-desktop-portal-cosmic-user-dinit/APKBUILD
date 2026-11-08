@@ -29,6 +29,6 @@ package() {
 		"$pkgdir/usr/share/dinit/dbus-services/org.freedesktop.impl.portal.desktop.cosmic.service"
 }
 sha512sums="
-d25f167a3e2c82ef9979bddac6cbdd98ac577e73c858072bc87e1161e872693469701cd75cdb935d35163bbd8194a7a54bca7d54c5bc738488e43dbe4ac38f99  org.freedesktop.impl.portal.desktop.cosmic.user
+48acbe627aa21e2dc41d5fc960b94be36e5bd216d4a92d286b5bf887e7130836ecfc7f5b1a757388ada2bea5430e09e9fd17ed398589e2f57d72b8cd627870bc  org.freedesktop.impl.portal.desktop.cosmic.user
 20a6685716b710b897bc743dd9889c3c027619a8327675351296a319c7c89e453d9d7106bfdfdef0026ce9b49ab3f70126674ec78397ddfbc20116ab52d97e32  org.freedesktop.impl.portal.desktop.cosmic.service
 "

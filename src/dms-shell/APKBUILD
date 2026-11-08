@@ -16,7 +16,7 @@ optdepends="networkmanager: network management backend
 makedepends="go"
 _qmlcommit=26396ce432d6c71c3f5367438f96f4a8d667e160
 source="https://github.com/AvengeMedia/DankMaterialShell/archive/refs/tags/v$pkgver/DankMaterialShell-$pkgver.tar.gz
-	https://github.com/AvengeMedia/dux-qml-common/archive/$_qmlcommit/dux-qml-common-$_qmlcommit.tar.gz
+	https://github.com/duxlabs-dev/dux-qml-common/archive/$_qmlcommit/dux-qml-common-$_qmlcommit.tar.gz
 	dms.user dms-session"
 builddir="$srcdir/DankMaterialShell-$pkgver"
 options="!check"

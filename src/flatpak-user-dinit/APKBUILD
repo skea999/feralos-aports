@@ -5,7 +5,7 @@
 # feralos-dbus-activate via overrides in /usr/share/dinit/dbus-services/.
 pkgname=flatpak-user-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="User dinit services for the flatpak session stack (session helper + portal + OCI authenticator)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -37,7 +37,7 @@ package() {
 sha512sums="
 1fdc6a3881e189447baad2f1bfc27f798af5fabd52f171b5f28065761d8e81afb86db184e502ace41644a64858edb3d2a256dabde12f7fa9a04350426ce3ca80  org.freedesktop.Flatpak.user
 6ab801b90e7fd66af464936d5a2955dbafaa1839bea06f1dd3bec0201d1d25010c7cbb8aba75cfdbf54ba48e2886fff4048589f001680fbc6546a0ece69e261b  org.freedesktop.portal.Flatpak.user
-84ffff2bd1501ae8701a744c3d625ddf252d93ed5c723f4d8a7f54cbebb2c3a130936cdae29e89ce8899c20ce4e84c6113c3300fd981d22ab23c1920e440386f  org.flatpak.Authenticator.Oci.user
+ddc3b966fa75a33382af0d4a15b95396f3f863878e9f6a9f849d6a716203394c0bd5272fe40ae2364031848dc0e79864355b3ed08e8c57e64b052a47e3472dbd  org.flatpak.Authenticator.Oci.user
 5eb120f4a0e28a2439acaa792f0ed5a29060155f8f90db551571a06625885c583e04edf77be247d10e73605649559afd5aebc63ef8cee1d726a31f931f0f25cf  org.freedesktop.Flatpak.service
 d833f7b4f41ba4406eb16613c57366c42e03f981ae31594989788fcdecd4c3a50e4da616f6e8c4fe94d855c5333fc63d689b6e45b3ca2abd9bc8bc99d8976a0e  org.freedesktop.portal.Flatpak.service
 3a4534096e03d5c49e1baba944bce0a679d152c0fbc50b93e50050fcb4b488d56f03c43f69e007a37408d05711f1fe4ed47d7b380d7f546c7fdf2f0500011603  org.flatpak.Authenticator.Oci.service

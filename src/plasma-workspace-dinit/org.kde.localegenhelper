@@ -1,11 +1,15 @@
 # feralos plasma-workspace-dinit: D-Bus activation target for org.kde.localegenhelper (ADR-010).
 # Transitional: drop when the package (or dbus-broker ephemeral services) ships
-# this unit itself. KAuth per-request helper: short-lived, no smooth-recovery.
-# Singleton helper (stays resident), smooth-recovery on.
+# this unit itself.
+# Lifecycle: KAuth per-request helper — upstream
+# kcms/region_language/localegenhelper/localegenhelper.cpp starts a 30 s timer
+# (exitAfterTimeOut, m_timer.start(30s)) after every request and
+# QCoreApplication::exit()s when it fires; short-lived/on-demand,
+# smooth-recovery OFF, the next request re-activates.
 type = process
 command = /usr/bin/plasma-localegen-helper
 run-as = root
-smooth-recovery = true
+smooth-recovery = false
 restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.kde.localegenhelper.log

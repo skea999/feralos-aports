@@ -4,8 +4,11 @@
 # /usr/share/dinit/dbus-system-services/org.freedesktop.Flatpak.SystemHelper.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup), whose Exec starts this unit (ADR-010).
+# Lifecycle: upstream system-helper/flatpak-system-helper.c exits after
+# IDLE_TIMEOUT_SECS (10 minutes) of no requests — smooth-recovery stays OFF
+# so a legitimate idle exit is not restarted; the next D-Bus call re-activates.
 type = process
-smooth-recovery = true
+smooth-recovery = false
 restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.Flatpak.SystemHelper.log

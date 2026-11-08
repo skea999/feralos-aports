@@ -2,8 +2,11 @@
 # OCI authenticator for flatpak. Unit name = canonical D-Bus bus name
 # (ADR-010); D-Bus activation is routed through
 # /usr/local/share/dbus-1/services/org.flatpak.Authenticator.Oci.service.
+# Lifecycle: upstream flatpak-oci-authenticator.c exits after IDLE_TIMEOUT_SECS
+# (10 minutes) of no requests — smooth-recovery stays OFF so a legitimate
+# idle exit is not restarted; the next D-Bus call re-activates.
 type = process
-smooth-recovery = true
+smooth-recovery = false
 restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.flatpak.Authenticator.Oci.log

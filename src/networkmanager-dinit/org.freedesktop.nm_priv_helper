@@ -3,8 +3,12 @@
 # /usr/share/dinit/dbus-system-services/org.freedesktop.nm_priv_helper.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup), whose Exec starts this unit (ADR-010).
+# Lifecycle: upstream nm-priv-helper.c exits after IDLE_TIMEOUT_MSEC (2000 ms,
+# 2 s) of no pending jobs; upstream's own unit comment: "nm-priv-helper will
+# exit on idle after timeout" — smooth-recovery stays OFF; NM re-activates it
+# on the next privileged request.
 type = process
-smooth-recovery = true
+smooth-recovery = false
 restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.nm_priv_helper.log

@@ -12,7 +12,7 @@
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=plasma-workspace-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit services for the plasma-workspace KAuth helper activation targets"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -38,7 +38,7 @@ package() {
 
 sha512sums="
 50bc34c825aeb0e39c3b95193ce058cf4fd02330053fff05ed9ffd692eb69ac042833e36a4738932421f4c1ec5982c9a7ded1680a06db0e7c8d3aa7dae8bd9f1  org.kde.fontinst
-7733195f6c8f02543c99c85b5d12e74469fc6ff9183a401a69a5d244a901bdb68c7dcc9f03cc3458ce4b20e325d1f410b1ea433c1a007563da2b9bf32f28c28c  org.kde.localegenhelper
+d8592ddda5899d1d494626dcdf9ec64046c69b1fbf67db23bfde39fa7e8aba6b57e476b3345dab7542b2ce0e3c5c5c4d838c94197a9abe24ac7419d143c8c8c8  org.kde.localegenhelper
 78d0331295ca2cdd9aa9f5d10d6c85ece29c4718da2f4d8c40f3eb7e6a467a2503228e2116f032efb85173531c22a9c2caca269244a1f2a65fcd608e013c3889  org.kde.fontinst.service
 55d0080382d50cdbb393191e3c8fe88a690ab6366398688b879f05366cb2ed88a55be0f616cbf3f147d68d7b72807864996c8aa40176cca1778619dde5890ead  org.kde.localegenhelper.service
 "

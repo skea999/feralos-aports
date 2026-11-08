@@ -3,8 +3,12 @@
 # /usr/share/dinit/dbus-system-services/org.freedesktop.nm_dispatcher.service
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup), whose Exec starts this unit (ADR-010).
+# Lifecycle: upstream nm-dispatcher.c exits after 10 s idle
+# (_idle_timeout_restart, nm_g_timeout_add_source(10000)); the packaged
+# activation Exec carries no --persist, so the idle exit fires —
+# smooth-recovery stays OFF; the next event re-activates the unit.
 type = process
-smooth-recovery = true
+smooth-recovery = false
 restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.nm_dispatcher.log

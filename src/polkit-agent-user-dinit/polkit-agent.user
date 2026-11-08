@@ -8,5 +8,6 @@ load-options = sub-vars
 logfile = $HOME/.local/share/dinit/polkit-agent.log
 command = /etc/dinit.d/user/scripts/polkit-agent-session
 smooth-recovery = true
+restart = on-failure
 depends-on = wait-wayland.user
 depends-on = dbus.user

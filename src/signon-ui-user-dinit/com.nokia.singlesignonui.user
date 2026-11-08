@@ -5,7 +5,10 @@
 # D-Bus bus name (ADR-010); D-Bus activation is routed through
 # /usr/share/dinit/dbus-services/com.nokia.singlesignonui.service.
 type = process
-smooth-recovery = true
+# dbus-activated on-demand: smooth-recovery off — a clean idle exit stops the
+# unit (the next activation restarts it); restart=on-failure covers crashes.
+smooth-recovery = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/com.nokia.singlesignonui.log
 command = /usr/bin/signon-ui

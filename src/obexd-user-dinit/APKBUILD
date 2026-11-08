@@ -11,7 +11,7 @@
 # package-shipped unit.
 pkgname=obexd-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="User dinit service for obexd (org.bluez.obex activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

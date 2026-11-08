@@ -6,7 +6,7 @@
 type = process
 command = /usr/bin/scp-dbus-service
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.fedoraproject.Config.Printing.log
 depends-on = dbus.user

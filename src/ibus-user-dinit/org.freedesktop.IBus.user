@@ -5,7 +5,7 @@
 type = process
 command = /usr/bin/ibus-daemon --replace --panel disable --xim
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.IBus.log
 depends-on = dbus.user

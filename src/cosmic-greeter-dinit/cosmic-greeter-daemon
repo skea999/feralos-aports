@@ -2,6 +2,7 @@
 # daemon (Alpine OpenRC: cosmic-greeter-daemon).
 type = process
 smooth-recovery = true
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/cosmic-greeter-daemon.log
 command = /usr/bin/cosmic-greeter-daemon

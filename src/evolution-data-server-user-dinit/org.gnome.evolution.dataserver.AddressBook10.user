@@ -4,7 +4,7 @@ type = process
 command = /usr/libexec/evolution-addressbook-factory
 # Idle-exit daemon: when it exits the unit stops (activation restarts it); do NOT respawn.
 smooth-recovery = false
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.gnome.evolution.dataserver.AddressBook10.log
 depends-on = dbus.user

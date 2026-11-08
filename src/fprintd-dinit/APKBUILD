@@ -11,7 +11,7 @@
 # package-shipped unit.
 pkgname=fprintd-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for fprintd (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

@@ -9,7 +9,7 @@
 # service dir).
 pkgname=bluez-dinit
 pkgver=0.1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="dinit services for bluetoothd and bluetooth-meshd"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

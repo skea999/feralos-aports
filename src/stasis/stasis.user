@@ -10,6 +10,7 @@ load-options = sub-vars
 logfile = $HOME/.local/share/dinit/stasis.log
 command = /etc/dinit.d/user/scripts/stasis-session
 smooth-recovery = true
+restart = on-failure
 working-dir = $HOME
 depends-on = wait-wayland.user
 depends-on = dbus.user

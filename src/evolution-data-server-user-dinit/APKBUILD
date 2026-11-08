@@ -10,7 +10,7 @@
 # package-shipped unit.
 pkgname=evolution-data-server-user-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="user dinit services for evolution-data-server (D-Bus activation targets)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

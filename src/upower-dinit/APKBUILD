@@ -7,7 +7,7 @@
 # launch helper's standard dirs) starts this unit through feralos-dbus-activate.
 pkgname=upower-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for upower"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

@@ -5,7 +5,7 @@
 # feralos-dbus-activate via an override in /usr/share/dinit/dbus-services/.
 pkgname=xdg-desktop-portal-gtk-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="User dinit service for xdg-desktop-portal-gtk"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

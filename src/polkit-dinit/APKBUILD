@@ -8,7 +8,7 @@
 # feralos-dbus-activate.
 pkgname=polkit-dinit
 pkgver=0.1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="dinit service for polkit"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

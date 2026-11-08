@@ -11,7 +11,7 @@
 # every activation target has a package-shipped unit.
 pkgname=gnome-keyring-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="user dinit services for gnome-keyring/seahorse activation targets"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

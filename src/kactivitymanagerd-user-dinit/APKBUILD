@@ -9,7 +9,7 @@
 # package-shipped unit.
 pkgname=kactivitymanagerd-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="user dinit service for org.kde.ActivityManager (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

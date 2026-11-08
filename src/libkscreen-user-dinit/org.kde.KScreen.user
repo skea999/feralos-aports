@@ -5,7 +5,7 @@
 type = process
 command = /usr/lib/libexec/kf6/kscreen_backend_launcher
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.kde.KScreen.log
 depends-on = dbus.user

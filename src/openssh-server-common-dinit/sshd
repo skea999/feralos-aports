@@ -12,6 +12,7 @@ logfile = /var/log/dinit/sshd.log
 command = /usr/lib/dinit/sshd
 env-file = /etc/dinit.d/config/sshd.conf
 smooth-recovery = true
+restart = on-failure
 depends-on = networking
 depends-on = ssh-keygen
 before = login.target

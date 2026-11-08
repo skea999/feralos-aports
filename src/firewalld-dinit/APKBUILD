@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=firewalld-dinit
 pkgver=0.1.0
-pkgrel=6
+pkgrel=7
 pkgdesc="dinit service for firewalld (--nofork, dbus ordering)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

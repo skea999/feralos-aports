@@ -5,5 +5,6 @@ logfile = /var/log/dinit/greetd.log
 command = /usr/lib/dinit/greetd
 env-file = /etc/dinit.d/config/greetd.conf
 smooth-recovery = true
+restart = on-failure
 depends-on = login.target
 depends-on = elogind

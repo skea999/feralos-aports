@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=networking-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit service for networking (ifup -a, ifupdown-ng)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

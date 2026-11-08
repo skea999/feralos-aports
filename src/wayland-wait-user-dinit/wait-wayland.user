@@ -4,5 +4,6 @@
 # (polkit-agent, dms, ...) depend on this — works with niri, KDE, cosmic,
 # sway, ... : nothing references a compositor by name.
 type = scripted
+restart = false
 load-options = sub-vars
 command = /etc/dinit.d/user/scripts/wait-wayland

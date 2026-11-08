@@ -11,7 +11,7 @@
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=plasma-desktop-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit services for the plasma-desktop KAuth helper activation target"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

@@ -5,7 +5,7 @@
 type = process
 command = /usr/lib/bluetooth/obexd -n --capability=!/usr/bin/obex-capabilities
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.bluez.obex.log
 depends-on = dbus.user

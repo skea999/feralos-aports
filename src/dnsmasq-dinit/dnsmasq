@@ -6,6 +6,7 @@ logfile = /var/log/dinit/dnsmasq.log
 command = /usr/lib/dinit/dnsmasq
 env-file = /etc/dinit.d/config/dnsmasq.conf
 smooth-recovery = true
+restart = on-failure
 depends-on = dbus
 depends-on = local.target
 before = login.target

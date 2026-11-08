@@ -1,7 +1,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dms-shell
 pkgver=1.6.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Quickshell-based desktop shell with Material 3 design principles"
 url="https://github.com/AvengeMedia/DankMaterialShell"
 arch="x86_64 aarch64"

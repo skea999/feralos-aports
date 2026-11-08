@@ -8,6 +8,7 @@
 # supervised document portal then exits 20 on name loss).
 type = process
 smooth-recovery = true
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.portal.Desktop.log
 command = /usr/lib/dinit/portal-order org.freedesktop.impl.portal.PermissionStore org.freedesktop.portal.Documents -- /usr/libexec/xdg-desktop-portal

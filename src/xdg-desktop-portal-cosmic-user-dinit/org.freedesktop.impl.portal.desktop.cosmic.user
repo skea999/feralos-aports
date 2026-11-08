@@ -5,7 +5,7 @@
 type = process
 command = /usr/libexec/xdg-desktop-portal-cosmic
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.impl.portal.desktop.cosmic.log
 depends-on = dbus.user

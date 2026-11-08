@@ -11,7 +11,7 @@
 # the Alpine kwallet 6.26.0 APK contents), hence their own units.
 pkgname=kwallet-user-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="User dinit services for kwallet (kwalletd6 + ksecretd compat/portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

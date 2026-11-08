@@ -15,6 +15,7 @@ log-type = file
 logfile = /var/log/dinit/wpa_supplicant.log
 command = /sbin/wpa_supplicant -u
 smooth-recovery = true
+restart = on-failure
 depends-on = dbus
 depends-on = local.target
 before = login.target

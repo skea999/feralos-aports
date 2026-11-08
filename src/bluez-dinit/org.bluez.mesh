@@ -12,6 +12,7 @@ log-type = file
 logfile = /var/log/dinit/bluetooth-meshd.log
 command = /usr/lib/bluetooth/bluetooth-meshd
 smooth-recovery = true
+restart = on-failure
 depends-on = dbus
 depends-on = local.target
 before = login.target

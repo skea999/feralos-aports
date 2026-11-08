@@ -8,7 +8,7 @@
 # launch helper's standard dirs).
 pkgname=networkmanager-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="dinit service for NetworkManager"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

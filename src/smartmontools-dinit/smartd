@@ -1,6 +1,7 @@
 # dinit service: smartd (Alpine openrc smartd + overrides)
 type = process
 smooth-recovery = true
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/smartd.log
 command = /usr/lib/dinit/smartd

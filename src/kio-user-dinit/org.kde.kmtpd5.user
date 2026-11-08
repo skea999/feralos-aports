@@ -8,6 +8,7 @@
 # through /usr/share/dinit/dbus-services/org.kde.kmtpd5.service.
 type = process
 smooth-recovery = true
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.kde.kmtpd5.log
 command = /usr/lib/libexec/kf6/kiod6

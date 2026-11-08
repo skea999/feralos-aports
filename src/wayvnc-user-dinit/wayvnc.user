@@ -9,4 +9,5 @@ load-options = sub-vars
 logfile = $HOME/.local/share/dinit/wayvnc.log
 command = /etc/dinit.d/user/scripts/wayvnc-session
 smooth-recovery = true
+restart = on-failure
 depends-on = wait-wayland.user

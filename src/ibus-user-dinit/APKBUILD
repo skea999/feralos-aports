@@ -12,7 +12,7 @@
 # package-shipped unit.
 pkgname=ibus-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="User dinit services for ibus (IBus + portal activation targets)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

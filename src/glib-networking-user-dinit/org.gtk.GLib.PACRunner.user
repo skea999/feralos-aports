@@ -8,6 +8,7 @@
 # /usr/share/dinit/dbus-services/org.gtk.GLib.PACRunner.service.
 type = process
 smooth-recovery = true
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.gtk.GLib.PACRunner.log
 command = /usr/libexec/glib-pacrunner

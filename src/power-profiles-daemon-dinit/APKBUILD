@@ -7,7 +7,7 @@
 # into the launch helper's standard dirs).
 pkgname=power-profiles-daemon-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for power-profiles-daemon"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

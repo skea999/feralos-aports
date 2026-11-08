@@ -5,8 +5,10 @@
 type = process
 command = /usr/libexec/cups-pk-helper-mechanism
 run-as = root
-smooth-recovery = true
-restart = false
+# dbus-activated on-demand: smooth-recovery off — a clean idle exit stops the
+# unit (the next activation restarts it); restart=on-failure covers crashes.
+smooth-recovery = false
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.opensuse.CupsPkHelper.Mechanism.log
 depends-on = dbus

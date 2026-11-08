@@ -10,6 +10,7 @@ logfile = /var/log/dinit/bluetoothd.log
 command = /usr/lib/dinit/dbus-wait-for -s -f 4 -n org.bluez /usr/lib/bluetooth/bluetoothd --nodetach
 ready-notification = pipefd:4
 smooth-recovery = true
+restart = on-failure
 depends-on = dbus
 depends-on = local.target
 before = login.target

@@ -4,6 +4,7 @@
 # FeralOS config (VT 7 — VT1 belongs to getty@tty1).
 type = process
 smooth-recovery = true
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/cosmic-greeter.log
 command = /usr/libexec/dinit/cosmic-greeter-session

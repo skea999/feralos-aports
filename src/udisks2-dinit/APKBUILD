@@ -9,7 +9,7 @@
 # every activation target has a package-shipped unit.
 pkgname=udisks2-dinit
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="dinit service for udisks2"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

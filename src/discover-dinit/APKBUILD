@@ -11,7 +11,7 @@
 # standard dirs). KAuth per-request helpers: short-lived, no smooth-recovery.
 pkgname=discover-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit services for the discover KAuth helper activation target"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

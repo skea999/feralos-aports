@@ -9,7 +9,7 @@
 # package map to the same binary.
 pkgname=signon-ui-user-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="User dinit services for signon-ui (webcredentials + singlesignonui)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

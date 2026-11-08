@@ -6,7 +6,7 @@
 type = process
 command = /usr/lib/libexec/kf6/kauth/fontinst
 smooth-recovery = false
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.kde.fontinst.log
 depends-on = dbus.user

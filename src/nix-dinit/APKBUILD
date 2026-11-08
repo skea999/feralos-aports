@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=nix-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for nix-daemon (Alpine initd name)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

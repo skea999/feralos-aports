@@ -11,6 +11,7 @@
 # when this package is installed.
 type = process
 smooth-recovery = true
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.portal.Tracker.log
 command = /usr/libexec/tinysparql-xdg-portal-3

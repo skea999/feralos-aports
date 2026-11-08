@@ -9,7 +9,7 @@
 # every activation target has a package-shipped unit.
 pkgname=kcron-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="dinit service for kcron's KAuth helper (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

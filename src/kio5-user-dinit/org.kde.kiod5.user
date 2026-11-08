@@ -5,7 +5,7 @@
 type = process
 command = /usr/lib/libexec/kf5/kiod5
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.kde.kiod5.log
 depends-on = dbus.user

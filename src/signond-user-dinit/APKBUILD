@@ -10,7 +10,7 @@
 # package-shipped unit.
 pkgname=signond-user-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="User dinit service for signond (+ backup helper unit)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

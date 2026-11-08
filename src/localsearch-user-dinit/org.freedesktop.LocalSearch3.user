@@ -9,6 +9,7 @@
 # the legacy activation file maps to this same unit.
 type = process
 smooth-recovery = true
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.LocalSearch3.log
 command = /usr/libexec/localsearch-3

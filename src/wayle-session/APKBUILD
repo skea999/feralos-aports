@@ -19,7 +19,7 @@
 # same variables).
 pkgname=wayle-session
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Wayle session — niri compositor + Wayle shell session for FeralOS (user dinit services)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

@@ -6,7 +6,7 @@
 # (materialized at boot into the launch helper's standard dirs).
 pkgname=accountsservice-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for AccountsService"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

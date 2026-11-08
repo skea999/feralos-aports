@@ -21,7 +21,7 @@
 # access for gamepad activity.
 pkgname=stasis
 pkgver=1.6.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Context-aware Wayland idle manager — lock/dpms/suspend plans with media, game and gamepad awareness"
 url="https://github.com/saltnpepper97/stasis"
 arch="all"

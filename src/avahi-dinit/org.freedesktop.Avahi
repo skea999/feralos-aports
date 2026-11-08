@@ -5,7 +5,7 @@
 type = process
 command = /usr/sbin/avahi-daemon
 smooth-recovery = true
-restart = false
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.Avahi.log
 depends-on = dbus

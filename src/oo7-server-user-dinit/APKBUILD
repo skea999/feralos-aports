@@ -14,7 +14,7 @@
 # explicit depends entry.
 pkgname=oo7-server-user-dinit
 pkgver=0.1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="User dinit services for oo7 (Secret Service daemon + portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

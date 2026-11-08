@@ -5,7 +5,7 @@
 type = process
 command = /usr/bin/ksystemstats
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.kde.ksystemstats1.log
 depends-on = dbus.user

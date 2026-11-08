@@ -9,7 +9,7 @@
 # every activation target has a package-shipped unit.
 pkgname=geoclue-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for geoclue (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

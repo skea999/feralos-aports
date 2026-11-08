@@ -5,7 +5,7 @@
 type = process
 command = /usr/bin/signond -backup
 smooth-recovery = false
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/com.nokia.SingleSignOn.Backup.log
 depends-on = dbus.user

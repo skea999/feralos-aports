@@ -14,7 +14,7 @@
 # unit would advertise a target that cannot start.
 pkgname=kio5-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="user dinit service for kio5 (kiod5 + kioexecd/kpasswdserver/kssld5 aliases)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

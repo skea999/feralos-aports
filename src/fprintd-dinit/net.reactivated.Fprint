@@ -7,7 +7,7 @@ command = /usr/libexec/fprintd
 run-as = root
 # Idle-exit daemon: when it exits the unit stops (activation restarts it); do NOT respawn.
 smooth-recovery = false
-restart = false
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/net.reactivated.Fprint.log
 depends-on = dbus

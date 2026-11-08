@@ -11,7 +11,7 @@
 # $XDG_RUNTIME_DIR/dbus-1/services).
 pkgname=gnome-disk-utility-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="user dinit services for gnome-disk-utility (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

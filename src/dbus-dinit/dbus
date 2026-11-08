@@ -8,6 +8,7 @@
 # bus itself; see /usr/libexec/dbus-dinit-stop.
 type = process
 smooth-recovery = no
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/dbus.log
 command = /usr/lib/dinit/dbus

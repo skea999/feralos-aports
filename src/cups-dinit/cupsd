@@ -5,6 +5,7 @@ logfile = /var/log/dinit/cupsd.log
 command = /usr/lib/dinit/cupsd
 env-file = /etc/dinit.d/config/cupsd.conf
 smooth-recovery = true
+restart = on-failure
 depends-on = dbus
 depends-on = local.target
 before = login.target

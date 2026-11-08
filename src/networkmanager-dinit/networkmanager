@@ -5,6 +5,7 @@ log-type = file
 logfile = /var/log/dinit/networkmanager.log
 command = /usr/sbin/NetworkManager --no-daemon
 smooth-recovery = true
+restart = on-failure
 depends-on = dbus
 depends-on = pre-network.target
 before = network.target

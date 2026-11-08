@@ -6,7 +6,7 @@
 type = process
 command = /usr/bin/plasma_waitforname org.freedesktop.Notifications
 smooth-recovery = false
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.Notifications.log
 depends-on = dbus.user

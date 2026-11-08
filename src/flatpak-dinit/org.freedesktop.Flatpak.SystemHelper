@@ -6,6 +6,7 @@
 # dbus-services-setup), whose Exec starts this unit (ADR-010).
 type = process
 smooth-recovery = true
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.Flatpak.SystemHelper.log
 command = /usr/libexec/flatpak-system-helper

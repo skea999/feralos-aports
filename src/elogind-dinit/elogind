@@ -21,6 +21,7 @@ logfile = /var/log/dinit/elogind.log
 command = /usr/lib/dinit/dbus-wait-for -s -f 4 -n org.freedesktop.login1 /usr/libexec/elogind/elogind
 ready-notification = pipefd:4
 smooth-recovery = true
+restart = on-failure
 depends-on = local.target
 depends-on = dbus
 before = login.target

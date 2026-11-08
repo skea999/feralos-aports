@@ -4,7 +4,10 @@
 # (installed at boot into /usr/local/share/dbus-1/system-services by
 # dbus-services-setup), whose Exec starts this unit (ADR-010).
 type = process
-smooth-recovery = true
+# dbus-activated on-demand: smooth-recovery off — a clean idle exit stops the
+# unit (the next activation restarts it); restart=on-failure covers crashes.
+smooth-recovery = false
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.fwupd.log
 command = /usr/lib/dinit/fwupd

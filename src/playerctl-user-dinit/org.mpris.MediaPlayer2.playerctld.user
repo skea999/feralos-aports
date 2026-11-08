@@ -5,7 +5,7 @@
 type = process
 command = /usr/bin/playerctld
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.mpris.MediaPlayer2.playerctld.log
 depends-on = dbus.user

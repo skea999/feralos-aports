@@ -5,7 +5,7 @@
 type = process
 command = /usr/lib/libexec/kscreen_osd_service
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.kde.kscreen.osdService.log
 depends-on = dbus.user

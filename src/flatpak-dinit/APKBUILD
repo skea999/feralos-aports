@@ -7,7 +7,7 @@
 # System-wide flatpak installs go through this helper.
 pkgname=flatpak-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit service for the flatpak system helper"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

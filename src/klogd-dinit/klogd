@@ -10,5 +10,6 @@ log-type = file
 logfile = /var/log/dinit/klogd.log
 command = /usr/libexec/dinit-klogd
 smooth-recovery = true
+restart = on-failure
 depends-on = local.target
 before = login.target

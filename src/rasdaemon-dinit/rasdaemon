@@ -4,5 +4,6 @@ log-type = file
 logfile = /var/log/dinit/rasdaemon.log
 command = /usr/sbin/rasdaemon --foreground --record
 smooth-recovery = true
+restart = on-failure
 depends-on = local.target
 before = login.target

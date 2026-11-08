@@ -9,7 +9,7 @@
 # package-shipped unit.
 pkgname=ksystemstats-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="user dinit service for org.kde.ksystemstats1 (D-Bus activation target)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

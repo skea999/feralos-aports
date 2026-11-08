@@ -5,7 +5,7 @@
 type = process
 command = /usr/lib/ibus/ibus-portal
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.portal.IBus.log
 depends-on = dbus.user

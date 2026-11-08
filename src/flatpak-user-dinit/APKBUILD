@@ -5,7 +5,7 @@
 # feralos-dbus-activate via overrides in /usr/share/dinit/dbus-services/.
 pkgname=flatpak-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="User dinit services for the flatpak session stack (session helper + portal + OCI authenticator)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

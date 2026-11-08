@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=incus-feature-dinit
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="dinit service for incusd (incus-feature hosts)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

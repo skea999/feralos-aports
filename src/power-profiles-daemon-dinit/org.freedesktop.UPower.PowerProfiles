@@ -6,6 +6,7 @@
 # starts this unit (ADR-010).
 type = process
 smooth-recovery = true
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/org.freedesktop.UPower.PowerProfiles.log
 command = /usr/libexec/power-profiles-daemon

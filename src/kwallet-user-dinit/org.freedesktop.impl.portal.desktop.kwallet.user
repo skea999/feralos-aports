@@ -6,6 +6,7 @@
 # /usr/share/dinit/dbus-services/org.freedesktop.impl.portal.desktop.kwallet.service.
 type = process
 smooth-recovery = true
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/org.freedesktop.impl.portal.desktop.kwallet.log
 command = /usr/bin/ksecretd

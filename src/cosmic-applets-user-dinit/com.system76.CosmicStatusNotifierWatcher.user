@@ -5,7 +5,7 @@
 type = process
 command = /usr/bin/cosmic-applet-status-area --status-notifier-watcher
 smooth-recovery = true
-restart = false
+restart = on-failure
 load-options = sub-vars
 logfile = $HOME/.local/share/dinit/com.system76.CosmicStatusNotifierWatcher.log
 depends-on = dbus.user

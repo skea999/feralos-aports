@@ -13,7 +13,7 @@
 # unit is inert otherwise.
 pkgname=kio-user-dinit
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="User dinit services for kio (kiod6 + kioexecd/kpasswdserver/kssld)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

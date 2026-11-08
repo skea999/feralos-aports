@@ -5,4 +5,5 @@ logfile = /var/log/dinit/chronyd.log
 command = /usr/lib/dinit/chronyd
 env-file = /etc/dinit.d/config/chronyd.conf
 smooth-recovery = true
+restart = on-failure
 depends-on = networking

@@ -9,7 +9,7 @@
 # --gapplication-service).
 pkgname=nautilus-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="User dinit service for Nautilus (+ FileManager1 alias)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"

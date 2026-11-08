@@ -7,6 +7,7 @@
 type = process
 depends-on = dbus
 smooth-recovery = true
+restart = on-failure
 log-type = file
 logfile = /var/log/dinit/polkit.log
 command = /usr/lib/polkit-1/polkitd ${POLKIT_OPTS:---no-debug}

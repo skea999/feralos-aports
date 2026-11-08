@@ -1,3 +1,0 @@
-alpine-dep: openssh
-command = /usr/sbin/sshd -D -e
-depends-on = network.target

@@ -1,3 +1,0 @@
-alpine-dep: btrfs-progs
-type = internal
-restart = false

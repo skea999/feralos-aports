@@ -36,13 +36,12 @@ if [ $# -gt 0 ]; then
 	TARGETS="$*"
 else
 	# all packages with an openrc init script (manual list, updatable)
-	TARGETS="acpid apparmor avahi btrfs-progs busybox busybox-mdev chrony
+	TARGETS="acpid apparmor avahi busybox busybox-mdev chrony
 cpufrequtils cronie cryptsetup cups dbus dnsmasq earlyoom elogind eudev
 firewalld fuse fwupd greetd incus incus-feature incus-feature-agent
-iptables irqbalance kbd lxc nftables nix openssh-server-common pipewire
+iptables irqbalance kbd lxc nftables nix openssh-server-common
 podman polkit rasdaemon rsync smartmontools udisks2 udev-init-scripts
-vector wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
-xdg-document-portal"
+vector"
 fi
 
 mkdir -p "$OUT_DIR"

@@ -11,7 +11,7 @@
 # Port to another dinit distribution by renaming or dropping these targets.
 type = process
 smooth-recovery = true
-restart = false
+restart = on-failure
 log-type = file
 logfile = @LOCALSTATEDIR@/log/ursine/ursined.log
 command = @LIBEXECDIR@/dinit/ursined

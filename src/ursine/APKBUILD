@@ -31,7 +31,7 @@
 # plus the -crt-static rustflag that makes -lpam resolve on musl).
 pkgname=ursine
 pkgver=0.24.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
 url="https://github.com/skea999/ursine"
 arch="x86_64"

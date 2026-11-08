@@ -6,6 +6,10 @@
 # their PAM sessions at shutdown — dinit stops dependencies on release, not
 # on dependent exit. Script waits (bounded) for turnstiled, then stops the
 # bus itself; see /usr/libexec/dbus-dinit-stop.
+# Restart policy: crash-only — restart = on-failure + smooth-recovery = no
+# (supersedes the ADR-007-era "nobody restarts the bus" stance: a crash is
+# restarted, a clean exit never is). The ADR-007 stop-command shutdown
+# guards remain.
 type = process
 smooth-recovery = no
 restart = on-failure

@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dbus-dinit
 pkgver=0.1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="dinit service for dbus (pipefd readiness, shutdown stop guard)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -28,7 +28,7 @@ package() {
 }
 
 sha512sums="
-4362c098de8d51d8e777a5f63eef264806616766bf2e2670561f34301b665808de5e162708f602291d97d6c7cc6f343e107aa993cf3cf435ee3f98067abafd5e  dbus
+6c52fc444f0d8c5a093619e07c25eb7afd0d0f64a98ab702770cfcab372fa2cdd0c86dfd9dc6dd6651bdfa1a5785d4920ffa9dfdf6ac25aa2d955fa273b07e1c  dbus
 279bef8a4bb8c4b80b1d89a18e34970c3eb3003ce29c8042f0f63d166303cf7b7ab1f69ef712ac3043a547d903a748750d1eecdf67bb0deff002919cf1dabb69  dbus-dinit.tmpfiles
 e021022e69e646b4958f24814953156c2adb552824c1f1c91d41aceac0b34ed12b2d86dfdab750a8092f71d6236e550e9e64f9af56e9651488ae1735a6b8083a  dbus-stop
 f5e34d4921ab7e083fe4f09db20d179f561a116a0400ee322cca53202eb76b5116b4bcf1c22a6bc889a86f8e9f4d27db00811b158e19bf9bd79541a63b5a6e1a  dbus.script

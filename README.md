@@ -39,7 +39,7 @@ lockstep with upstream. Rationale comment lives in each conflicting APKBUILD.
 | `polkit` (patched) | Alpine APKBUILD + Chimera `turnstile.patch` (989.127) | 7 |
 | `cli11` | [CLIUtils/CLI11](https://github.com/CLIUtils/CLI11) (2.7.2) — quickshell build dep, absent in Alpine | desktop |
 | `quickshell` | [outfoxxed/quickshell](https://quickshell.org/) (0.3.1) — QtQuick shell toolkit (DMS runtime dep); crash-handler dropped (cpptrace absent in Alpine) | desktop |
-| `dms-shell` | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) (1.6.2) — Quickshell desktop shell, QML embedded in Go binary (+ dank-qml-common pinned submodule); musl native, replaces nix dms-shell | desktop |
+| `dms-shell` | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) (1.6.2, tag `v1.6.2`) — Quickshell desktop shell, QML embedded in Go binary (+ `dank-qml-common` merged from tag `v1.6.0` in `prepare()`); musl native, replaces nix dms-shell | desktop |
 | `matugen` | [InioX/matugen](https://github.com/InioX/matugen) (4.2.0) — Material You palette generator; dms-shell dynamic-theming backend (absent in Alpine) | desktop |
 | `dbus-user-dinit` | ours — user dinit session bus (pipefd:3 readiness + `dinitctl setenv` bus address) | desktop |
 | `pipewire-user-dinit` | ours — user dinit service for pipewire | desktop |
@@ -47,6 +47,20 @@ lockstep with upstream. Rationale comment lives in each conflicting APKBUILD.
 | `wireplumber-user-dinit` | ours — user dinit service for wireplumber (session/policy manager) | desktop |
 | `wayland-wait-user-dinit` | ours — user dinit gate: waits for any compositor wayland socket in `$XDG_RUNTIME_DIR` | desktop |
 | `polkit-agent-user-dinit` | ours — user dinit service for polkit-gnome auth agent (distro-native build) | desktop |
+
+## Source pinning policy
+
+**Rule: every GitHub source pins to a TAG archive (`archive/refs/tags/...`), never a commit archive (`archive/<sha>...`). Release-asset URLs (`releases/download/...`) and non-GitHub URLs are handled at inventory time (see below). The sha512sum is the integrity guard; the tag is the version contract.**
+
+- **Tags give version semantics + fail-loud.** Commit pins would keep old bytes forever — if upstream re-publishes a tag to fix a bug or CVE, the checksum FAILS, and that failure is the *signal* to review.
+- **Checksum failure workflow** (tag re-published upstream and `abuild` now rejects the old sum):
+  1. Fetch the new tag archive.
+  2. Diff its content against the old archive (extract both, `diff -r` after normalizing the top dir — the only expected change is the directory name).
+  3. If the diff is a legitimate fix: update `sha512sums`, bump `pkgrel`, note the ported fix in the commit message.
+  4. If the diff is unexpected or hostile (unrequested changes, minified blobs): STOP, report, investigate upstream before shipping anything.
+- **Full-sweep evidence pattern:** re-fetched sums that match a previous validated sum (and a top-dir-normalized diff of `rc 0`) prove a re-published tag carries identical bytes — the safe baseline for a revert or a re-pin.
+- **Non-GitHub URLs** (Alpine mirrors, upstream hosts, GitLab): inventory them per APKBUILD. A versioned release artifact is fine; a moving target (`main`/`master`/HEAD) must be fixed to a pinned versioned artifact.
+- **Our own repos** (`skea999/feralos`, `skea999/ursine`, `skea999/dms-window-buttons`): cut a tag for each source state used by a package (e.g. `dbus-audit-0.1.0` for `feralos-dbus-audit`) instead of pinning by commit.
 
 Toolchain: **GCC** (Alpine default) — decision record: `docs/TOOLCHAIN.md`.
 

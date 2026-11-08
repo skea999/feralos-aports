@@ -18,6 +18,8 @@
 # snapshots, users, theming, flatpak permissions) — pure Rust, runtime
 # tools only (mkfs/parted/firewall-cmd/nmcli/bluetoothctl), no new build
 # deps. v0.26.0 also ships packaging/man/ursinectl.1.
+# Runtime depends = accountsservice + udisks2 (Users/Disks modules, zero
+# fallback in code) — see the depends= line below.
 # The package only SHIPS the service assets (dinit unit +
 # ADR-008 wrapper + conf, OpenRC initd, pam.d file) — enablement is done
 # by the FeralOS installer services map, never by the package itself
@@ -36,15 +38,20 @@
 # plus the -crt-static rustflag that makes -lpam resolve on musl).
 pkgname=ursine
 pkgver=0.26.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
 url="https://github.com/skea999/ursine"
 arch="x86_64"
 license="ISC"
 makedepends="cargo git linux-pam-dev libxkbcommon-dev"
+# accountsservice + udisks2 = HARD requirements of the Users/Disks modules:
+# Users is 100% zbus -> org.freedesktop.Accounts (no /etc/passwd fallback),
+# Disks runs `udisksctl` for mount/unmount (and gates even the lsblk listing
+# on the same capability). Declared HERE so EVERY ursine install gets them,
+# instead of per-DE explicit entries in the installer rules.
+depends="accountsservice udisks2"
 # runtime shared libs (libpam, libgcc, ...) are picked up automatically as
-# so: dependencies by abuild's ELF tracing — no explicit depends needed.
-depends=""
+# so: dependencies by abuild's ELF tracing — the so: half needs no entry.
 # config/log dirs created at install time (mode 0750), not packaged dirs
 install="ursine.post-install"
 source="https://github.com/skea999/ursine/archive/refs/tags/v$pkgver/ursine-v$pkgver.tar.gz

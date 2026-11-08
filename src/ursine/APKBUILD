@@ -74,7 +74,9 @@ package() {
 	install -Dm755 artifacts/target/release/ursined "$pkgdir"/usr/sbin/ursined
 	install -Dm755 artifacts/target/release/ursine "$pkgdir"/usr/bin/ursine
 	install -Dm755 artifacts/target/release/ursinectl "$pkgdir"/usr/bin/ursinectl
+	# gzipped — abuild rejects uncompressed man pages
 	install -Dm644 packaging/man/ursinectl.1 "$pkgdir"/usr/share/man/man1/ursinectl.1
+	gzip -9 "$pkgdir"/usr/share/man/man1/ursinectl.1
 	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
 
 	# PAM auth stack (auth + account via pam_unix)

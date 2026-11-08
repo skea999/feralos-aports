@@ -15,10 +15,10 @@ optdepends="networkmanager: network management backend
 	wtype: paste from clipboard history and plugins"
 makedepends="go"
 _qmlcommit=26396ce432d6c71c3f5367438f96f4a8d667e160
-source="https://github.com/AvengeMedia/DankMaterialShell/archive/refs/tags/v$pkgver/DankMaterialShell-$pkgver.tar.gz
+source="https://github.com/duxlabs-dev/dux-shell/archive/refs/tags/v$pkgver/dux-shell-$pkgver.tar.gz
 	https://github.com/duxlabs-dev/dux-qml-common/archive/$_qmlcommit/dux-qml-common-$_qmlcommit.tar.gz
 	dms.user dms-session"
-builddir="$srcdir/DankMaterialShell-$pkgver"
+builddir="$srcdir/dux-shell-$pkgver"
 options="!check"
 
 prepare() {
@@ -63,7 +63,7 @@ package() {
 }
 
 sha512sums="
-7ccb2361b61b6b7e70d16252246ea98287892973dec1379e0df9bce5bb0bcead511ef9fa9cf47c61228ba43b65886ff2f826b9c78139f5fc4174999395eef23d  DankMaterialShell-1.6.2.tar.gz
+7ccb2361b61b6b7e70d16252246ea98287892973dec1379e0df9bce5bb0bcead511ef9fa9cf47c61228ba43b65886ff2f826b9c78139f5fc4174999395eef23d  dux-shell-1.6.2.tar.gz
 e57edd48b4472d462ad78bd0fb7bbcdb660b9394e37f5535ead5ce50e9c708477ae76bd1c4dacef8e411e331367fcc8cdcadf36aa2e6805537182380d55066e7  dux-qml-common-26396ce432d6c71c3f5367438f96f4a8d667e160.tar.gz
 4f133dd95055a5185354c2cc7acf0be60b7635df5e32c2ddc86799a2f28b9d18833e45fa19fc4c6ebb87dbd24e3d6a12f13ccc88e2e94105f956793a9ddf8cf0  dms.user
 78fb345d61266fd4c868c64b631f28c7a7388b906d1d7da0e76dca7dc80eef70229e31151fdf8b7b7c8f25aece97ab636945ccb14c14e6c2a140d29e86cd69e4  dms-session

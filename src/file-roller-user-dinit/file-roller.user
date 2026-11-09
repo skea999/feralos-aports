@@ -1,0 +1,16 @@
+# feralos file-roller-user-dinit: D-Bus activation target for file-roller
+# (ADR-010). ONE unit serves BOTH upstream activation names
+# (org.gnome.ArchiveManager1 + org.gnome.FileRoller -- the same service-mode
+# binary; each override aliases its bus name onto this unit). dbus-activated
+# on-demand daemon, never boot-enabled (dbus decides when it runs):
+# restart = on-failure + smooth-recovery = false per the 2026-11-08 sweep
+# (a crash is restarted, a clean exit never is -- the next D-Bus call
+# re-activates the daemon).
+type = process
+command = /usr/bin/file-roller --service
+smooth-recovery = false
+restart = on-failure
+working-dir = $HOME
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/file-roller.log
+depends-on = dbus.user

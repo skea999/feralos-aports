@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.freedesktop.impl.portal.desktop.gnome
-Exec=/usr/libexec/dinit/dbus-activate org.freedesktop.impl.portal.desktop.gnome.user -- /usr/libexec/xdg-desktop-portal-gnome

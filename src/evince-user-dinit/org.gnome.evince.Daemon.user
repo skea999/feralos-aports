@@ -1,0 +1,13 @@
+# feralos evince-user-dinit: D-Bus activation target for evince (ADR-010).
+# Unit name = canonical D-Bus bus name (dbus-activated on-demand daemon,
+# never boot-enabled; dbus decides when it runs). restart = on-failure +
+# smooth-recovery = false per the 2026-11-08 sweep (a crash is restarted,
+# a clean exit never is -- the next D-Bus call re-activates the daemon).
+type = process
+command = /usr/libexec/evinced
+smooth-recovery = false
+restart = on-failure
+working-dir = $HOME
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/org.gnome.evince.Daemon.log
+depends-on = dbus.user

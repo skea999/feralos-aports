@@ -21,13 +21,14 @@
 # desktop file belongs to wayle-session (our niriWayle session).
 pkgname=wayle
 pkgver=0.7.0
-pkgrel=0
+pkgrel=1
 pkgdesc="Wayland Elements — compositor-agnostic desktop shell (bar, notifications, OSD, wallpaper)"
 url="https://github.com/wayle-rs/wayle"
 arch="all"
 license="MIT"
 makedepends="cargo clang clang22-libclang pkgconf gtk4.0-dev gtk4-layer-shell-dev gtksourceview5-dev pulseaudio-dev fftw-dev pipewire-dev eudev-dev wayland-dev"
-depends="gtk4.0 gtk4-layer-shell gtksourceview5 libpulse pipewire hicolor-icon-theme upower"
+# hyprsunset: night-light binary spawned by the bar's hyprsunset module
+depends="gtk4.0 gtk4-layer-shell gtksourceview5 libpulse pipewire hicolor-icon-theme upower hyprsunset"
 # GUI shell — the test suite needs a live compositor
 options="!check"
 # upstream tags: v0.7.0 (GitHub strips the leading v in the extracted dir:

@@ -18,14 +18,18 @@
 # snapshots, users, theming, flatpak permissions) — pure Rust, runtime
 # tools only (mkfs/parted/firewall-cmd/nmcli/bluetoothctl), no new build
 # deps. v0.26.0 also ships packaging/man/ursinectl.1.
-# Runtime depends = accountsservice + udisks2 (Users/Disks modules, zero
-# fallback in code) — see the depends= line below.
+# v0.27.0 = the "no D-Bus, ever" release: ALL D-Bus removed — Users talks
+# to useradd/adduser/chpasswd CLI (shadow + busybox), Disks talks to
+# mount/umount/blkid CLI (util-linux + busybox); zbus dropped; capabilities
+# Accountsservice -> Shadow, Udisks2 -> Parted.
+# Runtime depends = parted + shadow + util-linux (Disks/Users modules) —
+# see the depends= line below.
 # The package only SHIPS the service assets (dinit unit +
 # ADR-008 wrapper + conf, OpenRC initd, pam.d file) — enablement is done
 # by the FeralOS installer services map, never by the package itself
 # (post-install only creates the config/log dirs).
 #
-# check() runs the 0.26.0 member set ONLY (-p list below): the
+# check() runs the 0.27.0 member set ONLY (-p list below): the
 # src/ursinectl integration tests (e2e/inprocess) are calibrated for
 # upstream's root CI container ("runs as root ... the same condition the
 # CLI enforces"; Dispatch expectations tuned to the ursine-ci tool set) —
@@ -37,19 +41,20 @@
 # (the repo's .cargo/config.toml sets build.target-dir = artifacts/target,
 # plus the -crt-static rustflag that makes -lpam resolve on musl).
 pkgname=ursine
-pkgver=0.26.0
-pkgrel=1
+pkgver=0.27.0
+pkgrel=0
 pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
 url="https://github.com/skea999/ursine"
 arch="x86_64"
 license="ISC"
 makedepends="cargo git linux-pam-dev libxkbcommon-dev"
-# accountsservice + udisks2 = HARD requirements of the Users/Disks modules:
-# Users is 100% zbus -> org.freedesktop.Accounts (no /etc/passwd fallback),
-# Disks runs `udisksctl` for mount/unmount (and gates even the lsblk listing
-# on the same capability). Declared HERE so EVERY ursine install gets them,
-# instead of per-DE explicit entries in the installer rules.
-depends="accountsservice udisks2"
+# parted = HARD requirement of the Disks module (it gates the WHOLE
+# module — partition/format actions — with no fallback in code); shadow +
+# util-linux = belt-and-braces so the Users/Disks CLI calls hit the real
+# useradd/chpasswd and mount/umount/blkid instead of busybox applets.
+# Declared HERE so EVERY ursine install gets them, instead of per-DE
+# explicit entries in the installer rules.
+depends="parted shadow util-linux"
 # runtime shared libs (libpam, libgcc, ...) are picked up automatically as
 # so: dependencies by abuild's ELF tracing — the so: half needs no entry.
 # config/log dirs created at install time (mode 0750), not packaged dirs
@@ -138,7 +143,7 @@ package() {
 }
 
 sha512sums="
-998f225d7facfce91cff711b95a6a5e6df76aa8862254df2aeafbd93902252d836d5f95ef35beb6a98933b5b400851dc8f5a40f959fd392688a088be2aca9d5f  ursine-v0.26.0.tar.gz
+2b60cd9baa2a44cda96858e3824d7773f96fe964e80d9846896af9165222b6397c0329a03b46adc046e2bccc744cc8a6dcc04c9dd7a9b2dd18f98d44796da8c1  ursine-v0.27.0.tar.gz
 b6c66949774b336891e899a9e111a24cd54e56b1899585dcc19fe41b4adfc47cdd9413a70c01c2cc278ea4b7ae444e50c96943fcb419238058ad5b1feba3c289  ursine.pam
 aa888a150b85a7a9b8c26139d6b05ca7bacfdffc217badbc16ae846cdb305d8c412e4cea52b5b11556d7896a76aea8fcb2d9378f2f066ca611ee2559a9082e96  ursined.dinit
 0c579b35c886812e935848b66bb9951945e4cf13025ad52175ded5329ad4f3590f0980e2e111a3ede85dac7824eddeffc5ade5ae2140d2da99528fb21e36c705  ursined.script

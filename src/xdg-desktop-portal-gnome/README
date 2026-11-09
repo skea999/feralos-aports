@@ -1,0 +1,19 @@
+xdg-desktop-portal-gnome — FeralOS shadow dummy
+===============================================
+
+This package is deliberately EMPTY. It shadows Alpine's real
+xdg-desktop-portal-gnome (a GNOME / mutter-dependent portal backend that
+also drags in nautilus) so that it is never installed on FeralOS.
+
+Why:
+- Alpine's niri-portalsconf subpackage (part of the niri package) declares
+  depend = xdg-desktop-portal-gnome in niri-portals.conf's APK metadata.
+  This version-999 dummy satisfies that dependency without pulling the
+  real backend (999 beats any Alpine version).
+- FeralOS serves every portal interface its desktops use through
+  xdg-desktop-portal-gtk (FileChooser, Settings, Notification, Print,
+  Access, Account, Inhibit, Lockdown, Email, AppChooser, DynamicLauncher,
+  Wallpaper) and xdg-desktop-portal-wlr (Screenshot, ScreenCast).
+- Only RemoteDesktop and GlobalShortcuts are lost — both unused on FeralOS.
+- The Secret portal is served by gnome-keyring / oo7 through their own
+  .portal files, not through the gnome portal backend.

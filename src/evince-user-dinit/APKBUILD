@@ -1,0 +1,43 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for evince (session D-Bus activation target, ADR-010).
+# The package is named after the owner of the activation Exec binary (apk
+# owner = evince, R1b purity): the audit's who-owns candidate resolves the
+# package by its own name. Evidence (alpine:latest, evince 48.4-r0, verbatim
+# upstream service file -- /usr/libexec/evinced is owned by the MAIN evince
+# package, there is no evince-daemon subpackage):
+#   org.gnome.evince.Daemon  Exec /usr/libexec/evinced -> evince
+# Unit name = canonical D-Bus bus name (dbus-activated on-demand daemon,
+# never boot-enabled; dbus decides when it runs): restart = on-failure with
+# smooth-recovery = false per the 2026-11-08 restart sweep (a crash is
+# restarted, a clean exit never is -- the next D-Bus call re-activates the
+# daemon). D-Bus activation is routed through feralos-dbus-activate via the
+# override in /usr/share/dinit/dbus-services/ (materialized at login into
+# $XDG_RUNTIME_DIR/dbus-1/services).
+pkgname=evince-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="user dinit service for evince (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate evince"
+makedepends=""
+source="org.gnome.evince.Daemon.user
+	org.gnome.evince.Daemon.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# D-Bus activation override: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.gnome.evince.Daemon.service" \
+		"$pkgdir/usr/share/dinit/dbus-services/org.gnome.evince.Daemon.service"
+	install -Dm644 "$srcdir/org.gnome.evince.Daemon.user" \
+		"$pkgdir/etc/dinit.d/user/org.gnome.evince.Daemon.user"
+}
+
+sha512sums="
+4623d6a0122b6fae7005dbec3a31d5eee182c5d10d59afad45c4276f6264a75e42c58d600a9a6f2be4cb0f956f1e7c48579541adaca13fb2848062af703725d5  org.gnome.evince.Daemon.user
+be182ecaf9d53c842fbea062ceee6e94a02fce639b51acaa55442f17fe8a6ce36dd74375d42db59b55775cd5f9dcd4c88e2efa156d20c8a19b5709d6b5b1d0e2  org.gnome.evince.Daemon.service
+"

@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# Shadow dummy for Alpine's xdg-desktop-portal-gnome: the real package
+# drags nautilus + the mutter-dependent gnome portal backend, which
+# FeralOS never runs. Alpine's niri-portalsconf subpackage carries
+# depend = xdg-desktop-portal-gnome (niri-portals.conf metadata) — this
+# empty 999 satisfies it so the real package NEVER installs (version 999
+# beats any Alpine version). Portal coverage on FeralOS:
+# xdg-desktop-portal-gtk (FileChooser/Settings/Notification/Print/Access/
+# Account/Inhibit/Lockdown/Email/AppChooser/DynamicLauncher/Wallpaper) +
+# xdg-desktop-portal-wlr (Screenshot/ScreenCast); only RemoteDesktop and
+# GlobalShortcuts are lost (both unused). Secret = gnome-keyring/oo7 own
+# .portal files. less-dummy pattern.
+pkgname=xdg-desktop-portal-gnome
+pkgver=999.0.0
+pkgrel=0
+pkgdesc="Shadow dummy: portal-gtk+wlr cover FeralOS portals; the real gnome backend (nautilus/mutter) never installs"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="MIT"
+depends=""
+makedepends=""
+source="README"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/README" "$pkgdir/usr/share/doc/$pkgname/README"
+}
+
+sha512sums="
+17b5c94dd259b25765778ff20d45ff049760cd9b7e240d0714b6150dca9b9066b6dca03e1ad9c9ecf000714b750d5123247f1371f2dcc09121a7aa2a8eb603e1  README
+"

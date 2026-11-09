@@ -1,0 +1,49 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# User dinit service for file-roller (session D-Bus activation target,
+# ADR-010). The package is named after the owner of the activation Exec
+# binary (apk owner = file-roller, R1b purity): the audit's who-owns
+# candidate resolves the package by its own name. Evidence (alpine:latest,
+# file-roller 44.5-r1, verbatim upstream service files):
+#   org.gnome.ArchiveManager1  Exec /usr/bin/file-roller --service -> file-roller
+#   org.gnome.FileRoller       Exec /usr/bin/file-roller --service -> file-roller
+# Upstream ships TWO activation names for the same service-mode binary; ONE
+# unit (service-name convention, file-roller.user) serves both -- each
+# override aliases its bus name onto the unit. dbus-activated on-demand
+# daemon, never boot-enabled: restart = on-failure with smooth-recovery =
+# false per the 2026-11-08 restart sweep (a crash is restarted, a clean
+# exit never is -- the next D-Bus call re-activates the daemon).
+# D-Bus activation is routed through feralos-dbus-activate via the
+# overrides in /usr/share/dinit/dbus-services/ (materialized at login into
+# $XDG_RUNTIME_DIR/dbus-1/services).
+pkgname=file-roller-user-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="user dinit service for file-roller (D-Bus activation target)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="MIT"
+depends="feralos-dbus-activate file-roller"
+makedepends=""
+source="file-roller.user
+	org.gnome.ArchiveManager1.service
+	org.gnome.FileRoller.service"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# D-Bus activation overrides: the effective Exec starts the dinit unit.
+	install -Dm644 "$srcdir/org.gnome.ArchiveManager1.service" \
+		"$pkgdir/usr/share/dinit/dbus-services/org.gnome.ArchiveManager1.service"
+	install -Dm644 "$srcdir/org.gnome.FileRoller.service" \
+		"$pkgdir/usr/share/dinit/dbus-services/org.gnome.FileRoller.service"
+	install -Dm644 "$srcdir/file-roller.user" \
+		"$pkgdir/etc/dinit.d/user/file-roller.user"
+}
+
+sha512sums="
+292add6304e86d06975b41379c9d92cae341b669f8e3e3bacaa9bc0d97990edf89d2958fb8987b6c761a070cff492ac72410e5e1ec4105c6dc09a597dc9dd7df  file-roller.user
+f6be73ff48cda606f38dc021cbfea319c50b1cf88ba877f019f9b04d4b327529a9873ed52faa6c2269857ba6a52feb49b1d7d3c9463cd16d3951b360d8733369  org.gnome.ArchiveManager1.service
+2493f0d93619050dfabd663f4f7cd7327b2713e73295102cac0952b03713caccf478271dcbcac01edeff9a54f881753d8d9ea27500e2bc83b16edd9acdd23b23  org.gnome.FileRoller.service
+"

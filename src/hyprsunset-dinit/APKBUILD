@@ -1,0 +1,35 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# dinit user service for hyprsunset (blue-light filter). Completeness per
+# the Alpine model: the service ships with the app and is INSTALLED but
+# never enabled — nothing boot-links or session-links hyprsunset.user; the
+# Wayle night-light module still execs the binary on demand. Start manually
+# with `dinitctl --user start hyprsunset` (temperature/gamma via the ADR-008
+# config file). The installer's dinit conversion picks this package up
+# automatically when hyprsunset-openrc is present (it is NOT in
+# dinitSkipSessionManaged).
+pkgname=hyprsunset-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit user service for hyprsunset (installed-but-unused by default)"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+depends="hyprsunset wayland-wait-user-dinit"
+makedepends=""
+source="hyprsunset.user hyprsunset-run hyprsunset.conf"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	install -Dm644 "$srcdir/hyprsunset.user" "$pkgdir/etc/dinit.d/user/hyprsunset.user"
+	install -Dm755 "$srcdir/hyprsunset-run" "$pkgdir/etc/dinit.d/user/scripts/hyprsunset-run"
+	install -Dm644 "$srcdir/hyprsunset.conf" "$pkgdir/etc/dinit.d/config/hyprsunset.conf"
+}
+
+sha512sums="
+6c30bc8b6a960f4a9058d571dfec4f0fd0aca0dd69711ee7bbebfd3d77b373b0d1e1ca8d6c39971e9e19696d2c23b7ccf1306d127950eb2d15fc430d92b182dd  hyprsunset.user
+4fa6a6d926939074f472a1408273b433307f9e25166b5c23cb622d7764f5cea07ef35adb514968ae445852a35594a1c662ab8e8d74029b7295f649e08289ee42  hyprsunset-run
+291b247b57d169e40973fd29d9447dc56597760802114606f2bbfb040c431f7b323c2c7855b33d774bd09093eb1c36217ea04af99ec42c738d4355338e029c1e  hyprsunset.conf
+"

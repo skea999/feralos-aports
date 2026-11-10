@@ -1,0 +1,17 @@
+# dinit service: hyprsunset (user session) — blue-light filter
+# Installed-but-unused by default (Alpine model: the service ships with the
+# app; nothing boot-links or session-links it). Start manually with
+# `dinitctl --user start hyprsunset` or wire it into a session script.
+# The Wayle night-light module currently execs the binary on demand
+# (hyprsunset -t <temp> -g <gamma> + pkill) — this unit is the supervised
+# alternative for that module to adopt.
+# Temperature/gamma come from the ADR-008 config file (user-editable,
+# apk-protected); the wrapper resolves the compositor wayland socket
+# (guaranteed by the wait-wayland.user dependency) before exec.
+type = process
+load-options = sub-vars
+logfile = $HOME/.local/share/dinit/hyprsunset.log
+command = /etc/dinit.d/user/scripts/hyprsunset-run
+smooth-recovery = true
+restart = on-failure
+depends-on = wait-wayland.user

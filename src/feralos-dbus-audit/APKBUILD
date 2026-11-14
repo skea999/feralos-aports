@@ -11,12 +11,14 @@
 # -dinit, then the bus name which resolves provides= aliases). The
 # installer passes --no-fail (always exit 0 — never blocks an interactive
 # install); the boot oneshot and CLI stay strict (exit 1 = the post-install
-# signal the user must notice). Runs install-time
-# (installer, chroot step 8a), boot-time (the oneshot units shipped here)
+# signal the user must notice). Runs install-time TWICE (installer: chroot
+# step 8a INSTALL pass before the desktop setup — its apk fallback feeds the
+# desktop's boot.d linking; step 16 REPORT pass at the chroot tail — final
+# state, any WARN = regression), boot-time (the oneshot units shipped here)
 # and manually (CLI).
 pkgname=feralos-dbus-audit
-pkgver=0.1.0
-pkgrel=6
+pkgver=0.1.1
+pkgrel=0
 pkgdesc="FeralOS D-Bus supervision audit (ADR-010): activation targets must be dinit units"
 url="https://github.com/skea999/feralos"
 arch="all"
@@ -74,7 +76,7 @@ package() {
 }
 
 sha512sums="
-e1c39f203dd2d78dcd51d9cbf3b8d82949a1ed7015fcfdc5f13c865aa44c968d562808d5dd3c3c9b3fd61f41abcd8abaf87407071757934e1adb2f621cf1fc0a  feralos-dbus-audit-0.1.0.tar.gz
+0c43c52fb801caf0c54921e04de5857a0bf022abb6f0fa7cd0844f7dd4d0d5af602db7763043ecc2328670194ca444152838175b6b7af07f270eedcedc99ef2b  feralos-dbus-audit-0.1.1.tar.gz
 320717b127d8e619622547d5a21338ae2262eef950f400cbed2bfca73ebbbdf8305f8e0aa87d9c3481af525ef2ec99e820fb8c40c104cf350649b1d880a33011  feralos-dbus-audit.dinit
 15236b5955a0cf0cdf3a2ccab24dcbc9a6d6379238254ac848e4275ae56ed9d673baa428bf9f6275ad72d6601d2ab9914b3e0775f3ed7bd8dc76ddce994bf830  feralos-dbus-audit.initd
 "

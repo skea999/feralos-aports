@@ -22,6 +22,14 @@
 # to useradd/adduser/chpasswd CLI (shadow + busybox), Disks talks to
 # mount/umount/blkid CLI (util-linux + busybox); zbus dropped; capabilities
 # Accountsservice -> Shadow, Udisks2 -> Parted.
+# v0.35.0 = the package-manager fusion release (0.28-0.35): one GUI code
+# path for apk/flatpak/nix (canonical SECTIONS order + shared confirm
+# blocks), flatpak orphan count + search Preview, uniform "Repositories"
+# naming, regex Pattern actions for apk/flatpak, update-check counters +
+# auto-check toggler, aa-easyprof AppArmor actions; the flatpak
+# permissions editor is REMOVED everywhere (daemon actions + GUI + man).
+# nix/flatpak CLI calls stay runtime tools provided by the installer's
+# EnableNix/flatpak features — NOT unconditional depends.
 # Runtime depends = parted + shadow + util-linux (Disks/Users modules) —
 # see the depends= line below.
 # The package only SHIPS the service assets (dinit unit +
@@ -29,7 +37,8 @@
 # by the FeralOS installer services map, never by the package itself
 # (post-install only creates the config/log dirs).
 #
-# check() runs the 0.27.0 member set ONLY (-p list below): the
+# check() runs the member set from 0.27.0 (unchanged through 0.35.0;
+# -p list below): the
 # src/ursinectl integration tests (e2e/inprocess) are calibrated for
 # upstream's root CI container ("runs as root ... the same condition the
 # CLI enforces"; Dispatch expectations tuned to the ursine-ci tool set) —
@@ -41,7 +50,7 @@
 # (the repo's .cargo/config.toml sets build.target-dir = artifacts/target,
 # plus the -crt-static rustflag that makes -lpam resolve on musl).
 pkgname=ursine
-pkgver=0.27.0
+pkgver=0.35.0
 pkgrel=0
 pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
 url="https://github.com/skea999/ursine"
@@ -143,9 +152,9 @@ package() {
 }
 
 sha512sums="
-2b60cd9baa2a44cda96858e3824d7773f96fe964e80d9846896af9165222b6397c0329a03b46adc046e2bccc744cc8a6dcc04c9dd7a9b2dd18f98d44796da8c1  ursine-v0.27.0.tar.gz
+d1496650a25abbac361c6b08fac9568dab85132a7a3b32b802308e26c17467f2c75ad458ea991a9e88a28d045bf1d9a78e93933aeffaeee6fbfa3da212500c2b  ursine-v0.35.0.tar.gz
 b6c66949774b336891e899a9e111a24cd54e56b1899585dcc19fe41b4adfc47cdd9413a70c01c2cc278ea4b7ae444e50c96943fcb419238058ad5b1feba3c289  ursine.pam
-aa888a150b85a7a9b8c26139d6b05ca7bacfdffc217badbc16ae846cdb305d8c412e4cea52b5b11556d7896a76aea8fcb2d9378f2f066ca611ee2559a9082e96  ursined.dinit
+076dcc24d4a86ffb207668b08b1c908a2b8e874f9702293c7dd618a0c70753971fd82ef36e55cfa133cce243540a4a7fd02281bb17992778d4c1d9f7f58d67be  ursined.dinit
 0c579b35c886812e935848b66bb9951945e4cf13025ad52175ded5329ad4f3590f0980e2e111a3ede85dac7824eddeffc5ade5ae2140d2da99528fb21e36c705  ursined.script
 c00cac245ceb52886690e0c139f086c0fe4367b75dd5b9abd200701631f32ae56b7b682d247910c0fd32f2ad7fe51e9d30e7c7a08f581eb985a45acafee8ca9b  ursined.conf
 06bd2b4a306c4c312005c3bd763152e50f6673528e728f175e5d10faa49bfe0c7f6ec618296f23b1a93a6ff751706166e34649d5b20271985e28d08b6ed11bdd  ursined.initd

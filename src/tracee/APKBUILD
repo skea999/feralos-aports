@@ -1,0 +1,90 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# Tracee (Aqua Security) — eBPF runtime security detection. Ported for the
+# FeralOS security stack (base installer): absent from Alpine aports, first
+# musl packaging anywhere. SHARED musl build ON PURPOSE: static builds cannot
+# load Go plugin signatures at all (pkg/signatures/signature/signature.go
+# skips every plugin when isBinaryStatic()), so the detection engine
+# (signatures/builtin.so) requires the shared build + the plugin compiled in
+# the SAME musl/Go toolchain as the binary — guaranteed by building both here.
+# libbpf is a git submodule upstream: GitHub tag archives ship the (empty)
+# dir with no content, so the pinned libbpf release is a second source
+# (feralos-aports source pinning policy: tag archives, never commits).
+pkgname=tracee
+pkgver=0.24.1
+_libbpfver=1.5.1
+pkgrel=0
+pkgdesc="Linux tracing and eBPF-based security detection tool"
+url="https://aquasecurity.github.io/tracee/"
+arch="x86_64 aarch64"
+license="Apache-2.0"
+depends="libelf zlib libzstd"
+# go: go.mod pins toolchain go1.24.9 (GOTOOLCHAIN downloads it when the
+# distro go is older — hence options="net"). clang: eBPF object compile
+# (-target bpf), needs >= 12 (Makefile guard). bash/coreutils/findutils:
+# Makefile + scripts assumptions. pkgconf: libbpf.pc resolution.
+makedepends="go clang llvm elfutils-dev zlib-dev zstd-dev linux-headers pkgconf bash coreutils findutils"
+# release-version stamping avoids git-describe (no .git in archives);
+# CMD_GIT=echo no-ops the remaining git calls (nixpkgs precedent)
+_makeflags="RELEASE_VERSION=v$pkgver CMD_GIT=echo"
+source="tracee-$pkgver.tar.gz::https://github.com/aquasecurity/tracee/archive/refs/tags/v$pkgver.tar.gz
+	libbpf-$_libbpfver.tar.gz::https://github.com/libbpf/libbpf/archive/refs/tags/v$_libbpfver.tar.gz
+	tracee.initd
+	tracee.dinit
+	tracee.script
+	tracee.conf"
+options="net"
+builddir="$srcdir/$pkgname-$pkgver"
+
+sha512sums="
+a5905a5de95ff43b05dc65132a06d99bff642fa12ca2abd390efefd47733f610c1c0105952695dd7eb4a2137022d267ccb35e9f6972fe397f73f93cde95e9cf3  tracee-0.24.1.tar.gz
+d24c4ef9c0b09a1252320bde54270aedd41211f4359c72a02ee4960b63782a6e8f3de3e3a535720ed468a491397860154f9d1ffc312755f9595a44d22ea23f3b  libbpf-1.5.1.tar.gz
+97f4e8e9914f793375146eb70022f004594f876a0c8451014bbd09bec4be8c741d2a7b39ef900f5490308ff68d84ee098566a0ab28b353bd0ec2022bb4f09108  tracee.initd
+a21a4976ae588c751246a99b907e11051f7eb27759cc0926335ab2c0ec0b6cc4c7c30308f852013b62324e9402e73cbfbe0e6775cdc1dcf6553645cf1145ed83  tracee.dinit
+6e0127b78f46fed508d8865a7621cedbaafe5f7e7bd2652f1fd1754d70d779d817b720c1b40b02c91e60557957a8db2c8005e7ecb73ddd3b034f531de8bbc95b  tracee.script
+81fdd7a143cac208f5acba280f60a5c1de949b5660e94bde44d4889e712b239e355fe420171eabe44270972275a4df9c861e79ee7325ed8df3f7e3b56252a84d  tracee.conf
+"
+
+prepare() {
+	default_prepare
+	# pinned libbpf (upstream submodule commit = v1.5.1) into 3rdparty/libbpf
+	# — the Makefile builds it as a static archive (BUILD_STATIC_ONLY) and
+	# links it into the binary via the generated libbpf.pc
+	mkdir -p "$builddir"/3rdparty/libbpf
+	tar -xzf "$srcdir"/libbpf-$_libbpfver.tar.gz \
+		-C "$builddir"/3rdparty/libbpf --strip-components=1
+}
+
+build() {
+	cd "$builddir"
+	# bpf: dist/tracee.bpf.o (compiled, then go:embed-ed into the binary);
+	# tracee: the merged single binary; signatures: dist/signatures/builtin.so
+	env $_makeflags make bpf tracee signatures
+}
+
+check() {
+	cd "$builddir"
+	test -x dist/tracee
+	test -f dist/signatures/builtin.so
+	./dist/tracee --help 2>&1 | grep -q tracee
+}
+
+package() {
+	cd "$builddir"
+	# libexec layout: signaturesDir = <dir-of-exe>/signatures — the plugin
+	# MUST sit next to the binary, /usr/bin would scatter a signatures dir
+	# into PATH
+	install -Dm755 dist/tracee "$pkgdir"/usr/libexec/tracee/tracee
+	install -Dm644 dist/signatures/builtin.so \
+		"$pkgdir"/usr/libexec/tracee/signatures/builtin.so
+	install -Dm644 LICENSE \
+		"$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+	# dinit unit + wrapper + config (ADR-008/009 conventions)
+	install -Dm644 "$srcdir"/tracee.dinit "$pkgdir"/lib/dinit.d/tracee
+	install -Dm755 "$srcdir"/tracee.script "$pkgdir"/usr/lib/dinit/tracee
+	# one config, two init flavors: env-file (dinit) + /etc/conf.d (OpenRC)
+	install -Dm644 "$srcdir"/tracee.conf "$pkgdir"/etc/dinit.d/config/tracee.conf
+	install -Dm644 "$srcdir"/tracee.conf "$pkgdir"/etc/conf.d/tracee
+	# OpenRC fallback unit (supervise-daemon)
+	install -Dm755 "$srcdir"/tracee.initd "$pkgdir"/etc/init.d/tracee
+}

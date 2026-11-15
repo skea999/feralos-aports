@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=fail2ban-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for fail2ban"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+# fail2ban-openrc ships /etc/init.d/fail2ban (the OpenRC fallback unit; the
+# installer's rules enablement drives BOTH inits from the same service name)
+depends="dinit fail2ban fail2ban-openrc"
+makedepends=""
+source="fail2ban fail2ban.script fail2ban.conf"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/fail2ban" "$pkgdir/lib/dinit.d/fail2ban"
+	install -Dm755 "$srcdir/fail2ban.script" "$pkgdir/usr/lib/dinit/fail2ban"
+	install -Dm644 "$srcdir/fail2ban.conf" "$pkgdir/etc/dinit.d/config/fail2ban.conf"
+}
+
+sha512sums="
+933ca3106e3ad028ae5c0d4d6e271806e9a675a5f0639e8682bf8f8541af086612e04fce440510c0fdb50384d79dda8546ce429f44afa2a0e6641dfba3c8816c  fail2ban
+7f95ecddf3d3137090f8e7188759ed6538fa4be1d8f5e5222f30c27e4bd18443bfbea63f837f4b761c4382a9077534d29a9d7f453e92488de3f43307d8cedaed  fail2ban.script
+fcb8f56b67f6cdc16be75aa0384372eac426950525139de22927a162db816e704761bbc0d2df32d1e7b37022ea365730c1d189f4cb427310d6bf34f789ee5751  fail2ban.conf
+"

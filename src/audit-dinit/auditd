@@ -1,0 +1,13 @@
+# dinit service: auditd (Alpine openrc auditd + overrides)
+# Rules are loaded by the wrapper (auditctl -R) BEFORE the daemon execs —
+# the kernel audit netlink collects events into the backlog until auditd
+# drains it, so nothing is lost in the gap.
+type = process
+log-type = file
+logfile = /var/log/dinit/auditd.log
+command = /usr/lib/dinit/auditd
+env-file = /etc/dinit.d/config/auditd.conf
+smooth-recovery = true
+restart = on-failure
+depends-on = local.target
+before = login.target

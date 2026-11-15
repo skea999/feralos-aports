@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=audit-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for auditd"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+# audit-openrc ships /etc/init.d/auditd (the OpenRC fallback unit; the
+# installer's rules enablement drives BOTH inits from the same service name)
+depends="dinit audit audit-openrc"
+makedepends=""
+source="auditd auditd.script auditd.conf"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/auditd" "$pkgdir/lib/dinit.d/auditd"
+	install -Dm755 "$srcdir/auditd.script" "$pkgdir/usr/lib/dinit/auditd"
+	install -Dm644 "$srcdir/auditd.conf" "$pkgdir/etc/dinit.d/config/auditd.conf"
+}
+
+sha512sums="
+7801b498b94694a5c921b1f5ee95b62ebb50d8c8085540bb224f2d685767cd97df39eb7a0a346746f3ee09d85c7b7fd321a5e6424ac6b54c3450dc01458385e4  auditd
+c2774451dd7f0e47bec37e97b713423a74735ed355c97d9e60fa8991e4cd4ca739c0783080be8db729486579aecdf63c775cc7b1da4a5741854f585bc98201da  auditd.script
+13cf0d0f24e7c9149a97461aa1e297b654df00eb22e3c31ed85d506e156ee20bfa195957af6bb77c13c817df51e0c399d05c7b206113419bcc320aa2f983d6e6  auditd.conf
+"

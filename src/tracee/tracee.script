@@ -1,0 +1,9 @@
+#!/bin/sh
+# dinit wrapper for tracee — sources the packaged config (if present), then
+# execs the merged binary from its libexec layout (signatures/builtin.so MUST
+# sit next to the binary: signaturesDir = dir-of-exe/signatures).
+# Tuning (events scope, perf buffers) lives in tracee.conf via TRACEE_ARGS —
+# upstream defaults load the full event set; a desktop profile example:
+#   TRACEE_ARGS="--events execve,openat,connect --perf-buffer-size 256"
+[ -r /etc/dinit.d/config/tracee.conf ] && . /etc/dinit.d/config/tracee.conf
+exec /usr/libexec/tracee/tracee --output json ${TRACEE_ARGS}

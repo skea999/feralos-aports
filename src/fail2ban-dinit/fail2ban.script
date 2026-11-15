@@ -1,0 +1,9 @@
+#!/bin/sh
+# dinit wrapper for fail2ban — sources the packaged config (if present), then
+# execs the server in the foreground (jails/banactions come from
+# /etc/fail2ban/jail.d — the installer drops 50-feralos.conf there).
+[ -r /etc/dinit.d/config/fail2ban.conf ] && . /etc/dinit.d/config/fail2ban.conf
+mkdir -p /run/fail2ban
+# remove stalled sock file after a crash (Alpine initd bug 347477)
+rm -f /run/fail2ban/fail2ban.sock
+exec /usr/bin/fail2ban-server -f ${FAIL2BAN_ARGS}

@@ -1,0 +1,11 @@
+#!/bin/sh
+# dinit wrapper for auditd — sources the packaged config (if present), loads
+# the audit ruleset, then execs the daemon in the foreground.
+# auditctl -R is best-effort BY DESIGN: once the ruleset is immutable
+# (-e 2 in /etc/audit/audit.rules), every later reload fails with EPERM
+# (auditd restart mid-session) — that must never kill the daemon; the
+# kernel rules from the boot load are still in force until reboot.
+[ -r /etc/dinit.d/config/auditd.conf ] && . /etc/dinit.d/config/auditd.conf
+mkdir -p /run/audit
+/usr/sbin/auditctl -R /etc/audit/audit.rules || true
+exec /usr/sbin/auditd -f ${AUDITD_ARGS}

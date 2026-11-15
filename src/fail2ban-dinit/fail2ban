@@ -1,0 +1,13 @@
+# dinit service: fail2ban (Alpine openrc fail2ban + overrides)
+# fail2ban-server -f reads /etc/fail2ban/{fail2ban,jail}.local directly — no
+# fail2ban-client socket dance; the wrapper clears a possibly-stale sock
+# (Alpine initd bug 347477) before exec.
+type = process
+log-type = file
+logfile = /var/log/dinit/fail2ban.log
+command = /usr/lib/dinit/fail2ban
+env-file = /etc/dinit.d/config/fail2ban.conf
+smooth-recovery = true
+restart = on-failure
+depends-on = local.target
+before = login.target

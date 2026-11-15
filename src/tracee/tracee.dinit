@@ -1,0 +1,14 @@
+# dinit service: tracee (FeralOS port — no Alpine openrc counterpart)
+# eBPF runtime security detection; JSON events -> /var/log/dinit/tracee.log,
+# picked up by the vector dinit_services file source (feralos.json.log view).
+# Needs root (CAP_BPF/CAP_PERFMON/SYS_PTRACE/NET_ADMIN/SYSLOG) and
+# /sys/kernel/btf/vmlinux (Alpine linux-lts ships BTF).
+type = process
+log-type = file
+logfile = /var/log/dinit/tracee.log
+command = /usr/lib/dinit/tracee
+env-file = /etc/dinit.d/config/tracee.conf
+smooth-recovery = true
+restart = on-failure
+depends-on = local.target
+before = login.target

@@ -1,0 +1,48 @@
+# Ported from Alpine aports testing/aide 0.19.5-r0 (recipe mirrored verbatim
+# per the feralos-aports porting policy: same source tag pin, same sha512).
+# Reason for porting: aide lives in Alpine *testing* and FeralOS installs from
+# latest-stable (+ tagged @edge) — a base security-stack component cannot
+# depend on an unpinned testing package.
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=aide
+pkgver=0.19.5
+pkgrel=0
+pkgdesc="file integrity checker and intrusion detection program"
+url="https://aide.github.io/"
+arch="all"
+license="GPL-2.0-or-later"
+makedepends="
+	autoconf
+	automake
+	bison
+	flex
+	nettle-dev
+	pcre2-dev
+	linux-headers
+	"
+subpackages="$pkgname-doc"
+source="https://github.com/aide/aide/releases/download/v$pkgver/aide-$pkgver.tar.gz"
+
+build() {
+	./configure \
+		CFLAGS="$CFLAGS -D__GNU_LIBRARY__" \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var
+	make
+}
+
+check() {
+	make check
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="
+1519e02df27fa3f52b49e437528152be3cd3edc3bfec2c8150a3b71db6be08e400b08adbfe4521d064ebe13347f5e318cb0b643b6d07cf0e0c4354b12c2fda20  aide-0.19.5.tar.gz
+"

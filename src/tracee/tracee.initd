@@ -1,0 +1,16 @@
+#!/sbin/openrc-run
+# OpenRC fallback unit for tracee (FeralOS port). supervise-daemon handles
+# the output redirection; config vars come from /etc/conf.d/tracee (same
+# file the dinit env-file sources).
+name="tracee"
+description="eBPF runtime security detection (Aqua Tracee)"
+command="/usr/libexec/tracee/tracee"
+command_args="--output json ${TRACEE_ARGS:-}"
+supervisor=supervise-daemon
+output_log="/var/log/tracee.log"
+error_log="/var/log/tracee.log"
+respawn_delay=5
+
+depend() {
+	after local
+}

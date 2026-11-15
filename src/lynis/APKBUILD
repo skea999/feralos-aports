@@ -1,0 +1,44 @@
+# Ported from Alpine aports testing/lynis 3.1.6-r0 (recipe mirrored verbatim
+# per the feralos-aports porting policy: same source tag pin, same sha512).
+# Reason for porting: lynis lives in Alpine *testing* and FeralOS installs
+# from latest-stable (+ tagged @edge). Report-only conformance tool for the
+# security stack (docs/architecture/security_stack.md) — no daemon.
+# Maintainer: FeralOS <dev@feralos.org>
+pkgname=lynis
+pkgver=3.1.6
+pkgrel=0
+pkgdesc="Security and system auditing tool"
+url="https://cisofy.com/lynis/"
+arch="noarch"
+license="GPL-3.0-or-later"
+depends="bash"
+options="!check" # no testsuit
+subpackages="$pkgname-doc
+	$pkgname-bash-completion
+	"
+source="$pkgname-$pkgver.tar.gz::https://cisofy.com/files/lynis-$pkgver.tar.gz
+	$pkgname.cron"
+builddir=$srcdir/$pkgname
+
+package() {
+	# stricter default perms - bug 507436
+	mkdir -p -m 0700 "$pkgdir/usr/share/$pkgname" "$pkgdir/etc/$pkgname"
+	cp -r "$builddir/db" "$builddir/include" "$builddir/plugins" "$pkgdir/usr/share/$pkgname"
+
+	install -Dm755 "$builddir/$pkgname" "$pkgdir/usr/sbin/$pkgname"
+	install -Dm600 "$builddir/default.prf" "$pkgdir/etc/$pkgname/default.prf"
+	install -Dm755 "$srcdir/$pkgname.cron" "$pkgdir"/etc/periodic/daily/$pkgname
+
+	# lynis-doc
+	install -Dm644 CHANGELOG.md FAQ README -t "$pkgdir/usr/share/doc/$pkgname/"
+	install -Dm644 "$builddir/lynis.8" "$pkgdir/usr/share/man/man8/lynis.8"
+
+ 	install -Dm644 "$builddir/extras/bash_completion.d/lynis" \
+			"$pkgdir/usr/share/bash-completion/completions/lynis"
+
+}
+
+sha512sums="
+a462be0e4177033b01db7573b1a30c46e1b263cda782963b6f2fdc1f79309362961cd1ae667d974e586500e21f903ebe36f208cc6b69a4017076f3586d7c4ba8  lynis-3.1.6.tar.gz
+1cdaaee433912c2ccdec8ad7c9b88be55fe3f1d68e2fca79cc6e0e10112d465a70cfbe0a049623437f604bfc9793e0d29b709e035cbf710d4d38ba48acc5355f  lynis.cron
+"

@@ -1,0 +1,23 @@
+#!/sbin/openrc-run
+# FeralOS override (fail2ban-dinit): the Alpine fail2ban-openrc initd has
+# depend() need logger (busybox syslogd — vector replaced it), so it can
+# never start here. Dependency-free replacement: foreground server under
+# supervise-daemon; jails/banactions come from /etc/fail2ban/jail.d
+# (installer drops 50-feralos.conf there, nftables-native banaction).
+name="fail2ban"
+description="ban hosts that cause multiple authentication errors"
+command="/usr/bin/fail2ban-server"
+command_args="-f ${FAIL2BAN_ARGS:-}"
+supervisor=supervise-daemon
+output_log="/var/log/dinit/fail2ban.log"
+error_log="/var/log/dinit/fail2ban.log"
+respawn_delay=5
+
+start_pre() {
+	mkdir -p /run/fail2ban
+	rm -f /run/fail2ban/fail2ban.sock
+}
+
+depend() {
+	after localmount vector
+}

@@ -1,0 +1,15 @@
+# dinit service: clamd (Alpine openrc clamd + overrides)
+# OpenRC fallback = the PACKAGE's own clamd.initd + freshclam.initd (this
+# package does NOT ship /etc/init.d/clamd|freshclam: those paths belong to
+# the clamav-daemon/freshclam subpackages). Foreground comes from the CLI
+# flag, which overrides the config file (clamd.c: argv scan beats optget).
+# freshclam runs FIRST (Alpine rc_need="freshclam" semantic preserved).
+type = process
+log-type = file
+logfile = /var/log/dinit/clamd.log
+command = /usr/lib/dinit/clamd
+env-file = /etc/dinit.d/config/clamd.conf
+smooth-recovery = true
+restart = on-failure
+depends-on = freshclam
+before = login.target

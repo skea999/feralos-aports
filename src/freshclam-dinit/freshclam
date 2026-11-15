@@ -1,0 +1,14 @@
+# dinit service: freshclam (Alpine openrc freshclam + overrides)
+# --daemon --foreground: daemon mode (Checks per freshclam.conf, default 12
+# checks/day) without forking — dinit supervises the real process. Offline it
+# just logs failed download attempts and retries; on a network it updates
+# /var/lib/clamav and daemon-notifies clamd.
+type = process
+log-type = file
+logfile = /var/log/dinit/freshclam.log
+command = /usr/lib/dinit/freshclam
+env-file = /etc/dinit.d/config/freshclam.conf
+smooth-recovery = true
+restart = on-failure
+depends-on = local.target
+before = login.target

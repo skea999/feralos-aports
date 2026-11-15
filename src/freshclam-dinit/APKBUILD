@@ -1,0 +1,37 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# NAME CONTRACT: the installer's dinit conversion (packages.go) scans the
+# installed `-openrc` subpackages and `apk add <base>-dinit` for each —
+# Alpine ships `freshclam-openrc`, so this package MUST be named
+# `freshclam-dinit` (separate from clamav-daemon-dinit, matching the
+# upstream one-daemon-one-package split).
+pkgname=freshclam-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for freshclam"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+# freshclam owns /etc/init.d/freshclam (the OpenRC fallback unit — this
+# package does NOT ship that path); the installer's rules enablement drives
+# BOTH inits from the same service name. clamd's dinit unit depends-on this
+# one (the Alpine clamd.confd rc_need="freshclam" semantic).
+depends="dinit freshclam"
+makedepends=""
+source="freshclam freshclam.script freshclam.conf"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/freshclam" "$pkgdir/lib/dinit.d/freshclam"
+	install -Dm755 "$srcdir/freshclam.script" "$pkgdir/usr/lib/dinit/freshclam"
+	install -Dm644 "$srcdir/freshclam.conf" "$pkgdir/etc/dinit.d/config/freshclam.conf"
+}
+
+sha512sums="
+6cc59ecfa331f0c193f2c45ca4d5b307b671a594bede41d5122a2f002dd49633b9f60bdb26c09563fec167f6014238df5d15e44dc05fd0f842baf93fd7680d39  freshclam
+788e21a01c8ad96340dcc77b6590d43c2875dcd079c46d8dd0aee76f259487637108d3bbd4505f65c83a70cd66b6cdb890506e5d3a687a2b672ed17a1cc4bb9a  freshclam.script
+27775f5fe8fbb7a6db8ddf20949e49cb562545cb4e5c53e828c58cdef82f201137280dc0c0a1661954879e691445ac1acf6af75bd19ea298ca2c3fcbe90e85c4  freshclam.conf
+"

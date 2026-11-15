@@ -1,0 +1,10 @@
+#!/bin/sh
+# dinit wrapper for clamd — sources the packaged config (if present), prepares
+# the runtime dirs the OpenRC initd's start_pre covered, then execs clamd in
+# the foreground. The database snapshot ships in clamav-db (/var/lib/clamav
+# has main.cvd at install) — offline-first, freshclam NOT auto-enabled.
+[ -r /etc/dinit.d/config/clamd.conf ] && . /etc/dinit.d/config/clamd.conf
+mkdir -p /run/clamav /var/log/clamav
+chown clamav:clamav /run/clamav /var/log/clamav
+chmod 755 /run/clamav
+exec /usr/sbin/clamd --foreground ${CLAMD_ARGS}

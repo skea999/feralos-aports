@@ -1,0 +1,10 @@
+#!/bin/sh
+# dinit wrapper for freshclam — sources the packaged config (if present),
+# prepares the dirs the OpenRC initd's start_pre covered, then execs
+# freshclam in foreground daemon mode as the clamav user (--user: the
+# DatabaseOwner from freshclam.conf).
+[ -r /etc/dinit.d/config/freshclam.conf ] && . /etc/dinit.d/config/freshclam.conf
+mkdir -p /run/clamav /var/log/clamav
+chown clamav:clamav /run/clamav /var/log/clamav
+chmod 750 /run/clamav
+exec /usr/bin/freshclam --daemon --foreground --user clamav ${FRESHCLAM_ARGS}

@@ -1,0 +1,38 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# NAME CONTRACT: the installer's dinit conversion (packages.go) scans the
+# installed `-openrc` subpackages and `apk add <base>-dinit` for each —
+# Alpine ships `clamav-daemon-openrc`, so this package MUST be named
+# `clamav-daemon-dinit` (one daemon, one package, matching the upstream
+# split; freshclam has its own freshclam-dinit).
+pkgname=clamav-daemon-dinit
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="dinit service for clamd"
+url="https://github.com/skea999/feralos-aports"
+arch="all"
+license="ISC"
+# clamav-daemon owns /etc/init.d/clamd (the OpenRC fallback unit — this
+# package does NOT ship that path); the installer's rules enablement drives
+# BOTH inits from the same service name. The dinit unit depends-on freshclam
+# (the Alpine clamd.confd rc_need="freshclam" semantic, preserved via the
+# freshclam-dinit unit).
+depends="dinit clamav-daemon"
+makedepends=""
+source="clamd clamd.script clamd.conf"
+
+build() { return 0; }
+check() { return 0; }
+
+package() {
+	# Alpine model: ship the service file; enablement is rules-driven (dinitctl enable)
+	install -Dm644 "$srcdir/clamd" "$pkgdir/lib/dinit.d/clamd"
+	install -Dm755 "$srcdir/clamd.script" "$pkgdir/usr/lib/dinit/clamd"
+	install -Dm644 "$srcdir/clamd.conf" "$pkgdir/etc/dinit.d/config/clamd.conf"
+}
+
+sha512sums="
+f98740d942e9321a9f9c812b284d271bd134af59f9a2d8b2ab42941fab9a42eac06b50bf9a7e7496b603aa645ed89864e3e7bc9d1deb3c22dbefee639fa3a2e0  clamd
+d4244ae1af84fc97db87f44215b65188defe1800bfa88c1ed0d07a0f88d860324235dc5b75a10cf3f92167b9a36380cc17e17997862820d4901175d0a68ba150  clamd.script
+59084fd0006eac1f883306b6ec32cdd4da1c4b0533f7acc516d093f7f8e6201634d8f174815cdda20c8c104b77bf6cfa2e9d240cf40329880e73d93b06ff6672  clamd.conf
+"

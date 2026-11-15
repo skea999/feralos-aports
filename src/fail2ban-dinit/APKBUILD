@@ -1,17 +1,22 @@
 # Contributor: FeralOS <dev@feralos.org>
 # Maintainer: FeralOS <dev@feralos.org>
+# BOTH-INIT override package: the Alpine fail2ban-openrc initd has
+# depend() need logger (busybox syslogd — vector replaced it), so it can
+# never start on FeralOS. This package ships the dinit unit AND a
+# dependency-free OpenRC replacement at the same /etc/init.d/fail2ban path
+# (apk keeps future fail2ban-openrc updates as .apk-new — klogd-openrc
+# precedent); `replaces` retires the vendor -openrc subpackage.
 pkgname=fail2ban-dinit
 pkgver=0.1.0
-pkgrel=0
-pkgdesc="dinit service for fail2ban"
+pkgrel=1
+pkgdesc="dinit + OpenRC services for fail2ban (FeralOS both-inits override)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-# fail2ban-openrc ships /etc/init.d/fail2ban (the OpenRC fallback unit; the
-# installer's rules enablement drives BOTH inits from the same service name)
-depends="dinit fail2ban fail2ban-openrc"
+depends="dinit fail2ban"
+replaces="fail2ban-openrc"
 makedepends=""
-source="fail2ban fail2ban.script fail2ban.conf"
+source="fail2ban fail2ban.script fail2ban.conf fail2ban.initd"
 
 build() { return 0; }
 check() { return 0; }
@@ -21,10 +26,12 @@ package() {
 	install -Dm644 "$srcdir/fail2ban" "$pkgdir/lib/dinit.d/fail2ban"
 	install -Dm755 "$srcdir/fail2ban.script" "$pkgdir/usr/lib/dinit/fail2ban"
 	install -Dm644 "$srcdir/fail2ban.conf" "$pkgdir/etc/dinit.d/config/fail2ban.conf"
+	install -Dm755 "$srcdir/fail2ban.initd" "$pkgdir/etc/init.d/fail2ban"
 }
 
 sha512sums="
 933ca3106e3ad028ae5c0d4d6e271806e9a675a5f0639e8682bf8f8541af086612e04fce440510c0fdb50384d79dda8546ce429f44afa2a0e6641dfba3c8816c  fail2ban
 7f95ecddf3d3137090f8e7188759ed6538fa4be1d8f5e5222f30c27e4bd18443bfbea63f837f4b761c4382a9077534d29a9d7f453e92488de3f43307d8cedaed  fail2ban.script
 fcb8f56b67f6cdc16be75aa0384372eac426950525139de22927a162db816e704761bbc0d2df32d1e7b37022ea365730c1d189f4cb427310d6bf34f789ee5751  fail2ban.conf
+54c6083b2013a34a1ab0dad71f37a75795dcd22073817dbaabe160c4fef5f64f89f4b7ff630c35ff91d5a63140616cef4dddb5102200c53e46015c2b634c4547  fail2ban.initd
 "

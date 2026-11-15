@@ -18,7 +18,7 @@ pkgdesc="Linux tracing and eBPF-based security detection tool"
 url="https://aquasecurity.github.io/tracee/"
 arch="x86_64 aarch64"
 license="Apache-2.0"
-depends="libelf zlib libzstd"
+depends="libelf zlib zstd-libs"
 # go: go.mod pins toolchain go1.24.9 (GOTOOLCHAIN downloads it when the
 # distro go is older — hence options="net"). clang: eBPF object compile
 # (-target bpf), needs >= 12 (Makefile guard). bash/coreutils/findutils:

@@ -2,8 +2,15 @@
 # dinit wrapper for fail2ban — sources the packaged config (if present), then
 # execs the server in the foreground (jails/banactions come from
 # /etc/fail2ban/jail.d — the installer drops 50-feralos.conf there).
+# auth.log pre-creation: jails bind their logpath at SERVER start and are
+# never re-evaluated — if vector hasn't written auth.log yet, the sshd jail
+# would stay down forever (smooth-recovery only restarts a dead server, not
+# dead jails). The sink file belongs to the vector user (it APPENDS the log):
+# root-created would be unwritable → chown. Harness
+# 2026-11-15T16-07-11Z: jail down for exactly this reason.
 [ -r /etc/dinit.d/config/fail2ban.conf ] && . /etc/dinit.d/config/fail2ban.conf
 mkdir -p /run/fail2ban
 # remove stalled sock file after a crash (Alpine initd bug 347477)
 rm -f /run/fail2ban/fail2ban.sock
+[ -e /var/log/auth.log ] || { touch /var/log/auth.log && chown vector:vector /var/log/auth.log; }
 exec /usr/bin/fail2ban-server -f ${FAIL2BAN_ARGS}

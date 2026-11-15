@@ -5,3 +5,8 @@ d /run/vector 0755 vector vector -
 L /dev/log 0777 - - - /run/vector/syslog.sock
 d /var/log 0755 vector vector -
 d /btrbk 0755 btrbk btrbk -
+# conf.d drop-ins: the manual log shipping mechanism (see vector.script) —
+# admin-writable, readable by the vector user (sinks reference ${VAR}s from
+# /etc/vector/secrets.env if ever needed; that file is created by the admin,
+# never by us)
+d /etc/vector/conf.d 0755 vector vector -

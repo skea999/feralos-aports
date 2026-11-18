@@ -27,6 +27,10 @@
 # the file (unexpected layout) the session runs WITHOUT logging instead of
 # dying on the redirect.
 LOG=/var/log/wayle-session.log
+# /var/log is 0777: the FIRST session creates the file (owned by the session
+# user); later sessions by the same user append, other users skip logging
+# gracefully (the file is 0644 other-user-owned and never dies on the redirect).
+touch "$LOG" 2>/dev/null || :
 if [ -w "$LOG" ]; then
     exec >> "$LOG" 2>&1
     echo "$(date '+%F %T') wayle-session: start (greetd session)"

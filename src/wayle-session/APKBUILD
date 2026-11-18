@@ -19,7 +19,7 @@
 # same variables).
 pkgname=wayle-session
 pkgver=0.1.0
-pkgrel=8
+pkgrel=9
 pkgdesc="Wayle session — niri compositor + Wayle shell session for FeralOS (user dinit services)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -47,7 +47,7 @@ package() {
 }
 
 sha512sums="
-108aeaccba997596ba61d730b932d29a14232d7942a550e1431a8205457d8706bc302e599854ab9f3e5786bad70dd4ec71570d72ddf5d0864821c6a45f7b1c50  wayle-session
+96dd77b96ca5a9741c85d9e8fda6c9339b8e64530d952143ac715ee2406bdb481e9372d26dcbda15f5cc2edf12d925ca2e062c81f0299693adb6bdf4be736382  wayle-session
 c67013a1e3b3369c1cd50f349818282448fb6a71b546a4986e132277f74b882edf081c1657bdf96084d483374653b8a115ee5deb8beb3dcf2f21b77bfd5bd357  wayle.user
 6bbad1e2e9a05c6a1c989e6f8f00b42100425650deabcd0339a20a6a4bd798a94f758d4077da69a255dd1b2e858bdbc6b0277b78c08397e16455989e715a22ec  veila.user
 81731434a6a1f243f924103d31112fda0d466cd9e81cd09c91904b9f458de786ed3b5ab77cf99654c34525c7949322f0bb888f7de74f2207879236e6c4b49817  veilad-session

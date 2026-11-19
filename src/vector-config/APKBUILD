@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# vector-config: the FeralOS Vector configuration as an APK package.
+#
+# WHY A PACKAGE: the config is static and apk-managed (upgradable, both
+# inits read the same file) instead of installer-generated. The GENERIC
+# per-source pattern (docs: 1:1 source->sink, one dedicated /var/log file
+# per source): every new log producer = repeat the pattern (one source
+# glob + one sink each). Sources WITHOUT their files are inert
+# (ignore_not_found: true — dinit absent on OpenRC, incus not installed,
+# no session runtime logs) — the static config is valid on every install,
+# no conditional blocks.
+#
+# replaces="vector": file-level takeover of the Alpine demo
+# /etc/vector/vector.yaml (klogd-openrc precedent — future vector updates
+# keep the file as .apk-new, ours stays). The conf.d drop-in dir is the
+# manual shipping mechanism: drop a sink file there, nothing else changes.
+pkgname=vector-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS Vector configuration (static, generic 1:1 source->file pattern)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="vector"
+replaces="vector"
+makedepends=""
+source="vector.yaml conf.d-README"
+options="!check" # static config, validated at runtime (vector validate)
+
+package() {
+	install -Dm644 "$srcdir/vector.yaml" "$pkgdir/etc/vector/vector.yaml"
+	# conf.d drop-ins: the manual log shipping mechanism — an admin drops a
+	# sink file here, nothing else changes (the wrapper merges them).
+	install -dm755 "$pkgdir/etc/vector/conf.d"
+	install -Dm644 "$srcdir/conf.d-README" "$pkgdir/etc/vector/conf.d/README.md"
+	# vector data dir (the daemon needs it writable by the vector user)
+	install -dm755 "$pkgdir/var/lib/vector"
+}

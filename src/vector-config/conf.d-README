@@ -1,0 +1,17 @@
+# /etc/vector/conf.d — manual Vector drop-ins
+#
+# Any *.yaml here is merged ON TOP of /etc/vector/vector.yaml by the vector
+# service (vector multi-config: later files win). This is the supported way
+# to add sinks (e.g. a remote log endpoint) WITHOUT touching the package-
+# managed base config.
+#
+# Rules:
+#   - component IDs must not collide with the base config (sources: syslog,
+#     internal_logs, dinit_services, incus_logs, user_session_logs; sinks:
+#     messages, auth_log, daemon_log, kernel_log, sudo_log, firewalld_log,
+#     user_session_log)
+#   - reference the sources above as inputs; never re-declare them
+#   - validate before restarting: vector validate --skip-healthchecks
+# The session-runtime source (user_session_logs) tails /run/user/*/*.log —
+# a session tool writing $XDG_RUNTIME_DIR/<name>.log is picked up
+# automatically; ship it with a drop-in sink when needed.

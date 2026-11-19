@@ -1,0 +1,155 @@
+# Vector configuration for FeralOS (vector-config package)
+# GENERIC 1:1 pattern — one glob source, one dedicated /var/log file.
+# A new log producer = repeat the pattern (one source + one sink each).
+# Sources WITHOUT their files are inert (ignore_not_found: true — dinit
+# absent on OpenRC, incus not installed, no session runtime logs): the
+# static config is valid on every install, no conditional blocks.
+# The /etc/vector/conf.d/*.yaml drop-ins are merged ON TOP by the vector
+# service (manual log shipping mechanism — see conf.d/README.md).
+
+data_dir: "/var/lib/vector"
+
+sources:
+  syslog:
+    type: socket
+    mode: unix_datagram
+    path: /run/vector/syslog.sock
+    decoding:
+      codec: syslog
+
+  internal_logs:
+    type: internal_logs
+
+  dinit_services:
+    type: file
+    include:
+      - "/var/log/dinit/*.log"
+    ignore_not_found: true
+
+  incus_logs:
+    type: file
+    include:
+      - "/var/log/incus/*.log"
+    ignore_not_found: true
+
+  # User-session logs: ANY .log written by ANY session tool in its runtime
+  # dir (wayle-session today — the script execs its output there; future
+  # tools: write $XDG_RUNTIME_DIR/<name>.log and it is picked up with zero
+  # config changes). Sockets/dirs are excluded by the *.log suffix.
+  user_session_logs:
+    type: file
+    include:
+      - "/run/user/*/*.log"
+    ignore_not_found: true
+
+transforms:
+  auth_logs:
+    type: filter
+    inputs:
+      - syslog
+    condition: '.facility == "auth" || .facility == "authpriv"'
+
+  daemon_logs:
+    type: filter
+    inputs:
+      - syslog
+    condition: '.facility == "daemon"'
+
+  kernel_logs:
+    type: filter
+    inputs:
+      - syslog
+    condition: '.facility == "kern"'
+
+  sudo_logs:
+    type: filter
+    inputs:
+      - syslog
+    condition: '.facility == "authpriv" && contains(to_string(.message) ?? "", "sudo")'
+
+  firewalld_logs:
+    type: filter
+    inputs:
+      - syslog
+    condition: 'contains(to_string(.message) ?? "", "firewalld")'
+
+sinks:
+  messages:
+    type: file
+    inputs:
+      - syslog
+      - internal_logs
+      - dinit_services
+      - incus_logs
+    path: "/var/log/messages"
+    buffer:
+      type: disk
+      max_size: 268435488
+    encoding:
+      codec: text
+
+  auth_log:
+    type: file
+    inputs:
+      - auth_logs
+    path: "/var/log/auth.log"
+    buffer:
+      type: disk
+      max_size: 268435488
+    encoding:
+      codec: text
+
+  daemon_log:
+    type: file
+    inputs:
+      - daemon_logs
+    path: "/var/log/daemon.log"
+    buffer:
+      type: disk
+      max_size: 268435488
+    encoding:
+      codec: text
+
+  kernel_log:
+    type: file
+    inputs:
+      - kernel_logs
+    path: "/var/log/kern.log"
+    buffer:
+      type: disk
+      max_size: 268435488
+    encoding:
+      codec: text
+
+  sudo_log:
+    type: file
+    inputs:
+      - sudo_logs
+    path: "/var/log/sudo.log"
+    buffer:
+      type: disk
+      max_size: 268435488
+    encoding:
+      codec: text
+
+  firewalld_log:
+    type: file
+    inputs:
+      - firewalld_logs
+    path: "/var/log/firewalld.log"
+    buffer:
+      type: disk
+      max_size: 268435488
+    encoding:
+      codec: text
+
+  user_session_log:
+    type: file
+    inputs:
+      - user_session_logs
+    path: "/var/log/user-session.log"
+    buffer:
+      type: disk
+      max_size: 268435488
+    encoding:
+      codec: text

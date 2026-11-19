@@ -26,20 +26,14 @@
 # Timestamped milestones make the slow stages visible. Non-fatal: without
 # the file (unexpected layout) the session runs WITHOUT logging instead of
 # dying on the redirect.
-LOG=/var/log/wayle-session.log
-# The INSTALLER pre-creates /var/log/wayle-session.log (owned by the
-# primary user, logrotated) — /var/log itself is root:root 755 (hardening
-# perms), so the session user cannot create files there (verified on
-# target). Later sessions by the same user append; other users skip
-# logging gracefully (the file is 0644 other-user-owned and the session
-# never dies on the redirect).
-touch "$LOG" 2>/dev/null || :
-if [ -w "$LOG" ]; then
-    exec >> "$LOG" 2>&1
-    echo "$(date '+%F %T') wayle-session: start (greetd session)"
-fi
-
-# turnstiled spawns the user dinit ASYNCHRONOUSLY after PAM open —
+# Session log on the session tmpfs (XDG_RUNTIME_DIR — elogind creates
+# /run/user/<uid> for the login, owner = the session user, cleaned per
+# boot): diagnostics for login failures — the harness login_readiness
+# check tails this file into its failure detail. Timestamped milestones
+# make the slow stages visible.
+mkdir -p "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}" 2>/dev/null || :
+exec >> "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/wayle-session.log" 2>&1
+echo "$(date '+%F %T') wayle-session: start (greetd session)"
 # wait for the control socket to actually answer (up to 15s), then
 # decide. Probe = dinitctl list (proves the control path works, unlike
 # a bare process check).

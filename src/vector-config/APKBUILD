@@ -37,3 +37,8 @@ package() {
 	# vector data dir (the daemon needs it writable by the vector user)
 	install -dm755 "$pkgdir/var/lib/vector"
 }
+
+sha512sums="
+0a7e5b9e81058a3ee9a528165103eade88f6f568ca454d930c2ee1fd25770509a45b15b0b2909c38984130febc543388d9f63258deb70ec906b6a752d89f0deb  vector.yaml
+b1f1cb4dd6fd7befeb078664a547e534bc64e937b5bbc4978d4045168e07d12623fa1cf332d7773a310558f5310d02ab7abb2b42fb542fbc4eb39dfc5281f522  conf.d-README
+"

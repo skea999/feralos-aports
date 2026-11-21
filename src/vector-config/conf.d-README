@@ -15,3 +15,90 @@
 # The session-runtime source (user_session_logs) tails /run/user/*/*.log —
 # a session tool writing $XDG_RUNTIME_DIR/<name>.log is picked up
 # automatically; ship it with a drop-in sink when needed.
+#
+# ---------------------------------------------------------------------------
+# REMOTE SHIPPING — HOW TO CONFIGURE IT
+# ---------------------------------------------------------------------------
+#
+# Nothing is shipped remotely out of the box. These are the instructions for
+# adding a remote destination yourself; the base config stays untouched.
+#
+# 1. Who merges the drop-ins
+#    - dinit: the wrapper /usr/lib/dinit/vector merges every
+#      /etc/vector/conf.d/*.yaml after the base config. Nothing to enable.
+#    - OpenRC: the Alpine initd does NOT merge them. Add the file explicitly
+#      to /etc/conf.d/vector:
+#          command_args="--config /etc/vector/conf.d/10-remote.yaml"
+#      (one --config per file) and restart the service.
+#
+# 2. File placement and permissions
+#    Drop files as root, mode 0644, name <NN>-<purpose>.yaml (the number just
+#    keeps the merge order readable). The directory is package-managed and
+#    root-owned — do not chown it.
+#
+# 3. What a drop-in contains
+#    Only NEW components that reference the existing sources. Typical shape:
+#
+#      sinks:
+#        remote_syslog:
+#          type: socket
+#          inputs: [syslog, dinit_services, user_session_logs]
+#          address: "logs.example.net:6514"
+#          mode: tcp
+#          tls:
+#            enabled: true
+#            verify_certificate: true
+#          encoding:
+#            codec: json
+#
+#      sinks:
+#        remote_http:
+#          type: http
+#          inputs: [syslog, dinit_services]
+#          uri: "https://ingest.example.net/feralos"
+#          method: post
+#          auth:
+#            strategy: bearer
+#            token: "${FERALOS_INGEST_TOKEN}"
+#          encoding:
+#            codec: json
+#
+#    `inputs` may name any base source. Avoid shipping `syslog` wholesale if
+#    you do not want auth/sudo content at the remote end — call out only the
+#    sources you need, or insert a `transforms` block between source and sink
+#    and reference that transform in `inputs` instead.
+#
+# 4. Secrets
+#    Vector interpolates ${VAR} in the RAW config text — including comments.
+#    An undefined variable makes the process exit 78 at startup, so:
+#      - never write ${...} inside a comment (it is still interpolated);
+#      - keep the token OUT of the YAML (files here are world-readable) and
+#        provide the variable through the service environment:
+#          dinit:  /etc/dinit.d/config/vector.conf (KEY=VALUE lines; the
+#                  package ships it 0644 — chmod 0600 once it holds a secret;
+#                  dinit reads it as root and passes the variables down)
+#          OpenRC: /etc/conf.d/vector (sourced by the initd; chmod 0600 too)
+#    If you do not want the variable in a file at all, use a file-based
+#    credential instead (e.g. a sink option that reads a path) and protect
+#    that path with permissions.
+#
+# 5. Durable delivery
+#    Memory buffers are lost on restart. To buffer on disk, add to the sink:
+#          buffer:
+#            type: disk
+#            max_size: 1073741824
+#    The buffer lives under data_dir (/var/lib/vector), owned by the vector
+#    user — no extra setup.
+#
+# 6. Validate, restart, verify
+#      vector validate --skip-healthchecks \
+#          /etc/vector/vector.yaml /etc/vector/conf.d/10-remote.yaml
+#      dinitctl restart vector        # or: rc-service vector restart
+#      vector top                     # components + throughput
+#    A syntax error keeps the previous process running (the restart is
+#    rejected); a missing env var stops it with exit 78.
+#
+# 7. Removing a remote destination
+#    Delete the file from /etc/vector/conf.d/ and restart the service. Keep a
+#    copy outside the directory if you want to re-enable it later — a *.yaml
+#    left behind stays active.

@@ -22,7 +22,7 @@
 # installer create nothing.
 pkgname=vector-config
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="FeralOS Vector configuration (static, generic 1:1 source->file pattern)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
@@ -46,5 +46,5 @@ package() {
 
 sha512sums="
 b406cd2e1d461907a1cdf786921ed5eb69b3e3d3845c36b1346ccb6eaadc25419b943b5ef97fe6f9332c8d7baf0701e4e646ae32e9351e3bdb4290a1bc76f770  vector.yaml
-b1f1cb4dd6fd7befeb078664a547e534bc64e937b5bbc4978d4045168e07d12623fa1cf332d7773a310558f5310d02ab7abb2b42fb542fbc4eb39dfc5281f522  conf.d-README
+89aceb257265444d3d3586cf3ffd220eebe50ff02e3271455e1a4ae6e5f4152129e9e92ec20688d1041bf24f7fb038b745875fa91659c6051b9850d7ab494496  conf.d-README
 "

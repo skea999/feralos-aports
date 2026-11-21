@@ -1,0 +1,6 @@
+[terminal]
+vt = 7
+
+[default_session]
+command = "/etc/greetd/greeter.sh"
+user = "greeter"

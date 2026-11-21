@@ -1,0 +1,28 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# greetd-config: the COMMON greetd configuration as an APK package (ADR-013).
+# Only the parts shared by the niri and niriWayle sessions live here: vt 7
+# (Alpine's default VT 1 collides with getty@tty1) and the greeter session
+# entry point. The DE-specific greeter script (what the greeter session runs)
+# ships with the DE config package: dms-config (niri) / wayle-config
+# (niriWayle). COSMIC does NOT use this file — its greetd config is
+# cosmic-greeter-config (/etc/greetd/feralos-cosmic-greeter.toml, passed
+# explicitly by the wrapper).
+pkgname=greetd-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS common greetd configuration (vt 7, greeter.sh entry point)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="greetd"
+makedepends=""
+source="config.toml"
+options="!check" # static config, proven live by the greetd/greeter harness checks
+
+package() {
+	install -Dm644 "$srcdir/config.toml" "$pkgdir/etc/greetd/config.toml"
+}
+sha512sums="
+2c6c089431265b0e7e5814834bb8150cd69f07a08afd7f314e5046bc1e97d4181994106bc0e3fceb744035db2f7da2cf3006f87ea0961c92ec5722992cd6c299  config.toml
+"

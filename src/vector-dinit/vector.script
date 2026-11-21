@@ -7,6 +7,17 @@
 # Glob resolved in shell (not passed as a wildcard) so an empty conf.d is
 # just no extra args, never an error.
 [ -r /etc/dinit.d/config/vector.conf ] && . /etc/dinit.d/config/vector.conf
+# Ensure the sink files exist + vector-owned BEFORE exec: on a fresh install
+# /var/log has none, and once the hardening perm reset flips /var/log to
+# root:root 755 the vector user can no longer create files — vector would
+# start sink-less (run 2026-11-19T01-35-55Z: zero sinks, fail2ban dead on
+# the missing auth.log). Re-chowning here also repairs files flipped root by
+# the reset. idempotent, runs in microseconds.
+for f in messages auth.log daemon.log kern.log sudo.log firewalld.log user-session.log; do
+	touch "/var/log/$f" 2>/dev/null || :
+	chown vector:vector "/var/log/$f" 2>/dev/null || :
+	chmod 644 "/var/log/$f" 2>/dev/null || :
+done
 VECTOR_CONF_ARGS=""
 for f in /etc/vector/conf.d/*.yaml; do
 	[ -e "$f" ] && VECTOR_CONF_ARGS="$VECTOR_CONF_ARGS --config $f"

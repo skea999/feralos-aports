@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=vector-dinit
 pkgver=0.1.0
-pkgrel=8
+pkgrel=9
 pkgdesc="dinit service for vector"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -27,6 +27,6 @@ package() {
 sha512sums="
 f5a81ba986a00a26f0e04409dabe73ff81a983c92ddf6c8aa556cece4bf5b46a22ebc2b2f2f3cb20824dd511ecb6c95fb05882e5db4b1a6c5334f000a655d680  vector
 75b79233f230267d82a07587f25c707a985db5112615b3c45fe21a8fc028c7889033fbd7e33bb0bc36bbb584f26523d236d8b0d9df7f294dd3238555a5cbe2dc  vector-dinit.tmpfiles
-4144a6ea03c95dc344d997649319846e946dfe7799131535ae9984e064b45e2becd15fbd418779e18e8132525a9ecdf7f3c799dfebce38e8fd9ba73bcdc1addb  vector.script
+63404a8a2c369bfdfb4aea7360029a8bbcfed8e4e4480178c7482fd42d2a78eb4bdafe6907a4fed3b6749450b44aa308616bab0ecacb17fe86dacdafcd445062  vector.script
 7ac09aa9fc096a9c60e70e9101aee6d5c977496ffcc489df69d78bf958b4066160dd68612be159dfc767af4db97a2951bd22bc8eac20b4e158a9c3317a8a6500  vector.conf
 "

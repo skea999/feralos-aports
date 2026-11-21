@@ -13,9 +13,18 @@
 # with `adduser -S` (dynamic uid), so chown is done here, where the user
 # exists (depends="vector").
 #
-# Keep the list in sync with the sinks in vector.yaml.
+# Keep the list in sync with the sinks in vector.yaml (vector.log above
+# is the daemon's own stderr, OpenRC only).
 #
 # Idempotent: existing files keep their content (rotation state untouched).
+# vector.log: the daemon's OWN stderr under OpenRC (the vendor initd opens
+# /var/log/vector.log as the vector user — R1 made /var/log root-owned, so it
+# is pre-created here like the sinks). Under dinit it stays empty (dinit
+# captures stderr to /var/log/dinit/vector.log).
+[ -e /var/log/vector.log ] || : >>/var/log/vector.log
+chown vector:vector /var/log/vector.log 2>/dev/null || :
+chmod 0644 /var/log/vector.log 2>/dev/null || :
+
 for f in messages auth.log daemon.log kern.log sudo.log firewalld.log user-session.log; do
 	[ -e "/var/log/$f" ] || : >>"/var/log/$f"
 	chown vector:vector "/var/log/$f" 2>/dev/null || :

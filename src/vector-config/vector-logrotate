@@ -1,0 +1,4 @@
+# FeralOS supersedes the vendor vector rotation entry: /var/log/vector.log is
+# already covered by the generic rule in /etc/logrotate.d/feralos. Keeping
+# both would make logrotate fail with "duplicate log entry" on every daily
+# run. This file intentionally defines nothing.

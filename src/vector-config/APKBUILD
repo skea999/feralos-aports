@@ -22,7 +22,7 @@
 # installer create nothing.
 pkgname=vector-config
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="FeralOS Vector configuration (static, generic 1:1 source->file pattern)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
@@ -31,7 +31,7 @@ depends="vector"
 replaces="vector busybox-openrc"
 install="$pkgname.post-install"
 makedepends=""
-source="vector.yaml conf.d-README syslog"
+source="vector.yaml conf.d-README syslog vector-logrotate"
 options="!check" # static config, validated at runtime (vector validate)
 
 package() {
@@ -41,6 +41,11 @@ package() {
 	install -dm755 "$pkgdir/etc/vector/conf.d"
 	install -Dm644 "$srcdir/conf.d-README" "$pkgdir/etc/vector/conf.d/README.md"
 	install -Dm755 "$srcdir/syslog" "$pkgdir/etc/init.d/syslog"
+	# VENDOR logrotate stub: Alpine's vector package ships
+	# /etc/logrotate.d/vector for /var/log/vector.log — the generic rule in
+	# logrotate-config already matches it; a second entry makes every daily
+	# run fail with "duplicate log entry".
+	install -Dm644 "$srcdir/vector-logrotate" "$pkgdir/etc/logrotate.d/vector"
 	# NEUTERED takeover of busybox-openrc's syslog (provide logger, no-op):
 	# a 'need logger' dependency (fail2ban, crond) otherwise starts busybox
 	# syslogd, which binds /dev/log — vector's ingress socket — and kills
@@ -53,4 +58,5 @@ sha512sums="
 b406cd2e1d461907a1cdf786921ed5eb69b3e3d3845c36b1346ccb6eaadc25419b943b5ef97fe6f9332c8d7baf0701e4e646ae32e9351e3bdb4290a1bc76f770  vector.yaml
 89aceb257265444d3d3586cf3ffd220eebe50ff02e3271455e1a4ae6e5f4152129e9e92ec20688d1041bf24f7fb038b745875fa91659c6051b9850d7ab494496  conf.d-README
 9352011f47245d76d074f60674b2a706932ea86174c3949004c0eaeb88c10fa500b0350282a50e01ca29aa6e5ee4330da2d3cc89f1185fa586be9734e844f44b  syslog
+d34fd70f0f9c73e7c6e0efac00b4254e0ccea84d8e227284a36313875755f9465893c2d37ab2449f44d13f9e37d2231983f52ba97eb33c3eca7f5f3a1d98c236  vector-logrotate
 "

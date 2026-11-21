@@ -1,0 +1,21 @@
+// FeralOS: allow wheel to power off/reboot/suspend and to switch power
+// profiles without an auth prompt. elogind cannot attribute PIDs to
+// sessions under dinit (NoSessionForPID), so the default "allow_active"
+// policy never matches (login1 power actions AND PowerProfiles switch/hold
+// share that class). wheel is admin anyway.
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("wheel") &&
+        (action.id == "org.freedesktop.login1.power-off" ||
+         action.id == "org.freedesktop.login1.power-off-multiple-sessions" ||
+         action.id == "org.freedesktop.login1.reboot" ||
+         action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+         action.id == "org.freedesktop.login1.halt" ||
+         action.id == "org.freedesktop.login1.halt-multiple-sessions" ||
+         action.id == "org.freedesktop.login1.suspend" ||
+         action.id == "org.freedesktop.login1.suspend-multiple-sessions" ||
+         action.id == "org.freedesktop.UPower.PowerProfiles.switch-profile" ||
+         action.id == "org.freedesktop.UPower.PowerProfiles.hold-profile")) {
+        return polkit.Result.YES;
+    }
+});
+

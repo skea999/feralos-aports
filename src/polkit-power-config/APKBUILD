@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# polkit-power-config: the FeralOS polkit power rule as an APK package
+# (ADR-013 — the installer no longer writes it).
+#
+# WHY the rule exists: under dinit, elogind cannot map PIDs to sessions
+# (NoSessionForPID — no session cgroups), so polkit never sees "allow_active"
+# and the upstream policies are unsatisfiable: every loginctl power action
+# would become an auth challenge (or a silent timeout with no agent) and every
+# power-profile switch (Wayle battery dropdown / DMS power UI) would be denied.
+# wheel is admin anyway — none of these is a privilege escalation; matches
+# standard desktop behavior (no password for the owner's own machine).
+# Harmless under OpenRC.
+pkgname=polkit-power-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS polkit rule for power actions and power-profile switching (wheel)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+# no depends: the rule is inert unless polkit is installed (DEs pull it) —
+# keeping the dependency optional preserves the old behaviour (file always
+# present, polkit only where a desktop needs it).
+depends=""
+makedepends=""
+source="feralos-power.rules"
+options="!check" # static rule, proven live by the power_polkit_rule harness check
+
+package() {
+	install -Dm644 "$srcdir/feralos-power.rules" "$pkgdir/etc/polkit-1/rules.d/49-feralos-power.rules"
+}
+sha512sums="
+afeba1aca8b709168c487b251a17d059448b5a50275adbbe8455c41d67c2cb523b041b628500639385088fd5da92648a77fd321f1e9e414a95d405e76d726aa8  feralos-power.rules
+"

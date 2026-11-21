@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# hardening-config: the STATIC hardening files as an APK package (ADR-013 —
+# the installer no longer writes them). Values are the hardened defaults.
+#
+# Split note: sysctls whose value depends on variables stay installer-written
+# — 94-limitLogs.conf (kernel.printk), 98-hardening.conf (io_uring/memfd via
+# enableDebug), 99-cmdline-hardening.conf (dmesg_restrict via enableDebug) and
+# zswap.conf (vm.min_free_kbytes from RAM). Static leftovers are a follow-up
+# (split the debug override out of 98/99).
+pkgname=hardening-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS static hardening config (sysctl drop-ins, module blacklist)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="93-ipv4Configs.conf 95-randomizeAddresses.conf 96-disableSuidDumps.conf
+	97-disableCoreDumps.conf bridging.conf disabledModules.conf"
+options="!check" # static config, applied by sysctl --system / modprobe
+
+package() {
+	install -Dm644 "$srcdir/93-ipv4Configs.conf" "$pkgdir/etc/sysctl.d/93-ipv4Configs.conf"
+	install -Dm644 "$srcdir/95-randomizeAddresses.conf" "$pkgdir/etc/sysctl.d/95-randomizeAddresses.conf"
+	install -Dm644 "$srcdir/96-disableSuidDumps.conf" "$pkgdir/etc/sysctl.d/96-disableSuidDumps.conf"
+	install -Dm644 "$srcdir/97-disableCoreDumps.conf" "$pkgdir/etc/sysctl.d/97-disableCoreDumps.conf"
+	install -Dm644 "$srcdir/bridging.conf" "$pkgdir/etc/sysctl.d/bridging.conf"
+	install -Dm644 "$srcdir/disabledModules.conf" "$pkgdir/etc/modprobe.d/disabledModules.conf"
+}
+sha512sums="
+8809c64e778e378774f3575c7e20d041d943ca9bb0ea950fd1ec39e567cf8cdc5611cc43ce64f84a44a0056e1f8b14e05f628a4ea7b92a819e813ce443331f0a  93-ipv4Configs.conf
+2c04a73b036bf8c2a73b373f8f59b40803229cff963ff58c97a19759d5813715101173e367e2ce9418c4c1c582a46c48c091b9f128a3539f403368acb4c7456b  95-randomizeAddresses.conf
+c9c1fbaad4cf280471d4d6b520a5eda1678cd35ad0ef45fcfa0439b93d204a208a172e9267f69d8a21c31b182fa86ac70c2dce73965d30203cf4023717732a18  96-disableSuidDumps.conf
+b81e811fd7905b7d44d4fc7843bb4bb1d350acb449a5d11cf3c832c39a6ce2611ed6da78ba5dae08b3750d94fb7bef336ddaabe1e91e6264c4636eefd36675fe  97-disableCoreDumps.conf
+d7587289aafc489a98cabc3d1082b58fae38f802a5e2f5258f58fb125fc703b497993aa7bc12d68f0f8c4b30b35b9cdcf52a125f4889f63d1938b4b71b68af59  bridging.conf
+720ddd66bf3adc9d0a14062dcb368b2b68dc18b3735e95f43bfc1f5ce66b9ed1fd34b88da7f52497fc75b4925af78cec18082875b0d5984ebf563093ef498fbf  disabledModules.conf
+"

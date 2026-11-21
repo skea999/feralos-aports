@@ -8,6 +8,22 @@ output_log="/var/log/turnstiled.log"
 error_log="/var/log/turnstiled.err"
 
 depend() {
-	need elogind
+	need elogind dbus
 	before greetd
+}
+
+stop() {
+	ebegin "Stopping turnstiled and its sessions"
+	# End the supervised sessions FIRST, while the bus is still up
+	# (need dbus): their PAM close must reach elogind, and /run/user/<uid>
+	# must be free before localmount unmounts it. turnstiled alone does not
+	# kill the session processes on exit — the greeter session survives as
+	# an orphan and blocks the unmount ([ !! ] "in use but fuser finds
+	# nothing", run 2026-11-21T20-43-25Z).
+	for udir in /run/user/*; do
+		[ -d "$udir" ] || continue
+		pkill -TERM -u "${udir##*/}" 2>/dev/null
+	done
+	start-stop-daemon --stop --pidfile "$pidfile" 2>/dev/null
+	eend 0
 }

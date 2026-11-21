@@ -338,6 +338,16 @@ jobs:
           # keep artifact non-empty while repo has no built packages
           [ -n "$(ls -A site 2>/dev/null)" ] || echo "skeleton — no packages yet" > site/README.txt
 
+      # Pages-race hardening for the feralos harness: the harness installs
+      # the FeralOS packages from THIS artifact (the last green build) so a
+      # live Pages deploy can never swap the APKINDEX mid-install.
+      - name: Upload repo artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: feralos-repo
+          path: site
+          if-no-files-found: error
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

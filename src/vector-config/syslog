@@ -1,0 +1,23 @@
+#!/sbin/openrc-run
+# NEUTERED ON PURPOSE — vector IS the syslog daemon on FeralOS.
+#
+# Alpine bug chain (ADR-013 R2, run 2026-11-21T17-31-08Z):
+#   1. busybox-openrc's syslog script declares `provide logger`.
+#   2. Any enabled service that declares `need logger` (fail2ban, crond, …)
+#      makes OpenRC START busybox syslogd — even with syslog in no runlevel.
+#   3. Our /dev/log symlink points to /run/vector/syslog.sock, so busybox
+#      syslogd BINDS VECTOR'S INGRESS SOCKET (root:wheel) — vector panics
+#      "Failed to bind to datagram socket: AddrInUse" and dies: rc shows
+#      `vector [failed]`, no sinks get written.
+#
+# This takeover (replaces="busybox-openrc", klogd-openrc precedent) keeps the
+# `logger` token resolvable as a NO-OP so dependencies resolve, and the real
+# logging keeps flowing through vector. If you ever want busybox syslogd
+# back, delete this file and re-enable the vendor one.
+description="No-op: vector is the logger on FeralOS (this stub only satisfies 'need logger')"
+
+provide logger
+
+start() {
+	eend 0
+}

@@ -1,0 +1,26 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# vector-setup-openrc: workaround for an Alpine bug (vector only, OpenRC only).
+# OpenRC has no tmpfiles processor, and Alpine's vector-openrc does not create
+# the paths vector.yaml names (/run/vector, /dev/log) — so under OpenRC vector
+# cannot bind its syslog source. This package ships the two-command init
+# script that repairs it. dinit is NOT affected (vector-dinit tmpfiles do the
+# same job; the script is not enabled there — dinitSkipServices).
+pkgname=vector-setup-openrc
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS vector OpenRC bug workaround (runtime dir + /dev/log symlink)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="vector-setup"
+options="!check" # static init script, proven live by the OpenRC harness runs
+
+package() {
+	install -Dm755 "$srcdir/vector-setup" "$pkgdir/etc/init.d/vector-setup"
+}
+sha512sums="
+03b64f8f638c7ae0e4981fab37d816ba812e0cddec096a39d31adff5f7afca591830c9e638d626f2f42df1ab56f258bbb0662df11a60dcd22111291c6148d5ae  vector-setup
+"

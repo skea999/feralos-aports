@@ -1,0 +1,24 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# fail2ban-config: the FeralOS jail drop-in as an APK package (ADR-013 —
+# static config is package-shipped, the installer no longer writes it).
+# /etc/fail2ban/jail.d/50-feralos.conf sorts after the vendor
+# jail.d/alpine-ssh.conf, so its [DEFAULT]/[sshd] values win.
+pkgname=fail2ban-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS fail2ban jail (nftables banaction, vector auth.log)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="fail2ban"
+makedepends=""
+source="50-feralos.conf"
+options="!check" # static config, exercised by the security_stack harness checks
+
+package() {
+	install -Dm644 "$srcdir/50-feralos.conf" "$pkgdir/etc/fail2ban/jail.d/50-feralos.conf"
+}
+sha512sums="
+b79e716e283ab885109e5d3fa0e55c94f03d268f734496c309177fbe49d53e6377d7db8b0062f6dd01282fae69e95a337805905697a189a4f562d97902659a4a  50-feralos.conf
+"

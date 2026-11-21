@@ -2,10 +2,11 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # greetd-config: the COMMON greetd configuration as an APK package (ADR-013).
 # Only the parts shared by the niri and niriWayle sessions live here: vt 7
-# (Alpine's default VT 1 collides with getty@tty1) and the greeter session
-# entry point. The DE-specific greeter script (what the greeter session runs)
-# ships with the DE config package: dms-config (niri) / wayle-config
-# (niriWayle). COSMIC does NOT use this file — its greetd config is
+# (Alpine's default VT 1 collides with getty@tty1) and a 3-line dispatcher
+# (/etc/greetd/greeter.sh) that execs the DE script. The DE-specific script
+# ships with the DE config package: dms-config (greeter-niri.sh) / wayle-config
+# (greeter-wayle.sh) — distinct filenames, so the packages never collide as
+# apk content even though the DEs are mutually exclusive on an install. COSMIC does NOT use this file — its greetd config is
 # cosmic-greeter-config (/etc/greetd/feralos-cosmic-greeter.toml, passed
 # explicitly by the wrapper).
 pkgname=greetd-config
@@ -17,12 +18,16 @@ arch="noarch"
 license="ISC"
 depends="greetd"
 makedepends=""
-source="config.toml"
+source="config.toml greeter.sh"
 options="!check" # static config, proven live by the greetd/greeter harness checks
 
 package() {
 	install -Dm644 "$srcdir/config.toml" "$pkgdir/etc/greetd/config.toml"
+	# dispatcher: execs the DE greeter script (distinct filenames per DE so
+	# the config packages never collide as apk content)
+	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter.sh"
 }
 sha512sums="
 2c6c089431265b0e7e5814834bb8150cd69f07a08afd7f314e5046bc1e97d4181994106bc0e3fceb744035db2f7da2cf3006f87ea0961c92ec5722992cd6c299  config.toml
+cb552ea359fa4d297060a9f7e6d89175904b7bdec7891ae6655426696ba4726205ce220aad1782d971ba27d2425d7d159e0af5ccf42f6fe56f4613ea7642787f  greeter.sh
 "

@@ -2,18 +2,16 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=cosmic-greeter-dinit
 pkgver=0.1.0
-pkgrel=9
+pkgrel=10
 pkgdesc="dinit service for cosmic-greeter (Alpine initd name: cosmic-greeter)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
-depends="dinit cosmic-greeter greetd pam-rundir"
+depends="dinit cosmic-greeter cosmic-greeter-config greetd pam-rundir"
 makedepends=""
 source="cosmic-greeter
 	cosmic-greeter-daemon
-	cosmic-greeter-session
-	feralos-cosmic-greeter.toml
-	pam.d-cosmic-greeter"
+	cosmic-greeter-session"
 
 build() { return 0; }
 check() { return 0; }
@@ -25,17 +23,12 @@ package() {
 	install -Dm644 "$srcdir/cosmic-greeter" "$pkgdir/lib/dinit.d/cosmic-greeter"
 	install -Dm644 "$srcdir/cosmic-greeter-daemon" "$pkgdir/lib/dinit.d/cosmic-greeter-daemon"
 	install -Dm755 "$srcdir/cosmic-greeter-session" "$pkgdir/usr/libexec/dinit/cosmic-greeter-session"
-	install -Dm644 "$srcdir/feralos-cosmic-greeter.toml" "$pkgdir/etc/greetd/feralos-cosmic-greeter.toml"
-	# Base-only PAM stack: Alpine's vendored file requires pam_gnome_keyring
-	# (not shipped on FeralOS); base-session's optional pam_rundir creates
-	# XDG_RUNTIME_DIR for the elogind-based COSMIC session.
-	install -Dm644 "$srcdir/pam.d-cosmic-greeter" "$pkgdir/etc/pam.d/cosmic-greeter"
+	# Config (greetd toml + PAM stack) is CONFIG: cosmic-greeter-config owns
+	# it (ADR-013 R1) — this package only runs the service.
 }
 
 sha512sums="
 86d2c24661e79f8bace8097294fcb53101086702c45cd8d5cb9b30753df69e4831f6b52d52626c0e9858e7bb2cebcdbd4d827ed87f52a80822d448bf8f723bc7  cosmic-greeter
 5f849d4ca77ac7e7a519d939b446d2e2ab0aeba819a5a102b98c88809ac87a691c121d23b5acf321b3ca00e289e82508db2ae5175d4eafa265f24030a0075fa5  cosmic-greeter-daemon
 734f8eac7122d74606cf89e0bf68deeaae76ab428e8a09e3d69c51fd5cd19e7341565f7d0d066d2c74e07e070d0b5f52755f0fd91f3d1ebed1eba8f008aa016c  cosmic-greeter-session
-4787fa2f42ac04282753716934281c3eb3b38e1d258778165adc082fd2f7085ac15576d872e9a507a126aa890bdbdfc5e0922ae1b6b4813d4e43eb396c68ef78  feralos-cosmic-greeter.toml
-26da3d04307a265f04bb3e4943b24570196c12e989a03c4ff0cb0d7a2746111ea2aebb4a69e9abc318170996366f9690a2b42d867cf5af28461d49bcdcefb4af  pam.d-cosmic-greeter
 "

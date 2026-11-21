@@ -1,0 +1,33 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# cosmic-greeter-config: the COSMIC greeter configuration as an APK package
+# (ADR-013 — configuration belongs to a *-config package, not to the service
+# package). Split out of cosmic-greeter-dinit (r9), which shipped both files.
+#
+#   /etc/greetd/feralos-cosmic-greeter.toml — the greetd config for COSMIC:
+#     VT 7 (Alpine's VT 1 collides with getty@tty1), initial_session runs
+#     start-cosmic. Passed explicitly by the service wrapper; it does NOT
+#     replace /etc/greetd/config.toml (the niri family keeps that one).
+#   /etc/pam.d/cosmic-greeter — base-only PAM stack: Alpine's vendored file
+#     requires pam_gnome_keyring (not shipped on FeralOS); base-session's
+#     optional pam_rundir creates XDG_RUNTIME_DIR for the elogind session.
+pkgname=cosmic-greeter-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS COSMIC greeter configuration (greetd toml + PAM stack)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="cosmic-greeter"
+makedepends=""
+source="feralos-cosmic-greeter.toml pam.d-cosmic-greeter"
+options="!check" # static config, proven live by the cosmic_greeter harness check
+
+package() {
+	install -Dm644 "$srcdir/feralos-cosmic-greeter.toml" "$pkgdir/etc/greetd/feralos-cosmic-greeter.toml"
+	install -Dm644 "$srcdir/pam.d-cosmic-greeter" "$pkgdir/etc/pam.d/cosmic-greeter"
+}
+sha512sums="
+4787fa2f42ac04282753716934281c3eb3b38e1d258778165adc082fd2f7085ac15576d872e9a507a126aa890bdbdfc5e0922ae1b6b4813d4e43eb396c68ef78  feralos-cosmic-greeter.toml
+26da3d04307a265f04bb3e4943b24570196c12e989a03c4ff0cb0d7a2746111ea2aebb4a69e9abc318170996366f9690a2b42d867cf5af28461d49bcdcefb4af  pam.d-cosmic-greeter
+"

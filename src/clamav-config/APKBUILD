@@ -1,0 +1,26 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# clamav-config: the FeralOS clamd configuration as an APK package (ADR-013 —
+# static config is package-shipped, the installer no longer writes it).
+# replaces="clamav-daemon": takes over /etc/clamav/clamd.conf, which the
+# Alpine subpackage installs by renaming clamd.conf.sample (future vendor
+# updates leave our file as .apk-new — ours stays).
+pkgname=clamav-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS clamd configuration (log file, socket, DB dir)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="clamav-daemon"
+replaces="clamav-daemon"
+makedepends=""
+source="clamd.conf"
+options="!check" # static config, exercised by the security_stack harness checks
+
+package() {
+	install -Dm644 "$srcdir/clamd.conf" "$pkgdir/etc/clamav/clamd.conf"
+}
+sha512sums="
+aa9b8ce64b3636101a4d0a7869141a3731ba56519c685cafde1a51e5277351c25f6de72c649e0939537f88b012514b1c56c5a9f06ebe3d80a4738d360df08d86  clamd.conf
+"

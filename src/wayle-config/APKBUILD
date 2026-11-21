@@ -1,0 +1,27 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# wayle-config: the niriWayle greeter script as an APK package (ADR-013).
+# Same greeter session as niri (niri + regreet) with ONE difference that
+# matters for the flagship: stdout/stderr are redirected to
+# /var/lib/greetd/session.log — greetd does not capture greeter session
+# output by itself, and the harness login_readiness check tails that file
+# into its failure detail (a broken greeter must be diagnosable).
+# Mutually exclusive with dms-config (one DE per install).
+pkgname=wayle-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS niriWayle greeter session script (session log redirect)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="greetd-config"
+makedepends=""
+source="greeter.sh"
+options="!check" # static script, proven live by the greeter harness checks
+
+package() {
+	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter.sh"
+}
+sha512sums="
+b7d59b706d96f1371f81ba4c9d6f5413d1735fd66f5071dd7229bff81dbf5bc3308bbc39e29a8bc5a87538f5c3600b89ece9804b7db6d71a54494624714103af  greeter.sh
+"

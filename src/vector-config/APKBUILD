@@ -15,15 +15,21 @@
 # /etc/vector/vector.yaml (klogd-openrc precedent — future vector updates
 # keep the file as .apk-new, ours stays). The conf.d drop-in dir is the
 # manual shipping mechanism: drop a sink file there, nothing else changes.
+#
+# SINKS (ADR-013 R1): the log sinks named by vector.yaml are CONFIGURATION —
+# this package owns them, materialized by its post-install (owner = the
+# dynamically allocated vector user). The vector-dinit wrapper and the
+# installer create nothing.
 pkgname=vector-config
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="FeralOS Vector configuration (static, generic 1:1 source->file pattern)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
 depends="vector"
 replaces="vector"
+install="$pkgname.post-install"
 makedepends=""
 source="vector.yaml conf.d-README"
 options="!check" # static config, validated at runtime (vector validate)
@@ -34,8 +40,8 @@ package() {
 	# sink file here, nothing else changes (the wrapper merges them).
 	install -dm755 "$pkgdir/etc/vector/conf.d"
 	install -Dm644 "$srcdir/conf.d-README" "$pkgdir/etc/vector/conf.d/README.md"
-	# vector data dir (the daemon needs it writable by the vector user)
-	install -dm755 "$pkgdir/var/lib/vector"
+	# NOTE: /var/lib/vector (data_dir in vector.yaml) is the service's RUNTIME
+	# state, not config — vector-dinit's tmpfiles owns it (ADR-013 R1).
 }
 
 sha512sums="

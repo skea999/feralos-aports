@@ -1,0 +1,25 @@
+#!/bin/sh
+# FeralOS vector-config post-install: materialize the Vector sink files.
+#
+# WHY HERE (ADR-013 R1): these files ARE configuration — they are the sinks
+# named by /etc/vector/vector.yaml. The service package (vector-dinit) and its
+# wrapper must never create configuration, and the installer must not write it
+# either. Creating them at package install also repairs a wrong owner on
+# upgrade (a boot-time chown of /var/log used to flip them root:root, after
+# which the unprivileged vector user could no longer write — run
+# 2026-11-19T01-35-55Z: zero sinks, fail2ban dead on the missing auth.log).
+#
+# Ownership cannot be baked into the package: Alpine creates the vector user
+# with `adduser -S` (dynamic uid), so chown is done here, where the user
+# exists (depends="vector").
+#
+# Keep the list in sync with the sinks in vector.yaml.
+#
+# Idempotent: existing files keep their content (rotation state untouched).
+for f in messages auth.log daemon.log kern.log sudo.log firewalld.log user-session.log; do
+	[ -e "/var/log/$f" ] || : >>"/var/log/$f"
+	chown vector:vector "/var/log/$f" 2>/dev/null || :
+	chmod 0644 "/var/log/$f" 2>/dev/null || :
+done
+
+exit 0

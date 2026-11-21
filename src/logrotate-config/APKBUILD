@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# logrotate-config: the FeralOS logrotate policy as an APK package
+# (ADR-013 — static configs are package-shipped, not installer-written).
+#
+# GENERIC rule: every *.log under /var/log (top level + one dir level), one
+# uniform rule — new logs are covered automatically, nothing to maintain per
+# file. The run mechanism is /etc/periodic/daily/logrotate (from the Alpine
+# logrotate package, executed by cronie — installed) — init-agnostic.
+#
+# VENDOR ENTRY TAKEOVER: Alpine's fail2ban ships /etc/logrotate.d/fail2ban for
+# /var/log/fail2ban.log, which the generic rule already matches — both would
+# trigger logrotate's "duplicate log entry" error on EVERY daily run. The file
+# is replaced (replaces="fail2ban") with a comment-only stub. Other vendor
+# snippets (vector, openrc, rsync, acpid, chrony, cups) name logs that our
+# install never creates — CUPS logs carry no .log suffix, so the generic glob
+# does not reach them; they stay inert (docs: docs/architecture/package-configs.md).
+pkgname=logrotate-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS logrotate policy (generic /var/log rule)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="logrotate"
+replaces="fail2ban"
+makedepends=""
+source="feralos fail2ban"
+options="!check" # static config, exercised by every daily run
+
+package() {
+	install -Dm644 "$srcdir/feralos" "$pkgdir/etc/logrotate.d/feralos"
+	# comment-only stub: the generic rule already rotates fail2ban.log
+	install -Dm644 "$srcdir/fail2ban" "$pkgdir/etc/logrotate.d/fail2ban"
+}
+sha512sums="
+563dff19dfb722ea89777d69a1a8567e3c99a6a43d10a05775f585fb4c8a0abc06b37a334f817f0559728dfcc90e5563f6c6f9d639a3eeef130ed773832afe89  feralos
+e43a98f1610c2895b66a5274b64ae29e206f340a4e21d85185dd236d72660e1e6391cd81a1ad2b8517d3898c46bb418cc98e09ad3cf5559b1a9b35842f5ca64e  fail2ban
+"

@@ -1,0 +1,15 @@
+# FeralOS generic rotation: EVERY log under /var/log (top level + one
+# dir level: dinit/, audit/, clamav/, btrbk/, incus/...). copytruncate is
+# universal-safe for every log holder (vector, auditd, fail2ban — fds stay
+# valid, no reload/restart); auditd also self-rotates via auditd.conf
+# (harmless overlap). Binary wtmp/btmp are excluded by the *.log glob.
+# New logs are covered automatically — nothing to maintain per file.
+/var/log/*.log /var/log/*/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}

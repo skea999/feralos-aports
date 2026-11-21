@@ -1,0 +1,5 @@
+# FeralOS supersedes the vendor fail2ban rotation entry: /var/log/fail2ban.log
+# is already covered by the generic rule in /etc/logrotate.d/feralos. Keeping
+# both would make logrotate fail with "duplicate log entry for
+# /var/log/fail2ban.log" on every daily run (the file always exists — fail2ban
+# logs to it by default). This file intentionally defines nothing.

@@ -1,0 +1,28 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# dms-config: the niri (DMS) greeter script as an APK package (ADR-013).
+# greetd-config ships the shared greeterd config; THIS package is the
+# DE-specific half — what the greeter session executes:
+#   XDG_RUNTIME_DIR fallback (greetd starts before elogind creates
+#   /run/user/<uid>) then niri + regreet.
+# The niriWayle variant lives in wayle-config (it adds the session.log
+# redirect); the two DEs are mutually exclusive, so the shared
+# /etc/greetd/greeter.sh path is never installed twice.
+pkgname=dms-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS niri (DMS) greeter session script"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="greetd-config"
+makedepends=""
+source="greeter.sh"
+options="!check" # static script, proven live by the greeter harness checks
+
+package() {
+	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter.sh"
+}
+sha512sums="
+838ae9c896762af49cc4db41eb514368c46f0d248a5d8f8a81b600600c907e5dc3f79fa3fe7d2c32f726aa34aecd8b2e8e16c42e42c753ab02bcef1b8a94c425  greeter.sh
+"

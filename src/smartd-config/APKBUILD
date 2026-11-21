@@ -1,0 +1,25 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# smartd-config: the FeralOS smartd scan configuration as an APK package
+# (ADR-013 — the installer no longer writes it). No file collision: Alpine's
+# smartmontools ships /etc/conf.d/smartd, not /etc/smartd.conf.
+# DEVICESCAN covers every disk: short self-test nightly 02:00, long test
+# Saturday 03:00, temperature warnings at 4/40/45 C.
+pkgname=smartd-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS smartd device scan configuration"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="smartmontools"
+makedepends=""
+source="smartd.conf"
+options="!check" # static config, exercised by the service
+
+package() {
+	install -Dm644 "$srcdir/smartd.conf" "$pkgdir/etc/smartd.conf"
+}
+sha512sums="
+8651b8005556d798198d470e3dd3361d5a3dc4c2937abbfa2a404bcffec0bef70a7e79b4754d3556687114bbac0f66168d28bbfe81b25aa85fc035aca42f8130  smartd.conf
+"

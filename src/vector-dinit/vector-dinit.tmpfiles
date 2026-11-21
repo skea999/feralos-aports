@@ -1,15 +1,6 @@
-# FeralOS vector-dinit: runtime + log dirs on a tmpfs /run
-# (processed by sd-tmpfiles in the dinit-chimera early chain — replaces the
-# OpenRC vector-setup script)
+# FeralOS vector-dinit: what the SERVICE needs, nothing else (ADR-013 R1/R2).
+# Configurations and the paths vector.yaml names (/run/vector, /dev/log) ship
+# in vector-config / vector-setup-openrc.
+d /var/lib/vector 0755 vector vector -
 d /run/vector 0755 vector vector -
 L /dev/log 0777 - - - /run/vector/syslog.sock
-# data_dir from vector.yaml — the service's own runtime state (ADR-013 R1)
-d /var/lib/vector 0755 vector vector -
-# /var/log stays root-owned (0755): the sink FILES are shipped by
-# vector-config (ADR-013 R1) — the service never creates them, so it needs
-# no write access to the directory. copytruncate rotation keeps the files
-# in place (no recreate).
-d /var/log 0755 root root -
-d /btrbk 0755 btrbk btrbk -
-# NOTE: /etc/vector/conf.d (the manual log-shipping drop-in dir) is CONFIG —
-# shipped by vector-config, not declared here (ADR-013 R1).

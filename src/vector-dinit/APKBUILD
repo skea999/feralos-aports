@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=vector-dinit
 pkgver=0.1.0
-pkgrel=10
+pkgrel=11
 pkgdesc="dinit service for vector"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,14 +19,14 @@ package() {
 	install -Dm644 "$srcdir/vector" "$pkgdir/lib/dinit.d/vector"
 	install -Dm755 "$srcdir/vector.script" "$pkgdir/usr/lib/dinit/vector"
 	install -Dm644 "$srcdir/vector.conf" "$pkgdir/etc/dinit.d/config/vector.conf"
-	# /run/vector, /dev/log, /var/log, /btrbk — replaces the OpenRC
-	# vector-setup script (processed by the dinit-chimera early chain)
+	# service runtime state only (ADR-013 R1/R2): data dir + socket dir +
+	# ingress symlink (processed by the dinit-chimera early chain)
 	install -Dm644 "$srcdir/vector-dinit.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/vector-dinit.conf"
 }
 
 sha512sums="
-f5a81ba986a00a26f0e04409dabe73ff81a983c92ddf6c8aa556cece4bf5b46a22ebc2b2f2f3cb20824dd511ecb6c95fb05882e5db4b1a6c5334f000a655d680  vector
-37cce6ae6660d96432c2060af05dac5b34b3184dd8d7afda34612961c194571653aa6d1d874b5744bc8471e44953682bb8e8584aa8e4790d3df6c4e482d5bbe4  vector-dinit.tmpfiles
+ad6573029e49bb4a675260a238e5d7da5a5762e13ff2378ef858d5bcee35543d1ffa914e2480fd1725c05cf1af5a1fc5719f9fab769678d7e44024e8bb58a802  vector
+9c971f4495eff3f997bb5461af507d240ce69205e465ab7e9ca2f134dafb398000b3fb7d21fdd780759ca5b7e81b22e5594eaaf2b260d5cf838458a79b49437e  vector-dinit.tmpfiles
 a4434862a50ea39c7c82dc0a5fe399cc63d4744fb9f4b1b9192d7e29d975ea76fc32477ef7d13228d6d0faa613d6c7977d235a8622a78e171240d598ba0af4a3  vector.script
 7ac09aa9fc096a9c60e70e9101aee6d5c977496ffcc489df69d78bf958b4066160dd68612be159dfc767af4db97a2951bd22bc8eac20b4e158a9c3317a8a6500  vector.conf
 "

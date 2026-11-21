@@ -1,5 +1,5 @@
 # dinit service: vector (Alpine openrc vector + overrides)
-# /run/vector, /dev/log, /var/log and /btrbk ownership are prepared by the
+# vector runtime state (/var/lib/vector, /run/vector, /dev/log) is prepared by the
 # bundled tmpfiles file (processed by the dinit-chimera early chain)
 type = process
 smooth-recovery = true

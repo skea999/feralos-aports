@@ -1,0 +1,33 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# profile-config: the static shell/profile defaults as an APK package
+# (ADR-013 — the installer no longer writes them).
+#   editor.sh  -> micro as $EDITOR
+#   console.sh -> root/user PS1
+#   pager.sh   -> PAGER=moor (POSIX drop-in; replaces the installer sed that
+#                 rewrote the vendor /etc/profile)
+#   pager.fish -> PAGER=moor (fish)
+pkgname=profile-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS static shell defaults (editor, PS1, pager)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="editor.sh console.sh pager.sh pager.fish"
+options="!check" # static config, exercised by every login shell
+
+package() {
+	install -Dm644 "$srcdir/editor.sh" "$pkgdir/etc/profile.d/editor.sh"
+	install -Dm644 "$srcdir/console.sh" "$pkgdir/etc/profile.d/console.sh"
+	install -Dm644 "$srcdir/pager.sh" "$pkgdir/etc/profile.d/pager.sh"
+	install -Dm644 "$srcdir/pager.fish" "$pkgdir/etc/fish/conf.d/pager.fish"
+}
+sha512sums="
+738d83179f63587e1324ad6e341900872e99029dde95c8f1571a3925fd126310e9985e311600371a117b7f499c36cee8bcb526c8956065f533790c8e87121dae  editor.sh
+bd3121fa7e34154df66b757a3eac0c136efc9e37e67579896fc7e66e0107d1ab010876c47f13b062add611c58389ddcb040321df68000111a205d117348114bf  console.sh
+a1eb75a93a4e54047000e6ea159141f55889be066f0d2159280fdc976143e297781335edaa437d5620488cb897fbebdd6e11e014d56fb0f2384bb28170856322  pager.sh
+35f2f5be805eecc1f07edaae5910e465af2ea21bc225aa84ab655d471ef166ec0a314a3867decbde5bd49f3ce412c9c4119b898360c95006cafc643d39080646  pager.fish
+"

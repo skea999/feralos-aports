@@ -6,7 +6,9 @@
 # /var/lib/greetd/session.log — greetd does not capture greeter session
 # output by itself, and the harness login_readiness check tails that file
 # into its failure detail (a broken greeter must be diagnosable).
-# Mutually exclusive with dms-config (one DE per install).
+# dms-config ships the niri variant as greeter-niri.sh — distinct
+# filenames so the two config packages never collide as apk content.
+# greetd-config's dispatcher execs whichever one is installed.
 pkgname=wayle-config
 pkgver=0.1.0
 pkgrel=0
@@ -20,7 +22,7 @@ source="greeter.sh"
 options="!check" # static script, proven live by the greeter harness checks
 
 package() {
-	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter.sh"
+	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter-wayle.sh"
 }
 sha512sums="
 b7d59b706d96f1371f81ba4c9d6f5413d1735fd66f5071dd7229bff81dbf5bc3308bbc39e29a8bc5a87538f5c3600b89ece9804b7db6d71a54494624714103af  greeter.sh

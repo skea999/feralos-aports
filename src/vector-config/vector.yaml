@@ -34,8 +34,11 @@ sources:
 
   # User-session logs: ANY .log written by ANY session tool in its runtime
   # dir (wayle-session today — the script execs its output there; future
-  # tools: write $XDG_RUNTIME_DIR/<name>.log and it is picked up with zero
-  # config changes). Sockets/dirs are excluded by the *.log suffix.
+  # tools: write their session log into their runtime dir and it is picked
+  # up with zero config changes). Sockets/dirs are excluded by the *.log
+  # suffix. NOTE: never reference env vars in this file, even in comments —
+  # vector interpolates VAR patterns in the RAW text before YAML parsing
+  # and exits 78 when the variable is unset at boot.
   user_session_logs:
     type: file
     include:

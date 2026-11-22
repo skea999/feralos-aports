@@ -1,0 +1,9 @@
+#%PAM-1.0
+#
+# FeralOS (niriWayle): oo7 keyring password re-sync. The password stack
+# runs for user-initiated passwd changes; pam_oo7 (after base-password,
+# which sets PAM_OLDAUTHTOK/PAM_AUTHTOK) sends old+new to the oo7 daemon,
+# which re-encrypts all matching keyrings. Root resets (chpasswd) carry
+# no old authtok and cannot sync - universal limitation, same as GNOME.
+password include base-password
+password optional pam_oo7.so

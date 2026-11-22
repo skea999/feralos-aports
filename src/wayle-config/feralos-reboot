@@ -1,0 +1,19 @@
+#!/bin/sh
+# feralos-reboot — init-agnostic session reboot (wayle-config).
+#
+# The Wayle dashboard dropdown carries ONE static reboot command now that
+# this wrapper resolves the init at runtime:
+#   - dinit: `loginctl reboot` is BROKEN — elogind execs the ABSOLUTE
+#     busybox /sbin/reboot after its hooks and the SIGTERM makes dinit
+#     overwrite REBOOT -> HALT (2026-10-12 diagnosis, "system halted"
+#     instead of a restart). The proven path is the dinit wrapper backed
+#     by the installer's /etc/sudoers.d/zz-power NOPASSWD rule:
+#     `sudo -n /usr/bin/reboot`.
+#   - OpenRC: busybox reboot is fine when dinit does not trap the signal —
+#     `loginctl reboot` (elogind handles it).
+# The installer seeds the config; /run/dinitctl exists only under a dinit
+# boot, so the socket probe is the init test.
+if [ -S /run/dinitctl ]; then
+	exec sudo -n /usr/bin/reboot
+fi
+exec loginctl reboot

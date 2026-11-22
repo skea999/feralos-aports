@@ -8,12 +8,17 @@
 # feralos-dbus-activate.
 pkgname=polkit-dinit
 pkgver=0.1.0
-pkgrel=10
+pkgrel=11
 pkgdesc="dinit service for polkit"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
 license="ISC"
 depends="dinit polkit feralos-dbus-activate"
+# provides aliases: the dinit-conversion loop probes the daemon apk name
+# (polkit-elogind-dinit — who-owns /usr/lib/polkit-1/polkitd) and the audit
+# probes the same candidates; the R1 unit is `polkit`, so the package was
+# never found and polkitd ran unsupervised (audit MISS, run 00-42-45Z).
+provides="polkit-elogind-dinit"
 makedepends=""
 source="polkit
 	org.freedesktop.PolicyKit1.service"

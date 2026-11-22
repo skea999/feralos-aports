@@ -1,0 +1,48 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# assemble-cmdline: assembles the kernel command line from fragment files
+# (/etc/kernel/cmdline.d/*.conf, lexicographic, comments dropped, joined
+# with single spaces) and prints it to stdout. Pure — the callers (installer,
+# kernel hook, apk trigger) write /etc/kernel/cmdline and rebuild the UKI.
+# FHS: /usr/sbin — system helper executed by root-owned scripts. The tool is
+# generic (not hardening-specific: cmdline.d/00-base.conf exists on every
+# install), hence its own package in standardPackages.
+pkgname=assemble-cmdline
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="Assemble the kernel command line from /etc/kernel/cmdline.d fragments"
+url="https://github.com/skea999/assemble-cmdline"
+arch="all"
+license="ISC"
+makedepends="go"
+# net: go mod download needs the module proxy (dbus-audit precedent)
+options="net"
+source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/assemble-cmdline/archive/refs/tags/v$pkgver.tar.gz"
+builddir="$srcdir/$pkgname-$pkgver"
+options="" # go test is BLOCKING (check below) — same posture as the tool repo CI
+
+prepare() {
+	default_prepare
+	cd "$builddir"
+	go mod download
+}
+
+build() {
+	cd "$builddir"
+	go build -trimpath -o "$srcdir/assemble-cmdline" .
+}
+
+# BLOCKING: go test runs here (same gate as the tool repo CI) — the target
+# depends on this binary being correct.
+check() {
+	cd "$builddir"
+	go test -count=1 ./...
+}
+
+package() {
+	install -Dm755 "$srcdir/assemble-cmdline" "$pkgdir/usr/sbin/assemble-cmdline"
+}
+
+sha512sums="
+8c61c78063d6734dfb40f6589a70bc8f1b8c6d0035bf00d98aef09c32b1f38d148dca9e9baf1b5eb01c901f158749da0be5bb7d1f84ffc3c5ce5d54714daefa0  assemble-cmdline-0.1.0.tar.gz
+"

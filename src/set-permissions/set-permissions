@@ -1,0 +1,22 @@
+#!/bin/sh
+# FeralOS hardening permission posture (applied at boot).
+# OpenRC: /etc/init.d/set-permissions runs this script.
+# dinit:  the set-permissions scripted unit runs the same script.
+ebegin "Setting secure permissions"
+/bin/chmod 0755 /usr/bin/passwd
+/bin/chown root:root /usr/bin/passwd
+/bin/chmod 745 /bin/mount
+/bin/chown root:root /bin/mount
+/bin/chmod 0755 /home/
+/bin/chown root:root /home/
+/bin/chmod 0700 /root
+/bin/chown root:root /root
+/bin/chmod a-st -R /bin/
+/bin/chmod a-st -R /usr/local/bin/
+/bin/chmod a-st -R /sbin/
+/bin/chmod a-st -R /usr/sbin/
+/bin/chmod a-st -R /lib/
+/bin/chmod a-st -R /usr/local/lib/
+/bin/chmod a-st -R /usr/lib/
+/bin/chmod a-st -R /opt/
+eend $?

@@ -1,0 +1,7 @@
+# dinit service: set-permissions — the hardening permission posture at boot
+# (the OpenRC twin is /etc/init.d/set-permissions; both run the same script).
+type = scripted
+command = /usr/libexec/feralos/set-permissions
+after = early-fs-local.target
+before = local.target
+restart = false

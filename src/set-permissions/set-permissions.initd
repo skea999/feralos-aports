@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+# FeralOS hardening: the secure permission posture at boot (the shared
+# script; the dinit twin is the set-permissions scripted unit).
+name="set-permissions"
+command="/usr/libexec/feralos/set-permissions"
+
+depend() {
+	after localmount
+}
+
+start() {
+	ebegin "Setting secure permissions"
+	"$command"
+	eend $?
+}

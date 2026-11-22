@@ -1,0 +1,29 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# set-permissions: the hardening permission posture applied at boot, as its
+# own package pulled in as a DEPENDENCY of hardening-config — never installed
+# explicitly. Ships one shared script plus its two init flavors (OpenRC initd
+# + dinit scripted unit, same unit/initd name per ADR-010 R1). Enablement is
+# rules-driven (services map: set-permissions = boot).
+pkgname=set-permissions
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS secure permission posture at boot (hardening)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="set-permissions set-permissions.initd set-permissions.dinit"
+options="!check" # static script + init files, exercised by services_status
+
+package() {
+	install -Dm755 "$srcdir/set-permissions" "$pkgdir/usr/libexec/feralos/set-permissions"
+	install -Dm755 "$srcdir/set-permissions.initd" "$pkgdir/etc/init.d/set-permissions"
+	install -Dm644 "$srcdir/set-permissions.dinit" "$pkgdir/lib/dinit.d/set-permissions"
+}
+sha512sums="
+b47b32142261f77c877a5564b6d299578505141d2d30cc8bce0efe58756610932e59c880940ce5946904ea4dc78980bb1088c3eaac7f8c9019d1157609b86d9d  set-permissions
+7d3e6a9dfbc818fc8f92c26a7a00880e513aa5140d46f38a82489bebd86453d2dfdadd491302f36f583e67090a62ec35e1b764cda64909d459c5cf11a7ec9135  set-permissions.initd
+f0970339b6eb3fbf57bb1908356d00b449e60b79f292a620b6efdf67bffd57257df65558214d441daa52b9a212fb28aa8e42d393e2c7716c2740fb2f88ffc2cc  set-permissions.dinit
+"

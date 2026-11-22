@@ -1,0 +1,16 @@
+#!/bin/sh
+# FeralOS hardening-config post-install: pull the clamav signature DB ONCE.
+# The installer machine has network; the installed target may never (the DB
+# snapshot at install = the only reliable one). Guarded: skipped when the DB
+# is already present (apk upgrades re-run this — no re-download). Runs with
+# the REAL /etc/clamav/freshclam.conf shipped by clamav-config (already on
+# disk: apk runs post-install scripts after the whole transaction unpacks).
+# The "Clamd was NOT notified" warning is benign (no clamd in chroot) —
+# allowlisted in the harness log_errors sweep.
+if [ -e /var/lib/clamav/main.cvd ] || [ -e /var/lib/clamav/main.cld ] || \
+   [ -e /var/lib/clamav/daily.cvd ] || [ -e /var/lib/clamav/daily.cld ]; then
+	exit 0
+fi
+echo "Pulling clamav signature DB snapshot (install-time)..."
+freshclam --config-file=/etc/clamav/freshclam.conf || echo "WARNING: freshclam failed (best-effort — clamd stays down until freshclam succeeds on a network)"
+exit 0

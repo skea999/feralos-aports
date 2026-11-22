@@ -12,7 +12,7 @@
 # kernel.printk / dmesg_restrict / io_uring_disabled / memfd_noexec.
 pkgname=hardening-config
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="FeralOS hardening family: static sysctl drop-ins, module blacklist, family dependencies"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
@@ -23,7 +23,7 @@ depends="bubblewrap apparmor apparmor-profiles libapparmor apparmor-utils
 makedepends=""
 source="93-ipv4Configs.conf 94-limitLogs.conf 95-randomizeAddresses.conf
 	96-disableSuidDumps.conf 97-disableCoreDumps.conf 98-hardening.conf
-	99-cmdline-hardening.conf bridging.conf disabledModules.conf"
+	99-cmdline-hardening.conf bridging.conf disabledModules.conf 00-umask.sh"
 options="!check" # static config, applied by sysctl --system / modprobe
 
 package() {
@@ -36,6 +36,7 @@ package() {
 	install -Dm644 "$srcdir/99-cmdline-hardening.conf" "$pkgdir/etc/sysctl.d/99-cmdline-hardening.conf"
 	install -Dm644 "$srcdir/bridging.conf" "$pkgdir/etc/sysctl.d/bridging.conf"
 	install -Dm644 "$srcdir/disabledModules.conf" "$pkgdir/etc/modprobe.d/disabledModules.conf"
+	install -Dm644 "$srcdir/00-umask.sh" "$pkgdir/etc/profile.d/00-umask.sh"
 }
 sha512sums="
 8809c64e778e378774f3575c7e20d041d943ca9bb0ea950fd1ec39e567cf8cdc5611cc43ce64f84a44a0056e1f8b14e05f628a4ea7b92a819e813ce443331f0a  93-ipv4Configs.conf
@@ -47,4 +48,5 @@ b81e811fd7905b7d44d4fc7843bb4bb1d350acb449a5d11cf3c832c39a6ce2611ed6da78ba5dae08
 582bb4302893b73947eb2edf85cc9f632e47f2f4188bad5847c018a6c3f45a2bb2779c9237ad6e4cbe005de5141d5a00806c2f0115630d5775152718d7e75c53  99-cmdline-hardening.conf
 d7587289aafc489a98cabc3d1082b58fae38f802a5e2f5258f58fb125fc703b497993aa7bc12d68f0f8c4b30b35b9cdcf52a125f4889f63d1938b4b71b68af59  bridging.conf
 720ddd66bf3adc9d0a14062dcb368b2b68dc18b3735e95f43bfc1f5ce66b9ed1fd34b88da7f52497fc75b4925af78cec18082875b0d5984ebf563093ef498fbf  disabledModules.conf
+8ef86f2acf83654b2222f4abff6e614e0265119da317071d00e9fcd5f2e74d05e066cff75062288a2729510900e49db3cd191cda2816510e3301ed3fd04fc9a4  00-umask.sh
 "

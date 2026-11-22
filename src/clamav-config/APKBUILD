@@ -2,25 +2,30 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # clamav-config: the FeralOS clamd configuration as an APK package (ADR-013 —
 # static config is package-shipped, the installer no longer writes it).
-# replaces="clamav-daemon": takes over /etc/clamav/clamd.conf, which the
+# replaces="clamav-daemon freshclam": takes over /etc/clamav/clamd.conf, which the
 # Alpine subpackage installs by renaming clamd.conf.sample (future vendor
 # updates leave our file as .apk-new — ours stays).
 pkgname=clamav-config
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS clamd configuration (log file, socket, DB dir)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
 depends="clamav-daemon"
-replaces="clamav-daemon"
+replaces="clamav-daemon freshclam"
 makedepends=""
-source="clamd.conf"
+source="clamd.conf freshclam.conf"
 options="!check" # static config, exercised by the security_stack harness checks
 
 package() {
 	install -Dm644 "$srcdir/clamd.conf" "$pkgdir/etc/clamav/clamd.conf"
+	# freshclam.conf: the vendor sample ("Example") makes freshclam 1.x exit 9
+	# ("No DatabaseMirror") — the daemon would never update the DB on the
+	# target. Real values, file-level takeover (replaces="freshclam").
+	install -Dm644 "$srcdir/freshclam.conf" "$pkgdir/etc/clamav/freshclam.conf"
 }
 sha512sums="
 aa9b8ce64b3636101a4d0a7869141a3731ba56519c685cafde1a51e5277351c25f6de72c649e0939537f88b012514b1c56c5a9f06ebe3d80a4738d360df08d86  clamd.conf
+0e7a0afb4f64da380cfd6433ec2cc4299e7ee657623202ec61fdd2aefc0542cc89005f155908e2b4c8d2dec8cdc1967b78d9e77f7c6d3468df84b3f534de618e  freshclam.conf
 "

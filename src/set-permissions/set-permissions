@@ -20,3 +20,6 @@ ebegin "Setting secure permissions"
 /bin/chmod a-st -R /usr/lib/
 /bin/chmod a-st -R /opt/
 eend $?
+# /boot (ESP) and /lib/modules root-only (restrictFilePermissions, moved
+# here from the installer — the same posture, applied at boot instead).
+/bin/chmod 0700 /boot /lib/modules 2>/dev/null || :

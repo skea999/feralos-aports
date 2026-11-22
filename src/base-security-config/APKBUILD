@@ -1,0 +1,39 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# base-security-config: the FeralOS base-security family (ADR-013 R2 — one
+# package = complete functionality, pulled in as ONE dependency of the
+# installer's baseSecurity feature). This package carries the AppArmor
+# stack as apk dependencies plus the kernel cmdline fragment that turns the
+# LSM on. The static file is ONLY the cmdline fragment: the AppArmor service
+# enablement (boot) is rules-driven — it rides the base-security-config
+# packageLogic key in the installer's internal_rules.yaml, because apparmor
+# is dep-installed and its own rules key would never fire.
+# The cmdline fragment upgrade fires the apk trigger, which reassembles
+# /etc/kernel/cmdline and rebuilds the installed UKI (same generic trigger
+# as hardening-config).
+pkgname=base-security-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS base security family: AppArmor stack + LSM cmdline fragment"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="apparmor apparmor-profiles libapparmor apparmor-utils"
+makedepends=""
+source="40-apparmor.conf $pkgname.trigger"
+options="!check" # static config, exercised by the config_packages_base_security harness check
+triggers="$pkgname.trigger=/etc/kernel/cmdline.d/40-apparmor.conf"
+
+package() {
+	# kernel cmdline fragment: /etc/kernel/cmdline.d/*.conf are assembled
+	# into /etc/kernel/cmdline by assemble-cmdline (the 50-booster hook
+	# sources the fragments live) — an upgrade of this package fires the
+	# apk trigger, which reassembles and rebuilds the installed UKI.
+	# Sorts BEFORE 50-hardening.conf (40 < 50); no key overlap — the
+	# hardening fragment owns every other parameter.
+	install -Dm644 "$srcdir/40-apparmor.conf" "$pkgdir/etc/kernel/cmdline.d/40-apparmor.conf"
+}
+sha512sums="
+8ab267f095ff877bb18514ddc3bab2c7e597afaf38c04c5fde4696d8bcbf9cd8720d3e52c15ba3890807a58d1321b1dfd276f868c214463b5ea25e710a45f440  40-apparmor.conf
+a0fbfc9ad2840e4eb971c30c69ec5686dee24a543ef78f1e4e45441d99917d9915a8c29bb93def7876b8963387e545ae3b2ccbbd88bf0986410c5f8f9e095249  base-security-config.trigger
+"

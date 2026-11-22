@@ -1,0 +1,6 @@
+#!/bin/sh
+# FeralOS AIDE daily integrity check (cronie daily — complete-security-config).
+# Report goes to /var/log/aide/aide.log (vector aide_logs source); a
+# non-zero exit surfaces in the cronie logs — diff BEFORE touching anything:
+#   aide --check | less    /    aide --update && mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+exec /usr/bin/aide --check

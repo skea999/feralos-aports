@@ -1,0 +1,33 @@
+# FeralOS audit rules — lean baseline (docs/architecture/security_stack.md).
+# Shipped by complete-security-config (ADR-013); the post-install inserts the
+# existence-filtered sudo/doas/ssh watches (which sudo/ssh stack is
+# installed is an install-time fact) above the immutable marker.
+# Loaded by auditctl -R (the auditd dinit wrapper) and the OpenRC initd
+# (RULEFILE_STARTUP). -e 2 = immutable until reboot: edit ONLY with a
+# planned reboot in mind (auditctl reloads fail with EPERM otherwise).
+# auditd.conf (package defaults) owns the log rotation —
+# max_log_file_action=ROTATE, /var/log/audit/.
+-D
+-b 8192
+-f 1
+--backlog_wait_time 60000
+
+# Identity databases
+-w /etc/passwd -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/gshadow -p wa -k identity
+-w /etc/dinit.d/ -p wa -k system_init
+
+# Sudo/ssh configuration (existence-filtered at install)
+
+# Kernel module load/unload (finit_module is b64-only on some kernels)
+-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules
+-a always,exit -F arch=b32 -S init_module,delete_module -k modules
+
+# Time change
+-a always,exit -F arch=b64 -S adjtimex,settimeofday,clock_settime -k time-change
+-a always,exit -F arch=b32 -S adjtimex,settimeofday,stime,clock_settime -k time-change
+
+# Immutable ruleset (must stay LAST)
+-e 2

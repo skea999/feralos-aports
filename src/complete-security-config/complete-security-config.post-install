@@ -1,0 +1,30 @@
+#!/bin/sh
+# complete-security-config post-install: insert the audit watches that
+# depend on WHICH sudo/doas/openssh stack is installed. The static rules
+# file ships the core; this adds existence-filtered watches ABOVE the
+# immutable marker (-e 2 must stay LAST). Idempotent: a watch line already
+# present in the file is never inserted twice (apk upgrades re-run this).
+# One always-successful pass (per-path test probes would log noise).
+
+rules=/etc/audit/audit.rules
+[ -f "$rules" ] || exit 0
+
+extras=""
+for p in /etc/sudoers /etc/sudoers.d /etc/doas.d /etc/ssh; do
+	[ -e "$p" ] || continue
+	watch="$p"
+	key="sudoers"
+	case "$p" in
+	/etc/ssh) watch="/etc/ssh/"; key="sshd_config" ;;
+	/etc/sudoers.d|/etc/doas.d) watch="$p/" ;;
+	esac
+	line="-w $watch -p wa -k $key"
+	grep -qF "$line" "$rules" || extras="$extras\n$line"
+done
+[ -n "$extras" ] || exit 0
+
+awk -v extras="$extras" '
+/^# Immutable ruleset/ && !done { printf "%s\n", extras; print; done = 1; next }
+{ print }
+' "$rules" > "$rules.new" && mv "$rules.new" "$rules"
+exit 0

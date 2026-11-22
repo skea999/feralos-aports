@@ -4,22 +4,25 @@
 # hardening feature needs, pulled in as ONE dependency of the installer's
 # hardening feature (ADR-013 R2). This package carries:
 #   - the STATIC hardened sysctl drop-ins and the module blacklist
-#   - the DEPENDENCY list of the whole family (apparmor stack, clamav stack
-#     incl. clamav-config, the set-permissions posture package)
+#   - the DEPENDENCY list of the whole family (clamav stack incl.
+#     clamav-config, the set-permissions posture package)
+# AppArmor is NOT here anymore (2026-11-22 security-variable split): the
+# apparmor stack + its cmdline fragment ride base-security-config (the
+# baseSecurity feature family). The LSM enablement is a base-security
+# concern, not a kernel-hardening one.
 # The debug-dependent values are NOT shipped relaxed: when the installer
 # runs with enableDebug it writes /etc/sysctl.d/99-feralos-debug.conf
 # (sorts after these files — per-key last wins) relaxing exactly
 # kernel.printk / dmesg_restrict / io_uring_disabled / memfd_noexec.
 pkgname=hardening-config
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="FeralOS hardening family: static sysctl drop-ins, module blacklist, family dependencies"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
-depends="bubblewrap apparmor apparmor-profiles libapparmor apparmor-utils
-	clamav-daemon clamav-scanner clamav-db freshclam clamav-config
-	set-permissions"
+depends="bubblewrap clamav-daemon clamav-scanner clamav-db freshclam
+	clamav-config set-permissions"
 makedepends=""
 source="hardening-config.post-install 50-hardening.conf
 	93-ipv4Configs.conf 94-limitLogs.conf 95-randomizeAddresses.conf
@@ -50,7 +53,7 @@ package() {
 }
 sha512sums="
 7afbcec14f872cf874f5c7d29619735e01559f2ca043bba015f31c1375d6e8a7f0657b5f89851a4e3b5288b1374f7a145518d83343a273f8071ecc352a81d0db  hardening-config.post-install
-f4dbfc3da52555bb6c8a36af8ef965603b11296861f45400b928243fca4ab3b2d87293b825fca1382cddddb1f72e1dcb366f2422f58db15f894c8cffbf919317  50-hardening.conf
+3a5daeaf23cf5491dc5bbe46af3498fcb80fdc1e808f526a37c9f13a33c5d86e987190d45069f06461df5e40463409806fd99a573556ebad87d0dc120f9e9b19  50-hardening.conf
 8809c64e778e378774f3575c7e20d041d943ca9bb0ea950fd1ec39e567cf8cdc5611cc43ce64f84a44a0056e1f8b14e05f628a4ea7b92a819e813ce443331f0a  93-ipv4Configs.conf
 e008159e8221536edccc07ac98f180efc39b6f4603d731ed1f8ddc44234d5a9fb0905ed58b37f095b20534337d898e55d59e5eae44d04b01a78b08d26ce8ad1b  94-limitLogs.conf
 2c04a73b036bf8c2a73b373f8f59b40803229cff963ff58c97a19759d5813715101173e367e2ce9418c4c1c582a46c48c091b9f128a3539f403368acb4c7456b  95-randomizeAddresses.conf

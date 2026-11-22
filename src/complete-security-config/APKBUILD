@@ -1,0 +1,47 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# complete-security-config: the FeralOS enterprise security stack family
+# (ADR-013 R2 — one package = complete functionality, pulled in as ONE
+# dependency of the installer's completeSecurity feature). This package
+# carries:
+#   - the enterprise stack as apk dependencies: auditd (kernel audit
+#     framework), AIDE (file integrity), fail2ban (+ its own -config jail
+#     package), Tracee (runtime detection), lynis (conformance)
+#   - /etc/audit/audit.rules — the lean baseline (the vendor audit package
+#     ships NO audit.rules; only audit-stop.rules + auditd.conf)
+#   - /etc/aide.conf — the vendor aide package ships no config (sample
+#     under doc/ only)
+#   - /etc/periodic/daily/aide-check — the daily integrity cron
+# The watches that depend on WHICH sudo/doas/openssh stack is installed are
+# inserted by the post-install (existence-filtered) ABOVE the immutable
+# marker: -e 2 must stay LAST. The service enablement (auditd/fail2ban/
+# tracee) is rules-driven — it rides the complete-security-config
+# packageLogic key (dep-installed packages have no reachable rules key of
+# their own).
+pkgname=complete-security-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS enterprise security stack: audit rules, AIDE config + cron, stack dependencies"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends="audit aide fail2ban fail2ban-config tracee lynis"
+makedepends=""
+source="audit.rules aide.conf aide-check $pkgname.post-install"
+install="$pkgname.post-install"
+options="!check" # static config, exercised by the security_stack harness checks
+
+package() {
+	install -Dm640 "$srcdir/audit.rules" "$pkgdir/etc/audit/audit.rules"
+	install -Dm644 "$srcdir/aide.conf" "$pkgdir/etc/aide.conf"
+	install -Dm755 "$srcdir/aide-check" "$pkgdir/etc/periodic/daily/aide-check"
+	# state + report dirs (the vendor aide package ships none; the daily
+	# check and BaselineAide write into them)
+	install -d -m755 "$pkgdir"/var/lib/aide "$pkgdir"/var/log/aide
+}
+sha512sums="
+1233464030e7f7175420b3de386b7faac7ea80947a363f59c18dff39c344142026966dc24abb3506eac4a0dcc34de3fbdcd82912decabdc21b7dc5131b27cbf2  audit.rules
+2ab586776f3ed4e274a636424041c3e23e1ff98eb7edea83f3fb2cc9f50f69213c618fad413d4e1853359a9ec93138f8942471885bb6e2e3c5f4322d0cd5af96  aide.conf
+0dd29ef16a7c85f6df8a67f1fcddb4000c85f9c86f58adb7eb7805c0666de48306b6999607db9acaf1bfe105b5f8960cf7f9069ed70d23dc76ed684ee2031c8a  aide-check
+9b296640db959837421b32ffa571aa0a1c8eeaa3546647454012fc43e89ad7b688951d1470384b16cf6a8d1724032efc60572ddeeb51612e3d0e8545ac857715  complete-security-config.post-install
+"

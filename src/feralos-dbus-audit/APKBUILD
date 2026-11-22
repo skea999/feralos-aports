@@ -24,13 +24,15 @@ pkgname=feralos-dbus-audit
 pkgver=0.1.2
 pkgrel=0
 pkgdesc="FeralOS D-Bus supervision audit (ADR-010): activation targets must be dinit units"
-url="https://github.com/skea999/feralos"
+url="https://github.com/skea999/feralos-dbus-audit"
 arch="all"
 license="ISC"
-# source = the feralos git repo tag marking the state this package was cut
-# from (source pinning policy, see README.md: GitHub sources pin to TAG
-# archive URLs, never commit archives; the sha512 is the integrity guard)
-source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/feralos/archive/refs/tags/dbus-audit-$pkgver/feralos-dbus-audit-$pkgver.tar.gz
+# source = the STANDALONE repo release tag (source pinning policy, see
+# README.md: GitHub sources pin to TAG archive URLs, never commit archives;
+# the sha512 is the integrity guard). v0.1.2 = the tool moved out of the
+# feralos installer repo into its own repository (version lineage kept:
+# 0.1.0 → 0.1.1 → 0.1.2 were cut from the feralos repo).
+source="$pkgname-$pkgver.tar.gz::https://github.com/skea999/feralos-dbus-audit/archive/refs/tags/v$pkgver.tar.gz
 	feralos-dbus-audit.dinit
 	feralos-dbus-audit.initd"
 builddir="$srcdir/$pkgname-$pkgver"
@@ -46,14 +48,14 @@ prepare() {
 	default_prepare
 	# module deps of the imported utils/shell package (yaml/term/x/sys):
 	# download once in prepare (network convention), build stays --mod=readonly
-	cd "$builddir"/src
+	cd "$builddir"
 	export GOPATH="$srcdir/gopath"
 	export GOCACHE="$srcdir/gocache"
 	go mod download
 }
 
 build() {
-	cd "$builddir"/src/firstBoot/dbus-audit
+	cd "$builddir"
 	export GOPATH="$srcdir/gopath"
 	export GOCACHE="$srcdir/gocache"
 	export CGO_ENABLED=0
@@ -80,7 +82,7 @@ package() {
 }
 
 sha512sums="
-87450de62fb00c5b82d2433f21dede9f187ce0ad074f29c0e7d74904ec4699e5a960a46c5d4e29257042198bef229ac92c45b4d691add98ea768b591f04cddec  feralos-dbus-audit-0.1.2.tar.gz
+cceb0021ad29dbc1bb902cd049d17cd604e71c4ea647737cbfaa3bffc362a262cc10a63b1437663a4350da8be3beeb4171ec1d812bd7bcc1d5635003b52ca640  feralos-dbus-audit-0.1.2.tar.gz
 320717b127d8e619622547d5a21338ae2262eef950f400cbed2bfca73ebbbdf8305f8e0aa87d9c3481af525ef2ec99e820fb8c40c104cf350649b1d880a33011  feralos-dbus-audit.dinit
 15236b5955a0cf0cdf3a2ccab24dcbc9a6d6379238254ac848e4275ae56ed9d673baa428bf9f6275ad72d6601d2ab9914b3e0775f3ed7bd8dc76ddce994bf830  feralos-dbus-audit.initd
 "

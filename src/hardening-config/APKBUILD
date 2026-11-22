@@ -12,7 +12,7 @@
 # kernel.printk / dmesg_restrict / io_uring_disabled / memfd_noexec.
 pkgname=hardening-config
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="FeralOS hardening family: static sysctl drop-ins, module blacklist, family dependencies"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
@@ -21,11 +21,15 @@ depends="bubblewrap apparmor apparmor-profiles libapparmor apparmor-utils
 	clamav-daemon clamav-scanner clamav-db freshclam clamav-config
 	set-permissions"
 makedepends=""
-source="hardening-config.post-install 93-ipv4Configs.conf 94-limitLogs.conf 95-randomizeAddresses.conf
+source="hardening-config.post-install 50-hardening.conf
+	93-ipv4Configs.conf 94-limitLogs.conf 95-randomizeAddresses.conf
 	96-disableSuidDumps.conf 97-disableCoreDumps.conf 98-hardening.conf
 	99-cmdline-hardening.conf bridging.conf disabledModules.conf 00-umask.sh"
 install="$pkgname.post-install"
-options="!check" # static config, applied by sysctl --system / modprobe
+# apk trigger: on a fragment upgrade the trigger reassembles
+# /etc/kernel/cmdline and rebuilds the installed UKI (no post-install;
+# apk triggers are deduped per transaction)
+triggers="$pkgname.trigger=/etc/kernel/cmdline.d/50-hardening.conf"
 
 package() {
 	install -Dm644 "$srcdir/93-ipv4Configs.conf" "$pkgdir/etc/sysctl.d/93-ipv4Configs.conf"
@@ -38,9 +42,15 @@ package() {
 	install -Dm644 "$srcdir/bridging.conf" "$pkgdir/etc/sysctl.d/bridging.conf"
 	install -Dm644 "$srcdir/disabledModules.conf" "$pkgdir/etc/modprobe.d/disabledModules.conf"
 	install -Dm644 "$srcdir/00-umask.sh" "$pkgdir/etc/profile.d/00-umask.sh"
+	# kernel cmdline fragment: /etc/kernel/cmdline.d/*.conf are assembled
+	# into /etc/kernel/cmdline by assemble-cmdline (the 50-booster hook
+	# sources the fragments live) — an upgrade of this package fires the
+	# apk trigger, which reassembles and rebuilds the installed UKI.
+	install -Dm644 "$srcdir/50-hardening.conf" "$pkgdir/etc/kernel/cmdline.d/50-hardening.conf"
 }
 sha512sums="
 7afbcec14f872cf874f5c7d29619735e01559f2ca043bba015f31c1375d6e8a7f0657b5f89851a4e3b5288b1374f7a145518d83343a273f8071ecc352a81d0db  hardening-config.post-install
+f4dbfc3da52555bb6c8a36af8ef965603b11296861f45400b928243fca4ab3b2d87293b825fca1382cddddb1f72e1dcb366f2422f58db15f894c8cffbf919317  50-hardening.conf
 8809c64e778e378774f3575c7e20d041d943ca9bb0ea950fd1ec39e567cf8cdc5611cc43ce64f84a44a0056e1f8b14e05f628a4ea7b92a819e813ce443331f0a  93-ipv4Configs.conf
 e008159e8221536edccc07ac98f180efc39b6f4603d731ed1f8ddc44234d5a9fb0905ed58b37f095b20534337d898e55d59e5eae44d04b01a78b08d26ce8ad1b  94-limitLogs.conf
 2c04a73b036bf8c2a73b373f8f59b40803229cff963ff58c97a19759d5813715101173e367e2ce9418c4c1c582a46c48c091b9f128a3539f403368acb4c7456b  95-randomizeAddresses.conf

@@ -22,7 +22,7 @@
 # units — the vendor dbus-daemon-launch-helper activates natively.
 pkgname=feralos-dbus-audit
 pkgver=0.1.2
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS D-Bus supervision audit (ADR-010): activation targets must be dinit units"
 url="https://github.com/skea999/feralos-dbus-audit"
 arch="all"

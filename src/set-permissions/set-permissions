@@ -2,7 +2,7 @@
 # FeralOS hardening permission posture (applied at boot).
 # OpenRC: /etc/init.d/set-permissions runs this script.
 # dinit:  the set-permissions scripted unit runs the same script.
-ebegin "Setting secure permissions"
+echo "Setting secure permissions"
 /bin/chmod 0755 /usr/bin/passwd
 /bin/chown root:root /usr/bin/passwd
 /bin/chmod 745 /bin/mount
@@ -19,7 +19,6 @@ ebegin "Setting secure permissions"
 /bin/chmod a-st -R /usr/local/lib/
 /bin/chmod a-st -R /usr/lib/
 /bin/chmod a-st -R /opt/
-eend $?
 # /boot (ESP) and /lib/modules root-only (restrictFilePermissions, moved
 # here from the installer — the same posture, applied at boot instead).
 /bin/chmod 0700 /boot /lib/modules 2>/dev/null || :

@@ -1,0 +1,52 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# niri-base-config: the shared niri-family static layer (ADR-013 R2) —
+# listed by BOTH niri (DMS) and niriWayle DE package lists. This package
+# carries every static system-path config the two desktop setups used to
+# write identically, plus the branding assets:
+#   - /etc/dconf/profile/user — Alpine's dconf ships NO /etc/dconf at all;
+#     without the profile GLib never consults the user/system dbs
+#   - /etc/NetworkManager/conf.d/10-manage.conf — NM manages ifupdown
+#     interfaces (Wayle network module + DMS widget both talk to NM)
+#   - /etc/network/interfaces — reduced to loopback (eth0 belongs to NM);
+#     OVERWRITES the eth0-dhcp file internal.setupInterfaces wrote earlier
+#     in the chroot run (dead in the niri-family flow — kept there for the
+#     non-niri flows). Alpine ships no owner of this path.
+#   - the FeralOS branding: logo as a system hicolor icon (Wayle/Raffi
+#     launcher button; Adwaita inherits hicolor so `icon-name =
+#     "feralos-logo"` resolves) + the default wallpapers (the regreet
+#     background points at the 1080p target)
+# Per-variant statics do NOT live here: the Wayle portals override (oo7)
+# is wayle-config, the DMS user seeds stay installer-written.
+pkgname=niri-base-config
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS shared niri-family statics: dconf profile, NM manage, lo interfaces, branding"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="dconf-profile-user 10-manage.conf interfaces
+	feralos-logo.svg feralos-wallpaper-1080p.png feralos-wallpaper-1440p.png"
+options="!check" # static configs, exercised by the niri-family harness checks
+
+package() {
+	install -Dm644 "$srcdir/dconf-profile-user" "$pkgdir/etc/dconf/profile/user"
+	install -Dm644 "$srcdir/10-manage.conf" "$pkgdir/etc/NetworkManager/conf.d/10-manage.conf"
+	install -Dm644 "$srcdir/interfaces" "$pkgdir/etc/network/interfaces"
+	install -Dm644 "$srcdir/feralos-logo.svg" \
+		"$pkgdir/usr/share/icons/hicolor/scalable/apps/feralos-logo.svg"
+	install -Dm644 "$srcdir/feralos-wallpaper-1080p.png" \
+		"$pkgdir/usr/share/wallpapers/feralos-default.png"
+	install -Dm644 "$srcdir/feralos-wallpaper-1440p.png" \
+		"$pkgdir/usr/share/wallpapers/feralos-default-3440x1440.png"
+}
+sha512sums="
+226ef29cced7271d503ae29580fa189994067aa174903844b1bcc619d1e33e6038e5d9d3dd6d502505fdb966489605227323cba37db2d5287b6317ad2d31480e  dconf-profile-user
+ca6e3215604e4c9c402772d952df8fe722ee429b257b36a65bab2463d25aec0d42ed486521ab533f3c48f83ee4da305d3f6a5cee90ea78bf231da91926d52b45  10-manage.conf
+17b61782cbb44e0bee7415b583d9d9fe66778029f9c707c6a91950979a7ca349148b72797ad3f73be290e8f58497dd8c6eb746687cea841921fdab0175d19375  interfaces
+fb157ae2468500843c159ad74e5600a5354605258e3b11d375a8e8759047971dca13ee3e8299a9b5431fb9d1be48417900ae4b35c89f71414c3fe823950ce883  feralos-logo.svg
+74a32384467c35730ae5d51fb7af4c5034f88a94e66c8b6ab30df46aa9554a41f30fe4aadb9ca65d840ed1c0fda0f7fc54b845e2672a8cb4af7588cbb50849a5  feralos-wallpaper-1080p.png
+e16922b52872d1051b37bc810172b8eeaccb16efbd90905f7ed7391b2cfba40cfa5938d998d25a6cb22debe7836a3447f92a290fa0f3637c3e51264dfcb991ec  feralos-wallpaper-1440p.png
+"

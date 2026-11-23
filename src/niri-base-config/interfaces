@@ -1,0 +1,4 @@
+# NetworkManager manages wired/wireless interfaces (see
+# /etc/NetworkManager/conf.d/10-manage.conf). Keep loopback here only.
+auto lo
+iface lo inet loopback

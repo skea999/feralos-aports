@@ -1,0 +1,13 @@
+#!/bin/sh
+# niri-base-config post-install: materialize the compiled (empty) dconf
+# system db. /etc/dconf/profile/user ships as package content; without the
+# compiled /etc/dconf/db/local any user-level dconf write fails with
+# "unable to open file /etc/dconf/db/local ... expect degraded performance"
+# — caught live by the flatpak install (Key Rack) in the flagship proof
+# run 2026-11-23T23-15-08Z: the edge/flatpak install runs BEFORE the
+# desktop setup, so the materialization must happen at PACKAGE install
+# time (the bulk apk add precedes the edge install), not in the desktop
+# setup. Idempotent: apk upgrades re-run it.
+mkdir -p /etc/dconf/db/local.d
+dconf update
+exit 0

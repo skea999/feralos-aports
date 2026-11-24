@@ -1,11 +1,16 @@
 # Maintainer: FeralOS <dev@feralos.org>
-# ursine: FeralOS control center — ursined (root daemon, PAM auth, Unix
-# socket) + ursine (libcosmic GUI client). Absent from Alpine. Rust/cargo
+# ursine: FeralOS control center — ursined (root daemon, shadow-file auth,
+# Unix socket) + ursine (libcosmic GUI client). Absent from Alpine. Rust/cargo
 # workspace package (matugen pattern: fetch --locked + build --frozen).
 #
-# --features pam is MANDATORY: the daemon must use the real PAM
-# authenticator (pam-client -> libpam); the FeralOS installer refuses the
-# default stub auth. Do NOT drop the flag.
+# AUTHENTICATION (changed in upstream 0.39.2): the daemon verifies user +
+# password in-process against /etc/shadow (pwhash, pure Rust; Webmin
+# pattern; `ursined --version` prints "auth: shadow"). There is NO `pam`
+# cargo feature, no pam-client/libpam, no stub authenticator and no
+# /etc/pam.d/ursine any more: the build takes no features and the package
+# ships no PAM file. Up to 0.35.x the package built with --features pam and
+# shipped /etc/pam.d/ursine; do NOT bring either back. Only members of
+# group wheel (read from /etc/group) get a session. Socket: /run/ursine.sock.
 #
 # libcosmic is a git dependency (pop-os/libcosmic, pinned rev) -> git in
 # makedepends. v0.22.1 adds cosmic-theme + cosmic-config from the SAME
@@ -30,14 +35,34 @@
 # permissions editor is REMOVED everywhere (daemon actions + GUI + man).
 # nix/flatpak CLI calls stay runtime tools provided by the installer's
 # EnableNix/flatpak features — NOT unconditional depends.
+# v0.36.0-v0.49.0 (verified against upstream v0.49.0, wire protocol v7):
+#   * 0.39.2: PAM -> shadow-file authentication (above); ursined and
+#     ursinectl are static upstream (zero libs) when built with the release
+#     rustflags — this package builds them dynamic like the GUI, abuild adds
+#     the so: depends. pam-client/pam-sys/serde_yaml left the lockfile
+#     (saphyr, kdl 4, pwhash, getrandom are pure Rust): linux-pam-dev left
+#     makedepends.
+#   * 0.43.0: launcher entry — packaging/org.feralos.Ursine.desktop and
+#     packaging/icons/org.feralos.Ursine.svg are installed (hicolor-icon-theme
+#     is a runtime depends, as for wayle/raffi; no icon cache step is needed
+#     for a scalable SVG).
+#   * 0.47.0: refresh_apk removed (protocol v7). 0.49.0: `ursinectl actions
+#     [--json]` (catalogue schema ursine.actions/1); man page extended.
+#   * 0.49.0: AppArmor profile backups go to /var/backups/ursine/apparmor,
+#     created by the daemon at run time (not a package directory).
+#   * Service files (dinit unit, wrapper, conf, OpenRC initd) are unchanged
+#     upstream since 0.35.0; Cargo.toml still pins libcosmic rev 430f3d48.
+#   * rust-toolchain.toml asks for Rust 1.99.1 (rustup channel; abuild
+#     builds with Alpine's cargo).
 # Runtime depends = parted + shadow + util-linux (Disks/Users modules) —
 # see the depends= line below.
 # The package only SHIPS the service assets (dinit unit +
-# ADR-008 wrapper + conf, OpenRC initd, pam.d file) — enablement is done
+# ADR-008 wrapper + conf, OpenRC initd) and the launcher entry + icon —
+# enablement is done
 # by the FeralOS installer services map, never by the package itself
 # (post-install only creates the config/log dirs).
 #
-# check() runs the member set from 0.27.0 (unchanged through 0.35.0;
+# check() runs the member set from 0.27.0 (unchanged through 0.49.0;
 # -p list below): the
 # src/ursinectl integration tests (e2e/inprocess) are calibrated for
 # upstream's root CI container ("runs as root ... the same condition the
@@ -48,28 +73,28 @@
 # Extracted dir = ursine-$pkgver (GitHub strips the leading v of the tag),
 # no builddir override needed. Binaries land in artifacts/target/release/
 # (the repo's .cargo/config.toml sets build.target-dir = artifacts/target,
-# plus the -crt-static rustflag that makes -lpam resolve on musl).
+# plus the -crt-static=off rustflag: dynamic musl, the GUI links
+# libxkbcommon dynamically).
 pkgname=ursine
-pkgver=0.35.0
+pkgver=0.49.0
 pkgrel=0
-pkgdesc="FeralOS control center: PAM-authenticated root daemon + libcosmic GUI client"
+pkgdesc="FeralOS control center: shadow-authenticated root daemon + libcosmic GUI client"
 url="https://github.com/skea999/ursine"
 arch="x86_64"
 license="ISC"
-makedepends="cargo git linux-pam-dev libxkbcommon-dev"
+makedepends="cargo git libxkbcommon-dev"
 # parted = HARD requirement of the Disks module (it gates the WHOLE
 # module — partition/format actions — with no fallback in code); shadow +
 # util-linux = belt-and-braces so the Users/Disks CLI calls hit the real
 # useradd/chpasswd and mount/umount/blkid instead of busybox applets.
 # Declared HERE so EVERY ursine install gets them, instead of per-DE
 # explicit entries in the installer rules.
-depends="parted shadow util-linux"
-# runtime shared libs (libpam, libgcc, ...) are picked up automatically as
+depends="parted shadow util-linux hicolor-icon-theme"
+# runtime shared libs (libxkbcommon, libgcc, ...) are picked up automatically as
 # so: dependencies by abuild's ELF tracing — the so: half needs no entry.
 # config/log dirs created at install time (mode 0750), not packaged dirs
 install="ursine.post-install"
 source="https://github.com/skea999/ursine/archive/refs/tags/v$pkgver/ursine-v$pkgver.tar.gz
-	ursine.pam
 	ursined.dinit
 	ursined.script
 	ursined.conf
@@ -82,13 +107,55 @@ prepare() {
 }
 
 build() {
-	cargo build --frozen --release --features pam
+	cargo build --frozen --release
 }
 
+# ursine-core tests that need root: on abuild (ordinary user) 32 of its 321
+# tests fail (chown, "configuration parent is not root-owned", writes under
+# /run/ursine and /.snapshots); they pass in upstream's root CI container.
+# Skipped by exact name; the other 288 and every ursine-api/ursined/ursine
+# test stay enforced.
+_root_tests="config::tests::missing_file_seeds_only_modules_table
+	config::tests::new_config_has_explicit_private_mode
+	config::tests::refuses_group_or_world_writable_config
+	config::tests::set_module_switch_accepts_inline_modules_table
+	config::tests::set_module_switch_creates_modules_table
+	config::tests::set_module_switch_updates_one_key_and_preserves_comments
+	config::tests::write_template_is_atomic_and_readable
+	dispatch::tests::config_init_refuses_to_overwrite_existing_file
+	dispatch::tests::config_switch_persists_and_applies_live
+	dispatch::tests::log_read_follow_sees_appended_lines
+	modules::crontab::tests::staging_path_is_per_process_under_run
+	modules::logs::tests::binary_content_is_rejected
+	modules::logs::tests::line_count_is_clamped_and_empty_reads_are_safe
+	modules::logs::tests::list_discovers_new_files_and_skips_compressed
+	modules::logs::tests::tail_before_and_follow_cursors
+	modules::snapshots::conf::tests::init_creates_a_readable_config_once
+	modules::theming::apply::tests::environment_writes_platform_theme_for_available_qtct_only
+	modules::theming::apply::tests::gtk_css_imports_the_shell_palette_without_touching_it
+	modules::theming::apply::tests::gtk_settings_writes_ini_and_css_for_wayle_source
+	modules::theming::apply::tests::kde_writes_scheme_and_selects_it_in_kdeglobals
+	modules::theming::apply::tests::minimize_toggle_switches_layout_and_kde_buttons
+	modules::theming::apply::tests::qtct_writes_scheme_file_and_selection
+	modules::theming::apps::tests::alacritty_import_matches_the_winning_source
+	modules::theming::apps::tests::electron_flags_are_added_once
+	modules::theming::apps::tests::firefox_preserves_foreign_userchrome
+	modules::theming::apps::tests::firefox_writes_chrome_and_merges_prefs
+	modules::theming::apps::tests::foot_cava_replace_only_marker_owned_sections
+	modules::theming::apps::tests::galculator_display_colors_merge_preserve_the_rest
+	modules::theming::apps::tests::kitty_appends_include_once_and_ignores_comments
+	modules::theming::apps::tests::vscodium_merges_colors_without_dropping_user_keys
+	modules::theming::cosmic::tests::write_entry_targets_the_user_home_not_root
+	modules::theming::write::tests::write_owned_is_atomic_and_replaces
+"
+
 check() {
-	# whole workspace minus ursinectl — see the header comment
-	cargo test --frozen --release --features pam \
-		-p ursine-api -p ursine-core -p ursined -p ursine
+	# whole workspace minus ursinectl (see the header comment); the
+	# _root_tests are skipped by exact name
+	set --
+	for t in $_root_tests; do set -- "$@" --skip "$t"; done
+	cargo test --frozen --release \
+		-p ursine-api -p ursine-core -p ursined -p ursine -- "$@"
 }
 
 package() {
@@ -100,8 +167,14 @@ package() {
 	gzip -9 "$pkgdir"/usr/share/man/man1/ursinectl.1
 	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
 
-	# PAM auth stack (auth + account via pam_unix)
-	install -Dm644 "$srcdir"/ursine.pam "$pkgdir"/etc/pam.d/ursine
+	# launcher entry + icon (upstream 0.43.0), straight from the release tree.
+	# The entry's Icon= must equal the icon file name and the entry file name
+	# must equal the GUI's window identifier (APP_ID in src/ursine/src/app.rs),
+	# or the panel cannot match the running window to its entry and icon.
+	install -Dm644 packaging/org.feralos.Ursine.desktop \
+		"$pkgdir"/usr/share/applications/org.feralos.Ursine.desktop
+	install -Dm644 packaging/icons/org.feralos.Ursine.svg \
+		"$pkgdir"/usr/share/icons/hicolor/scalable/apps/org.feralos.Ursine.svg
 
 	# dinit: upstream ships @PLACEHOLDER@ tokens (substituted by its
 	# install.sh) — substitute the FeralOS paths here, same as the OpenRC
@@ -152,8 +225,7 @@ package() {
 }
 
 sha512sums="
-d1496650a25abbac361c6b08fac9568dab85132a7a3b32b802308e26c17467f2c75ad458ea991a9e88a28d045bf1d9a78e93933aeffaeee6fbfa3da212500c2b  ursine-v0.35.0.tar.gz
-b6c66949774b336891e899a9e111a24cd54e56b1899585dcc19fe41b4adfc47cdd9413a70c01c2cc278ea4b7ae444e50c96943fcb419238058ad5b1feba3c289  ursine.pam
+644b385130bc61e4d58743110170fd75fc3d4461863ead3e180abc1e4c0b851dd24239b3b6eeee0644d2a06ba57c97e341a4eb170fc2a4b0f4b1b3fabe7e909f  ursine-v0.49.0.tar.gz
 076dcc24d4a86ffb207668b08b1c908a2b8e874f9702293c7dd618a0c70753971fd82ef36e55cfa133cce243540a4a7fd02281bb17992778d4c1d9f7f58d67be  ursined.dinit
 0c579b35c886812e935848b66bb9951945e4cf13025ad52175ded5329ad4f3590f0980e2e111a3ede85dac7824eddeffc5ade5ae2140d2da99528fb21e36c705  ursined.script
 c00cac245ceb52886690e0c139f086c0fe4367b75dd5b9abd200701631f32ae56b7b682d247910c0fd32f2ad7fe51e9d30e7c7a08f581eb985a45acafee8ca9b  ursined.conf

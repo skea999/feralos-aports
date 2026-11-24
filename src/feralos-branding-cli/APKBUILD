@@ -1,0 +1,37 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# feralos-branding-cli: the FeralOS CLI identity (ADR-013 wave C). The
+# RIGHT file for the OS identity is /usr/lib/os-release (/etc/os-release is
+# the vendor SYMLINK to it) — the installer never touched it, so the target
+# stayed "Alpine Linux" everywhere. This package takes over:
+#   - /usr/lib/os-release — NAME=FeralOS, ID=feralos, ID_LIKE=alpine (tooling
+#     friendly), PRETTY_NAME with the Alpine base
+#   - /etc/issue — the TTY login banner (alpine-release owns it)
+#   - /etc/motd — the console/SSH banner (alpine-baselayout owns it)
+# /etc/alpine-release stays VENDOR on purpose (owner decision 2026-11-24):
+# 3.24.2 is the honest base version and the file is read by Alpine tooling.
+# replaces retires the vendor files — future alpine-release upgrades leave
+# ours as .apk-new (the klogd-openrc takeover precedent).
+pkgname=feralos-branding-cli
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS CLI identity: os-release, issue, motd (Alpine takeover)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+replaces="alpine-release alpine-baselayout"
+makedepends=""
+source="os-release issue motd"
+options="!check" # static identity files, exercised by the os_identity harness check
+
+package() {
+	install -Dm644 "$srcdir/os-release" "$pkgdir/usr/lib/os-release"
+	install -Dm644 "$srcdir/issue" "$pkgdir/etc/issue"
+	install -Dm644 "$srcdir/motd" "$pkgdir/etc/motd"
+}
+sha512sums="
+88c838433ebaa73d877b285d0822ecf1eb925d7ce296c49fe080b59af7a919a67ac1044a78beeeca1faf3878b14be31fd0b76545cab9b674f0d3f7fc34db8c92  os-release
+38a7665efcf02a22e5e5793d0a72b62e32d3cb161380209a335a3ae5aafdcd9e23ca47a4f3fd78961081def43efef4d0085356b91ed812489bc4b3b24ab1404d  issue
+763ef6c20bb2d3fc956a749d66893ad1546df5e0c27f96bcef9034712a77f8c6098ba4d178de7dbd3d4bfc20a1afbf14be43017a06d38dc8f1203fe61faf9ce6  motd
+"

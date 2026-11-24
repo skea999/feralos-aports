@@ -1,0 +1,7 @@
+NAME="FeralOS"
+ID=feralos
+ID_LIKE="alpine"
+VERSION_ID="0.1"
+PRETTY_NAME="FeralOS 0.1 (Alpine 3.24)"
+HOME_URL="https://github.com/skea999/feralos"
+BUG_REPORT_URL="https://github.com/skea999/feralos/issues"

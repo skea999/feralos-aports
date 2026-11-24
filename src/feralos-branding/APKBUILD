@@ -1,0 +1,38 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# feralos-branding: the CANONICAL FeralOS branding assets in ONE staging
+# dir (/usr/share/feralos/branding/) that the consumers pick up:
+#   - niri-base-config symlinks the wallpapers (/usr/share/wallpapers/) —
+#     shared between both DEs (the regreet background points there)
+#   - wayle-config + dms-config symlink the logo into the system hicolor
+#     dir (per-DE identity: the Wayle launcher button + Raffi + the DMS
+#     surface resolve `icon-name = "feralos-logo"` there)
+# SYMLINK consumers on purpose (owner decision 2026-11-24): a rebrand of
+# ONE file in the staging dir propagates everywhere instantly — no DE
+# config reinstall needed.
+pkgname=feralos-branding
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS canonical branding assets (logo + wallpapers) in the shared staging dir"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="feralos-logo.svg feralos-wallpaper-1080p.png feralos-wallpaper-1440p.png"
+options="!check" # static assets
+
+package() {
+	install -d "$pkgdir/usr/share/feralos/branding"
+	install -m644 "$srcdir/feralos-logo.svg" \
+		"$pkgdir/usr/share/feralos/branding/feralos-logo.svg"
+	install -m644 "$srcdir/feralos-wallpaper-1080p.png" \
+		"$pkgdir/usr/share/feralos/branding/feralos-wallpaper-1080p.png"
+	install -m644 "$srcdir/feralos-wallpaper-1440p.png" \
+		"$pkgdir/usr/share/feralos/branding/feralos-wallpaper-1440p.png"
+}
+sha512sums="
+fb157ae2468500843c159ad74e5600a5354605258e3b11d375a8e8759047971dca13ee3e8299a9b5431fb9d1be48417900ae4b35c89f71414c3fe823950ce883  feralos-logo.svg
+74a32384467c35730ae5d51fb7af4c5034f88a94e66c8b6ab30df46aa9554a41f30fe4aadb9ca65d840ed1c0fda0f7fc54b845e2672a8cb4af7588cbb50849a5  feralos-wallpaper-1080p.png
+e16922b52872d1051b37bc810172b8eeaccb16efbd90905f7ed7391b2cfba40cfa5938d998d25a6cb22debe7836a3447f92a290fa0f3637c3e51264dfcb991ec  feralos-wallpaper-1440p.png
+"

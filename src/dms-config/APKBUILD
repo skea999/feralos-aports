@@ -8,20 +8,30 @@
 # The niriWayle variant lives in wayle-config (greeter-wayle.sh, adds the
 # session.log redirect). grep by filename: greetd-config dispatches through
 # the names, never through a shared path.
+# This package also materializes the per-DE identity: the hicolor logo
+# SYMLINK -> /usr/share/feralos/branding/feralos-logo.svg (feralos-branding
+# staging; DMS surfaces resolve `icon-name = "feralos-logo"` in the system
+# hicolor dir). SYMLINK on purpose (owner decision 2026-11-24): a rebrand
+# of the staging file propagates instantly, no config reinstall.
 pkgname=dms-config
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=0
 pkgdesc="FeralOS niri (DMS) greeter session script"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
-depends="greetd-config"
+depends="greetd-config feralos-branding"
 makedepends=""
 source="greeter.sh"
 options="!check" # static script, proven live by the greeter harness checks
 
 package() {
 	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter-niri.sh"
+	# hicolor logo symlink (PACKAGE CONTENT — tracked): the canonical file
+	# lives in the feralos-branding staging dir; relative link.
+	install -d "$pkgdir/usr/share/icons/hicolor/scalable/apps"
+	ln -s ../../../../feralos/branding/feralos-logo.svg \
+		"$pkgdir/usr/share/icons/hicolor/scalable/apps/feralos-logo.svg"
 }
 sha512sums="
 838ae9c896762af49cc4db41eb514368c46f0d248a5d8f8a81b600600c907e5dc3f79fa3fe7d2c32f726aa34aecd8b2e8e16c42e42c753ab02bcef1b8a94c425  greeter.sh

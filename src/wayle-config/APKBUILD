@@ -30,12 +30,9 @@
 #     vendor /usr/share one (default=gnome;gtk) is why niri-portalsconf's
 #     dummy exists. The DMS variant pins gnome-keyring instead — its
 #     per-user seed stays installer-written until dms-config carries it.
-#   - the hicolor logo SYMLINK -> /usr/share/feralos/branding/
-#     feralos-logo.svg (feralos-branding staging): the Wayle launcher
-#     button (`icon-name = "feralos-logo"`) resolves it in the system
-#     hicolor dir. SYMLINK on purpose (owner decision 2026-11-24): a
-#     rebrand of the staging file propagates instantly, no config
-#     reinstall.
+#   - the hicolor logo lives in niri-base-config now (the SHARED layer —
+#     the smoke CI installs every apk into ONE root and the two DE
+#     packages would collide on the same path; CI run 45301085299).
 pkgname=wayle-config
 pkgver=0.1.3
 pkgrel=0
@@ -43,7 +40,7 @@ pkgdesc="FeralOS niriWayle statics: greeter script, init-agnostic reboot, oo7 pa
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
-depends="greetd-config feralos-branding"
+depends="greetd-config"
 makedepends=""
 source="greeter.sh feralos-reboot pam-passwd niri-base.kdl niri-portals.conf"
 options="!check" # static pieces, proven live by the greeter + wayle harness checks
@@ -54,11 +51,6 @@ package() {
 	install -Dm644 "$srcdir/pam-passwd" "$pkgdir/etc/pam.d/passwd"
 	install -Dm644 "$srcdir/niri-base.kdl" "$pkgdir/usr/share/feralos/wayle/niri/base.kdl"
 	install -Dm644 "$srcdir/niri-portals.conf" "$pkgdir/etc/xdg-desktop-portal/niri-portals.conf"
-	# hicolor logo symlink (PACKAGE CONTENT — tracked): the canonical file
-	# lives in the feralos-branding staging dir; relative link.
-	install -d "$pkgdir/usr/share/icons/hicolor/scalable/apps"
-	ln -s ../../../../feralos/branding/feralos-logo.svg \
-		"$pkgdir/usr/share/icons/hicolor/scalable/apps/feralos-logo.svg"
 }
 sha512sums="
 b7d59b706d96f1371f81ba4c9d6f5413d1735fd66f5071dd7229bff81dbf5bc3308bbc39e29a8bc5a87538f5c3600b89ece9804b7db6d71a54494624714103af  greeter.sh

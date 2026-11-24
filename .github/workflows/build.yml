@@ -37,6 +37,7 @@ jobs:
           set -e
           mkdir -p ~/.abuild
           if [ -n "$ABUILD_PRIVKEY" ] && [ -n "$ABUILD_KEYNAME" ]; then
+            echo "real key" > /tmp/abuild-real-key
             printf '%s\n' "$ABUILD_PRIVKEY" > ~/.abuild/"$ABUILD_KEYNAME".rsa
             chmod 600 ~/.abuild/"$ABUILD_KEYNAME".rsa
             # abuild-sign -e (called by abuild -F) requires the .pub to exist;
@@ -72,6 +73,17 @@ jobs:
           BASE=https://skea999.github.io/feralos-aports
           REPO="$HOME/packages/src/x86_64"
           mkdir -p "$REPO"
+          # FORK PRs get NO secrets (GitHub rule): the ephemeral key cannot
+          # verify the PRODUCTION-signed published apks and the seed's index
+          # step fails with 192x "UNTRUSTED signature" (exit 99 — PR #3
+          # ursine-0.49.0, run 45299956138). Detect the ephemeral key via
+          # the marker the key step writes and SKIP the seed: a fork PR
+          # builds everything fresh (slower, correct). Same-repo branches
+          # and pushes keep the skip-if-unchanged seed.
+          if [ ! -f /tmp/abuild-real-key ]; then
+            echo "ephemeral key (fork PR / no secrets) — seed SKIPPED, building everything"
+            exit 0
+          fi
           # Pull the PUBLISHED repo (index + apks) into the abuild REPODEST
           # so that: (1) unchanged packages are skipped in the build step
           # below, and (2) inter-package deps of CHANGED packages resolve

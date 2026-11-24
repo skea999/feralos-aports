@@ -12,11 +12,16 @@
 #     OVERWRITES the eth0-dhcp file internal.setupInterfaces wrote earlier
 #     in the chroot run (dead in the niri-family flow — kept there for the
 #     non-niri flows). Alpine ships no owner of this path.
-#   - the wallpaper SYMLINKS: /usr/share/wallpapers/feralos-default.png and
-#     the ultrawide variant -> the feralos-branding staging files. Shared
-#     between both DEs (the regreet background points at the 1080p target),
-#     so the SHARED package is the consumer — the per-DE identity (hicolor
-#     logo) stays with wayle-config/dms-config.
+#   - the SHARED identity materialization: the wallpaper symlinks
+#     (/usr/share/wallpapers/ — the regreet background points at the 1080p
+#     target) AND the hicolor logo symlink (the Wayle launcher button,
+#     Raffi and the DMS surfaces resolve `icon-name = "feralos-logo"`
+#     there). BOTH live in the SHARED layer on purpose: the smoke CI
+#     installs every built apk into ONE accumulated root, so two
+#     DE-exclusive packages shipping the same path would collide
+#     (wayle-config vs dms-config — caught by CI run 45301085299). The
+#     feralos-branding staging remains the single source (symlink
+#     consumers — a rebrand propagates instantly).
 # The post-install materializes the COMPILED (empty) dconf system db: the
 # edge/flatpak install runs BEFORE the desktop setup, so the db must exist
 # at package-install time (proof 2026-11-23T23-15-08Z: the Key Rack
@@ -43,7 +48,12 @@ package() {
 	# wallpaper symlinks (PACKAGE CONTENT — tracked, removed on uninstall,
 	# updated on upgrade): the canonical files live in the feralos-branding
 	# staging dir; relative links keep the tree movable.
+	# hicolor logo symlink (PACKAGE CONTENT — tracked; parent dirs first —
+	# the first build caught the missing parents)
 	install -d "$pkgdir/usr/share/wallpapers"
+	install -d "$pkgdir/usr/share/icons/hicolor/scalable/apps"
+	ln -s ../../../../feralos/branding/feralos-logo.svg \
+		"$pkgdir/usr/share/icons/hicolor/scalable/apps/feralos-logo.svg"
 	ln -s ../feralos/branding/feralos-wallpaper-1080p.png \
 		"$pkgdir/usr/share/wallpapers/feralos-default.png"
 	ln -s ../feralos/branding/feralos-wallpaper-1440p.png \

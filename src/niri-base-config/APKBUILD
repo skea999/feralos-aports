@@ -12,6 +12,14 @@
 #     OVERWRITES the eth0-dhcp file internal.setupInterfaces wrote earlier
 #     in the chroot run (dead in the niri-family flow — kept there for the
 #     non-niri flows). Alpine ships no owner of this path.
+#   - /usr/bin/xdg-su — the niri wrapper (GUI pkexec alternative: niri is
+#     unsupported by the vendor xdg-su, so it uses alacritty + su; matches
+#     *niri* so both session types hit it). NO Alpine package ships
+#     /usr/bin/xdg-su (verified: apk file-search empty, no xdg-su pkg) —
+#     the path is clean, the tracked-package lifecycle beats the former
+#     installer-written /usr/local/bin trick, and the old vendor fallback
+#     (exec /usr/bin/xdg-su = SELF) is replaced by a hard error: there is
+#     no vendor binary to fall back to.
 #   - the SHARED identity materialization: the wallpaper symlinks
 #     (/usr/share/wallpapers/ — the regreet background points at the 1080p
 #     target) AND the hicolor logo symlink (the Wayle launcher button,
@@ -28,7 +36,7 @@
 # flatpak hit "unable to open file /etc/dconf/db/local" when the
 # materialization lived in the desktop setup).
 pkgname=niri-base-config
-pkgver=0.2.0
+pkgver=0.2.1
 pkgrel=0
 pkgdesc="FeralOS shared niri-family statics: dconf profile + db, NM manage, lo interfaces, wallpaper links"
 url="https://github.com/skea999/feralos-aports"
@@ -37,7 +45,7 @@ license="ISC"
 depends="feralos-branding"
 makedepends=""
 source="dconf-profile-user 10-manage.conf interfaces
-	niri-base-config.post-install"
+	xdg-su niri-base-config.post-install"
 install="$pkgname.post-install"
 options="!check" # static configs, exercised by the niri-family harness checks
 
@@ -45,6 +53,7 @@ package() {
 	install -Dm644 "$srcdir/dconf-profile-user" "$pkgdir/etc/dconf/profile/user"
 	install -Dm644 "$srcdir/10-manage.conf" "$pkgdir/etc/NetworkManager/conf.d/10-manage.conf"
 	install -Dm644 "$srcdir/interfaces" "$pkgdir/etc/network/interfaces"
+	install -Dm755 "$srcdir/xdg-su" "$pkgdir/usr/bin/xdg-su"
 	# wallpaper symlinks (PACKAGE CONTENT — tracked, removed on uninstall,
 	# updated on upgrade): the canonical files live in the feralos-branding
 	# staging dir; relative links keep the tree movable.
@@ -63,5 +72,6 @@ sha512sums="
 226ef29cced7271d503ae29580fa189994067aa174903844b1bcc619d1e33e6038e5d9d3dd6d502505fdb966489605227323cba37db2d5287b6317ad2d31480e  dconf-profile-user
 ca6e3215604e4c9c402772d952df8fe722ee429b257b36a65bab2463d25aec0d42ed486521ab533f3c48f83ee4da305d3f6a5cee90ea78bf231da91926d52b45  10-manage.conf
 17b61782cbb44e0bee7415b583d9d9fe66778029f9c707c6a91950979a7ca349148b72797ad3f73be290e8f58497dd8c6eb746687cea841921fdab0175d19375  interfaces
+ca742bdf05b1731d3705d1353b288033752334b8a3c621140c945898f295fa843ef9c82cfe4a78151777468a4d1251c58cabb5ae9fb1606a69a6f928184471c0  xdg-su
 0953c37f9933502a32b5dcfe2399f808a8c6b0c786408c3b1b0e00479950e928949f9bb51370c8bca83948ac681ee107e64391e1e6b71b444c1df05b158479e1  niri-base-config.post-install
 "

@@ -9,15 +9,12 @@
 #     log redirect; dms-config ships the niri variant as greeter-niri.sh —
 #     distinct filenames so the two config packages never collide as apk
 #     content; greetd-config's dispatcher execs whichever one is installed)
-#   - /usr/bin/feralos-reboot — init-agnostic session reboot: the Wayle
-#     dashboard dropdown carries this ONE static command and the wrapper
-#     picks `sudo -n /usr/bin/reboot` (dinit — the loginctl path is broken
-#     there: elogind's busybox follow-up makes dinit overwrite
-#     REBOOT -> HALT) or `loginctl reboot` (OpenRC) via /run/dinitctl
+#   - the reboot command = the standalone `feralos-reboot` package (the
+#     init-agnostic wrapper; wayle-config depends on it)
 #   - /etc/pam.d/passwd — oo7 keyring password re-sync override (Alpine
 #     ships NO /etc/pam.d/passwd — no vendor conflict; the module re-syncs
 #     keyrings on user-initiated passwd changes)
-#   - /usr/share/feralos/wayle/niri/base.kdl — the niri STATIC base the
+#   - /usr/share/wayle/niri/base.kdl — the niri STATIC base the
 #     user config includes (prefer-no-csd, environment minus the per-install
 #     XDG_DATA_DIRS, xwayland-satellite, the full binds set). niri >=25.11
 #     merges most sections PER-PROPERTY across includes — user overrides
@@ -34,27 +31,25 @@
 #     the smoke CI installs every apk into ONE root and the two DE
 #     packages would collide on the same path; CI run 45301085299).
 pkgname=wayle-config
-pkgver=0.1.3
+pkgver=0.1.4
 pkgrel=0
 pkgdesc="FeralOS niriWayle statics: greeter script, init-agnostic reboot, oo7 passwd PAM override"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
-depends="greetd-config"
+depends="greetd-config feralos-reboot"
 makedepends=""
-source="greeter.sh feralos-reboot pam-passwd niri-base.kdl niri-portals.conf"
+source="greeter.sh pam-passwd niri-base.kdl niri-portals.conf"
 options="!check" # static pieces, proven live by the greeter + wayle harness checks
 
 package() {
 	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter-wayle.sh"
-	install -Dm755 "$srcdir/feralos-reboot" "$pkgdir/usr/bin/feralos-reboot"
 	install -Dm644 "$srcdir/pam-passwd" "$pkgdir/etc/pam.d/passwd"
-	install -Dm644 "$srcdir/niri-base.kdl" "$pkgdir/usr/share/feralos/wayle/niri/base.kdl"
+	install -Dm644 "$srcdir/niri-base.kdl" "$pkgdir/usr/share/wayle/niri/base.kdl"
 	install -Dm644 "$srcdir/niri-portals.conf" "$pkgdir/etc/xdg-desktop-portal/niri-portals.conf"
 }
 sha512sums="
 b7d59b706d96f1371f81ba4c9d6f5413d1735fd66f5071dd7229bff81dbf5bc3308bbc39e29a8bc5a87538f5c3600b89ece9804b7db6d71a54494624714103af  greeter.sh
-cc893e632eea3224b6458a970484c7f66c165ab0e672bce2e4a964b86926e89253690996984c3e4f788cbf633758b6604500e58aae900c07426a1679011ec36b  feralos-reboot
 a61e34371299a79311d86f79ea24d53d76c331708e6b9e776162735dbb3511e3cf46137c8d45aeee11009ae30779dd444981587b1a5390b9e60a08c1c9c57aae  pam-passwd
 352e8fd62ffc74c9958ce6de97394b2afdbc8b3cc4d294d0acaa0cfa666369f34c694611d3a96aac89915a7dad43f551183aa1c1bf4d7bb59eb373adb2ad0aa3  niri-base.kdl
 9cd04deb75a23630a1e72c6ace655b0af7f1a11f3949317dae3cb702b44f5eff08a2152cfddec1e5b13b843eeb5c31af47a91079288a9c01cf4654d88b5253dc  niri-portals.conf

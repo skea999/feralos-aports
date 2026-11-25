@@ -1,0 +1,34 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# feralos-reboot: the init-agnostic session reboot as a STANDALONE tool
+# package (ADR-013 — tools are their own packages: the xdg-su precedent,
+# owner decision 2026-11-24). The Wayle dashboard dropdown carries this
+# ONE static command and the wrapper resolves the init at runtime:
+#   - dinit: `loginctl reboot` is BROKEN — elogind execs the ABSOLUTE
+#     busybox /sbin/reboot after its hooks and the SIGTERM makes dinit
+#     overwrite REBOOT -> HALT (2026-10-12 diagnosis, "system halted"
+#     instead of a restart). The proven path is the dinit wrapper backed
+#     by the installer's /etc/sudoers.d/zz-power NOPASSWD rule:
+#     `sudo -n /usr/bin/reboot`.
+#   - OpenRC: busybox reboot is fine when dinit does not trap the signal —
+#     `loginctl reboot` (elogind handles it).
+# /run/dinitctl exists only under a dinit boot, so the socket probe is the
+# init test.
+pkgname=feralos-reboot
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS init-agnostic session reboot wrapper (dinit/OpenRC)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="feralos-reboot"
+options="!check" # static script
+
+package() {
+	install -Dm755 "$srcdir/feralos-reboot" "$pkgdir/usr/bin/feralos-reboot"
+}
+sha512sums="
+cc893e632eea3224b6458a970484c7f66c165ab0e672bce2e4a964b86926e89253690996984c3e4f788cbf633758b6604500e58aae900c07426a1679011ec36b  feralos-reboot
+"

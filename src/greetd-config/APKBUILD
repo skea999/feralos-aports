@@ -2,15 +2,27 @@
 # Maintainer: FeralOS <dev@feralos.org>
 # greetd-config: the COMMON greetd configuration as an APK package (ADR-013).
 # Only the parts shared by the niri and niriWayle sessions live here: vt 7
-# (Alpine's default VT 1 collides with getty@tty1) and a 3-line dispatcher
-# (/etc/greetd/greeter.sh) that execs the DE script. The DE-specific script
+# (Alpine's default VT 1 collides with getty@tty1), a 3-line dispatcher
+# (/etc/greetd/greeter.sh) that execs the DE script, the ReGreet config and
+# the SHARED greeter provisioning. The DE-specific script
 # ships with the DE config package: dms-config (greeter-niri.sh) / wayle-config
 # (greeter-wayle.sh) — distinct filenames, so the packages never collide as
 # apk content even though the DEs are mutually exclusive on an install. COSMIC does NOT use this file — its greetd config is
 # cosmic-greeter-config (/etc/greetd/feralos-cosmic-greeter.toml, passed
 # explicitly by the wrapper).
+# regreet.toml = ONE SHARED FILE for both DEs (OWNER RULE 2026-11-25:
+# AESTHETIC config always MERGES, FUNCTIONAL config stays separate —
+# fonts/background/greeting are aesthetic so the file is identical; the
+# portals pins and the PAM stacks are functional so those are per-variant).
+# DejaVu Sans because it is in BOTH DE font sets (Cantarell is not in the
+# Wayle set — a missing font forces full fontconfig fallback on every
+# greeter start, the slow-boot contributor). The [widget.clock] timezone
+# key is OMITTED on purpose: regreet then uses the SYSTEM time zone
+# (sample: "Remove to use the system time zone"), which the installer sets
+# from variables — one less variables-dependent seed (2026-11-24, D-A).# post-install: the SHARED greeter provisioning both desktop setups ran
+# identically (greeter user, dirs, fontconfig USER-cache pre-build).
 pkgname=greetd-config
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=0
 pkgdesc="FeralOS common greetd configuration (vt 7, greeter.sh entry point)"
 url="https://github.com/skea999/feralos-aports"
@@ -18,7 +30,8 @@ arch="noarch"
 license="ISC"
 depends="greetd"
 makedepends=""
-source="config.toml greeter.sh"
+source="config.toml greeter.sh regreet.toml greetd-config.post-install"
+install="$pkgname.post-install"
 options="!check" # static config, proven live by the greetd/greeter harness checks
 
 package() {
@@ -26,8 +39,11 @@ package() {
 	# dispatcher: execs the DE greeter script (distinct filenames per DE so
 	# the config packages never collide as apk content)
 	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter.sh"
+	install -Dm644 "$srcdir/regreet.toml" "$pkgdir/etc/greetd/regreet.toml"
 }
 sha512sums="
 2c6c089431265b0e7e5814834bb8150cd69f07a08afd7f314e5046bc1e97d4181994106bc0e3fceb744035db2f7da2cf3006f87ea0961c92ec5722992cd6c299  config.toml
 cb552ea359fa4d297060a9f7e6d89175904b7bdec7891ae6655426696ba4726205ce220aad1782d971ba27d2425d7d159e0af5ccf42f6fe56f4613ea7642787f  greeter.sh
+aeb033b45b6eb1903b0052efb1fc6b67e9946ea768fe9d67f24640cef9767cc8b7e5348a13a07b51e1d1161d8c4660204675d1d48e67e72527d3eeefa69d6e73  regreet.toml
+2853938a47a87aacc3fa501f71e5df55f7ea81b5fdf07e1e49ecbda8738788fc4d2408bd6449f9441833ec9e4ff16369fa27e5c8467e96116079344287dde95b  greetd-config.post-install
 "

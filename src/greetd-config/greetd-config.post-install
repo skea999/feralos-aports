@@ -1,0 +1,41 @@
+#!/bin/sh
+# greetd-config post-install: the SHARED greeter provisioning for the
+# niri-family desktops (niri/DMS + niriWayle — both setups ran this block
+# identically). Idempotent: apk upgrades re-run it.
+#
+# 1. the 'greeter' user: greetd's apk does NOT create it. -S (system user,
+#    UID 100-999): ReGreet 0.2.0 lists /etc/passwd users with UID in
+#    [UID_MIN, UID_MAX] (1000-60000 per /etc/login.defs) — without -S the
+#    greeter account (UID 1001) shows up as a login option; system UIDs are
+#    filtered out. Explicit -G avoids busybox adduser -S's nogroup
+#    primary-group trap (loginutils/adduser.c: usegroup = "nogroup",
+#    breaking the later chown greeter:greeter). Side effects checked:
+#    turnstile spawns the user dinit for any non-root login (greeter
+#    included); explicit -s /bin/sh overrides the busybox system-user
+#    /bin/false default.
+getent passwd greeter >/dev/null 2>&1 || {
+	getent group greeter >/dev/null 2>&1 || addgroup -S greeter
+	adduser -S -G greeter -D -s /bin/sh -h /var/lib/greetd greeter
+}
+# 2. greeter dirs: the niri greeter config, the ReGreet state dir (writable
+#    by the greeter or the last user/session is never remembered — gap 5.8,
+#    round 15; mkdir BEFORE greetd-regreet installs — a missing dir makes
+#    chown -R fail on fresh installs), the user dinit log dir (the greeter
+#    user dinit services log under $HOME/.local/share/dinit — without it
+#    they fail with "opening log file"), the fontconfig cache dir.
+mkdir -p /var/lib/greetd/.config/niri /var/lib/regreet \
+	/var/lib/greetd/.local/share/dinit /var/lib/greetd/.cache/fontconfig
+chown -R greeter:greeter /var/lib/greetd /var/lib/regreet
+chmod 700 /var/lib/regreet
+# 3. fontconfig USER cache pre-build — GTK4's first text render with a cold
+#    cache scans every system font (noto-cjk + noto-extra = thousands of
+#    files): the consistent 30-60s gray screen before the regreet login
+#    (real-install report 2026-11-15). SEQUENCE MATTERS: hand the cache dir
+#    to greeter BEFORE fc-cache, then run fc-cache as root with HOME pointed
+#    there — fontconfig then writes the USER cache into the writable dir
+#    (running fc-cache as the greeter user failed permission-denied on the
+#    system cache, and root fc-cache alone never populates the user cache —
+#    run17 "No such file").
+env HOME=/var/lib/greetd fc-cache -f || true
+chown -R greeter:greeter /var/lib/greetd/.cache
+exit 0

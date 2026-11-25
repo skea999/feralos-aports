@@ -1,0 +1,53 @@
+// FeralOS niri (DMS) — niri STATIC base (dms-config; ADR-013 wave C).
+// The installer's /home/<user>/.config/niri/config.kdl carries the
+// per-install parts (input keymap + XDG_DATA_DIRS) and the per-version DMS
+// fragments (`dms setup` generates ~/.config/niri/dms/*.kdl) and includes
+// THIS file:
+//
+//     include "/usr/share/dms/niri/base.kdl"
+//
+// niri (>=25.11) merges most sections PER-PROPERTY across includes — user
+// overrides live in their config.kdl (installer-written), the base is
+// package-owned and upgrade-replaceable by design.
+
+// CSD off (Windows-like): niri asks apps to omit client-side titlebars —
+// window controls live on the DMS bar (dms-window-buttons widget) plus keys
+// (Mod+Q close / Mod+F maximize / Mod+Shift+F fullscreen). DMS's own embedded
+// niri config ships prefer-no-csd active too. Caveats (niri docs): floating
+// windows lose resize handles — resize with Mod+right-click; apps must be
+// restarted for the change to apply.
+prefer-no-csd
+
+environment {
+    XDG_SESSION_TYPE "wayland"
+    XDG_SESSION_DESKTOP "niri"
+    XDG_CURRENT_DESKTOP "niri"
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "xdgdesktopportal"
+    // Hard override: Qt drops client-side decorations (niri's prefer-no-csd
+    // also works via xdg-decoration negotiation; this env guarantees it —
+    // value must be numeric "1", "true" parses to 0 and does NOT disable).
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    SDL_VIDEO_DRIVER "wayland"
+    CLUTTER_BACKEND "wayland"
+    _JAVA_AWT_WM_NONREPARENTING "1"
+    WINIT_WAYLAND_NO_AVOID_RESIZE "1"
+}
+
+// NOTE: no hotkey-overlay skip-at-startup here — the "Important Hotkeys"
+// overlay is wanted (user request; shows the keybind cheatsheet at login).
+// Do not add a skip block.
+
+// --- XWayland for X11 apps ---
+xwayland-satellite {
+    path "xwayland-satellite"
+}
+
+// Session services (dbus/pipewire/pulse/wireplumber/polkit-agent/dms/wayvnc)
+// are supervised by the USER dinit instance turnstile starts at login — not
+// spawned here (crash-restart + ordering handled by dinit).
+
+// XDG user dirs (Documents/Downloads/...) — idempotent, no-op after first run
+spawn-at-startup "sh" "-c" "command -v xdg-user-dirs-update >/dev/null 2>&1 && xdg-user-dirs-update"
+

@@ -1,0 +1,20 @@
+[background]
+path = "/usr/share/wallpapers/feralos-default.png"
+
+[GTK]
+application_prefer_dark_theme = true
+cursor_theme_name = "Adwaita"
+font_name = "DejaVu Sans 16"
+icon_theme_name = "Adwaita"
+theme_name = "Adwaita"
+
+[commands]
+reboot = ["reboot"]
+poweroff = ["poweroff"]
+
+[appearance]
+greeting_msg = "Welcome back!"
+
+[widget.clock]
+format = "%a %H:%M"
+resolution = "500ms"

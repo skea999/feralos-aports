@@ -1,0 +1,30 @@
+# Contributor: FeralOS <dev@feralos.org>
+# Maintainer: FeralOS <dev@feralos.org>
+# xdg-su: the niri-family xdg-su wrapper as a STANDALONE tool package
+# (ADR-013 — tools are their own packages: set-permissions and
+# assemble-cmdline precedent; it does ONE thing and is not a config, so it
+# must NOT fold into a *-config family package).
+# The vendor xdg-su does not support niri: GUI privilege prompts run
+# alacritty + su instead. Matches *niri* so both session types (niri,
+# niriWayle) hit the wrapper. NO Alpine package ships /usr/bin/xdg-su
+# (verified: apk file-search empty) — the path is clean and the former
+# vendor fallback (exec /usr/bin/xdg-su = SELF) is a hard error now.
+# alacritty arrives from the DE package lists.
+pkgname=xdg-su
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="FeralOS niri-family xdg-su wrapper (alacritty + su GUI privilege prompts)"
+url="https://github.com/skea999/feralos-aports"
+arch="noarch"
+license="ISC"
+depends=""
+makedepends=""
+source="xdg-su"
+options="!check" # static script, exercised by the niri-family harness checks
+
+package() {
+	install -Dm755 "$srcdir/xdg-su" "$pkgdir/usr/bin/xdg-su"
+}
+sha512sums="
+ca742bdf05b1731d3705d1353b288033752334b8a3c621140c945898f295fa843ef9c82cfe4a78151777468a4d1251c58cabb5ae9fb1606a69a6f928184471c0  xdg-su
+"

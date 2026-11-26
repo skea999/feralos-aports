@@ -40,7 +40,7 @@ pkgdesc="FeralOS shared niri-family statics: dconf profile + db, NM manage, lo i
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
-depends="feralos-branding xdg-su"
+depends="feralos-branding xdg-su feralos-reboot"
 makedepends=""
 source="dconf-profile-user 10-manage.conf interfaces
 	niri-base-config.post-install"

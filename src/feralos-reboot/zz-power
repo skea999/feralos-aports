@@ -1,0 +1,9 @@
+# feralos-reboot: the dinit reboot path (`sudo -n /usr/bin/reboot`) must
+# run without a password prompt. wheel = admin already; reboot is no
+# privilege escalation. sudo-rs reads /etc/sudoers.d. FILENAME MUST SORT
+# AFTER "wheel": sudo-rs applies the LAST matching rule, and
+# /etc/sudoers.d/wheel (`%wheel ALL=(ALL) ALL`, password) would otherwise
+# override the NOPASSWD tag (live-caught via debug_run 2026-10-11).
+# Inert under OpenRC (the wrapper uses loginctl there) — shipped
+# unconditionally: one source of truth with the wrapper that needs it.
+%wheel ALL=(root) NOPASSWD: /usr/bin/reboot

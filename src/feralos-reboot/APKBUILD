@@ -14,21 +14,27 @@
 #     `loginctl reboot` (elogind handles it).
 # /run/dinitctl exists only under a dinit boot, so the socket probe is the
 # init test.
+# The package ALSO ships /etc/sudoers.d/zz-power: the sudoers NOPASSWD rule
+# the dinit sudo path requires (one source of truth with the wrapper that
+# needs it — formerly installer-written, dinit-conditional; inert and
+# harmless under OpenRC where the wrapper uses loginctl).
 pkgname=feralos-reboot
 pkgver=0.1.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS init-agnostic session reboot wrapper (dinit/OpenRC)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
 depends=""
 makedepends=""
-source="feralos-reboot"
+source="feralos-reboot zz-power"
 options="!check" # static script
 
 package() {
 	install -Dm755 "$srcdir/feralos-reboot" "$pkgdir/usr/bin/feralos-reboot"
+	install -Dm440 "$srcdir/zz-power" "$pkgdir/etc/sudoers.d/zz-power"
 }
 sha512sums="
 cc893e632eea3224b6458a970484c7f66c165ab0e672bce2e4a964b86926e89253690996984c3e4f788cbf633758b6604500e58aae900c07426a1679011ec36b  feralos-reboot
+aafdb41fdcee2b776016f5a9a2a045528f55183fd8603d29c7aac7488928efd350c13d921777a97e809a86b244c4fcb4c936667b02453953b43e52e7095c6f1a  zz-power
 "

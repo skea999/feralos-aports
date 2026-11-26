@@ -55,7 +55,7 @@ license="ISC"
 depends="greetd-config"
 makedepends=""
 	source="greeter.sh niri-base.kdl mimeapps.list xdg-terminals.list
-	skel-niri-config.kdl skel-settings.json skel-plugin_settings.json skel-session.json"
+	skel-settings.json skel-plugin_settings.json skel-session.json"
 options="!check" # static script + configs, proven live by the greeter harness checks
 
 package() {
@@ -65,9 +65,8 @@ package() {
 	install -Dm644 "$srcdir/mimeapps.list" "$pkgdir/etc/xdg/mimeapps.list"
 	install -Dm644 "$srcdir/xdg-terminals.list" "$pkgdir/etc/xdg/xdg-terminals.list"
 	# SKEL: the per-user seeds — copied by adduser at user creation
-	install -d "$pkgdir/etc/skel/.config/niri" "$pkgdir/etc/skel/.config/DankMaterialShell"
+	install -d "$pkgdir/etc/skel/.config/DankMaterialShell"
 	install -d "$pkgdir/etc/skel/.local/state/DankMaterialShell"
-	install -m644 "$srcdir/skel-niri-config.kdl" "$pkgdir/etc/skel/.config/niri/config.kdl"
 	install -m644 "$srcdir/skel-settings.json" "$pkgdir/etc/skel/.config/DankMaterialShell/settings.json"
 	install -m644 "$srcdir/skel-plugin_settings.json" "$pkgdir/etc/skel/.config/DankMaterialShell/plugin_settings.json"
 	install -m644 "$srcdir/skel-session.json" "$pkgdir/etc/skel/.local/state/DankMaterialShell/session.json"
@@ -80,7 +79,6 @@ sha512sums="
 4a4eafbf7f1a59c195006e877857e066c6137cfccf6e0f3e2a6b4f659cfe376445ea372375d011c216f7a368c886952ab51f39822069a738934943fa2d3892b3  niri-base.kdl
 31886a632689055418afc7a6db33722cb46ffcba6403ddd4e4b916dba43bc77605424cd03737b5115345c2d9a0729d892dcafcb65d18dbee85c1cf70a4a315c1  mimeapps.list
 4adc50c4c87e1571fd12ebd5f8f26bea8524588a6f343e092f1f8226b905ecb2be2f5b530bceda6e8a6002fcfeccd18db720a74ce97dc3e9797fc3f4e43640ed  xdg-terminals.list
-84d0887c253013b18ca4bedf5a8130469cee99bf30f69ce2728348541fd5bc2da57151ca3ab52f551b5689eb22e6439d8c4720657edb9277026bf04bdfe28076  skel-niri-config.kdl
 6bf1a4ffbd5cf68ff1ab504b66c2f164fb0a5c5e9854601d555e6d761d6acc192aea4fd2a50c06ce19cd5503d1305634a3b1cfea90e0708e8e4295710090f494  skel-settings.json
 32a446d4616cc8141d12336975d021b0fb299dd8b88d337e5d126ef7fa696e0fc1434801029c9d96a650a7029f1b5ba23c708499b0eae5ad1007c50b26b40fb5  skel-plugin_settings.json
 ee4c8f51ccae8648930d36492d1bdfc17663f4c1706344e5bad9a0b919c49533c09bf894a4b53b8bf20559822fed1a978f6f6705ce3bb4f4ff9adf6eb833e87d  skel-session.json

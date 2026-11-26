@@ -1,0 +1,10 @@
+// FeralOS niriWayle — YOUR niri config. The two includes below load:
+//   /usr/share/wayle/niri/base.kdl — package static base (binds, env,
+//                                   xwayland; apk owns it, upgrades replace it)
+//   install.kdl                    — per-install values (layout,
+//                                   XDG_DATA_DIRS; written once by the installer)
+// Your edits HERE merge per-key over both (niri >=25.11): add a binds
+// block below to override single keys — only the keys you set change.
+
+include "/usr/share/wayle/niri/base.kdl"
+include "install.kdl"

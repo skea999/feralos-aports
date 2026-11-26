@@ -37,15 +37,15 @@
 #     the smoke CI installs every apk into ONE root and the two DE
 #     packages would collide on the same path; CI run 45301085299).
 pkgname=wayle-config
-pkgver=0.1.4
-pkgrel=1
+pkgver=0.1.5
+pkgrel=0
 pkgdesc="FeralOS niriWayle statics: greeter script, init-agnostic reboot, oo7 passwd PAM override"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
 depends="greetd-config feralos-reboot"
 makedepends=""
-source="greeter.sh pam-passwd niri-base.kdl niri-portals.conf config.toml"
+source="greeter.sh pam-passwd niri-base.kdl niri-portals.conf config.toml skel-niri-config.kdl"
 options="!check" # static pieces, proven live by the greeter + wayle harness checks
 
 package() {
@@ -56,8 +56,9 @@ package() {
 	# skel: EVERY user (install-time via the adduser skel copy — packages
 	# install before user creation — and future users) gets the wayle
 	# session config; user-editable after
-	install -d "$pkgdir/etc/skel/.config/wayle"
+	install -d "$pkgdir/etc/skel/.config/wayle" "$pkgdir/etc/skel/.config/niri"
 	install -m644 "$srcdir/config.toml" "$pkgdir/etc/skel/.config/wayle/config.toml"
+	install -m644 "$srcdir/skel-niri-config.kdl" "$pkgdir/etc/skel/.config/niri/config.kdl"
 }
 sha512sums="
 b7d59b706d96f1371f81ba4c9d6f5413d1735fd66f5071dd7229bff81dbf5bc3308bbc39e29a8bc5a87538f5c3600b89ece9804b7db6d71a54494624714103af  greeter.sh
@@ -65,4 +66,5 @@ a61e34371299a79311d86f79ea24d53d76c331708e6b9e776162735dbb3511e3cf46137c8d45aeee
 352e8fd62ffc74c9958ce6de97394b2afdbc8b3cc4d294d0acaa0cfa666369f34c694611d3a96aac89915a7dad43f551183aa1c1bf4d7bb59eb373adb2ad0aa3  niri-base.kdl
 9cd04deb75a23630a1e72c6ace655b0af7f1a11f3949317dae3cb702b44f5eff08a2152cfddec1e5b13b843eeb5c31af47a91079288a9c01cf4654d88b5253dc  niri-portals.conf
 688bf9af9cc003d38d253fb4e3b077846236c13dd3199ea981653d1e199b7ebe05b4115c2d0d6b99f1f01a8218808daf87ae5140a776edf0e91ac72fc88da2b0  config.toml
+0d8a537a5a866ca6bd9e50d1cd57305fea126fb75a7735dba1b8c4eb727f7a80b3440e44120d09e7fc53d4d1299489737694c0b298a709c0396cc8cab83ed75c  skel-niri-config.kdl
 "

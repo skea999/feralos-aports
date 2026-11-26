@@ -35,7 +35,7 @@
 # materialization lived in the desktop setup).
 pkgname=niri-base-config
 pkgver=0.3.0
-pkgrel=0
+pkgrel=1
 pkgdesc="FeralOS shared niri-family statics: dconf profile + db, NM manage, lo interfaces, wallpaper links"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"

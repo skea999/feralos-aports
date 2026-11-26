@@ -30,21 +30,32 @@
 #     wayle-config /etc admin conf) and the smoke CI installs every apk
 #     into ONE root — two packages shipping the same portals path would
 #     collide (the hicolor lesson, run 45301085299).
-# NOT here: the per-user DMS seeds with the dinit-conditional
-# customPowerActionReboot (settings.json) — they stay installer-written
-# ($HOME files with a variable branch; owner decision D-B).
+# SKEL — the per-user seeds move to /etc/skel (packages install BEFORE
+# user creation, so the install-time user gets them via the adduser skel
+# copy, and FUTURE users inherit them automatically — owner directive
+# 2026-11-25 "home configs global so future users never redo them"):
+#   - skel/.config/niri/config.kdl — the niri entry file (static includes;
+#     install.kdl = optional: absent for future users, niri skips it)
+#   - skel/.config/DankMaterialShell/{settings,plugin_settings}.json —
+#     static (customPowerActionReboot = sudo -n /usr/bin/reboot baked:
+#     zz-power ships unconditionally in feralos-reboot, so the command is
+#     correct under BOTH inits)
+#   - skel/.local/state/DankMaterialShell/session.json — dark mode seed
+# NOT here: the per-user DMS fragments (dms/*.kdl) — `dms setup`-generated
+# per user, NOT static.
 # regreet.toml = the SHARED static file — greetd-config ships it (one file
 # for both DEs; owner rule: aesthetic merges).
 pkgname=dms-config
-pkgver=0.3.0
+pkgver=0.3.1
 pkgrel=0
-pkgdesc="FeralOS niri (DMS) statics: greeter script, niri base.kdl, global defaults, greetd PAM"
+pkgdesc="FeralOS niri (DMS) statics: greeter script, niri base.kdl, /etc/xdg global defaults, skel seeds"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
 depends="greetd-config"
 makedepends=""
-source="greeter.sh niri-base.kdl mimeapps.list xdg-terminals.list"
+	source="greeter.sh niri-base.kdl mimeapps.list xdg-terminals.list
+	skel-niri-config.kdl skel-settings.json skel-plugin_settings.json skel-session.json"
 options="!check" # static script + configs, proven live by the greeter harness checks
 
 package() {
@@ -53,6 +64,13 @@ package() {
 	# GLOBAL system-layer defaults (no collision: wayle-config ships none)
 	install -Dm644 "$srcdir/mimeapps.list" "$pkgdir/etc/xdg/mimeapps.list"
 	install -Dm644 "$srcdir/xdg-terminals.list" "$pkgdir/etc/xdg/xdg-terminals.list"
+	# SKEL: the per-user seeds — copied by adduser at user creation
+	install -d "$pkgdir/etc/skel/.config/niri" "$pkgdir/etc/skel/.config/DankMaterialShell"
+	install -d "$pkgdir/etc/skel/.local/state/DankMaterialShell"
+	install -m644 "$srcdir/skel-niri-config.kdl" "$pkgdir/etc/skel/.config/niri/config.kdl"
+	install -m644 "$srcdir/skel-settings.json" "$pkgdir/etc/skel/.config/DankMaterialShell/settings.json"
+	install -m644 "$srcdir/skel-plugin_settings.json" "$pkgdir/etc/skel/.config/DankMaterialShell/plugin_settings.json"
+	install -m644 "$srcdir/skel-session.json" "$pkgdir/etc/skel/.local/state/DankMaterialShell/session.json"
 	# GLOBAL system-layer defaults + the greetd PAM takeover
 	install -Dm644 "$srcdir/mimeapps.list" "$pkgdir/etc/xdg/mimeapps.list"
 	install -Dm644 "$srcdir/xdg-terminals.list" "$pkgdir/etc/xdg/xdg-terminals.list"
@@ -60,6 +78,10 @@ package() {
 sha512sums="
 838ae9c896762af49cc4db41eb514368c46f0d248a5d8f8a81b600600c907e5dc3f79fa3fe7d2c32f726aa34aecd8b2e8e16c42e42c753ab02bcef1b8a94c425  greeter.sh
 4a4eafbf7f1a59c195006e877857e066c6137cfccf6e0f3e2a6b4f659cfe376445ea372375d011c216f7a368c886952ab51f39822069a738934943fa2d3892b3  niri-base.kdl
-5057f34f91322dc8435e86bda2a591c992da76b5d439695c61738c8ae7f95c8cd78cd04b106b799a86d4079b89a4897ffcf0726e6ec75f4225a7150acd1afafb  mimeapps.list
-ab2d06a80eb62587dba9ca76ef8d5dba5eba7a289786e2d6d4ad561df0aa341d2981498dd5a82637d0ef36f1eee05b8c8f0b6c6022a19f82879a8f60062e879e  xdg-terminals.list
+31886a632689055418afc7a6db33722cb46ffcba6403ddd4e4b916dba43bc77605424cd03737b5115345c2d9a0729d892dcafcb65d18dbee85c1cf70a4a315c1  mimeapps.list
+4adc50c4c87e1571fd12ebd5f8f26bea8524588a6f343e092f1f8226b905ecb2be2f5b530bceda6e8a6002fcfeccd18db720a74ce97dc3e9797fc3f4e43640ed  xdg-terminals.list
+84d0887c253013b18ca4bedf5a8130469cee99bf30f69ce2728348541fd5bc2da57151ca3ab52f551b5689eb22e6439d8c4720657edb9277026bf04bdfe28076  skel-niri-config.kdl
+6bf1a4ffbd5cf68ff1ab504b66c2f164fb0a5c5e9854601d555e6d761d6acc192aea4fd2a50c06ce19cd5503d1305634a3b1cfea90e0708e8e4295710090f494  skel-settings.json
+32a446d4616cc8141d12336975d021b0fb299dd8b88d337e5d126ef7fa696e0fc1434801029c9d96a650a7029f1b5ba23c708499b0eae5ad1007c50b26b40fb5  skel-plugin_settings.json
+ee4c8f51ccae8648930d36492d1bdfc17663f4c1706344e5bad9a0b919c49533c09bf894a4b53b8bf20559822fed1a978f6f6705ce3bb4f4ff9adf6eb833e87d  skel-session.json
 "

@@ -1,0 +1,10 @@
+{
+  "configVersion": 1,
+  "currentThemeCategory": "generic",
+  "currentThemeName": "green",
+  "dankBarLeftWidgets": ["launcherButton", "workspaceSwitcher", "runningApps"],
+  "dankBarRightWidgets": ["systemTray", "clipboard", "cpuUsage", "memUsage", "notificationButton", "battery", "controlCenterButton", "dmsWindowButtons"],
+  "updaterUseCustomCommand": true,
+  "updaterCustomCommand": "/usr/local/bin/feralos-update",
+  "customPowerActionReboot": "sudo -n /usr/bin/reboot"
+}

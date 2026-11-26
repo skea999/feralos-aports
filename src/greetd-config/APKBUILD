@@ -28,7 +28,7 @@ pkgdesc="FeralOS common greetd configuration (vt 7, greeter.sh entry point)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
-depends="greetd"
+depends="greetd fontconfig"
 makedepends=""
 source="config.toml greeter.sh regreet.toml greetd-config.post-install"
 install="$pkgname.post-install"
@@ -45,5 +45,5 @@ sha512sums="
 2c6c089431265b0e7e5814834bb8150cd69f07a08afd7f314e5046bc1e97d4181994106bc0e3fceb744035db2f7da2cf3006f87ea0961c92ec5722992cd6c299  config.toml
 cb552ea359fa4d297060a9f7e6d89175904b7bdec7891ae6655426696ba4726205ce220aad1782d971ba27d2425d7d159e0af5ccf42f6fe56f4613ea7642787f  greeter.sh
 aeb033b45b6eb1903b0052efb1fc6b67e9946ea768fe9d67f24640cef9767cc8b7e5348a13a07b51e1d1161d8c4660204675d1d48e67e72527d3eeefa69d6e73  regreet.toml
-2853938a47a87aacc3fa501f71e5df55f7ea81b5fdf07e1e49ecbda8738788fc4d2408bd6449f9441833ec9e4ff16369fa27e5c8467e96116079344287dde95b  greetd-config.post-install
+2ea61531e32642afab88606ebb09e955a8a10384649343f186e9536e80a6d782cdf47099aaf3b8521e92a3324fbb4c43a83d39b9e25afdfcca3dfbfbf2508c01  greetd-config.post-install
 "

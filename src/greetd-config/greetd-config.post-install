@@ -36,6 +36,6 @@ chmod 700 /var/lib/regreet
 #    (running fc-cache as the greeter user failed permission-denied on the
 #    system cache, and root fc-cache alone never populates the user cache —
 #    run17 "No such file").
-env HOME=/var/lib/greetd fc-cache -f || true
+command -v fc-cache >/dev/null 2>&1 && env HOME=/var/lib/greetd fc-cache -f || true
 chown -R greeter:greeter /var/lib/greetd/.cache
 exit 0

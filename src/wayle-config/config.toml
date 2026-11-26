@@ -1,0 +1,78 @@
+[bar]
+location = "bottom"
+background-opacity = 0
+rounding = "md"
+button-variant = "basic"
+button-rounding = "lg"
+button-gap = 0.25
+
+[styling]
+theme-provider = "matugen"
+rounding = "lg"
+
+[modules.notifications]
+popup-position = "bottom-right"
+
+[[modules.custom]]
+id = "launcher"
+icon-name = "feralos-logo"
+label-show = false
+left-click = "/usr/bin/raffi-toggle"
+
+# Window list (user request 2026-10-31): live count + app-id summary from
+# niri IPC, refreshed on every niri event (mode = "watch" — the command
+# loops on the event stream itself; restart-policy = "on-exit" so a dead
+# watcher comes back). Click = Raffi window switcher (same as Mod+W):
+# -i 'win ' pre-fills the query so the window source is what you get.
+[[modules.custom]]
+id = "windows"
+mode = "watch"
+restart-policy = "on-exit"
+command = '''
+niri msg event-stream | while read -r _; do
+  niri msg --json windows | jq -r '{
+    count: length,
+    text: ([.[] | .app_id] | unique | join(" · ")),
+    alt: (if any(.[]; .is_focused) then "active" else "idle" end)
+  }'
+done
+'''
+format = "{{ text }}"
+tooltip-format = "{{ count }} windows — click to switch"
+icon-name = "ld-app-window-symbolic"
+left-click = "raffi -i 'win '"
+
+[modules.window-title]
+label-max-length = 50
+
+[modules.clock]
+format = "%H:%M"
+
+[modules.battery]
+label-show = false
+
+[modules.bluetooth]
+label-show = false
+
+[modules.network]
+label-show = false
+
+[modules.microphone]
+label-show = false
+
+[modules.volume]
+label-show = false
+
+[modules.dashboard]
+left-click = "dropdown:dashboard"
+border-show = true
+dropdown-lock-command = "veila lock"
+dropdown-logout-command = "niri msg action quit --skip-confirmation"
+dropdown-reboot-command = "feralos-reboot"
+dropdown-poweroff-command = "loginctl poweroff"
+
+[[bar.layout]]
+monitor = "*"
+left = ["custom-launcher", "niri-workspaces", "window-title"]
+center = []
+	right = ["systray", "battery", "bluetooth", "network", "microphone", "volume", "notifications", "custom-windows", "clock", "dashboard"]

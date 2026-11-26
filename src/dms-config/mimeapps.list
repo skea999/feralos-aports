@@ -1,0 +1,27 @@
+[Default Applications]
+x-scheme-handler/https=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+text/html=firefox.desktop
+application/xhtml+xml=firefox.desktop
+image/png=org.gnome.eog.desktop
+image/jpeg=org.gnome.eog.desktop
+image/gif=org.gnome.eog.desktop
+image/bmp=org.gnome.eog.desktop
+image/webp=org.gnome.eog.desktop
+image/avif=org.gnome.eog.desktop
+image/svg+xml=org.gnome.eog.desktop
+image/tiff=org.gnome.eog.desktop
+image/heic=org.gnome.eog.desktop
+image/heif=org.gnome.eog.desktop
+image/jxl=org.gnome.eog.desktop
+	audio/mpeg=com.system76.CosmicPlayer.desktop
+audio/x-flac=com.system76.CosmicPlayer.desktop
+audio/wav=com.system76.CosmicPlayer.desktop
+audio/ogg=com.system76.CosmicPlayer.desktop
+audio/aac=com.system76.CosmicPlayer.desktop
+audio/webm=com.system76.CosmicPlayer.desktop
+x-scheme-handler/geo=org.gnome.Maps.desktop
+text/calendar=org.gnome.Calendar.desktop
+x-scheme-handler/calendar=org.gnome.Calendar.desktop
+x-scheme-handler/webcal=org.gnome.Calendar.desktop
+x-scheme-handler/webcals=org.gnome.Calendar.desktop

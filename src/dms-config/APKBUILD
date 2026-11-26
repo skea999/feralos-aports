@@ -46,7 +46,7 @@
 # regreet.toml = the SHARED static file — greetd-config ships it (one file
 # for both DEs; owner rule: aesthetic merges).
 pkgname=dms-config
-pkgver=0.3.1
+pkgver=0.3.2
 pkgrel=0
 pkgdesc="FeralOS niri (DMS) statics: greeter script, niri base.kdl, /etc/xdg global defaults, skel seeds"
 url="https://github.com/skea999/feralos-aports"

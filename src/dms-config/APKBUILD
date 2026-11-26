@@ -22,10 +22,14 @@
 #   - /etc/xdg/mimeapps.list + /etc/xdg/xdg-terminals.list — the GLib /
 #     xdg-terminal-exec standard system layers (the DMS Default Apps tab
 #     reads/writes the USER files; the system ones are the fallback)
-#   - /etc/xdg-desktop-portal/niri-portals.conf — the ADMIN-path portals
-#     override (Secret=gnome-keyring — the DMS flavor; replaces the
-#     per-user seed: XDG precedence user > /etc > /usr/share, with no user
-#     file the admin conf wins, same effective state)
+#   - /etc/xdg/mimeapps.list + /etc/xdg/xdg-terminals.list — the GLib /
+#     xdg-terminal-exec standard system layers (the DMS Default Apps tab
+#     reads/writes the USER files; the system ones are the fallback)
+#   - the portals override STAYS installer-written per-user: the pin
+#     differs per variant (DMS=gnome-keyring, Wayle=oo7-portal in the
+#     wayle-config /etc admin conf) and the smoke CI installs every apk
+#     into ONE root — two packages shipping the same portals path would
+#     collide (the hicolor lesson, run 45301085299).
 # NOT here: the per-user DMS seeds with the dinit-conditional
 # customPowerActionReboot (settings.json) — they stay installer-written
 # ($HOME files with a variable branch; owner decision D-B).
@@ -40,21 +44,22 @@ arch="noarch"
 license="ISC"
 depends="greetd-config"
 makedepends=""
-source="greeter.sh niri-base.kdl mimeapps.list xdg-terminals.list niri-portals.conf"
+source="greeter.sh niri-base.kdl mimeapps.list xdg-terminals.list"
 options="!check" # static script + configs, proven live by the greeter harness checks
 
 package() {
 	install -Dm755 "$srcdir/greeter.sh" "$pkgdir/etc/greetd/greeter-niri.sh"
 	install -Dm644 "$srcdir/niri-base.kdl" "$pkgdir/usr/share/dms/niri/base.kdl"
+	# GLOBAL system-layer defaults (no collision: wayle-config ships none)
+	install -Dm644 "$srcdir/mimeapps.list" "$pkgdir/etc/xdg/mimeapps.list"
+	install -Dm644 "$srcdir/xdg-terminals.list" "$pkgdir/etc/xdg/xdg-terminals.list"
 	# GLOBAL system-layer defaults + the greetd PAM takeover
 	install -Dm644 "$srcdir/mimeapps.list" "$pkgdir/etc/xdg/mimeapps.list"
 	install -Dm644 "$srcdir/xdg-terminals.list" "$pkgdir/etc/xdg/xdg-terminals.list"
-	install -Dm644 "$srcdir/niri-portals.conf" "$pkgdir/etc/xdg-desktop-portal/niri-portals.conf"
 }
 sha512sums="
 838ae9c896762af49cc4db41eb514368c46f0d248a5d8f8a81b600600c907e5dc3f79fa3fe7d2c32f726aa34aecd8b2e8e16c42e42c753ab02bcef1b8a94c425  greeter.sh
 4a4eafbf7f1a59c195006e877857e066c6137cfccf6e0f3e2a6b4f659cfe376445ea372375d011c216f7a368c886952ab51f39822069a738934943fa2d3892b3  niri-base.kdl
 5057f34f91322dc8435e86bda2a591c992da76b5d439695c61738c8ae7f95c8cd78cd04b106b799a86d4079b89a4897ffcf0726e6ec75f4225a7150acd1afafb  mimeapps.list
 ab2d06a80eb62587dba9ca76ef8d5dba5eba7a289786e2d6d4ad561df0aa341d2981498dd5a82637d0ef36f1eee05b8c8f0b6c6022a19f82879a8f60062e879e  xdg-terminals.list
-8a7ef01a6bdcb2997679d45e4b4fbc2e565135d77444dc5d0787542d2f6edf3e63a01d1ececa5ea4d736e0d8e6ed69dc02308068950f55b859cc1087f34fed75  niri-portals.conf
 "

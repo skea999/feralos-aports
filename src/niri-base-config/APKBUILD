@@ -3,47 +3,54 @@
 # niri-base-config: the shared niri-family static layer (ADR-013 R2) —
 # listed by BOTH niri (DMS) and niriWayle DE package lists. This package
 # carries the static system-path CONFIGS the two desktop setups used to
-# write identically, plus the SHARED wallpaper materialization:
+# write identically, plus the SHARED branding and the SHARED niri entry:
 #   - /etc/dconf/profile/user — Alpine's dconf ships NO /etc/dconf at all;
 #     without the profile GLib never consults the user/system dbs
 #   - /etc/NetworkManager/conf.d/10-manage.conf — NM manages ifupdown
 #     interfaces (Wayle network module + DMS widget both talk to NM)
 #   - /etc/network/interfaces — reduced to loopback (eth0 belongs to NM);
 #     OVERWRITES the eth0-dhcp file internal.setupInterfaces wrote earlier
-#     in the chroot run (dead in the niri-family flow — kept there for the
-#     non-niri flows). Alpine ships no owner of this path.
-# The xdg-su wrapper does NOT live here: it is a STANDALONE TOOL, not a
-# config (ADR-013 — tools get their own packages: set-permissions and
-# assemble-cmdline precedent). It ships as the `xdg-su` package and rides
-# THIS package as a DEPENDENCY: niri-base-config is already in both DE
-# package lists, so the niri-family installs pull the tool without any new
-# list entry (the feralos-branding staging rides the same way).
-#   - the SHARED identity materialization: the wallpaper symlinks
-#     (/usr/share/wallpapers/ — the regreet background points at the 1080p
-#     target) AND the hicolor logo symlink (the Wayle launcher button,
-#     Raffi and the DMS surfaces resolve `icon-name = "feralos-logo"`
-#     there). BOTH live in the SHARED layer on purpose: the smoke CI
-#     installs every built apk into ONE accumulated root, so two
-#     DE-exclusive packages shipping the same path would collide
-#     (wayle-config vs dms-config — caught by CI run 45301085299). The
-#     feralos-branding staging remains the single source (symlink
-#     consumers — a rebrand propagates instantly).
+#     in the chroot run (dead in the niri-family flow). Alpine ships no
+#     owner of this path.
+#   - /etc/skel/.config/niri/config.kdl — the niri entry file, SHARED by
+#     both niri-family desktops: optional=true includes of BOTH bases
+#     (/usr/share/wayle/niri + /usr/share/dms/niri) + optional install.kdl
+#     (per-install values, written by the installer) + optional generated
+#     dms fragments. The active desktop's base loads; the other variant is
+#     absent by design (optional skip). ONE owner = no smoke-root
+#     collision (CI run 45910668977: the per-DE entries collided).
+#   - the FeralOS branding: logo as a system hicolor icon (Wayle/Raffi
+#     launcher) + the default wallpapers (the regreet background points at
+#     the 1080p target)
+#   - /usr/bin/feralos-reboot — the init-agnostic session reboot wrapper
+#     (dinit: `sudo -n /usr/bin/reboot` — the loginctl path is broken
+#     there, elogind's busybox follow-up makes dinit overwrite
+#     REBOOT→HALT — vs `loginctl reboot` under OpenRC; /run/dinitctl
+#     probe). The sudoers NOPASSWD rule the sudo path requires ships in
+#     feralos-reboot (this package's depends).
+#   - /usr/bin/xdg-su — the niri wrapper (alacritty + su; matches *niri*
+#     so both session types hit it). NO Alpine package ships
+#     /usr/bin/xdg-su (verified: apk file-search empty) — the path is
+#     clean and the tracked-package lifecycle beats the former
+#     installer-written /usr/local/bin trick (abuild bans /usr/local in
+#     packages). The vendor fallback was dead code AND a self-exec loop
+#     at that path — replaced by a hard error.
 # The post-install materializes the COMPILED (empty) dconf system db: the
 # edge/flatpak install runs BEFORE the desktop setup, so the db must exist
 # at package-install time (proof 2026-11-23T23-15-08Z: the Key Rack
 # flatpak hit "unable to open file /etc/dconf/db/local" when the
 # materialization lived in the desktop setup).
 pkgname=niri-base-config
-pkgver=0.3.0
-pkgrel=2
-pkgdesc="FeralOS shared niri-family statics: dconf profile + db, NM manage, lo interfaces, wallpaper links"
+pkgver=0.4.0
+pkgrel=0
+pkgdesc="FeralOS shared niri-family statics: dconf profile + db, NM manage, lo interfaces, skel niri entry, branding, feralos-reboot, xdg-su"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
 depends="feralos-branding xdg-su feralos-reboot"
 makedepends=""
 source="dconf-profile-user 10-manage.conf interfaces
-	niri-base-config.post-install skel-niri-config.kdl"
+	niri-base-config.post-install skel-niri-config.kdl feralos-reboot xdg-su"
 install="$pkgname.post-install"
 options="!check" # static configs, exercised by the niri-family harness checks
 
@@ -56,26 +63,21 @@ package() {
 	# variant is absent by design)
 	install -d "$pkgdir/etc/skel/.config/niri"
 	install -m644 "$srcdir/skel-niri-config.kdl" "$pkgdir/etc/skel/.config/niri/config.kdl"
-	install -d "$pkgdir/etc/skel/.config/niri"
-	# wallpaper symlinks (PACKAGE CONTENT — tracked, removed on uninstall,
-	# updated on upgrade): the canonical files live in the feralos-branding
-	# staging dir; relative links keep the tree movable.
-	# hicolor logo symlink (PACKAGE CONTENT — tracked; parent dirs first —
-	# the first build caught the missing parents)
+	# wallpaper symlinks (PACKAGE CONTENT — tracked): the canonical files
+	# live in the feralos-branding staging dir; relative links keep the
+	# tree movable.
 	install -d "$pkgdir/usr/share/wallpapers"
-	install -d "$pkgdir/usr/share/icons/hicolor/scalable/apps"
-	ln -s ../../../../feralos/branding/feralos-logo.svg \
-		"$pkgdir/usr/share/icons/hicolor/scalable/apps/feralos-logo.svg"
 	ln -s ../feralos/branding/feralos-wallpaper-1080p.png \
 		"$pkgdir/usr/share/wallpapers/feralos-default.png"
 	ln -s ../feralos/branding/feralos-wallpaper-1440p.png \
 		"$pkgdir/usr/share/wallpapers/feralos-default-3440x1440.png"
+	# hicolor logo symlink (PACKAGE CONTENT — tracked)
+	install -d "$pkgdir/usr/share/icons/hicolor/scalable/apps"
+	ln -s ../../../../feralos/branding/feralos-logo.svg \
+		"$pkgdir/usr/share/icons/hicolor/scalable/apps/feralos-logo.svg"
+	# standalone tools this package owns for the niri family
+	install -Dm755 "$srcdir/feralos-reboot" "$pkgdir/usr/bin/feralos-reboot"
+	install -Dm755 "$srcdir/xdg-su" "$pkgdir/usr/bin/xdg-su"
 }
-
 sha512sums="
-226ef29cced7271d503ae29580fa189994067aa174903844b1bcc619d1e33e6038e5d9d3dd6d502505fdb966489605227323cba37db2d5287b6317ad2d31480e  dconf-profile-user
-ca6e3215604e4c9c402772d952df8fe722ee429b257b36a65bab2463d25aec0d42ed486521ab533f3c48f83ee4da305d3f6a5cee90ea78bf231da91926d52b45  10-manage.conf
-17b61782cbb44e0bee7415b583d9d9fe66778029f9c707c6a91950979a7ca349148b72797ad3f73be290e8f58497dd8c6eb746687cea841921fdab0175d19375  interfaces
-0953c37f9933502a32b5dcfe2399f808a8c6b0c786408c3b1b0e00479950e928949f9bb51370c8bca83948ac681ee107e64391e1e6b71b444c1df05b158479e1  niri-base-config.post-install
-f93c4d7b5421b53489857c570c6178c20a9755f221aea728ba9bce3a43fc015ab53a28883c2a6ea470cee776274d10d9ed4d8b6621cc665750d5ea6db6f38ef6  skel-niri-config.kdl
 "

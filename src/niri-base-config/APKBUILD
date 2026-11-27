@@ -69,3 +69,4 @@ package() {
 	ln -s ../feralos/branding/feralos-wallpaper-1440p.png \
 		"$pkgdir/usr/share/wallpapers/feralos-default-3440x1440.png"
 }
+

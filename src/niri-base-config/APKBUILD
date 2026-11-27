@@ -43,7 +43,7 @@
 pkgname=niri-base-config
 pkgver=0.4.0
 pkgrel=0
-pkgdesc="FeralOS shared niri-family statics: dconf profile + db, NM manage, lo interfaces, skel niri entry, branding, feralos-reboot, xdg-su"
+pkgdesc="FeralOS shared niri-family statics (dconf, NM, skel niri entry, branding, tools)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
@@ -80,4 +80,11 @@ package() {
 	install -Dm755 "$srcdir/xdg-su" "$pkgdir/usr/bin/xdg-su"
 }
 sha512sums="
+226ef29cced7271d503ae29580fa189994067aa174903844b1bcc619d1e33e6038e5d9d3dd6d502505fdb966489605227323cba37db2d5287b6317ad2d31480e  dconf-profile-user
+ca6e3215604e4c9c402772d952df8fe722ee429b257b36a65bab2463d25aec0d42ed486521ab533f3c48f83ee4da305d3f6a5cee90ea78bf231da91926d52b45  10-manage.conf
+17b61782cbb44e0bee7415b583d9d9fe66778029f9c707c6a91950979a7ca349148b72797ad3f73be290e8f58497dd8c6eb746687cea841921fdab0175d19375  interfaces
+0953c37f9933502a32b5dcfe2399f808a8c6b0c786408c3b1b0e00479950e928949f9bb51370c8bca83948ac681ee107e64391e1e6b71b444c1df05b158479e1  niri-base-config.post-install
+f93c4d7b5421b53489857c570c6178c20a9755f221aea728ba9bce3a43fc015ab53a28883c2a6ea470cee776274d10d9ed4d8b6621cc665750d5ea6db6f38ef6  skel-niri-config.kdl
+cc893e632eea3224b6458a970484c7f66c165ab0e672bce2e4a964b86926e89253690996984c3e4f788cbf633758b6604500e58aae900c07426a1679011ec36b  feralos-reboot
+ca742bdf05b1731d3705d1353b288033752334b8a3c621140c945898f295fa843ef9c82cfe4a78151777468a4d1251c58cabb5ae9fb1606a69a6f928184471c0  xdg-su
 "

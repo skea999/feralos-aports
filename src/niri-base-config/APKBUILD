@@ -43,7 +43,7 @@ license="ISC"
 depends="feralos-branding xdg-su feralos-reboot"
 makedepends=""
 source="dconf-profile-user 10-manage.conf interfaces
-	niri-base-config.post-install"
+	niri-base-config.post-install skel-niri-config.kdl"
 install="$pkgname.post-install"
 options="!check" # static configs, exercised by the niri-family harness checks
 
@@ -51,6 +51,11 @@ package() {
 	install -Dm644 "$srcdir/dconf-profile-user" "$pkgdir/etc/dconf/profile/user"
 	install -Dm644 "$srcdir/10-manage.conf" "$pkgdir/etc/NetworkManager/conf.d/10-manage.conf"
 	install -Dm644 "$srcdir/interfaces" "$pkgdir/etc/network/interfaces"
+	# SKEL: the niri entry file (shared by both niri-family desktops —
+	# optional includes of both bases; the active one loads, the other
+	# variant is absent by design)
+	install -d "$pkgdir/etc/skel/.config/niri"
+	install -m644 "$srcdir/skel-niri-config.kdl" "$pkgdir/etc/skel/.config/niri/config.kdl"
 	install -d "$pkgdir/etc/skel/.config/niri"
 	# wallpaper symlinks (PACKAGE CONTENT — tracked, removed on uninstall,
 	# updated on upgrade): the canonical files live in the feralos-branding
@@ -72,4 +77,5 @@ sha512sums="
 ca6e3215604e4c9c402772d952df8fe722ee429b257b36a65bab2463d25aec0d42ed486521ab533f3c48f83ee4da305d3f6a5cee90ea78bf231da91926d52b45  10-manage.conf
 17b61782cbb44e0bee7415b583d9d9fe66778029f9c707c6a91950979a7ca349148b72797ad3f73be290e8f58497dd8c6eb746687cea841921fdab0175d19375  interfaces
 0953c37f9933502a32b5dcfe2399f808a8c6b0c786408c3b1b0e00479950e928949f9bb51370c8bca83948ac681ee107e64391e1e6b71b444c1df05b158479e1  niri-base-config.post-install
+f93c4d7b5421b53489857c570c6178c20a9755f221aea728ba9bce3a43fc015ab53a28883c2a6ea470cee776274d10d9ed4d8b6621cc665750d5ea6db6f38ef6  skel-niri-config.kdl
 "

@@ -14,7 +14,7 @@
 # explicit depends entry.
 pkgname=oo7-server-user-dinit
 pkgver=0.1.0
-pkgrel=10
+pkgrel=11
 pkgdesc="User dinit services for oo7 (Secret Service daemon + portal)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -42,6 +42,14 @@ package() {
 		"$pkgdir/etc/dinit.d/user/org.freedesktop.secrets.user"
 	install -Dm644 "$srcdir/org.freedesktop.impl.portal.desktop.oo7.user" \
 		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.desktop.oo7.user"
+	# boot.d self-declaration (owner rule) — oo7 is the niriWayle secrets
+	# provider: DMS (gnome-keyring) must NOT autostart secrets, so only
+	# THIS package ships the boot.d links (smoke-root: no path collision)
+	install -d "$pkgdir"/usr/lib/dinit.d/user/boot.d
+	ln -sf /etc/dinit.d/user/org.freedesktop.secrets.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/org.freedesktop.secrets.user
+	ln -sf /etc/dinit.d/user/org.freedesktop.impl.portal.desktop.oo7.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/org.freedesktop.impl.portal.desktop.oo7.user
 	# ADR-008: service -> wrapper -> config (user-editable, apk-protected).
 	install -Dm755 "$srcdir/secrets" "$pkgdir/usr/libexec/oo7-server-user-dinit/secrets"
 	install -Dm644 "$srcdir/secrets.conf" "$pkgdir/etc/dinit.d/config/secrets.conf"

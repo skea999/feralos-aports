@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=wayland-wait-user-dinit
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="dinit user service gate: wait for the compositor wayland socket"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -17,6 +17,11 @@ check() { return 0; }
 package() {
 	install -Dm644 "$srcdir/wait-wayland.user" "$pkgdir/etc/dinit.d/user/wait-wayland.user"
 	install -Dm755 "$srcdir/wait-wayland" "$pkgdir/etc/dinit.d/user/scripts/wait-wayland"
+	# boot.d self-declaration (owner rule): the link ships WITH the service
+	# (membership = installed package; the installer no longer maintains boot.d)
+	install -d "$pkgdir"/usr/lib/dinit.d/user/boot.d
+	ln -sf /etc/dinit.d/user/wait-wayland.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/wait-wayland.user
 }
 
 sha512sums="

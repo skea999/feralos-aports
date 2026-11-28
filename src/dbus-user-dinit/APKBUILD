@@ -2,7 +2,7 @@
 # Maintainer: FeralOS <dev@feralos.org>
 pkgname=dbus-user-dinit
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="dinit user service for the D-Bus session bus"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -19,6 +19,11 @@ package() {
 	# (started by the session wrapper) supervises it.
 	install -Dm644 "$srcdir/dbus.user" "$pkgdir/etc/dinit.d/user/dbus.user"
 	install -Dm755 "$srcdir/dbus-session" "$pkgdir/etc/dinit.d/user/scripts/dbus-session"
+	# boot.d self-declaration (owner rule): the link ships WITH the service
+	# (membership = installed package; the installer no longer maintains boot.d)
+	install -d "$pkgdir"/usr/lib/dinit.d/user/boot.d
+	ln -sf /etc/dinit.d/user/dbus.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/dbus.user
 }
 
 sha512sums="

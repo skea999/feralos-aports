@@ -7,7 +7,7 @@
 # dbus-session into the highest-precedence session servicedir.
 pkgname=xdg-desktop-portal-user-dinit
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="User dinit services for xdg-desktop-portal (desktop + document portal + permission store)"
 url="https://github.com/skea999/feralos-aports"
 arch="all"
@@ -29,6 +29,21 @@ package() {
 		"$pkgdir/etc/dinit.d/user/org.freedesktop.portal.Documents.user"
 	install -Dm644 "$srcdir/org.freedesktop.impl.portal.PermissionStore.user" \
 		"$pkgdir/etc/dinit.d/user/org.freedesktop.impl.portal.PermissionStore.user"
+	# boot.d self-declaration (owner rule): the link ships WITH the service
+	# (membership = installed package; the installer no longer maintains boot.d)
+	install -d "$pkgdir"/usr/lib/dinit.d/user/boot.d
+	ln -sf /etc/dinit.d/user/org.freedesktop.portal.Desktop.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/org.freedesktop.portal.Desktop.user
+	# boot.d self-declaration (owner rule): the link ships WITH the service
+	# (membership = installed package; the installer no longer maintains boot.d)
+	install -d "$pkgdir"/usr/lib/dinit.d/user/boot.d
+	ln -sf /etc/dinit.d/user/org.freedesktop.portal.Documents.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/org.freedesktop.portal.Documents.user
+	# boot.d self-declaration (owner rule): the link ships WITH the service
+	# (membership = installed package; the installer no longer maintains boot.d)
+	install -d "$pkgdir"/usr/lib/dinit.d/user/boot.d
+	ln -sf /etc/dinit.d/user/org.freedesktop.impl.portal.PermissionStore.user \
+		"$pkgdir"/usr/lib/dinit.d/user/boot.d/org.freedesktop.impl.portal.PermissionStore.user
 	install -Dm755 "$srcdir/portal-order" "$pkgdir/usr/lib/dinit/portal-order"
 	# D-Bus activation overrides: the effective Exec starts the dinit unit.
 	install -Dm644 "$srcdir/org.freedesktop.portal.Desktop.service" \

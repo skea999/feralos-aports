@@ -42,15 +42,15 @@
 # materialization lived in the desktop setup).
 pkgname=niri-base-config
 pkgver=0.4.0
-pkgrel=1
-pkgdesc="FeralOS shared niri-family statics (dconf, NM, skel niri entry, branding)"
+pkgrel=2
+pkgdesc="FeralOS shared niri-family statics (dconf, NM, skel niri entry, branding, oo7 passwd PAM, portals)"
 url="https://github.com/skea999/feralos-aports"
 arch="noarch"
 license="ISC"
 depends="feralos-branding xdg-su feralos-reboot"
 makedepends=""
 source="dconf-profile-user 10-manage.conf interfaces
-	niri-base-config.post-install skel-niri-config.kdl"
+	niri-base-config.post-install skel-niri-config.kdl pam-passwd niri-portals.conf"
 install="$pkgname.post-install"
 options="!check" # static configs, exercised by the niri-family harness checks
 
@@ -70,6 +70,11 @@ package() {
 	# greeter. The install-time user gets the dir from the installer; this
 	# skel entry covers every FUTURE user (the adduser skel copy).
 	install -d "$pkgdir/etc/skel/.local/share/dinit"
+	# oo7 /etc/pam.d/passwd override (Alpine ships none) + the portals admin
+	# conf — SHARED by both niri-family desktops (one owner per path: the
+	# smoke CI installs every apk into ONE accumulated root)
+	install -Dm644 "$srcdir/pam-passwd" "$pkgdir/etc/pam.d/passwd"
+	install -Dm644 "$srcdir/niri-portals.conf" "$pkgdir/etc/xdg-desktop-portal/niri-portals.conf"
 	# wallpaper symlinks (PACKAGE CONTENT — tracked): the canonical files
 	# live in the feralos-branding staging dir; relative links keep the
 	# tree movable.
@@ -91,4 +96,6 @@ ca6e3215604e4c9c402772d952df8fe722ee429b257b36a65bab2463d25aec0d42ed486521ab533f
 17b61782cbb44e0bee7415b583d9d9fe66778029f9c707c6a91950979a7ca349148b72797ad3f73be290e8f58497dd8c6eb746687cea841921fdab0175d19375  interfaces
 0953c37f9933502a32b5dcfe2399f808a8c6b0c786408c3b1b0e00479950e928949f9bb51370c8bca83948ac681ee107e64391e1e6b71b444c1df05b158479e1  niri-base-config.post-install
 f93c4d7b5421b53489857c570c6178c20a9755f221aea728ba9bce3a43fc015ab53a28883c2a6ea470cee776274d10d9ed4d8b6621cc665750d5ea6db6f38ef6  skel-niri-config.kdl
+a61e34371299a79311d86f79ea24d53d76c331708e6b9e776162735dbb3511e3cf46137c8d45aeee11009ae30779dd444981587b1a5390b9e60a08c1c9c57aae  pam-passwd
+9cd04deb75a23630a1e72c6ace655b0af7f1a11f3949317dae3cb702b44f5eff08a2152cfddec1e5b13b843eeb5c31af47a91079288a9c01cf4654d88b5253dc  niri-portals.conf
 "
